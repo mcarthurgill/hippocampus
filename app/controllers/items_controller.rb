@@ -40,15 +40,23 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new(params[:item])
+    p "*"*50
+    p params
+    p "*"*50
 
-    respond_to do |format|
-      if @item.save
-        format.json { render json: @item, status: :created, location: @item }
-      else
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    twiml = Twilio::TwiML::Response.new do |r|
+        r.Message "Hey Monkey. Thanks for the message!"
     end
+    twiml.text
+    # @item = Item.new(params[:item])
+
+    # respond_to do |format|
+    #   if @item.save
+    #     format.json { render json: @item, status: :created, location: @item }
+    #   else
+    #     format.json { render json: @item.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PUT /items/1
