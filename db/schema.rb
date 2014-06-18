@@ -11,14 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140618024954) do
+ActiveRecord::Schema.define(:version => 20140618045509) do
 
   create_table "items", :force => true do |t|
     t.string   "message"
     t.integer  "person_id"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "item_type"
+    t.datetime "reminder_date"
   end
 
   create_table "people", :force => true do |t|
@@ -29,10 +31,19 @@ ActiveRecord::Schema.define(:version => 20140618024954) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "twilio_messengers", :force => true do |t|
+    t.string   "body"
+    t.string   "to_number"
+    t.string   "from_number"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "phone"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "country_code"
   end
 
 end

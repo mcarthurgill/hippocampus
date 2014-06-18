@@ -4,6 +4,8 @@ class Item < ActiveRecord::Base
   belongs_to :person
   belongs_to :user
 
+  scope :outstanding, -> { where("item_type = ?", "outstanding").includes(:user) } 
+
 
   def set_attrs_from_twilio(message, phone_number, item_type)
     self.message = message
