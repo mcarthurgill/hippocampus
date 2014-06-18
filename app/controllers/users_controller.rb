@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      format.json { render json: @user }
+      format.json { render :json => @user.to_json(:include => { :items => { :include => :person }}) }
     end
   end
 
@@ -39,7 +39,12 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
+    phone_number = format_phone(params[:user][:phone], (params[:user][:country_code] ? params[:user][:country_code] : '1' ))
+    @user = User.find_or_initialize_by_phone(phone_number)
+
+    if @user.new_record?
+      @user.country_code = prepare_country_code!(params[:user][:country_code] ? params[:user][:country_code] : '1' ) 
+    end
 
     respond_to do |format|
       if @user.save
