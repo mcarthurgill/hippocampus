@@ -3,4 +3,11 @@ class Item < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :user
+
+
+  def set_attrs_from_twilio(message, phone_number, item_type)
+    self.message = message
+    self.user = User.find_by_phone(format_phone(phone_number))
+    self.item_type = item_type
+  end
 end

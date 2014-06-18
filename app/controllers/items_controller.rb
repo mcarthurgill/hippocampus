@@ -40,16 +40,19 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    render 'create.xml.erb', :content_type => 'text/xml'
-    # @item = Item.new(params[:item])
+    @item = Item.new(params[:item])
 
-    # respond_to do |format|
-    #   if @item.save
-    #     format.json { render json: @item, status: :created, location: @item }
-    #   else
-    #     format.json { render json: @item.errors, status: :unprocessable_entity }
-    #   end
-    # end
+    if params[:Body] && params[:Body].length > 0 && params[:From] && params[:From].length > 0 #from twilio
+      @item.set_attrs_from_twilio(params[:Body], params[:From], "text")
+    end
+
+    respond_to do |format|
+      if @item.save
+        format.json { render json: @item, status: :created, location: @item }
+      else
+        format.json { render json: @item.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PUT /items/1
