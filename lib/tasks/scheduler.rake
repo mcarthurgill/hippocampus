@@ -15,3 +15,15 @@ task :send_reminders_about_events => :environment do
   p "done"
   p "*"*50
 end
+
+require "net/http"
+ 
+desc "Ping app"
+task :ping => :environment do
+  #it throws a 500 error, but should still wake up the server
+  url = 'hippocampus-app.herokuapp.com'
+ 
+  puts "ping? (#{url})"
+  r = Net::HTTP.new(url, 80).request_head('/')
+  puts "pong! (#{r.code} #{r.message})"
+end
