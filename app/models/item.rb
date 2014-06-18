@@ -5,7 +5,7 @@ class Item < ActiveRecord::Base
   belongs_to :user
 
   scope :outstanding, -> { where("item_type = ?", "outstanding").includes(:user) } 
-
+  scope :events_for_today, -> { where("item_type = ? AND reminder_date = ?", "event", Date.today).includes(:user) } 
 
   def set_attrs_from_twilio(message, phone_number, item_type)
     self.message = message

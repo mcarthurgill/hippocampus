@@ -11,4 +11,13 @@ class User < ActiveRecord::Base
       msg.send
     end
   end
+
+  def self.remind_about_events
+    items = Item.events_for_today
+    items.each do |i|
+      message = "Your Hippocampus reminder for today:\n" + i.message
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
 end
