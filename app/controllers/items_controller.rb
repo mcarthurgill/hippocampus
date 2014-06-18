@@ -23,10 +23,11 @@ class ItemsController < ApplicationController
     twiml.text
     # @item = Item.find(params[:id])
 
-    # respond_to do |format|
-    #   format.html # show.html.erb
-    #   format.json { render json: @item }
-    # end
+    respond_to do |format|
+      format.xml
+      format.html # show.html.erb
+      format.json { render json: @item }
+    end
   end
 
   # # GET /items/new
