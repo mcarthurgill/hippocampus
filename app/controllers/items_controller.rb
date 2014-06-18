@@ -10,25 +10,16 @@ class ItemsController < ApplicationController
   #   end
   # end
 
-  # GET /items/1
-  # GET /items/1.json
-  def show
-    p "*"*50
-    p "hello"
-    twiml = Twilio::TwiML::Response.new do |r|
-        r.Message "Hey Monkey. Thanks for the message!"
-    end
-    p twiml
-    p "*"*50
-    twiml.text
-    # @item = Item.find(params[:id])
+  # # GET /items/1
+  # # GET /items/1.json
+  # def show
+  #   @item = Item.find(params[:id])
 
-    respond_to do |format|
-      format.xml
-      format.html # show.html.erb
-      format.json { render json: @item }
-    end
-  end
+  #   respond_to do |format|
+  #     format.html # show.html.erb
+  #     format.json { render json: @item }
+  #   end
+  # end
 
   # # GET /items/new
   # # GET /items/new.json
@@ -49,14 +40,7 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    p "*"*50
-    p params
-    p "*"*50
-
-    twiml = Twilio::TwiML::Response.new do |r|
-        r.Message "Hey Monkey. Thanks for the message!"
-    end
-    twiml.text
+    render 'create.xml.erb', :content_type => 'text/xml'
     # @item = Item.new(params[:item])
 
     # respond_to do |format|
