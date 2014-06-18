@@ -13,9 +13,13 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    p "*"*50
+    p "hello"
     twiml = Twilio::TwiML::Response.new do |r|
         r.Message "Hey Monkey. Thanks for the message!"
     end
+    p twiml
+    p "*"*50
     twiml.text
     # @item = Item.find(params[:id])
 
