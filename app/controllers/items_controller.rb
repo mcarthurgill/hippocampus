@@ -43,7 +43,7 @@ class ItemsController < ApplicationController
     @item = Item.new(params[:item])
 
     if params[:Body] && params[:Body].length > 0 && params[:From] && params[:From].length > 0 #from twilio
-      @item.set_attrs_from_twilio(params[:Body], params[:From], "outstanding")
+      @item.set_attrs_from_twilio(params[:Body], format_phone(params[:From]), "outstanding")
     end
 
     respond_to do |format|
