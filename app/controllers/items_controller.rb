@@ -42,13 +42,12 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(params[:item])
-    @sm = Sm.create(params)
 
-    puts params
+    # puts params
 
-    if params[:Body] && params[:Body].length > 0 && params[:From] && params[:From].length > 0 #from twilio
-      @item.set_attrs_from_twilio(params[:Body], format_phone(params[:From], "1"), "note")
-    end
+    # if params[:Body] && params[:Body].length > 0 && params[:From] && params[:From].length > 0 #from twilio
+    #   @item.set_attrs_from_twilio(params[:Body], format_phone(params[:From], "1"), "note")
+    # end
 
     respond_to do |format|
       if @item.save

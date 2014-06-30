@@ -16,10 +16,15 @@ class Item < ActiveRecord::Base
 
   # -- SETTERS
 
-  def set_attrs_from_twilio(message, phone_number, item_type)
-    self.message = message
-    self.user = User.find_by_phone(phone_number)
-    self.item_type = item_type
+  def self.create_with_sms(sms)
+    i = Item.new
+    i.message = sms.Body
+    i.user = User.with_phone_number(sms.From)
+    i.item_type = 'note'
+    i.status = 'outstanding'
+    i.input_method = 'sms'
+    i.save!
+    return i
   end
   
 end

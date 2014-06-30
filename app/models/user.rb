@@ -9,6 +9,11 @@ class User < ActiveRecord::Base
   has_many :items
 
 
+  # -- GETTERS
+
+  def self.with_phone_number phone_number
+    return User.find_by_phone(self.format_phone(phone_number, '1'))
+  end
 
 
   # -- SCHEDULES
@@ -27,6 +32,30 @@ class User < ActiveRecord::Base
       message = "Your Hippocampus reminder for today:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
+    end
+  end
+
+
+
+  # -- HELPERS
+
+  def format_phone (number, country_code)
+    return User.format_phone(number, country_code)
+  end
+
+  def self.format_phone(number, country_code)
+    number.gsub!(/\s+/, "")
+    country_code.gsub!(/\s+/, "")
+    country_code.gsub!(/\D/, '')
+    if number && number.first == "+"
+      return number.gsub!(/\D/, '')
+    elsif country_code && country_code.length > 0
+      country_code.gsub!(/\D/, '')
+      if number.slice(0...country_code.length) == country_code
+        number.slice!(0...country_code.length)
+      end
+      number.sub!(/^0+/, "")
+      return number.prepend(country_code)
     end
   end
 

@@ -45,10 +45,9 @@ class SmsController < ApplicationController
 
     respond_to do |format|
       if @sm.save
-        format.html { redirect_to @sm, notice: 'Sm was successfully created.' }
+        @sm.create_item
         format.json { render json: @sm, status: :created, location: @sm }
       else
-        format.html { render action: "new" }
         format.json { render json: @sm.errors, status: :unprocessable_entity }
       end
     end
@@ -81,5 +80,5 @@ class SmsController < ApplicationController
   #     format.json { head :no_content }
   #   end
   # end
-  
+
 end
