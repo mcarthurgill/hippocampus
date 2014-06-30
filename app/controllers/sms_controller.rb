@@ -41,7 +41,7 @@ class SmsController < ApplicationController
   # POST /sms
   # POST /sms.json
   def create
-    @sm = Sm.new(params[:sm])
+    @sm = Sm.new(params)
 
     respond_to do |format|
       if @sm.save
