@@ -1,4 +1,5 @@
 class BucketsController < ApplicationController
+  
   # # GET /buckets
   # # GET /buckets.json
   # def index
@@ -80,5 +81,5 @@ class BucketsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
 end

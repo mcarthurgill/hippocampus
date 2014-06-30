@@ -1,13 +1,17 @@
 class User < ActiveRecord::Base
+
   attr_accessible :phone, :country_code
+
+
+  # -- RELATIONSHIPS
 
   has_many :buckets
   has_many :items
 
 
-  
 
-  # SCHEDULES
+
+  # -- SCHEDULES
 
   def self.remind_about_outstanding_items
     items = Item.outstanding.uniq_by {|i| i.user_id }
