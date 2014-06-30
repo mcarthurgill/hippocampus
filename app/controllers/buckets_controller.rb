@@ -1,42 +1,4 @@
 class BucketsController < ApplicationController
-  
-  # # GET /buckets
-  # # GET /buckets.json
-  # def index
-  #   @buckets = Bucket.all
-
-  #   respond_to do |format|
-  #     format.html # index.html.erb
-  #     format.json { render json: @buckets }
-  #   end
-  # end
-
-  # # GET /buckets/1
-  # # GET /buckets/1.json
-  # def show
-  #   @bucket = Bucket.find(params[:id])
-
-  #   respond_to do |format|
-  #     format.html # show.html.erb
-  #     format.json { render json: @bucket }
-  #   end
-  # end
-
-  # # GET /buckets/new
-  # # GET /buckets/new.json
-  # def new
-  #   @bucket = Bucket.new
-
-  #   respond_to do |format|
-  #     format.html # new.html.erb
-  #     format.json { render json: @bucket }
-  #   end
-  # end
-
-  # # GET /buckets/1/edit
-  # def edit
-  #   @bucket = Bucket.find(params[:id])
-  # end
 
   # POST /buckets
   # POST /buckets.json

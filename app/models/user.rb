@@ -12,7 +12,28 @@ class User < ActiveRecord::Base
   # -- GETTERS
 
   def self.with_phone_number phone_number
-    return User.find_by_phone(self.format_phone(phone_number, '1'))
+    return User.with_phone_number_and_country_code(phone_number, '1')
+  end
+
+  def self.with_phone_number_and_country_code phone_number, country_code
+    return User.find_by_phone(self.format_phone(phone_number, country_code))
+  end
+
+
+  # -- SETTERS
+
+  def self.with_or_initialize_with_phone_number phone_number
+    return User.with_or_create_with_phone_number_and_country_code(phone_number, '1')
+  end
+
+  def self.with_or_initialize_with_phone_number_and_country_code phone_number, country_code
+    user = User.with_phone_number_and_country_code(phone_number, country_code)
+    if !user
+      user = User.new
+      user.phone = User.format_phone(phone_number, country_code)
+      user.country_code = User.prepare_country_code!(country_code)
+    end
+    return user
   end
 
 
@@ -57,6 +78,12 @@ class User < ActiveRecord::Base
       number.sub!(/^0+/, "")
       return number.prepend(country_code)
     end
+  end
+
+  def self.prepare_country_code!(country_code)
+    strip_whitespace!(country_code)
+    strip_non_numeric!(country_code)
+    return country_code
   end
 
 end

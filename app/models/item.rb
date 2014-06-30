@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :message, :person_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
 
   # -- RELATIONSHIPS
