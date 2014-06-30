@@ -6,6 +6,8 @@ class Item < ActiveRecord::Base
   # -- RELATIONSHIPS
 
   belongs_to :user
+  has_many :bucket_item_pairs
+  has_many :buckets, :through => :bucket_item_pairs
 
 
   # -- SCOPES
