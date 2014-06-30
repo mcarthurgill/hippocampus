@@ -3,9 +3,11 @@
 one:
   first_name: MyString
   last_name: MyString
-  location: MyString
+  description: MyText
+  user_id: 1
 
 two:
   first_name: MyString
   last_name: MyString
-  location: MyString
+  description: MyText
+  user_id: 1

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First name:</b>
+  <%= @bucket.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @bucket.last_name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @bucket.description %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @bucket.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_bucket_path(@bucket) %> |
+<%= link_to 'Back', buckets_path %>
