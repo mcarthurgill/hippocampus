@@ -46,7 +46,7 @@ class SmsController < ApplicationController
     respond_to do |format|
       if @sm.save
         @sm.create_item
-        format.json { render json: @sm, status: :created, location: @sm }
+        format.json { render json: @sm, status: :created }
       else
         format.json { render json: @sm.errors, status: :unprocessable_entity }
       end
