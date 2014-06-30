@@ -7,7 +7,7 @@ class Sm < ActiveRecord::Base
 
   def create_item
     i = Item.create_with_sms(self)
-    self.item_id = i.id
+    self.update_attribute(:item_id, i.id)
     return i
   end
 
