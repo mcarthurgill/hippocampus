@@ -42,6 +42,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(params[:item])
+    @sm = Sms.create(params)
 
     puts params
 
