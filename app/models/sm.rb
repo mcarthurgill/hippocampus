@@ -21,7 +21,9 @@ class Sm < ActiveRecord::Base
       if next_message
         # needs to concat. append that message to this item, delete that item, and then update that sm's item and try to concat again
         if self.item
-          self.item.update_attribute(:message, "#{self.read_attribute(:Body)}#{next_message.read_attribute(:Body)}")
+          s1 = self.read_attribute(:Body)
+          s2 = next_message.read_attribute(:Body)
+          self.item.update_attribute(:message, "#{s1}#{s2}")
           next_message.concatted_to_item(self.item)
         end
       end
