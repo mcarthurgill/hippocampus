@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140708233324) do
+ActiveRecord::Schema.define(:version => 20140708233754) do
 
   create_table "bucket_item_pairs", :force => true do |t|
     t.integer  "bucket_id"
@@ -47,14 +47,14 @@ ActiveRecord::Schema.define(:version => 20140708233324) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "items", :force => true do |t|
-    t.text     "message",       :limit => 255
+    t.text     "message"
     t.integer  "person_id"
     t.integer  "user_id"
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.string   "item_type"
     t.date     "reminder_date"
-    t.string   "status",                       :default => "outstanding"
+    t.string   "status",        :default => "outstanding"
     t.string   "input_method"
     t.integer  "bucket_id"
   end
