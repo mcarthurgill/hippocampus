@@ -6,7 +6,27 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      format.json { render :json => @user.to_json(:include => { :items => { :include => :person }}) }
+      format.json { render json: @user }
+    end
+  end
+
+  # GET /users/1/items
+  # GET /users/1/items.json
+  def items
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.json { render json: @user.items }
+    end
+  end
+
+  # GET /users/1/buckets
+  # GET /users/1/buckets.json
+  def buckets
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.json { render json: @user.buckets }
     end
   end
 
