@@ -17,7 +17,7 @@ class Sm < ActiveRecord::Base
   def concat_if_necessary
 
     if (self.Body.length == 153 || self.Body.length == 67)
-      next_message = Sm.where('id > ? AND created_at < ?', self.id, self.created_at + 1.5.seconds).first
+      next_message = Sm.where('id > ? AND created_at < ? AND item_id != ?', self.id, self.created_at + 1.5.seconds, self.item_id).first
       if next_message
         # needs to concat. append that message to this item, delete that item, and then update that sm's item and try to concat again
         if self.item
