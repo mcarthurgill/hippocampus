@@ -30,5 +30,11 @@ class Item < ActiveRecord::Base
     i.save!
     return i
   end
+
+  # -- DESTROY
+
+  def delete
+    self.update_attribute(:status, 'deleted')
+  end
   
 end
