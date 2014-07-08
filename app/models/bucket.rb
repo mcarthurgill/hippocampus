@@ -1,6 +1,6 @@
 class Bucket < ActiveRecord::Base
 
-  attr_accessible :description, :first_name, :last_name, :user_id
+  attr_accessible :description, :first_name, :last_name, :user_id, :bucket_type
 
 
   # -- RELATIONSHIPS
