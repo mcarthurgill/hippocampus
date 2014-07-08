@@ -16,14 +16,12 @@ class Sm < ActiveRecord::Base
 
   def concat_if_necessary
 
-    if (self.read_attribute(:Body).length == 153 || self.read_attribute(:Body).length == 67)
-      next_message = Sm.where('id > ? AND created_at < ?', self.id, self.created_at + 1.5.seconds)
+    if (self.Body.length == 153 || self.Body.length == 67)
+      next_message = Sm.where('id > ? AND created_at < ?', self.id, self.created_at + 1.5.seconds).first
       if next_message
         # needs to concat. append that message to this item, delete that item, and then update that sm's item and try to concat again
         if self.item
-          s1 = self.read_attribute(:Body)
-          s2 = next_message.read_attribute(:Body)
-          self.item.update_attribute(:message, "#{s1}#{s2}")
+          self.item.update_attribute(:message, "#{self.Body}#{next_message.Body}")
           next_message.concatted_to_item(self.item)
         end
       end
@@ -34,7 +32,7 @@ class Sm < ActiveRecord::Base
     # delete the current item (if different from concatted to item), then update the item to the input item, then try concatting
     if i.id != self.id
       self.item.delete
-      self.item_id = i.id
+      self.update_attribute(:item_id, i.id)
       self.delay(run_at: 1.5.seconds.from_now).concat_if_necessary
     end
   end
