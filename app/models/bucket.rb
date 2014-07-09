@@ -9,4 +9,9 @@ class Bucket < ActiveRecord::Base
   has_many :bucket_item_pairs
   has_many :items, :through => :bucket_item_pairs
 
+
+  # -- SCOPES
+
+  scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
+
 end

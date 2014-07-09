@@ -16,6 +16,7 @@ class Item < ActiveRecord::Base
 
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :events_for_today, -> { where("item_type = ? AND reminder_date = ?", "event", Date.today).includes(:user) } 
+  scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
 
 
   # -- SETTERS

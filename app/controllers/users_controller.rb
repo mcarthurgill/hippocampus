@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      format.json { render json: @user.items }
+      format.json { render json: @user.items.above(params[:above]) }
     end
   end
 
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      format.json { render json: @user.buckets }
+      format.json { render json: @user.buckets.above(params[:above]) }
     end
   end
 
