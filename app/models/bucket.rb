@@ -12,6 +12,6 @@ class Bucket < ActiveRecord::Base
 
   # -- SCOPES
 
-  scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
+  scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime).order('id ASC') }
 
 end
