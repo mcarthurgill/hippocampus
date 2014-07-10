@@ -37,5 +37,23 @@ class Item < ActiveRecord::Base
   def delete
     self.update_attribute(:status, 'deleted')
   end
+
+  # -- ATTRIBUTES
+
+  def outstanding?
+    return self.status == 'outstanding'
+  end
+
+  def assigned?
+    return self.status == 'assigned'
+  end
+
+  # -- ACTIONS
+
+  def update_outstanding
+    if self.outstanding? && self.bucket_id
+      self.update_attribute(:status, 'assigned')
+    end
+  end
   
 end

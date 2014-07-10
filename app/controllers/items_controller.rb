@@ -23,6 +23,7 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.update_attributes(params[:item])
+        @item.update_outstanding
         format.json { head :no_content }
       else
         format.json { render json: @item.errors, status: :unprocessable_entity }
