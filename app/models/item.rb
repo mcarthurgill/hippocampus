@@ -19,6 +19,18 @@ class Item < ActiveRecord::Base
   scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
 
 
+  # -- VALIDATIONS
+
+  before_validation :strip_whitespace
+
+  def strip_whitespace
+    self.message = self.message ? self.message.strip : nil
+    self.item_type = self.item_type ? self.item_type.strip : nil
+    self.status = self.status ? self.status.strip : nil
+    self.input_method = self.input_method ? self.input_method.strip : nil
+  end
+
+
   # -- SETTERS
 
   def self.create_with_sms(sms)
