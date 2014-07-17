@@ -51,8 +51,6 @@ class User < ActiveRecord::Base
     items = Item.events_for_today
     items.each do |i|
       message = "Your Hippocampus reminder for today:\n" + i.message
-      p "*"*50
-      p message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
