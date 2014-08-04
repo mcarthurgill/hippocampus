@@ -30,7 +30,7 @@ class Sm < ActiveRecord::Base
 
   def concatted_to_item i
     # delete the current item (if different from concatted to item), then update the item to the input item, then try concatting
-    if i.id != self.id
+    if i.id != self.item_id
       self.item.delete
       self.update_attribute(:item_id, i.id)
       self.delay(run_at: 1.5.seconds.from_now).concat_if_necessary

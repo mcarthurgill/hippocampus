@@ -2,6 +2,8 @@ class Bucket < ActiveRecord::Base
 
   attr_accessible :description, :first_name, :last_name, :user_id, :bucket_type
 
+  # possible bucket_type: "Other", "Person"
+
 
   # -- RELATIONSHIPS
 
