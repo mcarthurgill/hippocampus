@@ -1,0 +1,47 @@
+<h1>Listing emails</h1>
+
+<table>
+  <tr>
+    <th>From</th>
+    <th>Fromname</th>
+    <th>To</th>
+    <th>Cc</th>
+    <th>Bcc</th>
+    <th>Replyto</th>
+    <th>Subject</th>
+    <th>Messageid</th>
+    <th>Date</th>
+    <th>Mailboxhash</th>
+    <th>Textbody</th>
+    <th>Htmlbody</th>
+    <th>Strippedtextreply</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @emails.each do |email| %>
+  <tr>
+    <td><%= email.From %></td>
+    <td><%= email.FromName %></td>
+    <td><%= email.To %></td>
+    <td><%= email.Cc %></td>
+    <td><%= email.Bcc %></td>
+    <td><%= email.ReplyTo %></td>
+    <td><%= email.Subject %></td>
+    <td><%= email.MessageID %></td>
+    <td><%= email.Date %></td>
+    <td><%= email.MailboxHash %></td>
+    <td><%= email.TextBody %></td>
+    <td><%= email.HtmlBody %></td>
+    <td><%= email.StrippedTextReply %></td>
+    <td><%= link_to 'Show', email %></td>
+    <td><%= link_to 'Edit', edit_email_path(email) %></td>
+    <td><%= link_to 'Destroy', email, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Email', new_email_path %>

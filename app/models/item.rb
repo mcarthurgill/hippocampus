@@ -10,6 +10,7 @@ class Item < ActiveRecord::Base
   has_many :buckets, :through => :bucket_item_pairs
 
   has_many :sms
+  has_many :emails
 
 
   # -- SCOPES
