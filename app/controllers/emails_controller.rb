@@ -7,8 +7,7 @@ class EmailsController < ApplicationController
 
     respond_to do |format|
       if @email.save
-        # @email.create_item
-        puts @email
+        @email.create_item
         format.json { render json: @email, status: :created }
       else
         format.json { render json: @email.errors, status: :unprocessable_entity }
