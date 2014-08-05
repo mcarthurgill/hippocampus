@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
 
   attr_accessible :phone, :country_code, :email
 
-
   # -- RELATIONSHIPS
 
   has_many :buckets
