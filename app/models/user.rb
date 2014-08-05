@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :phone, :country_code, :email
+  attr_accessible :email, :phone, :country_code
 
   # -- RELATIONSHIPS
 
