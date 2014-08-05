@@ -16,7 +16,7 @@ class Email < ActiveRecord::Base
   end
 
   def body_text
-    i = self.TextBody.index('\n--')
+    i = self.TextBody.index("\n--")
     return i && i > 0 ? self.TextBody[0,i] : self.TextBody
   end
 
