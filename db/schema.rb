@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140708233754) do
+ActiveRecord::Schema.define(:version => 20140804235336) do
 
   create_table "bucket_item_pairs", :force => true do |t|
     t.integer  "bucket_id"
@@ -45,6 +45,25 @@ ActiveRecord::Schema.define(:version => 20140708233754) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "emails", :force => true do |t|
+    t.string   "From"
+    t.string   "FromName"
+    t.string   "To"
+    t.text     "Cc"
+    t.text     "Bcc"
+    t.string   "ReplyTo"
+    t.text     "Subject"
+    t.string   "MessageID"
+    t.string   "Date"
+    t.text     "MailboxHash"
+    t.text     "TextBody"
+    t.text     "HtmlBody"
+    t.text     "StrippedTextReply"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "item_id"
+  end
 
   create_table "items", :force => true do |t|
     t.text     "message"

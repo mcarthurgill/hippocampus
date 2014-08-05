@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
     return User.find_by_phone(self.format_phone(phone_number, country_code))
   end
 
+  def self.with_email e
+    return User.find_by_email(e.strip.downcase)
+  end
+
 
   # -- SETTERS
 

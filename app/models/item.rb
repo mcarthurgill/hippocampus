@@ -45,6 +45,17 @@ class Item < ActiveRecord::Base
     return i
   end
 
+  def self.create_with_email(email)
+    i = Item.new
+    i.message = email.parsed_text
+    i.user = User.with_email(email.From)
+    i.item_type = 'note'
+    i.status = 'outstanding'
+    i.input_method = 'email'
+    i.save!
+    return i
+  end
+
   # -- DESTROY
 
   def delete
