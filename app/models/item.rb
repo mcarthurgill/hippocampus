@@ -7,7 +7,8 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   has_many :bucket_item_pairs
-  has_many :buckets, :through => :bucket_item_pairs
+  #has_many :buckets, :through => :bucket_item_pairs
+  belongs_to :bucket
 
   has_many :sms
   has_many :emails
