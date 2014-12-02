@@ -16,6 +16,18 @@ task :send_reminders_about_events => :environment do
   p "*"*50
 end
 
+desc "This text goes to mcarthur and sends him one random item a day"
+task :send_mcarthur_text => :environment do 
+  p "*"*50
+  p "texting users about their events"
+  u = User.find(1)
+  message = u.items.sample.message
+  text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
+  text.send
+  p "done"
+  p "*"*50
+end
+
 require "net/http"
  
 desc "Ping app"
