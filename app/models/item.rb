@@ -7,9 +7,11 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   has_many :bucket_item_pairs
-  has_many :buckets, :through => :bucket_item_pairs
+  #has_many :buckets, :through => :bucket_item_pairs
+  belongs_to :bucket
 
   has_many :sms
+  has_many :emails
 
 
   # -- SCOPES
@@ -40,6 +42,17 @@ class Item < ActiveRecord::Base
     i.item_type = 'note'
     i.status = 'outstanding'
     i.input_method = 'sms'
+    i.save!
+    return i
+  end
+
+  def self.create_with_email(email)
+    i = Item.new
+    i.message = email.parsed_text
+    i.user = User.with_email(email.From)
+    i.item_type = 'note'
+    i.status = 'outstanding'
+    i.input_method = 'email'
     i.save!
     return i
   end

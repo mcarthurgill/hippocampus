@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>From:</b>
+  <%= @email.From %>
+</p>
+
+<p>
+  <b>Fromname:</b>
+  <%= @email.FromName %>
+</p>
+
+<p>
+  <b>To:</b>
+  <%= @email.To %>
+</p>
+
+<p>
+  <b>Cc:</b>
+  <%= @email.Cc %>
+</p>
+
+<p>
+  <b>Bcc:</b>
+  <%= @email.Bcc %>
+</p>
+
+<p>
+  <b>Replyto:</b>
+  <%= @email.ReplyTo %>
+</p>
+
+<p>
+  <b>Subject:</b>
+  <%= @email.Subject %>
+</p>
+
+<p>
+  <b>Messageid:</b>
+  <%= @email.MessageID %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%= @email.Date %>
+</p>
+
+<p>
+  <b>Mailboxhash:</b>
+  <%= @email.MailboxHash %>
+</p>
+
+<p>
+  <b>Textbody:</b>
+  <%= @email.TextBody %>
+</p>
+
+<p>
+  <b>Htmlbody:</b>
+  <%= @email.HtmlBody %>
+</p>
+
+<p>
+  <b>Strippedtextreply:</b>
+  <%= @email.StrippedTextReply %>
+</p>
+
+
+<%= link_to 'Edit', edit_email_path(@email) %> |
+<%= link_to 'Back', emails_path %>

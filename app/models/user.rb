@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :phone, :country_code
-
+  attr_accessible :email, :phone, :country_code
 
   # -- RELATIONSHIPS
 
@@ -17,6 +16,10 @@ class User < ActiveRecord::Base
 
   def self.with_phone_number_and_country_code phone_number, country_code
     return User.find_by_phone(self.format_phone(phone_number, country_code))
+  end
+
+  def self.with_email e
+    return User.find_by_email(e.strip.downcase)
   end
 
 
