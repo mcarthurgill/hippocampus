@@ -16,14 +16,19 @@ task :send_reminders_about_events => :environment do
   p "*"*50
 end
 
-desc "This text goes to mcarthur and sends him one random item a day"
+desc "This text goes to mcarthur and sends him one random bucket a day"
 task :send_mcarthur_text => :environment do 
   p "*"*50
-  p "texting users about their events"
+  p "texting mcarthur to say whatup"
   u = User.find(1)
-  message = u.items.sample.message
-  text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
+  bucket = u.buckets.sample
+  txt_message = "You Bucket for Today: #{bucket.first_name} #{bucket.last_name}"
+  text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, txt_message)
   text.send
+  bucket.items.each do |i|
+    text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, i.message)
+    text.send
+  end
   p "done"
   p "*"*50
 end
