@@ -1,5 +1,5 @@
 Hippocampus::Application.routes.draw do
-
+  root :to => "users#test"
   resources :buckets, :only => [:create, :update, :destroy]
   
   resources :bucket_item_pairs, :only => [:create, :destroy]
