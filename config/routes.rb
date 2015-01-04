@@ -1,5 +1,7 @@
 Hippocampus::Application.routes.draw do
 
+  root to: "pages#splash"
+
   resources :buckets, :only => [:create, :update, :destroy]
   
   resources :bucket_item_pairs, :only => [:create, :destroy]
