@@ -79,15 +79,6 @@ ActiveRecord::Schema.define(:version => 20140805010022) do
     t.integer  "bucket_id"
   end
 
-  create_table "people", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "location"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "user_id"
-  end
-
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
     t.string   "ToState"
