@@ -1,13 +1,12 @@
 <div class="col-xs-12">
-  <p><%= notice %></p>
   <%= form_tag passcode_path do %>
     <div class="col-xs-3">
       <div class="field">
         <%= label_tag :phone %><br>
-        <%= text_field_tag :phone, "", :class => "form-control" %>
+        <%= text_field_tag :phone, "", :placeholder => "Enter your phone number", :class => "form-control" %>
       </div>
       <div class="actions">
-        <%= submit_tag "Login", :class => "btn btn-default" %>
+        <%= submit_tag "Submit", :class => "btn btn-default" %>
       </div>
     </div>
   <% end %>

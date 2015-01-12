@@ -1,11 +1,5 @@
 class UsersController < ApplicationController
 
-  def new
-    redirect_logged_in_user
-
-    @user = User.new
-  end
-
   # GET /users/1
   # GET /users/1.json
   def show
@@ -37,18 +31,18 @@ class UsersController < ApplicationController
     end
   end
 
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.with_or_initialize_with_phone_number(params[:user][:phone])
+  # # POST /users
+  # # POST /users.json
+  # def create
+  #   @user = User.with_or_initialize_with_phone_number(params[:user][:phone])
 
-    respond_to do |format|
-      if @user.save
-        redirect_to passcode_path(:phone => @user.phone), :notice => "One more step!"
-        return
-      end
-    end
-  end
+  #   respond_to do |format|
+  #     if @user.save
+  #       redirect_to passcode_path(:phone => @user.phone), :notice => "One more step!"
+  #       return
+  #     end
+  #   end
+  # end
 
   # DELETE /users/1
   # DELETE /users/1.json

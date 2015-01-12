@@ -29,8 +29,7 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
-    ##UPDATE THIS ONCE WE ADD SESSIONS/COOKIES
-    @options_for_buckets = User.find(1).formatted_buckets_options
+    @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
       format.html 
@@ -42,7 +41,7 @@ class ItemsController < ApplicationController
   def edit
     @item = Item.find(params[:id])
 
-    @options_for_buckets = @item.user.formatted_buckets_options
+    @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
       format.html

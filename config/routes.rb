@@ -1,5 +1,5 @@
 Hippocampus::Application.routes.draw do
-  root :to => "users#new"
+  root :to => "sessions#new"
 
   get "login", :to => "sessions#new", :as => "login"
   post 'session/:phone', :to => "sessions#create", :as => "create_session"
@@ -18,7 +18,7 @@ Hippocampus::Application.routes.draw do
   
   resources :sms, :only => [:create]
 
-  resources :users, :except => [:index]
+  resources :users, :except => [:index, :new, :create]
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets'
   

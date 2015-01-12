@@ -4,10 +4,7 @@ class SessionsController < ApplicationController
   end
 
   def passcode
-    @user = User.find_by_phone(format_phone(params[:phone], "1"))
-    if !@user
-      redirect_to :back, :notice => "Sorry try again."
-    end
+    @user = User.with_or_initialize_with_phone_number(params[:phone])
     @user.update_and_send_passcode 
   end
 
