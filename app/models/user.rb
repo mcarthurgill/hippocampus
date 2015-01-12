@@ -1,12 +1,13 @@
 class User < ActiveRecord::Base
-
   attr_accessible :email, :phone, :country_code
+  extend Formatting
 
   # -- RELATIONSHIPS
 
   has_many :buckets
   has_many :items
-
+  has_many :tokens
+  
   # -- GETTERS
 
   def self.with_phone_number phone_number
@@ -64,9 +65,9 @@ class User < ActiveRecord::Base
 
   # -- HELPERS
 
-  def format_phone (number, country_code)
-    return User.format_phone(number, country_code)
-  end
+  # def format_phone (number, country_code)
+  #   return User.format_phone(number, country_code)
+  # end
 
   def formatted_buckets_options
     buckets = [["", nil]]
@@ -76,26 +77,40 @@ class User < ActiveRecord::Base
     return buckets
   end
 
-  def self.format_phone(number, country_code)
-    number.gsub!(/\s+/, "")
-    country_code.gsub!(/\s+/, "")
-    country_code.gsub!(/\D/, '')
-    if number && number.first == "+"
-      return number.gsub!(/\D/, '')
-    elsif country_code && country_code.length > 0
-      country_code.gsub!(/\D/, '')
-      if number.slice(0...country_code.length) == country_code
-        number.slice!(0...country_code.length)
-      end
-      number.sub!(/^0+/, "")
-      return number.prepend(country_code)
-    end
+  # def self.format_phone(number, country_code)
+  #   number.gsub!(/\s+/, "")
+  #   country_code.gsub!(/\s+/, "")
+  #   country_code.gsub!(/\D/, '')
+  #   if number && number.first == "+"
+  #     return number.gsub!(/\D/, '')
+  #   elsif country_code && country_code.length > 0
+  #     country_code.gsub!(/\D/, '')
+  #     if number.slice(0...country_code.length) == country_code
+  #       number.slice!(0...country_code.length)
+  #     end
+  #     number.sub!(/^0+/, "")
+  #     return number.prepend(country_code)
+  #   end
+  # end
+
+  # def self.prepare_country_code!(country_code)
+  #   strip_whitespace!(country_code)
+  #   strip_non_numeric!(country_code)
+  #   return country_code
+  # end
+
+
+
+  # --- TOKEN
+
+  def update_and_send_passcode
+    t = Token.with_params(user_id: self.id)
+    t.assign_token
+    t.save
+    t.send_token(t.token_string)
   end
 
-  def self.prepare_country_code!(country_code)
-    strip_whitespace!(country_code)
-    strip_non_numeric!(country_code)
-    return country_code
+  def correct_passcode? code
+    Token.match(code, self.id).live.first
   end
-
 end

@@ -1,0 +1,8 @@
+<p id="notice"><%= notice %></p>
+
+<h3>We've texted a passcode to <%= @user.phone %></h3>
+
+<%= form_tag create_session_path(@user.phone) do %>
+  <%= text_field_tag :passcode, "", :placeholder => "Enter passcode here", :class => "form-controls" %>
+  <%= submit_tag "Submit", :class => "btn btn-default" %>
+<% end %>

@@ -1,5 +1,10 @@
 Hippocampus::Application.routes.draw do
-  root to: "pages#splash"
+  root :to => "users#new"
+
+  get "login", :to => "sessions#new", :as => "login"
+  post 'session/:phone', :to => "sessions#create", :as => "create_session"
+  get 'logout', :to => "sessions#destroy", :as => "logout"
+  match 'passcode', :to => "sessions#passcode", :as => "passcode"
 
   resources :buckets, :only => [:create, :update, :destroy]
   
@@ -13,7 +18,7 @@ Hippocampus::Application.routes.draw do
   
   resources :sms, :only => [:create]
 
-  resources :users, :only => [:create, :show, :edit, :update, :destroy]
+  resources :users, :except => [:index]
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets'
   

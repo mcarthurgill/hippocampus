@@ -1,0 +1,28 @@
+class SessionsController < ApplicationController
+  def new
+    redirect_logged_in_user
+  end
+
+  def passcode
+    @user = User.find_by_phone(format_phone(params[:phone], "1"))
+    if !@user
+      redirect_to :back, :notice => "Sorry try again."
+    end
+    @user.update_and_send_passcode 
+  end
+
+  def create
+    @user = User.find_by_phone(format_phone(params[:phone], "1"))
+    if @user && @user.correct_passcode?(params[:passcode])
+      cookies[:user_id] = { value: @user.id.to_s, expires: 10.years.from_now }
+      redirect_to user_path(@user), :notice => "Logged In!"
+      return
+    end
+    redirect_to login_path, :notice => "Sorry your passcode was wrong."
+  end
+
+  def destroy
+    cookies.delete :user_id
+    redirect_to root_path, :notice => "Successfully signed out!"
+  end
+end

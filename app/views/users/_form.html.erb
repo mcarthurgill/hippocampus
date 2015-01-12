@@ -12,10 +12,9 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :phone %><br />
-    <%= f.text_field :phone %>
+    <%= f.text_field :phone, :placeholder => "Enter your phone number", :class => "form-controls" %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit", :class => "btn btn-default" %>
   </div>
 <% end %>

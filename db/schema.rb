@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140805010022) do
+ActiveRecord::Schema.define(:version => 20150112214801) do
 
   create_table "bucket_item_pairs", :force => true do |t|
     t.integer  "bucket_id"
@@ -79,6 +79,15 @@ ActiveRecord::Schema.define(:version => 20140805010022) do
     t.integer  "bucket_id"
   end
 
+  create_table "people", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "location"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
+
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
     t.string   "ToState"
@@ -101,6 +110,13 @@ ActiveRecord::Schema.define(:version => 20140805010022) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "item_id"
+  end
+
+  create_table "tokens", :force => true do |t|
+    t.string   "token_string"
+    t.integer  "user_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "twilio_messengers", :force => true do |t|

@@ -1,4 +1,11 @@
 class UsersController < ApplicationController
+
+  def new
+    redirect_logged_in_user
+
+    @user = User.new
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show
@@ -33,14 +40,12 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-
     @user = User.with_or_initialize_with_phone_number(params[:user][:phone])
 
     respond_to do |format|
       if @user.save
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        redirect_to passcode_path(:phone => @user.phone), :notice => "One more step!"
+        return
       end
     end
   end

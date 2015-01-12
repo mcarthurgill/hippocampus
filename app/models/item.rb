@@ -88,7 +88,7 @@ class Item < ActiveRecord::Base
   # -- HELPERS
 
   def formatted_reminder_date
-    self.reminder_date.strftime("%B %e, %Y")
+    self.reminder_date.strftime("%B %e, %Y") if self.reminder_date
   end
 
   def created_at_central_time
