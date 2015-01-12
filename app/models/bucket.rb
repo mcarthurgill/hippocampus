@@ -28,4 +28,10 @@ class Bucket < ActiveRecord::Base
     self.bucket_type = self.bucket_type ? self.bucket_type.strip : nil
   end
 
+
+  # -- HELPERS
+
+  def display_name
+    self.first_name + " " + self.last_name
+  end
 end

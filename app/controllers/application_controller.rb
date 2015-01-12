@@ -47,4 +47,10 @@ class ApplicationController < ActionController::Base
     return country_code
   end
 
+
+  def logged_in?
+    # cookies[:user_id] && cookies[:user_id].length > 0 && User.find(cookies[:user_id])
+    true
+  end
+  helper_method :logged_in?
 end

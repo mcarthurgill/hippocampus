@@ -13,18 +13,18 @@ class Item < ActiveRecord::Base
   has_many :sms
   has_many :emails
 
-
   # -- SCOPES
 
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :events_for_today, -> { where("reminder_date = ?", Date.today).includes(:user) } 
   scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
-
-
-  # -- VALIDATIONS
+  scope :by_date, -> { order("created_at DESC") }
+  
+  # -- CALLBACKS
 
   before_validation :strip_whitespace
+  before_save :check_status
 
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
@@ -33,6 +33,9 @@ class Item < ActiveRecord::Base
     self.input_method = self.input_method ? self.input_method.strip : nil
   end
 
+  def check_status
+    self.status = "outstanding" if self.bucket_id.nil?
+  end
 
   # -- SETTERS
 
@@ -82,4 +85,17 @@ class Item < ActiveRecord::Base
     end
   end
   
+  # -- HELPERS
+
+  def formatted_reminder_date
+    self.reminder_date.strftime("%B %e, %Y")
+  end
+
+  def created_at_central_time
+    self.created_at - 6.hours
+  end
+
+  def display_bucket_name
+    self.bucket ? self.bucket.display_name : "Not Assigned"
+  end
 end

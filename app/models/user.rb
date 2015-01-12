@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   has_many :buckets
   has_many :items
 
-
   # -- GETTERS
 
   def self.with_phone_number phone_number
@@ -67,6 +66,14 @@ class User < ActiveRecord::Base
 
   def format_phone (number, country_code)
     return User.format_phone(number, country_code)
+  end
+
+  def formatted_buckets_options
+    buckets = [["", nil]]
+    self.buckets.order("first_name ASC").each do |b|
+      buckets << [b.display_name, b.id]
+    end
+    return buckets
   end
 
   def self.format_phone(number, country_code)

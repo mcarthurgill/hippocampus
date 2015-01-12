@@ -1,10 +1,36 @@
 <p id="notice"><%= notice %></p>
+<% if @user.items.outstanding.count > 0 %>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <th class="gray-background">Pending</th>
+      <th class="gray-background"></th>
+      <th class="gray-background" style="text-align:right;">Reminder</th>
 
-<p>
-  <b>Phone:</b>
-  <%= @user.phone %>
-</p>
+      <% @user.items.by_date.outstanding.each do |i| %>
+        <tr>
+          <td><a href=<%= item_path(i) %>><%= i.message %></a></td>
+          <td><a href=<%= item_path(i) %>></a></td>
+          <td style="text-align:right;"><a href=<%= item_path(i) %>><%= i.formatted_reminder_date %></a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
 
+<% if @user.items.assigned.count > 0 %>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <th class="gray-background">Assigned</th>
+      <th class="gray-background"></th>
+      <th class="gray-background" style="text-align:right;">Reminder</th>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+      <% @user.items.by_date.assigned.each do |i| %>
+        <tr>
+          <td><a href=<%= item_path(i) %>><%= i.message %></a></td>
+          <td><a href=<%= item_path(i) %>></a></td>
+          <td style="text-align:right;"><a href=<%= item_path(i) %>><%= i.formatted_reminder_date %></a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>

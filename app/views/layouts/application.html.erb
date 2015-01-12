@@ -7,9 +7,24 @@
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body style="padding-top:70px;">
 
-<%= yield %>
+<% if logged_in? %>
+  <%= render "shared/logged_in_nav" %>
+<% else %>
+  <%= render "shared/logged_out_nav" %>
+<% end %>
+
+<% if @mobile %>
+  <div class="col-xs-12">
+<% else %>
+  <div class="container">
+<% end %>
+
+  <%= yield %>
+  
+</div>
+
 
 </body>
 </html>

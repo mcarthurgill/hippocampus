@@ -13,17 +13,16 @@
 
   <div class="field">
     <%= f.label :message %><br />
-    <%= f.text_field :message %>
+    <%= f.text_area :message, :cols => 40, :rows => 10 %>
   </div>
   <div class="field">
-    <%= f.label :person_id %><br />
-    <%= f.text_field :person_id %>
+    <%= f.select :bucket_id, options_for_select(@options_for_buckets, @item.bucket ? @item.bucket.id : nil), {}, :class => "form-control" %><br>
   </div>
   <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
+    <%= f.label "Set Reminder" %><br>
+    <%= f.date_select(:reminder_date, {:order => [:month, :day, :year], :include_blank => true }) %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit", :class => "btn btn-default" %>
   </div>
 <% end %>

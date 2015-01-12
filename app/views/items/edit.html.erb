@@ -2,5 +2,6 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @item %> |
-<%= link_to 'Back', items_path %>
+<%= link_to 'Back', @item, :class => "btn btn-link" %> | 
+<%= link_to "See All Notes", user_path(@item.user), :class => "btn btn-link" %>
+
