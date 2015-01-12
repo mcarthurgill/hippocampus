@@ -1,6 +1,11 @@
 class ApplicationController < ActionController::Base
   
   protect_from_forgery
+  before_filter :login_user
+
+  def login_user
+    @user = User.find(2)
+  end
   
   def format_phone(number, country_code)
     strip_whitespace!(number)
