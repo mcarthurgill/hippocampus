@@ -9,10 +9,12 @@ Hippocampus::Application.routes.draw do
   resources :emails, :only => [:create]
   
   resources :items, :only => [:create, :update, :destroy, :show]
+
+  get 'search', to: 'pages#search', as: 'search'
   
   resources :sms, :only => [:create]
 
-  resources :users, :only => [:create, :show, :destroy]
+  resources :users, :only => [:create, :show, :edit, :update, :destroy]
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets'
   
