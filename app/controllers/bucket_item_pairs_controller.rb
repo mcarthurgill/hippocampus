@@ -3,7 +3,7 @@ class BucketItemPairsController < ApplicationController
   # POST /bucket_item_pairs
   # POST /bucket_item_pairs.json
   def create
-    @bucket_item_pair = BucketItemPair.new(params[:bucket_item_pair])
+    @bucket_item_pair = BucketItemPair.with_or_create_with_params(params[:bucket_item_pair])
 
     respond_to do |format|
       if @bucket_item_pair.save

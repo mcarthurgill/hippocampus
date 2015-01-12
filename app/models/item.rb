@@ -7,8 +7,8 @@ class Item < ActiveRecord::Base
 
   belongs_to :user
   has_many :bucket_item_pairs
-  #has_many :buckets, :through => :bucket_item_pairs
-  belongs_to :bucket
+  has_many :buckets, :through => :bucket_item_pairs
+  # belongs_to :bucket
 
   has_many :sms
   has_many :emails
@@ -34,7 +34,7 @@ class Item < ActiveRecord::Base
   end
 
   def check_status
-    self.status = "outstanding" if self.bucket_id.nil?
+    self.status = "outstanding" if self.has_buckets?
   end
 
   # -- SETTERS
@@ -80,12 +80,16 @@ class Item < ActiveRecord::Base
   # -- ACTIONS
 
   def update_outstanding
-    if self.outstanding? && self.bucket_id
+    if self.outstanding? && self.has_buckets?
       self.update_attribute(:status, 'assigned')
     end
   end
   
   # -- HELPERS
+
+  def has_buckets?
+    return self.buckets.count > 0
+  end
 
   def formatted_reminder_date
     self.reminder_date ? self.reminder_date.strftime("%B %e, %Y") : nil
@@ -95,7 +99,8 @@ class Item < ActiveRecord::Base
     self.created_at - 6.hours
   end
 
-  def display_bucket_name
-    self.bucket ? self.bucket.display_name : "Not Assigned"
-  end
+  # def display_bucket_name
+  #   self.bucket ? self.bucket.display_name : "Not Assigned"
+  # end
+  
 end

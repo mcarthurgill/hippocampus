@@ -19,37 +19,22 @@
     </div>
   </div>
 
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <th class="gray-background">Pending</th>
-      <th class="gray-background"></th>
-      <th class="gray-background" style="text-align:right;">Reminder</th>
-
-      <% @user.items.by_date.outstanding.each do |i| %>
-        <tr>
-          <td><a href=<%= item_path(i) %>><%= i.message %></a></td>
-          <td><a href=<%= item_path(i) %>></a></td>
-          <td style="text-align:right;"><a href=<%= item_path(i) %>><%= i.formatted_reminder_date %></a></td>
-        </tr>
-      <% end %>
-    </table>
-  </div>
 <% end %>
 
-<% if @user.items.assigned.count > 0 %>
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <th class="gray-background">Assigned</th>
-      <th class="gray-background"></th>
-      <th class="gray-background" style="text-align:right;">Reminder</th>
 
-      <% @user.items.by_date.assigned.each do |i| %>
-        <tr>
-          <td><a href=<%= item_path(i) %>><%= i.message %></a></td>
-          <td><a href=<%= item_path(i) %>></a></td>
-          <td style="text-align:right;"><a href=<%= item_path(i) %>><%= i.formatted_reminder_date %></a></td>
-        </tr>
-      <% end %>
-    </table>
+<% if @user.items.assigned.count > 0 %>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="list-group">
+        <% @user.items.by_date.assigned.each do |i| %>
+          <a href=<%= item_path(i) %> class="list-group-item">
+            <h4 class="list-group-item-heading"></h4>
+            <p class="list-group-item-text"><%= i.message %></p>
+          </a>
+        <% end %>
+      </div>
+    </div>
   </div>
+
 <% end %>
