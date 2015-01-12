@@ -1,13 +1,22 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-xs-12">
+    <p id="notice"><%= notice %></p>
+  </div>
+</div>
+
 <% if @user.items.outstanding.count > 0 %>
 
-  <div class="list-group">
-    <% @user.items.by_date.outstanding.each do |i| %>
-      <a href="#" class="list-group-item">
-        <h4 class="list-group-item-heading"></h4>
-        <p class="list-group-item-text">i.message</p>
-      </a>
-    <% end %>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="list-group">
+        <% @user.items.by_date.outstanding.each do |i| %>
+          <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading"></h4>
+            <p class="list-group-item-text"><%= i.message %></p>
+          </a>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <div class="table-responsive">
