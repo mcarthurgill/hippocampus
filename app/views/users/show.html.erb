@@ -1,5 +1,15 @@
 <p id="notice"><%= notice %></p>
 <% if @user.items.outstanding.count > 0 %>
+
+  <div class="list-group">
+    <% @user.items.by_date.outstanding.each do |i| %>
+      <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading"></h4>
+        <p class="list-group-item-text">i.message</p>
+      </a>
+    <% end %>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-hover">
       <th class="gray-background">Pending</th>
