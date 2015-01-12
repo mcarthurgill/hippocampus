@@ -9,6 +9,7 @@ class ItemsController < ApplicationController
     end
   end
 
+
   # POST /items
   # POST /items.json
   def create
@@ -27,6 +28,7 @@ class ItemsController < ApplicationController
 
   end
 
+
   def new
     @item = Item.new
     @options_for_buckets = current_user.formatted_buckets_options
@@ -42,6 +44,18 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
 
     @options_for_buckets = current_user.formatted_buckets_options
+
+    respond_to do |format|
+      format.html
+      format.json { head :no_content }
+    end
+  end
+  
+
+  def assign
+    @item = Item.find(params[:id])
+
+    @options_for_buckets = @item.user.formatted_buckets_options
 
     respond_to do |format|
       format.html

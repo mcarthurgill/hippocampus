@@ -1,0 +1,7 @@
+<p>
+  <%= @item.message %>
+</p>
+
+<% if @item.reminder_date %>
+  <p>Reminder set for: <%= @item.formatted_reminder_date %></p>
+<% end %>
