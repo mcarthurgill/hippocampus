@@ -16,7 +16,7 @@
     <%= f.text_area :message, :cols => 40, :rows => 10 %>
   </div>
   <div class="field">
-    <%= f.select :bucket_id, options_for_select(@options_for_buckets, @item.bucket ? @item.bucket.id : nil), {}, :class => "form-control" %><br>
+    <%= '' #f.select :bucket_id, options_for_select(@options_for_buckets, @item.bucket ? @item.bucket.id : nil), {}, :class => "form-control" %><br>
   </div>
   <div class="field">
     <%= f.label "Set Reminder" %><br>

@@ -9,6 +9,7 @@ class ItemsController < ApplicationController
     end
   end
 
+
   # POST /items
   # POST /items.json
   def create
@@ -27,6 +28,7 @@ class ItemsController < ApplicationController
 
   end
 
+
   def new
     @item = Item.new
     ##UPDATE THIS ONCE WE ADD SESSIONS/COOKIES
@@ -40,6 +42,18 @@ class ItemsController < ApplicationController
 
 
   def edit
+    @item = Item.find(params[:id])
+
+    @options_for_buckets = @item.user.formatted_buckets_options
+
+    respond_to do |format|
+      format.html
+      format.json { head :no_content }
+    end
+  end
+  
+
+  def assign
     @item = Item.find(params[:id])
 
     @options_for_buckets = @item.user.formatted_buckets_options

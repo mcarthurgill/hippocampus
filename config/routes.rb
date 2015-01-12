@@ -8,6 +8,7 @@ Hippocampus::Application.routes.draw do
   resources :emails, :only => [:create]
   
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new]
+  get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
 
   get 'search', to: 'pages#search', as: 'search'
   

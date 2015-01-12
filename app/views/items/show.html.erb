@@ -1,15 +1,8 @@
 <div class="col-xs-12">
   <p id="notice"><%= notice %></p>
   
-  <p>
-    <%= @item.message %>
-  </p>
+  <%= render 'detail' %>
 
-  <% if @item.reminder_date %>
-    <p>Reminder set for: <%= @item.formatted_reminder_date %></p>
-  <% end %>
+  <%= render 'footer' %>
 
-  <%= link_to "Edit", edit_item_path(@item), :class => "btn btn-link" %> | 
-  <%= link_to "See All Notes", user_path(@item.user), :class => "btn btn-link" %>
-  
 </div>  
