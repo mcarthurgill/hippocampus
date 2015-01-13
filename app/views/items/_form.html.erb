@@ -16,7 +16,8 @@
     <%= f.text_area :message, :cols => 40, :rows => 10 %>
   </div>
   <div class="field">
-    
+    <%= f.label :item_type %><br />
+    <%= f.select :item_type, options_for_select(Item.item_types) %>
   </div>
   <div class="field">
     <%= f.label "Set Reminder" %><br>
