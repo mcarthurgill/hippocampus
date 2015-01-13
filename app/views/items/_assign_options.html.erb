@@ -4,7 +4,7 @@
     <div class="col-xs-12">
       <div class="list-group">
         <% @user.buckets.by_first_name.each do |b| %>
-          <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name}</h4>".html_safe, bucket_item_pairs_path(bucket_id: b.id, item_id: @item.id), {method: :post, class: 'list-group-item'} %>
+          <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name}</h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
         <% end %>
       </div>
     </div>
