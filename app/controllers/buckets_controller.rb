@@ -12,6 +12,19 @@ class BucketsController < ApplicationController
 
   end
 
+
+  def new
+    @bucket = Bucket.new
+
+    @item_id = (params.has_key?(:with_item) ? params[:with_item] : nil)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @bucket }
+    end
+  end
+
+
   # POST /buckets
   # POST /buckets.json
   def create
@@ -19,7 +32,15 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if @bucket.save
-        format.html { redirect_to @bucket, notice: 'Bucket was successfully created.' }
+        format.html do 
+          if params.has_key?(:with_item) && params[:with_item].to_i > 0
+            item = Item.find(params[:with_item])
+            item.add_to_bucket(@bucket)
+            redirect_to item, notice: 'Successfully added Note to Stack.' 
+          else
+            redirect_to @bucket, notice: 'Stack was successfully created.' 
+          end
+        end
         format.json { render json: @bucket, status: :created, location: @bucket }
       else
         format.html { render action: "new" }

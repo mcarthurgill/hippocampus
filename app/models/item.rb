@@ -84,6 +84,10 @@ class Item < ActiveRecord::Base
       self.update_attribute(:status, 'assigned')
     end
   end
+
+  def add_to_bucket b
+    BucketItemPair.with_or_create_with_bucket_id_and_item_id(b.id, self.id)
+  end
   
   # -- HELPERS
 
