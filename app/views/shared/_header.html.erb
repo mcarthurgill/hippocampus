@@ -1,9 +1,11 @@
-<div class="row">
-  <div class="col-xs-12">
-    <ul class="nav nav-tabs">
-      <li role="presentation" <%= defined?(@active) && @active == 'notes' ? 'class="active"' : nil %>><a href="<%= user_path(current_user) %>">Notes</a></li>
-      <li role="presentation" <%= defined?(@active) && @active == 'stacks' ? 'class="active"' : nil %>><a href="#">Stacks</a></li>
-      <li role="presentation" <%= defined?(@active) && @active == 'search' ? 'class="active"'.html_safe : nil %>><%= link_to 'Search', search_path %></li>
-    </ul>
+<% if logged_in? %>
+  <div class="row">
+    <div class="col-xs-12">
+      <ul class="nav nav-tabs">
+        <li role="presentation" <%= defined?(@active) && @active == 'notes' ? 'class="active"' : nil %>><a href="<%= user_path(current_user) %>">Notes</a></li>
+        <li role="presentation" <%= defined?(@active) && @active == 'stacks' ? 'class="active"' : nil %>><a href="#">Stacks</a></li>
+        <li role="presentation" <%= defined?(@active) && @active == 'search' ? 'class="active"'.html_safe : nil %>><%= link_to 'Search', search_path %></li>
+      </ul>
+    </div>
   </div>
-</div>
+<% end %>
