@@ -11,9 +11,11 @@ class BucketItemPair < ActiveRecord::Base
 
 
   def self.with_or_create_with_params params
-    bip = BucketItemPair.find_or_initialize_by_bucket_id_and_item_id(params[:bucket_id], params[:item_id])
-    bip.save!
-    return bip
+    return self.with_or_create_with_bucket_id_and_item_id(params[:bucket_id], params[:item_id])
+  end
+
+  def self.with_or_create_with_bucket_id_and_item_id bid, iid
+    return BucketItemPair.find_or_create_by_bucket_id_and_item_id(bid, iid)
   end
 
 end
