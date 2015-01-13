@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150112214801) do
+ActiveRecord::Schema.define(:version => 20150113181540) do
+
+  create_table "addons", :force => true do |t|
+    t.string   "addon_url"
+    t.string   "addon_name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "bucket_item_pairs", :force => true do |t|
     t.integer  "bucket_id"
@@ -117,6 +124,7 @@ ActiveRecord::Schema.define(:version => 20150112214801) do
     t.integer  "user_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "addon_id"
   end
 
   create_table "twilio_messengers", :force => true do |t|
