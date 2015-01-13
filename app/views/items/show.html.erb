@@ -5,16 +5,10 @@
       <p id="notice" class="btn-primary"><%= notice %></p>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <% @item.buckets.each do |b| %>
-        <%= link_to b.display_name, b, {role: 'button', class: 'btn btn-default'} %>
-      <% end %>
-    </div>
-  </div>
   
   <%= render 'detail' %>
+
+  <%= render 'buckets' %>
 
   <%= render 'footer' %>
 
