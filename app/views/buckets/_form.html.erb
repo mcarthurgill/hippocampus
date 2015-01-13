@@ -12,6 +12,10 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :bucket_type %><br />
+    <%= f.select :bucket_type, options_for_select(Bucket.bucket_types) %>
+  </div>
+  <div class="field">
     <%= f.label :first_name %><br />
     <%= f.text_field :first_name %>
   </div>

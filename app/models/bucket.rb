@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   attr_accessible :description, :first_name, :last_name, :user_id, :bucket_type
 
-  # possible bucket_type: "Other", "Person"
+  # possible bucket_type: "Other", "Person", "Event", "Place"
 
 
   # -- RELATIONSHIPS
@@ -37,4 +37,10 @@ class Bucket < ActiveRecord::Base
   def display_name
     return ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') )
   end
+
+  def self.bucket_types
+    return ["Other", "Person", "Event", "Place"]
+  end
+
+
 end
