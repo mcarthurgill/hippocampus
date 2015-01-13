@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  addon_url: MyString
+  addon_name: MyString
+
+two:
+  addon_url: MyString
+  addon_name: MyString

@@ -2,22 +2,30 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   include Formatting
+
+  # def authenticate_request
+  #   #authenticate requests from our addons
+  #   if logged_in?
+  #     @current_user = current_user
+  #   else
+  #     authenticate_or_request_with_http_basic do |username, password|
+  #       username == ENV["HTTP_USERNAME"] && password == ENV["HTTP_PASSWORD"]
+  #     end
+  #   end
+  # end
   
   def mobile?
     @mobile = request.user_agent =~ /Mobile/
   end
 
   def logged_in?
-    cookies[:user_id] && cookies[:user_id].length > 0 && User.find(cookies[:user_id])
+    current_user
   end
   helper_method :logged_in?
 
   def current_user
-    if logged_in?
-      @current_user = User.find(cookies[:user_id])
-      return @current_user
-    end
-    return nil
+    @current_user ||= User.find(cookies[:user_id]) if cookies[:user_id]
+    return @current_user
   end
   helper_method :current_user
 
