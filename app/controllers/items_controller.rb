@@ -54,6 +54,7 @@ class ItemsController < ApplicationController
 
   def assign
     @item = Item.find(params[:id])
+    @user = current_user
 
     @options_for_buckets = @item.user.formatted_buckets_options
 
