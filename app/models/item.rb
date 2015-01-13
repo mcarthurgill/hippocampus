@@ -34,7 +34,7 @@ class Item < ActiveRecord::Base
   end
 
   def check_status
-    self.status = "outstanding" if self.has_buckets?
+    self.status = "outstanding" if !self.has_buckets?
   end
 
   # -- SETTERS
