@@ -9,7 +9,7 @@ class Bucket < ActiveRecord::Base
 
   belongs_to :user
   has_many :bucket_item_pairs
-  has_many :items #, :through => :bucket_item_pairs
+  has_many :items, :through => :bucket_item_pairs
 
 
   # -- SCOPES

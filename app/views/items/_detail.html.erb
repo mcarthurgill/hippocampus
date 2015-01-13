@@ -1,7 +1,23 @@
-<p>
-  <%= @item.message %>
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <% @item.buckets.each do |b| %>
+      <%= link_to b.display_name, b, {role: 'button', class: 'btn btn-default'} %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <p class="lead">
+      <%= @item.message %>
+    </p>
+  </div>
+</div>
 
 <% if @item.reminder_date %>
-  <p>Reminder set for: <%= @item.formatted_reminder_date %></p>
+  <div class="row">
+    <div class="col-xs-12">
+      <p>Reminder set for: <%= @item.formatted_reminder_date %></p>
+    </div>
+  </div>
 <% end %>

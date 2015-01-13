@@ -1,3 +1,7 @@
-<%= link_to "Assign to Bucket(s)", assign_item_path(@item), :class => "btn btn-link" %> | 
-<%= link_to "Edit", edit_item_path(@item), :class => "btn btn-link" %> | 
-<%= link_to "See All Notes", user_path(@item.user), :class => "btn btn-link" %>
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to "Add to a Stack", assign_item_path(@item), :class => "btn btn-primary btn-lg btn-block" %>
+    <%= link_to "Edit", edit_item_path(@item), :class => "btn btn-default btn-lg btn-block" %>
+    <%= link_to "See All Notes", user_path(@item.user), :class => "btn btn-default btn-lg btn-block" %>
+  </div>
+</div>
