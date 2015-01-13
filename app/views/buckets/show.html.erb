@@ -1,25 +1,18 @@
+<div class="row">
+  <div class="col-xs-12">
+    <p class="lead"><%= @bucket.display_name %></p>
+  </div>
+</div>
 
-
-<p>
-  <b>First name:</b>
-  <%= @bucket.first_name %>
-</p>
-
-<p>
-  <b>Last name:</b>
-  <%= @bucket.last_name %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%= @bucket.description %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @bucket.user_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_bucket_path(@bucket) %> |
-<%= link_to 'Back', buckets_path %>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <% @bucket.items.by_date.each do |i| %>
+        <a href=<%= item_path(i) %> class="list-group-item">
+          <h4 class="list-group-item-heading"></h4>
+          <p class="list-group-item-text"><%= i.message %></p>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>

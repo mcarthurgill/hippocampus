@@ -2,14 +2,14 @@ class BucketsController < ApplicationController
 
   # GET /buckets/1
   # GET /buckets/1.json
-  def create
+  def show
     @bucket = Bucket.find(params[:id])
 
     respond_to do |format|
         format.html
         format.json { render json: @bucket }
     end
-    
+
   end
 
   # POST /buckets
