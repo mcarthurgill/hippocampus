@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= f.label "Set Reminder" %><br>
-    <%= f.date_select(:reminder_date, {:order => [:month, :day, :year], :include_blank => true }) %>
+    <%= f.date_select(:reminder_date, {:order => [:month, :day, :year], :include_blank => true, :start_year => Date.today.year, :end_year => Date.today.year+100 }, ) %>
   </div>
   <div class="actions">
     <%= f.submit "Submit", :class => "btn btn-default" %>
