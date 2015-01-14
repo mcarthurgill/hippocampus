@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
     t = Token.with_params(user_id: self.id)
     t.assign_token
     t.save
-    t.send_token(t.token_string)
+    t.text_login_token(t.token_string)
   end
 
   def correct_passcode? code

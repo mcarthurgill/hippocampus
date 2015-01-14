@@ -23,4 +23,6 @@ Hippocampus::Application.routes.draw do
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets'
   
+
+  get "addons/:id", :to => "addons#show", :as => "addon"  
 end
