@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
     <p class="lead" style="overflow:hidden;">
-      <%= @item.message %>
+      <%= auto_link(simple_format(@item.message)) %>
     </p>
   </div>
 </div>
