@@ -21,6 +21,6 @@ Hippocampus::Application.routes.draw do
 
   resources :users, :except => [:index, :new, :create]
   get 'users/:id/items', to: 'users#items'
-  get 'users/:id/buckets', to: 'users#buckets'
+  get 'users/:id/buckets', to: 'users#buckets', as: 'user_buckets'
   
 end
