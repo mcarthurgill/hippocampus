@@ -13,7 +13,7 @@
           <a href=<%= item_path(i) %> class="list-group-item">
             <div class="row">
               <div class="col-md-2">
-                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.created_at %></em></small></small></p>
+                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.friendly_time %></em></small></small></p>
               </div>
               <div class="col-md-10">
                 <h4 class="list-group-item-heading"></h4>
@@ -37,14 +37,14 @@
         <% @user.items.by_date.assigned.includes(:buckets).each do |i| %>
           <a href=<%= item_path(i) %> class="list-group-item">
             <div class="row">
-              <div class="col-md-2">
-                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.created_at %></em></small></small></p>
+              <div class="col-md-1">
+                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.friendly_time %></em></small></small></p>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-5">
                 <h4 class="list-group-item-heading"></h4>
                 <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 col-md-offset-2">
                 <h4 class="list-group-item-heading"></h4>
                 <p class="list-group-item-text" style="overflow:hidden;">
                   <small><small>

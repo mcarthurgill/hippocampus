@@ -8,7 +8,7 @@ class Bucket < ActiveRecord::Base
   # -- RELATIONSHIPS
 
   belongs_to :user
-  has_many :bucket_item_pairs
+  has_many :bucket_item_pairs, dependent: :destroy
   has_many :items, :through => :bucket_item_pairs
 
 
@@ -35,7 +35,7 @@ class Bucket < ActiveRecord::Base
   # -- HELPERS
 
   def display_name
-    return ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') )
+    return ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') ).strip
   end
 
   def self.bucket_types

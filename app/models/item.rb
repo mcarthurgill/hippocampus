@@ -7,7 +7,7 @@ class Item < ActiveRecord::Base
   # -- RELATIONSHIPS
 
   belongs_to :user
-  has_many :bucket_item_pairs
+  has_many :bucket_item_pairs, dependent: :destroy
   has_many :buckets, :through => :bucket_item_pairs
   # belongs_to :bucket
 
@@ -102,6 +102,16 @@ class Item < ActiveRecord::Base
 
   def formatted_reminder_date
     self.reminder_date.strftime("%B %e, %Y") if self.reminder_date
+  end
+
+  def friendly_time
+    if self.created_at > 7.days.ago
+      return self.created_at.strftime("%A")
+    elsif self.created_at > 11.months.ago
+      return self.created_at.strftime("%A, %B %-d")
+    else
+      return self.created_at.strftime("%B %-d, %Y")
+    end
   end
 
   def created_at_central_time

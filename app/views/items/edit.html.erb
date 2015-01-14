@@ -2,5 +2,7 @@
 
 <%= render 'form' %>
 
+<%= link_to 'Destroy', @item, method: :delete, data: { confirm: 'Are you sure?' } %>
+
 <%= render 'footer' %>
 
