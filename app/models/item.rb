@@ -1,5 +1,4 @@
 class Item < ActiveRecord::Base
-
   attr_accessible :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   # types: note, yearly, monthly, weekly, daily
@@ -19,7 +18,11 @@ class Item < ActiveRecord::Base
 
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
-  scope :events_for_today, -> { where("reminder_date = ?", Date.today).includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Date.today, "note").includes(:user) } 
+  scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
+  scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
+  scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
+  scope :yearly, -> { where("item_type = ?", "yearly").includes(:user) } 
   scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
   scope :by_date, -> { order("created_at DESC") }
   
@@ -109,8 +112,77 @@ class Item < ActiveRecord::Base
     return ['note', 'yearly', 'monthly', 'weekly', 'daily']
   end
 
-  # def display_bucket_name
-  #   self.bucket ? self.bucket.display_name : "Not Assigned"
-  # end
-  
+
+  # -- REMINDERS
+
+  def self.remind_about_events
+    self.remind_about_notes_for_today
+    self.remind_about_daily_items
+    self.remind_about_weekly_items
+    self.remind_about_monthly_items
+    self.remind_about_yearly_items
+  end
+
+  def self.remind_about_notes_for_today
+    items = Item.notes_for_today
+    items.each do |i|
+      message = "Your Hippocampus reminder for today:\n" + i.message
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
+  def self.remind_about_daily_items
+    items = Item.daily
+    items.each do |i|
+      message = "Your daily Hippocampus reminder:\n" + i.message
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
+  def self.remind_about_weekly_items
+    items = Item.get_weekly_items_for_today
+    items.each do |i|
+      message = "Your weekly Hippocampus reminder:\n" + i.message
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
+  def self.get_weekly_items_for_today
+    epoch = Date.parse("1/1/1970")
+    days_mod = (Date.today - epoch).to_i%7
+    items = []
+
+    Item.weekly.each do |i|
+      if (i.reminder_date - epoch).to_i%7 == days_mod
+        items << i
+      end
+    end
+    return items
+  end
+
+  def self.remind_about_monthly_items
+    date_as_string = Date.today.strftime("%d/%m/%Y")
+    items = Item.where("strftime('%d', reminder_date) = ?", Date.parse(date_as_string).strftime('%d')).monthly
+
+    items.each do |i|
+      message = "Your monthly Hippocampus reminder:\n" + i.message
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
+  def self.remind_about_yearly_items
+    date_as_string = Date.today.strftime("%d/%m/%Y")
+    items = Item.where("strftime('%d', reminder_date) = ? AND strftime('%m', reminder_date) = ?", Date.parse(date_as_string).strftime('%d'), Date.parse(date_as_string).strftime('%m')).yearly
+    
+    items.each do |i|
+      message = "Your yearly Hippocampus reminder:\n" + i.message
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
 end

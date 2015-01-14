@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def self.remind_about_events
-    items = Item.events_for_today
+    items = Item.notes_for_today
     items.each do |i|
       message = "Your Hippocampus reminder for today:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
@@ -65,10 +65,6 @@ class User < ActiveRecord::Base
 
   # -- HELPERS
 
-  # def format_phone (number, country_code)
-  #   return User.format_phone(number, country_code)
-  # end
-
   def formatted_buckets_options
     buckets = [["", nil]]
     self.buckets.order("first_name ASC").each do |b|
@@ -76,29 +72,6 @@ class User < ActiveRecord::Base
     end
     return buckets
   end
-
-  # def self.format_phone(number, country_code)
-  #   number.gsub!(/\s+/, "")
-  #   country_code.gsub!(/\s+/, "")
-  #   country_code.gsub!(/\D/, '')
-  #   if number && number.first == "+"
-  #     return number.gsub!(/\D/, '')
-  #   elsif country_code && country_code.length > 0
-  #     country_code.gsub!(/\D/, '')
-  #     if number.slice(0...country_code.length) == country_code
-  #       number.slice!(0...country_code.length)
-  #     end
-  #     number.sub!(/^0+/, "")
-  #     return number.prepend(country_code)
-  #   end
-  # end
-
-  # def self.prepare_country_code!(country_code)
-  #   strip_whitespace!(country_code)
-  #   strip_non_numeric!(country_code)
-  #   return country_code
-  # end
-
 
 
   # --- TOKEN
