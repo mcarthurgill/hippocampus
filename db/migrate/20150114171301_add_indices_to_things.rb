@@ -13,7 +13,7 @@ class AddIndicesToThings < ActiveRecord::Migration
     add_index :sms, :id
     add_index :sms, :item_id
 
-    add_index :user, :id
-    add_index :user, :phone
+    add_index :users, :id
+    add_index :users, :phone
   end
 end

@@ -101,6 +101,16 @@ class Item < ActiveRecord::Base
     self.reminder_date.strftime("%B %e, %Y") if self.reminder_date
   end
 
+  def friendly_time
+    if self.created_at > 7.days.ago
+      return self.created_at.strftime("%A")
+    elsif self.created_at > 11.months.ago
+      return self.created_at.strftime("%B %-d (%A)")
+    else
+      return self.created_at.strftime("%B %-d, %Y")
+    end
+  end
+
   def created_at_central_time
     self.created_at - 6.hours
   end
