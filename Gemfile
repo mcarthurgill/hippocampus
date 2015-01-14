@@ -33,7 +33,7 @@ gem 'delayed_job_active_record'
 gem "therubyracer"
 gem "less-rails"
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
-gem 'bootstrap-datepicker-rails'
+gem 'httparty'
 
 gem 'rails_autolink'
 
