@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   attr_accessible :description, :first_name, :last_name, :user_id, :bucket_type
 
-  # possible bucket_type: "Other", "Person"
+  # possible bucket_type: "Other", "Person", "Event", "Place"
 
 
   # -- RELATIONSHIPS
@@ -16,6 +16,8 @@ class Bucket < ActiveRecord::Base
 
   scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime).order('id ASC') }
   scope :by_first_name, -> { order("first_name ASC") }
+  scope :excluding_pairs_for_item_id, ->(iid) { where( (BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id).count > 0 ? '"buckets"."id" NOT IN (?)' : ''), BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id)) }
+  scope :recent_for_user_id, ->(uid) { where('"buckets"."id" IN (?)', BucketItemPair.where('"bucket_item_pairs"."bucket_id" IN (?)', User.find(uid).buckets.pluck(:id)).order('updated_at DESC').limit(8).pluck(:bucket_id)) }
 
 
   # -- VALIDATIONS
@@ -35,4 +37,10 @@ class Bucket < ActiveRecord::Base
   def display_name
     return ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') )
   end
+
+  def self.bucket_types
+    return ["Other", "Person", "Event", "Place"]
+  end
+
+
 end

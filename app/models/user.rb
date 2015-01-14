@@ -113,4 +113,5 @@ class User < ActiveRecord::Base
   def correct_passcode? code
     Token.match(code, self.id, nil).live.count > 0
   end
+  
 end

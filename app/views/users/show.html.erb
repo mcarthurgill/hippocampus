@@ -9,10 +9,17 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="list-group">
-        <% @user.items.by_date.outstanding.each do |i| %>
+        <% @user.items.by_date.outstanding.includes(:buckets).each do |i| %>
           <a href=<%= item_path(i) %> class="list-group-item">
-            <h4 class="list-group-item-heading"></h4>
-            <p class="list-group-item-text"><%= i.message %></p>
+            <div class="row">
+              <div class="col-md-2">
+                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.created_at %></em></small></small></p>
+              </div>
+              <div class="col-md-10">
+                <h4 class="list-group-item-heading"></h4>
+                <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
+              </div>
+            </div>
           </a>
         <% end %>
       </div>
@@ -27,10 +34,27 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="list-group">
-        <% @user.items.by_date.assigned.each do |i| %>
+        <% @user.items.by_date.assigned.includes(:buckets).each do |i| %>
           <a href=<%= item_path(i) %> class="list-group-item">
-            <h4 class="list-group-item-heading"></h4>
-            <p class="list-group-item-text"><%= i.message %></p>
+            <div class="row">
+              <div class="col-md-2">
+                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.created_at %></em></small></small></p>
+              </div>
+              <div class="col-md-6">
+                <h4 class="list-group-item-heading"></h4>
+                <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
+              </div>
+              <div class="col-md-4">
+                <h4 class="list-group-item-heading"></h4>
+                <p class="list-group-item-text" style="overflow:hidden;">
+                  <small><small>
+                    <% i.buckets.each_with_index do |b, n| %>
+                      <%= ((n+1 < i.buckets.count) ? "#{b.display_name}, " : b.display_name) %>
+                    <% end %>
+                  </small></small>
+                </p>
+              </div>
+            </div>
           </a>
         <% end %>
       </div>

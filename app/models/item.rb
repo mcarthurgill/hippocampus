@@ -2,6 +2,8 @@ class Item < ActiveRecord::Base
 
   attr_accessible :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
+  # types: note, yearly, monthly, weekly, daily
+
 
   # -- RELATIONSHIPS
 
@@ -84,6 +86,10 @@ class Item < ActiveRecord::Base
       self.update_attribute(:status, 'assigned')
     end
   end
+
+  def add_to_bucket b
+    BucketItemPair.with_or_create_with_bucket_id_and_item_id(b.id, self.id)
+  end
   
   # -- HELPERS
 
@@ -97,6 +103,10 @@ class Item < ActiveRecord::Base
 
   def created_at_central_time
     self.created_at - 6.hours
+  end
+
+  def self.item_types
+    return ['note', 'yearly', 'monthly', 'weekly', 'daily']
   end
 
   # def display_bucket_name
