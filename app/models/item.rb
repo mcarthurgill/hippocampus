@@ -149,15 +149,13 @@ class Item < ActiveRecord::Base
   end
 
   def self.determine_bucket_for_addon_and_user(addon_name, user, bid=nil)
-    if bid 
+    if bid && bid.length > 0
       b = Bucket.find(bid)
       if b && b.user == user
         return b
       end
     end
-    if addon_name == "daily_j"
-      return Bucket.create_for_addon_and_user(addon_name, user)  
-    end
+    return Bucket.create_for_addon_and_user(addon_name, user)  
   end
 
   # -- REMINDERS
