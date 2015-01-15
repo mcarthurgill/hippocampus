@@ -1,7 +1,10 @@
 class Sm < ActiveRecord::Base
 
-  attr_accessible :AccountSid, :ApiVersion, :Body, :From, :FromCity, :FromCountry, :FromState, :FromZip, :MessageSid, :NumMedia, :SmsMessageSid, :SmsSid, :SmsStatus, :To, :ToCity, :ToCountry, :ToState, :ToZip, :item_id
+  attr_accessible :AccountSid, :ApiVersion, :Body, :From, :FromCity, :FromCountry, :FromState, :FromZip, :MediaContentTypes, :MediaUrls, :MessageSid, :NumMedia, :SmsMessageSid, :SmsSid, :SmsStatus, :To, :ToCity, :ToCountry, :ToState, :ToZip, :item_id
 
+  serialize :MediaContentTypes, Array
+  serialize :MediaUrls, Array
+  
   belongs_to :item
 
 
@@ -12,6 +15,16 @@ class Sm < ActiveRecord::Base
     self.update_attribute(:item_id, i.id)
     self.delay(run_at: 1.5.seconds.from_now).concat_if_necessary
     return i
+  end
+
+  def add_media_if_present params
+    count = self.NumMedia.to_i
+    self.MediaContentTypes = []
+    self.MediaUrls = []
+    count.times do |i|
+      self.MediaContentTypes << params["MediaContentType#{i}"]
+      self.MediaUrls << params["MediaUrl#{i}"]
+    end
   end
 
   def concat_if_necessary

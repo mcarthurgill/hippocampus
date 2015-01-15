@@ -1,6 +1,8 @@
 class Email < ActiveRecord::Base
 
-  attr_accessible :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id
+  attr_accessible :Attachments, :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id
+
+  serialize :Attachments, Array
 
   belongs_to :item
 

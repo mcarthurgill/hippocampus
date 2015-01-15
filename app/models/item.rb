@@ -1,5 +1,8 @@
 class Item < ActiveRecord::Base
-  attr_accessible :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+
+  serialize :media_content_types, Array
+  serialize :media_urls, Array
 
   # types: note, yearly, monthly, weekly, daily
 
@@ -48,6 +51,8 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
+    i.media_urls = sms.MediaUrls
+    i.media_content_types = sms.MediaContentTypes
     i.item_type = 'note'
     i.status = 'outstanding'
     i.input_method = 'sms'
@@ -95,6 +100,10 @@ class Item < ActiveRecord::Base
   end
   
   # -- HELPERS
+
+  def has_media?
+    return (self.media_urls && self.media_urls.count > 0)
+  end
 
   def has_buckets?
     return self.buckets.count > 0

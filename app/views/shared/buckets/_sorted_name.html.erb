@@ -1,0 +1,17 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <% @user.buckets.by_first_name.each do |b| %>
+        <a href=<%= bucket_path(b) %> class="list-group-item">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="list-group-item-heading"></h4>
+              <p class="list-group-item-text" style="overflow:hidden;"><%= b.display_name %></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>

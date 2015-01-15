@@ -25,8 +25,10 @@ class UsersController < ApplicationController
   # GET /users/1/buckets.json
   def buckets
     @user = User.find(params[:id])
+    @sort = params[:s]
 
     respond_to do |format|
+      format.html
       format.json { render json: @user.buckets.above(params[:above]) }
     end
   end
