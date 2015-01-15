@@ -51,6 +51,8 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
+    i.media_urls = sms.MediaUrls
+    i.media_content_types = sms.MediaContentTypes
     i.item_type = 'note'
     i.status = 'outstanding'
     i.input_method = 'sms'
