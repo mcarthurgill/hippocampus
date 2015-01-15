@@ -1,0 +1,44 @@
+<a href=<%= item_path(i) %> class="list-group-item">
+  <div class="row">
+    
+    <div class="col-md-1">
+      <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.friendly_time %></em></small></small></p>
+    </div>
+    
+    <% if i.has_media? %>
+      <div class="col-md-4">
+        <% i.media_urls.each do |media_url| %>
+          <p>
+            <%= image_tag(media_url, class: "img-responsive") %>
+            <br/>
+          </p>
+        <% end %>
+      </div>
+      <div class="col-md-3">
+        <h4 class="list-group-item-heading"></h4>
+        <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
+      </div>
+    
+    <% else %>
+      <div class="col-md-5">
+        <h4 class="list-group-item-heading"></h4>
+        <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
+      </div>
+    
+    <% end %>
+
+    <% if include_buckets %>
+      <div class="col-md-4">
+        <h4 class="list-group-item-heading"></h4>
+        <p class="list-group-item-text" style="overflow:hidden;">
+          <small><small>
+            <% i.buckets.each_with_index do |b, n| %>
+              <%= ((n+1 < i.buckets.count) ? "#{b.display_name}, " : b.display_name) %>
+            <% end %>
+          </small></small>
+        </p>
+      </div>
+    <% end %>
+  
+  </div>
+</a>
