@@ -71,6 +71,23 @@ class Item < ActiveRecord::Base
     return i
   end
 
+  def self.create_from_api_endpoint(params)
+    i = Item.new
+    i.message = params[:message]
+    i.user = User.validated_with_id_addon_and_token(params[:user][:id], params[:addon], params[:user][:token]) 
+    i.item_type = 'note'
+    i.status = 'assigned'
+    b = Item.determine_bucket_for_addon_and_user(params[:addon], i.user, params[:user][:bucket_id])
+    i.add_to_bucket(b)
+    i.input_method = params[:addon]
+
+    if i.user && i.message && i.message.length > 0
+      i.save!
+      return i
+    end
+    return nil
+  end
+
   # -- DESTROY
 
   def delete
@@ -131,6 +148,16 @@ class Item < ActiveRecord::Base
     return ['note', 'yearly', 'monthly', 'weekly', 'daily']
   end
 
+  def self.determine_bucket_for_addon_and_user(addon_name, user, bid=nil)
+    if bid 
+      b = Bucket.find(bid)
+      if b && b.user == user
+        return b
+      end
+    if addon_name == "daily_j"
+      return Bucket.create_for_addon_and_user(addon_name, user)  
+    end
+  end
 
   # -- REMINDERS
 
