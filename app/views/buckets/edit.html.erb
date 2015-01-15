@@ -2,5 +2,6 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @bucket %> |
-<%= link_to 'Back', buckets_path %>
+<%= link_to 'Destroy', @item, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+<%= render 'footer' %>

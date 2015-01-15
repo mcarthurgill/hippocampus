@@ -25,6 +25,16 @@ class BucketsController < ApplicationController
   end
 
 
+  def edit
+    @bucket = Bucket.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.json { head :no_content }
+    end
+  end
+
+
   # POST /buckets
   # POST /buckets.json
   def create

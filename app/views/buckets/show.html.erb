@@ -9,18 +9,10 @@
   <div class="col-xs-12">
     <div class="list-group">
       <% @bucket.items.by_date.each do |i| %>
-        <a href=<%= item_path(i) %> class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
-              <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.friendly_time %></em></small></small></p>
-            </div>
-            <div class="col-md-6">
-              <h4 class="list-group-item-heading"></h4>
-              <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
-            </div>
-          </div>
-        </a>
+        <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
       <% end %>
     </div>
   </div>
 </div>
+
+<%= render 'footer' %>
