@@ -4,7 +4,7 @@ class AddonsController < ApplicationController
       Item.create_from_api_endpoint(params)  
       render :nothing => true, :status => 200
     else 
-      render :nothing => true, status => 401
+      render :nothing => true, :status => 401
     end
     
   end
