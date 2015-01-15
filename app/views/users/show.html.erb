@@ -4,6 +4,20 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <a href=<%= new_item_path %> class="list-group-item">
+        <div class="row">
+          <div class="col-md-1">
+            <p class="list-group-item-text" style="overflow:hidden;">+ New Note</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
 <% if @user.items.outstanding.count > 0 %>
 
   <div class="row">
