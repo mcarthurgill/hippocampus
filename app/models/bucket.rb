@@ -31,6 +31,14 @@ class Bucket < ActiveRecord::Base
     self.bucket_type = self.bucket_type ? self.bucket_type.strip : nil
   end
 
+  def self.create_for_addon_and_user(addon_name, user)  
+    bucket = Bucket.find_by_first_name_and_last_name_and_user_id_and_bucket_type("Daily J", "Journal", user.id, "Journal")
+    if addon_name == "daily_j" && !bucket
+      b = Bucket.create(:first_name => "Daily J", :last_name => "Journal", :user_id => user.id, :bucket_type => "Journal")
+      return b
+    end
+    return bucket
+  end
 
   # -- HELPERS
 
