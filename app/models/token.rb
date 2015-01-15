@@ -11,6 +11,7 @@ class Token < ActiveRecord::Base
   scope :live, ->{ where('created_at > ?', 5.minutes.ago) }
   scope :match, ->(token_string, user_id, addon_id) { where({:token_string => token_string, :user_id => user_id, :addon_id => addon_id}) }
   scope :for_user_and_addon, ->(user_id, addon_id) { where("user_id = ? AND addon_id = ?", user_id, addon_id) }
+  scope :for_addon, ->(addon_id) { where("addon_id = ? AND user_id IS NULL", addon_id) }
 
   # --- CREATION
   def self.with_params params
