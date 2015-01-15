@@ -162,6 +162,8 @@ class Item < ActiveRecord::Base
     return Bucket.create_for_addon_and_user(addon_name, user)  
   end
 
+  
+
   # -- REMINDERS
 
   def self.remind_about_events
