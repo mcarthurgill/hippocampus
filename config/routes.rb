@@ -24,5 +24,5 @@ Hippocampus::Application.routes.draw do
   get 'users/:id/buckets', to: 'users#buckets', as: 'user_buckets'
   
 
-  get "addons/:id", :to => "addons#show", :as => "addon"  
+  post "api_endpoint", :to => "addons#api_endpoint", :as => "api_endpoint"
 end

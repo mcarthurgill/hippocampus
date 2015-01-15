@@ -7,9 +7,12 @@
   # --- SCOPES
   scope :daily_j, -> { where("addon_name = ?", "daily_j") }
 
-  # --- REQUESTS
-  def self.send_request_for_user_and_addon_id(user, addon_id)
-    token = Token.for_user_and_addon(user.id, addon_id).first
-    token ? HTTParty.get("https://daily-j.herokuapp.com/users/#{user.id}", :query => {:id => user.id, :token => token.token_string} ) : nil
+  # --- CALLBACKS
+  after_create :create_api_token
+
+  def create_api_token
+    t = Token.with_params(:addon_id => self.id)
+    t.assign_token
+    t.save
   end
 end
