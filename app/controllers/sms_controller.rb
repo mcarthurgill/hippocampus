@@ -4,6 +4,7 @@ class SmsController < ApplicationController
   # POST /sms.json
   def create
     @sm = Sm.new(params)
+    @sm.add_media_if_present(params)
 
     respond_to do |format|
       if @sm.save
