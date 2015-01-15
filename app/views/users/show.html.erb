@@ -6,9 +6,10 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <%= link_to "+ New Note", new_note_path(@bucket), :class => "btn btn-primary btn-lg btn-block" %>
+    <%= link_to "+ New Note", new_item_path, :class => "btn btn-primary btn-md btn-block" %>
   </div>
 </div>
+<br/>
 
 <% if @user.items.outstanding.count > 0 %>
 
