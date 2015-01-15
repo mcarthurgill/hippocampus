@@ -75,13 +75,14 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.user = User.validated_with_id_addon_and_token(params[:user][:id], params[:addon], params[:user][:token]) 
     return nil if !i.user
-    
+
     i.message = params[:message]
+    i.input_method = params[:addon]
     i.item_type = 'note'
     i.status = 'assigned'
+    
     b = Item.determine_bucket_for_addon_and_user(params[:addon], i.user, params[:user][:bucket_id])
     i.bucket_id = b.id
-    i.input_method = params[:addon]
 
     if i.user && i.message && i.message.length > 0
       i.save!
