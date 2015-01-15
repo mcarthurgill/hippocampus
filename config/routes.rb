@@ -6,7 +6,7 @@ Hippocampus::Application.routes.draw do
   get 'logout', :to => "sessions#destroy", :as => "logout"
   match 'passcode', :to => "sessions#passcode", :as => "passcode"
 
-  resources :buckets, :only => [:show, :new, :create, :update, :destroy]
+  resources :buckets, :only => [:show, :new, :edit, :create, :update, :destroy]
   
   resources :bucket_item_pairs, :only => [:create, :destroy]
 
