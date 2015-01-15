@@ -73,8 +73,11 @@ class Item < ActiveRecord::Base
 
   def self.create_from_api_endpoint(params)
     i = Item.new
-    i.message = params[:message]
     i.user = User.validated_with_id_addon_and_token(params[:user][:id], params[:addon], params[:user][:token]) 
+    if !i.user
+      return nil
+    end
+    i.message = params[:message]
     i.item_type = 'note'
     i.status = 'assigned'
     b = Item.determine_bucket_for_addon_and_user(params[:addon], i.user, params[:user][:bucket_id])
@@ -148,7 +151,7 @@ class Item < ActiveRecord::Base
     return ['note', 'yearly', 'monthly', 'weekly', 'daily']
   end
 
-  def self.determine_bucket_for_addon_and_user(addon_name, user, bid=nil)
+  def self.determine_bucket_for_addon_and_user(addon_name, user, bid)
     if bid && bid.length > 0
       b = Bucket.find(bid)
       if b && b.user == user
