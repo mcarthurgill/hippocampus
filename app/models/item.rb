@@ -81,11 +81,11 @@ class Item < ActiveRecord::Base
     i.item_type = 'note'
     i.status = 'assigned'
     b = Item.determine_bucket_for_addon_and_user(params[:addon], i.user, params[:user][:bucket_id])
-    i.add_to_bucket(b)
     i.input_method = params[:addon]
 
     if i.user && i.message && i.message.length > 0
       i.save!
+      i.add_to_bucket(b)
       return i
     end
     return nil
