@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150113181540) do
+ActiveRecord::Schema.define(:version => 20150115154925) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -27,6 +27,10 @@ ActiveRecord::Schema.define(:version => 20150113181540) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "bucket_item_pairs", ["bucket_id"], :name => "index_bucket_item_pairs_on_bucket_id"
+  add_index "bucket_item_pairs", ["id"], :name => "index_bucket_item_pairs_on_id"
+  add_index "bucket_item_pairs", ["item_id"], :name => "index_bucket_item_pairs_on_item_id"
+
   create_table "buckets", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -36,6 +40,9 @@ ActiveRecord::Schema.define(:version => 20150113181540) do
     t.datetime "updated_at",  :null => false
     t.string   "bucket_type"
   end
+
+  add_index "buckets", ["id"], :name => "index_buckets_on_id"
+  add_index "buckets", ["user_id"], :name => "index_buckets_on_user_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -77,14 +84,19 @@ ActiveRecord::Schema.define(:version => 20150113181540) do
     t.text     "message"
     t.integer  "person_id"
     t.integer  "user_id"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.string   "item_type"
     t.date     "reminder_date"
-    t.string   "status",        :default => "outstanding"
+    t.string   "status",              :default => "outstanding"
     t.string   "input_method"
     t.integer  "bucket_id"
+    t.text     "media_urls"
+    t.text     "media_content_types"
   end
+
+  add_index "items", ["id"], :name => "index_items_on_id"
+  add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
@@ -105,10 +117,15 @@ ActiveRecord::Schema.define(:version => 20150113181540) do
     t.string   "AccountSid"
     t.string   "From"
     t.string   "ApiVersion"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.integer  "item_id"
+    t.text     "MediaContentTypes"
+    t.text     "MediaUrls"
   end
+
+  add_index "sms", ["id"], :name => "index_sms_on_id"
+  add_index "sms", ["item_id"], :name => "index_sms_on_item_id"
 
   create_table "tokens", :force => true do |t|
     t.string   "token_string"
@@ -133,5 +150,8 @@ ActiveRecord::Schema.define(:version => 20150113181540) do
     t.string   "country_code"
     t.string   "email"
   end
+
+  add_index "users", ["id"], :name => "index_users_on_id"
+  add_index "users", ["phone"], :name => "index_users_on_phone"
 
 end
