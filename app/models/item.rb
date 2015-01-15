@@ -101,6 +101,10 @@ class Item < ActiveRecord::Base
   
   # -- HELPERS
 
+  def has_media?
+    return (self.media_url && self.media_url.length > 0) || (self.media_urls && self.media_urls.count > 0)
+  end
+
   def has_buckets?
     return self.buckets.count > 0
   end
