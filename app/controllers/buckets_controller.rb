@@ -4,6 +4,7 @@ class BucketsController < ApplicationController
   # GET /buckets/1.json
   def show
     @bucket = Bucket.find(params[:id])
+    @active = 'stacks'
 
     respond_to do |format|
         format.html
@@ -15,6 +16,7 @@ class BucketsController < ApplicationController
 
   def new
     @bucket = Bucket.new
+    @active = 'stacks'
 
     @item_id = (params.has_key?(:with_item) ? params[:with_item] : nil)
 
@@ -27,6 +29,7 @@ class BucketsController < ApplicationController
 
   def edit
     @bucket = Bucket.find(params[:id])
+    @active = 'stacks'
 
     respond_to do |format|
       format.html
