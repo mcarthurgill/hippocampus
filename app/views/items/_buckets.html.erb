@@ -4,7 +4,7 @@
       <h6>Stacks:</h6>
       <p>
         <% @item.buckets.each do |b| %>
-          <%= link_to b.display_name, b, {role: 'button', class: 'btn btn-default', style: 'margin-bottom:4px;'} %>
+          <%= link_to "#{b.display_name} <span class='badge'>#{b.items_count}</span>".html_safe, b, {role: 'button', class: 'btn btn-default', style: 'margin-bottom:4px;'} %>
         <% end %>
       </p>
     </div>
