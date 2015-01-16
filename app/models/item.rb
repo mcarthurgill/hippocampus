@@ -157,11 +157,11 @@ class Item < ActiveRecord::Base
   def self.determine_bucket_for_addon_and_user(addon_name, user, bid)
     if bid && bid.length > 0
       b = Bucket.find(bid)
-      if b && b.user == user
+      if b && b.belongs_to_user?(user)
         return b
       end
     end
-    return Bucket.create_for_addon_and_user(addon_name, user)  
+    return Bucket.create_for_addon_and_user(addon_name, user)
   end
 
   

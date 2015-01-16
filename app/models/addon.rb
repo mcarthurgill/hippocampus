@@ -44,4 +44,10 @@
   def create_user_url
     self.addon_url + "/users.json"
   end
+
+  def params_to_create_bucket_for_user(user)
+    if self == Addon.daily_j.first
+      return {:first_name => "Daily J", :last_name => "Journal", :bucket_type => "Journal", :user_id => user.id}
+    end
+  end
 end

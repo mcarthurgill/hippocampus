@@ -48,9 +48,12 @@ class Bucket < ActiveRecord::Base
   end
 
   def self.create_for_addon_and_user(addon_name, user)  
-    bucket = Bucket.find_by_first_name_and_last_name_and_user_id_and_bucket_type("Daily J", "Journal", user.id, "Journal")
-    if addon_name == "daily_j" && !bucket
-      b = Bucket.create(:first_name => "Daily J", :last_name => "Journal", :user_id => user.id, :bucket_type => "Journal")
+    a = Addon.find_by_addon_name(addon_name)
+    attrs_hash = a.params_to_create_bucket_for_user(user)
+    bucket = Bucket.where(attrs_hash).first
+
+    if bucket.nil?
+      b = Bucket.create(attrs_hash)
       return b
     end
     return bucket
@@ -66,5 +69,7 @@ class Bucket < ActiveRecord::Base
     return ["Other", "Person", "Event", "Place"]
   end
 
-
+  def belongs_to_user?(u)
+    self.user == u
+  end
 end
