@@ -12,16 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :bucket_type %><br />
-    <%= f.select :bucket_type, options_for_select(Bucket.bucket_types) %>
+    <h6>Stack name:</h6>
+    <%= f.text_field :first_name, class: 'form-control' %>
+    <br/>
   </div>
+
   <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>
+    <h6>Stack type:</h6>
+    <%= f.select :bucket_type, options_for_select(Bucket.bucket_types), {}, class: 'form-control' %>
+    <br/>
+    <br/>
   </div>
 
   <%= f.hidden_field :user_id, :value => current_user.id %>
@@ -29,6 +29,13 @@
     <%= hidden_field_tag :with_item, @item_id %>
   <% end %>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Save", :class => "btn btn-primary btn-md btn-block" %>
   </div>
+
+  <% if @bucket.id %>
+    <p></p>
+    <%= link_to 'Delete Stack', @bucket, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-md btn-block' %>
+    <br/>
+  <% end %>
+
 <% end %>

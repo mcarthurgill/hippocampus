@@ -31,5 +31,11 @@
     <br/>
     <%= f.submit "Save", :class => "btn btn-primary btn-md btn-block" %>
   </div>
+
+  <% if @item.id %>
+    <p></p>
+    <%= link_to 'Delete Note', @item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-md btn-block' %>
+  <% end %>
+
   <br/>
 <% end %>
