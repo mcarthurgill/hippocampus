@@ -1,15 +1,19 @@
-<div class="row">
-  <div class="lead col-xs-12">
-    <p style="overflow:hidden;">
-      <%= auto_link(simple_format(@item.message)) %>
-    </p>
+<% if @item.message && @item.message.length > 0 %>
+  <div class="row">
+    <div class="lead col-xs-12" style="overflow:hidden;">
+      <h6>Text:</h6>
+      <%= auto_link(simple_format(@item.message, {}, sanitize: false)) %>
+    </div>
   </div>
-</div>
+  <br/>
+<% end %>
 
 <% if @item.reminder_date %>
   <div class="row">
     <div class="col-xs-12">
-      <p>Reminder set for: <%= @item.formatted_reminder_date %></p>
+      <h6>Reminder:</h6>
+      <p class="lead"><%= @item.formatted_reminder_date %></p>
     </div>
   </div>
+  <br/>
 <% end %>
