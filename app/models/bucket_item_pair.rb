@@ -17,6 +17,7 @@ class BucketItemPair < ActiveRecord::Base
   def self.with_or_create_with_bucket_id_and_item_id bid, iid
     bip = BucketItemPair.find_or_create_by_bucket_id_and_item_id(bid, iid)
     bip.item.update_outstanding
+    bip.bucket.increment_count
     return bip
   end
 

@@ -1,6 +1,6 @@
 class Bucket < ActiveRecord::Base
 
-  attr_accessible :description, :first_name, :last_name, :user_id, :bucket_type
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -28,6 +28,15 @@ class Bucket < ActiveRecord::Base
   # -- VALIDATIONS
 
   before_validation :strip_whitespace
+
+  def before_save
+    self.items_count = self.items.count
+  end
+
+  def increment_count
+    self.items_count = self.items.count
+    self.save!
+  end
 
   def strip_whitespace
     self.description = self.description ? self.description.strip : nil
