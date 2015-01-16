@@ -111,7 +111,7 @@ class Item < ActiveRecord::Base
   # -- ACTIONS
 
   def update_outstanding
-    if self.outstanding? && self.has_buckets?
+    if self.has_buckets?
       self.update_attribute(:status, 'assigned')
     else
       self.update_attribute(:status, 'outstanding')
