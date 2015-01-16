@@ -8,12 +8,14 @@
     </div>
   </div>
 
+  <%= render 'shared/buckets/frontend_search' %>
+
   <div class="row">
     <div class="col-xs-12">
       <div class="list-group">
         <li class="list-group-item list-group-item-info">Recent</li>
         <% @user.buckets.recent_for_user_id(@user.id).excluding_pairs_for_item_id(@item.id).by_first_name.each do |b| %>
-          <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+          <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
         <% end %>
       </div>
     </div>
@@ -25,7 +27,7 @@
         <div class="list-group">
           <li class="list-group-item list-group-item-info">Alphabetical</li>
           <% @user.buckets.excluding_pairs_for_item_id(@item.id).by_first_name.each do |b| %>
-            <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+            <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
           <% end %>
         </div>
       </div>
@@ -39,7 +41,7 @@
           <div class="list-group">
             <li class="list-group-item list-group-item-info">Other</li>
             <% @user.buckets.excluding_pairs_for_item_id(@item.id).other_type.by_first_name.each do |b| %>
-              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
             <% end %>
           </div>
         <% end %>
@@ -56,8 +58,8 @@
         <% if @user.buckets.excluding_pairs_for_item_id(@item.id).event_type.count > 0 %>
           <div class="list-group">
             <li class="list-group-item list-group-item-info">Event</li>
-            <% @user.buckets.excluding_pairs_for_item_id(@item.id).event_type.by_first_name.each do |b| %>
-              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+            <% @user.buckets.excluding_pairs_for_item_id(@item.id).event_type.order('id DESC').each do |b| %>
+              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
             <% end %>
           </div>
         <% end %>
@@ -66,7 +68,7 @@
           <div class="list-group">
             <li class="list-group-item list-group-item-info">Place</li>
             <% @user.buckets.excluding_pairs_for_item_id(@item.id).place_type.by_first_name.each do |b| %>
-              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
             <% end %>
           </div>
         <% end %>
@@ -80,7 +82,7 @@
         <div class="list-group">
           <li class="list-group-item list-group-item-info">Recent first</li>
           <% @user.buckets.excluding_pairs_for_item_id(@item.id).recent_first.each do |b| %>
-            <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+            <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
           <% end %>
         </div>
       </div>
