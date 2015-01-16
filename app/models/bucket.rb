@@ -31,8 +31,8 @@ class Bucket < ActiveRecord::Base
 
   def before_save
     self.items_count = self.items.count
-    self.first_name = (self.first_name && self.first_name.length > 0) ? self.first_name.strip
-    self.last_name = (self.last_name && self.last_name.length > 0) ? self.last_name.strip
+    self.first_name = (self.first_name && self.first_name.length > 0) ? self.first_name.strip : self.first_name
+    self.last_name = (self.last_name && self.last_name.length > 0) ? self.last_name.strip : self.last_name
   end
 
   def increment_count
