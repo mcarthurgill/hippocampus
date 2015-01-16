@@ -12,18 +12,24 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :message %><br />
-    <%= f.text_area :message, :cols => 40, :rows => 10 %>
+    <%= f.text_area :message, :rows => 4, class: 'form-control' %>
   </div>
+  
   <div class="field">
-    <%= f.label :item_type %><br />
-    <%= f.select :item_type, options_for_select(Item.item_types) %>
+    <h6>Note type:</h6>
+    <%= f.select :item_type, options_for_select(Item.item_types), {}, class: 'form-control' %>
   </div>
+  
   <div class="field">
-    <%= f.label "Set Reminder" %><br>
+    <h6>Reminder date:</h6>
     <%= f.date_select(:reminder_date, {:order => [:month, :day, :year], :include_blank => true, :start_year => Date.today.year, :end_year => Date.today.year+100 }, ) %>
   </div>
+  
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+
   <div class="actions">
-    <%= f.submit "Submit", :class => "btn btn-default" %>
+    <br/>
+    <%= f.submit "Save", :class => "btn btn-primary btn-md btn-block" %>
   </div>
+  <br/>
 <% end %>

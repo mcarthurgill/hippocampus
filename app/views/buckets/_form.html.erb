@@ -23,10 +23,6 @@
     <%= f.label :last_name %><br />
     <%= f.text_field :last_name %>
   </div>
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
-  </div>
 
   <%= f.hidden_field :user_id, :value => current_user.id %>
   <% if @item_id %>

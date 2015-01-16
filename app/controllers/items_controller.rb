@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find(params[:id])
+    @active = 'notes'
 
     respond_to do |format|
       format.html
@@ -31,6 +32,7 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
+    @active = 'notes'
     @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
@@ -42,6 +44,7 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
+    @active = 'notes'
 
     @options_for_buckets = current_user.formatted_buckets_options
 
@@ -54,7 +57,10 @@ class ItemsController < ApplicationController
 
   def assign
     @item = Item.find(params[:id])
+    @active = 'notes'
     @user = current_user
+    # @sort_by = params.has_key?(:sort_by) ? params[:sort_by] : 'alphabetical'
+    @sort_by = 'type'
 
     @options_for_buckets = @item.user.formatted_buckets_options
 

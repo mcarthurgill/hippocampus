@@ -7,29 +7,27 @@
     
     <% if i.has_media? %>
       <div class="col-md-4">
+        <h4 class="list-group-item-heading"></h4>
         <% i.media_urls.each do |media_url| %>
           <p>
-            <%= image_tag(media_url, class: "img-responsive") %>
-            <br/>
+            <%= image_tag(media_url, class: "img-responsive img-thumbnail") %>
           </p>
         <% end %>
       </div>
       <div class="col-md-3">
-        <h4 class="list-group-item-heading"></h4>
-        <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
+        <p class="list-group-item-text lead" style="overflow:hidden;"><%= i.message %></p>
       </div>
     
     <% else %>
       <div class="col-md-5">
         <h4 class="list-group-item-heading"></h4>
-        <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
+        <p class="list-group-item-text lead" style="overflow:hidden;"><%= i.message %></p>
       </div>
     
     <% end %>
 
     <% if include_buckets %>
       <div class="col-md-4">
-        <h4 class="list-group-item-heading"></h4>
         <p class="list-group-item-text" style="overflow:hidden;">
           <small><small>
             <% i.buckets.each_with_index do |b, n| %>

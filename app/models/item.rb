@@ -111,8 +111,10 @@ class Item < ActiveRecord::Base
   # -- ACTIONS
 
   def update_outstanding
-    if self.outstanding? && self.has_buckets?
+    if self.has_buckets?
       self.update_attribute(:status, 'assigned')
+    else
+      self.update_attribute(:status, 'outstanding')
     end
   end
 
@@ -161,6 +163,8 @@ class Item < ActiveRecord::Base
     end
     return Bucket.create_for_addon_and_user(addon_name, user)  
   end
+
+  
 
   # -- REMINDERS
 

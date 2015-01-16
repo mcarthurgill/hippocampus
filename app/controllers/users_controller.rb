@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
+    @active = 'notes'
 
     respond_to do |format|
       format.html
@@ -15,6 +16,7 @@ class UsersController < ApplicationController
   # GET /users/1/items.json
   def items
     @user = User.find(params[:id])
+    @active = 'notes'
 
     respond_to do |format|
       format.json { render json: @user.items.above(params[:above]) }
@@ -25,6 +27,7 @@ class UsersController < ApplicationController
   # GET /users/1/buckets.json
   def buckets
     @user = User.find(params[:id])
+    @active = 'stacks'
     @sort = params[:s]
 
     respond_to do |format|
