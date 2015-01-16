@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150115154925) do
+ActiveRecord::Schema.define(:version => 20150116183504) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -36,9 +36,10 @@ ActiveRecord::Schema.define(:version => 20150115154925) do
     t.string   "last_name"
     t.text     "description"
     t.integer  "user_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "bucket_type"
+    t.integer  "items_count", :default => 0
   end
 
   add_index "buckets", ["id"], :name => "index_buckets_on_id"
@@ -78,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20150115154925) do
     t.datetime "updated_at",        :null => false
     t.integer  "item_id"
     t.string   "email"
+    t.text     "Attachments"
   end
 
   create_table "items", :force => true do |t|
