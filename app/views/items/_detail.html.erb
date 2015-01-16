@@ -9,7 +9,7 @@
 
 <% if @item.has_media? %>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-md-6">
       <h6>Media:</h6>
       <% @item.media_urls.each do |media_url| %>
         <p><%= link_to image_tag(media_url, class: "img-responsive img-rounded"), media_url %></p>
