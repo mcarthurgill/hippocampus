@@ -39,14 +39,7 @@ class UsersController < ApplicationController
   # # POST /users
   # # POST /users.json
   # def create
-  #   @user = User.with_or_initialize_with_phone_number(params[:user][:phone])
-
-  #   respond_to do |format|
-  #     if @user.save
-  #       redirect_to passcode_path(:phone => @user.phone), :notice => "One more step!"
-  #       return
-  #     end
-  #   end
+    #login/signup runs through sessions controller
   # end
 
   # DELETE /users/1
@@ -60,4 +53,27 @@ class UsersController < ApplicationController
     end
   end
 
+  def add_to_addon
+    user = User.find(params[:id])
+    addon = Addon.find(params[:addon_id])
+    respond_to do |format|
+      if u.add_to_addon(addon)
+        format.html { redirect_to user_path(user), :notice => "Great Success!" }
+      else
+        format.html { redirect_to user_path(user), :notice => "Whoops. Try that again!" }
+      end
+    end
+  end
+
+  def remove_from_addon
+    user = User.find(params[:id])
+    addon = Addon.find(params[:addon_id])
+    respond_to do |format|
+      if u.remove_from_addon(addon)
+        format.html { redirect_to user_path(user), :notice => "Great Success!" }
+      else
+        format.html { redirect_to user_path(user), :notice => "Whoops. Try that again!" }
+      end
+    end
+  end
 end
