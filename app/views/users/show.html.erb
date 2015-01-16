@@ -39,17 +39,11 @@
 
 <% end %>
 
-
-<% if @user.items.assigned.count > 0 %>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="list-group">
-        <% @user.items.by_date.assigned.includes(:buckets).each do |i| %>
-          <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
-        <% end %>
-      </div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group" id="items-container">
+      <%= render 'items' %>
     </div>
+    <%= link_to '+ Load More', '#' %>
   </div>
-
-<% end %>
+</div>

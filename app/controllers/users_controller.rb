@@ -6,6 +6,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @active = 'notes'
 
+    @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
+
     respond_to do |format|
       format.html
       format.json { render json: @user }
