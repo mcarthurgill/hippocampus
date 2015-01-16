@@ -84,8 +84,12 @@ class BucketsController < ApplicationController
     @bucket = Bucket.find(params[:id])
     @bucket.destroy
 
+    @bucket.items.each do |i|
+      i.update_outstanding
+    end
+
     respond_to do |format|
-      format.html { redirect_to buckets_url }
+      format.html { redirect_to current_user }
       format.json { head :no_content }
     end
   end

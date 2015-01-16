@@ -113,6 +113,8 @@ class Item < ActiveRecord::Base
   def update_outstanding
     if self.outstanding? && self.has_buckets?
       self.update_attribute(:status, 'assigned')
+    else
+      self.update_attribute(:status, 'outstanding')
     end
   end
 
