@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
     <h6>Actions:</h6>
-    <%= link_to "Add to a Stack", assign_item_path(@item), :class => "btn btn-default btn-md btn-block" %>
+    <%= link_to "Add to Stack", assign_item_path(@item), :class => "btn btn-default btn-md btn-block" %>
     <%= link_to "Edit", edit_item_path(@item), :class => "btn btn-default btn-md btn-block" %>
-    <%= link_to "See All Notes", user_path(@item.user), :class => "btn btn-default btn-md btn-block" %>
+    <%= link_to "All Notes", user_path(@item.user), :class => "btn btn-default btn-md btn-block" %>
   </div>
   <br/>
   <br/>
