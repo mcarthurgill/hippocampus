@@ -32,7 +32,7 @@
 
     <div class="list-group">
       <li class="list-group-item list-group-item-info">Event</li>
-      <% @user.buckets.event_type.by_first_name.each do |b| %>
+      <% @user.buckets.event_type.order('id DESC').each do |b| %>
         <a href=<%= bucket_path(b) %> class="list-group-item">
           <div class="row">
             <div class="col-md-12">
