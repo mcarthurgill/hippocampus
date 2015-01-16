@@ -59,6 +59,7 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     @active = 'notes'
     @user = current_user
+    @sort_by = params[:sort_by]
 
     @options_for_buckets = @item.user.formatted_buckets_options
 
