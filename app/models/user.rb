@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
   end
 
 
-  # --- TOKEN
+  # --- TOKEN/ADDON
 
   def update_and_send_passcode
     t = Token.with_params(user_id: self.id)
@@ -84,18 +84,33 @@ class User < ActiveRecord::Base
   end
 
   def correct_passcode? code
-    Token.match(code, self.id, nil).live.count > 0
+    Token.match(code, self.id, nil).recent.live.count > 0
   end
   
   def self.validated_with_id_addon_and_token(user_id, addon, token_string)
     u = User.find(user_id)
     a = Addon.find_by_addon_name(addon)
     if u && a
-      t = Token.for_user_and_addon(u.id, a.id).first
+      t = Token.for_user_and_addon(u.id, a.id).live.first
       if t && t.token_string == token_string  
         return u
       end
     end
     return nil
+  end
+
+  def add_to_addon(addon)
+    t = Token.find_or_initialize_by_user_id_and_addon_id(self.id, addon.id)
+    if t.new_record?
+      t.assign_token 
+      t.save
+      Addon.delay.create_user_for_addon(self, addon)
+    end
+    return t
+  end
+
+  def remove_from_addon(addon)
+    t = Token.for_user_and_addon(self.id, addon.id).live
+    t.update_status("deleted")
   end
 end

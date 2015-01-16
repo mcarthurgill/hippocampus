@@ -1,14 +1,15 @@
 class Token < ActiveRecord::Base
 
   # --- ATTRIBUTES
-  attr_accessible :token_string, :user_id, :addon_id
+  attr_accessible :token_string, :user_id, :addon_id, :status
 
   # --- ASSOCIATIONS
   belongs_to :user
   belongs_to :addon
 
   # --- SCOPES
-  scope :live, ->{ where('created_at > ?', 5.minutes.ago) }
+  scope :recent, ->{ where('created_at > ?', 5.minutes.ago) }
+  scope :live, ->{ where('status = ?', "live") }
   scope :match, ->(token_string, user_id, addon_id) { where({:token_string => token_string, :user_id => user_id, :addon_id => addon_id}) }
   scope :for_user_and_addon, ->(user_id, addon_id) { where("user_id = ? AND addon_id = ?", user_id, addon_id) }
   scope :for_addon, ->(addon_id) { where("addon_id = ? AND user_id IS NULL", addon_id) }
@@ -35,4 +36,8 @@ class Token < ActiveRecord::Base
     msg.send
   end
 
+  def update_status(new_status)
+    self.status = new_status 
+    self.save
+  end
 end

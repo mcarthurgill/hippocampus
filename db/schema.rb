@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150116183504) do
+ActiveRecord::Schema.define(:version => 20150116194145) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -100,6 +100,15 @@ ActiveRecord::Schema.define(:version => 20150116183504) do
   add_index "items", ["id"], :name => "index_items_on_id"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
+  create_table "people", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "location"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
+
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
     t.string   "ToState"
@@ -132,9 +141,10 @@ ActiveRecord::Schema.define(:version => 20150116183504) do
   create_table "tokens", :force => true do |t|
     t.string   "token_string"
     t.integer  "user_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.integer  "addon_id"
+    t.string   "status",       :default => "live"
   end
 
   create_table "twilio_messengers", :force => true do |t|
