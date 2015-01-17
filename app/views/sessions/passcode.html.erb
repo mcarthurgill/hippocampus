@@ -8,7 +8,7 @@
   <div class="col-xs-12">
     <br/>
     <br/>
-    <p class="lead">We just texted a passcode to <%= @user.phone %>. Enter it below.</p>
+    <p class="lead">We just texted a passcode to <%= number_to_phone(@user.phone_without_country_code) %>. Enter it below.</p>
     <br/>
   </div>
 </div>

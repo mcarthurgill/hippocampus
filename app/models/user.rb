@@ -73,6 +73,10 @@ class User < ActiveRecord::Base
     return buckets
   end
 
+  def phone_without_country_code
+    return self.phone && self.phone.length > 0 ? self.phone[1..-1] : ''
+  end
+
 
   # --- TOKEN/ADDON
 
