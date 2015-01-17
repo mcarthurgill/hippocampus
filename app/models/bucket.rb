@@ -29,6 +29,8 @@ class Bucket < ActiveRecord::Base
 
   before_validation :strip_whitespace
 
+  after_save :index
+
   def before_save
     self.items_count = self.items.count
     self.first_name = (self.first_name && self.first_name.length > 0) ? self.first_name.strip : self.first_name
