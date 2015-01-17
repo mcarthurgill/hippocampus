@@ -8,9 +8,12 @@ class UsersController < ApplicationController
 
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
+    puts 'HERE'
+
     respond_to do |format|
       format.html
       format.json { render json: @user }
+      format.js
     end
   end
 

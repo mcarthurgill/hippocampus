@@ -44,6 +44,8 @@
     <div class="list-group" id="items-container">
       <%= render 'items' %>
     </div>
-    <%= link_to '+ Load More', '#' %>
+    <% if true %>
+      <%= link_to '+ Load More', current_user, remote: true, :class => "btn btn-primary btn-md btn-block" %>
+    <% end %>
   </div>
 </div>

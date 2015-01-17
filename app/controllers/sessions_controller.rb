@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+
   def new
     redirect_logged_in_user
   end
@@ -22,4 +23,5 @@ class SessionsController < ApplicationController
     cookies.delete :user_id
     redirect_to root_path, :notice => "Successfully signed out!"
   end
+
 end

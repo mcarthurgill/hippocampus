@@ -4,9 +4,20 @@
   </div>
 </div>
 
-<h3>We've texted a passcode to <%= @user.phone %></h3>
+<div class="row">
+  <div class="col-xs-12">
+    <br/>
+    <br/>
+    <p class="lead">We just texted a passcode to <%= @user.phone %>. Enter it below.</p>
+    <br/>
+  </div>
+</div>
 
-<%= form_tag create_session_path(@user.phone) do %>
-  <%= text_field_tag :passcode, "", :placeholder => "Enter passcode here", :class => "form-controls" %>
-  <%= submit_tag "Submit", :class => "btn btn-default" %>
-<% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_tag create_session_path(@user.phone) do %>
+      <%= number_field_tag :passcode, "", :placeholder => "Enter passcode here", :class => "form-control", :style => "margin-bottom:5px;" %>
+      <%= submit_tag "Verify", :class => "btn btn-primary btn-md btn-block" %>
+    <% end %>
+  </div>
+</div>
