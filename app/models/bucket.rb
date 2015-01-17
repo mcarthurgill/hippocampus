@@ -29,7 +29,7 @@ class Bucket < ActiveRecord::Base
 
   before_validation :strip_whitespace
 
-  after_save :index
+  after_save :index_delayed
 
   def before_save
     self.items_count = self.items.count
@@ -78,6 +78,10 @@ class Bucket < ActiveRecord::Base
 
 
   #  swiftype
+
+  def index_delayed
+    self.delay.index
+  end
 
   def index
     client = Swiftype::Client.new

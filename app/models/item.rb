@@ -34,7 +34,7 @@ class Item < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :check_status
 
-  after_save :index
+  after_save :index_delayed
 
 
   def strip_whitespace
@@ -252,6 +252,10 @@ class Item < ActiveRecord::Base
 
 
   #  swiftype
+
+  def index_delayed
+    self.delay.index
+  end
 
   def index
     client = Swiftype::Client.new
