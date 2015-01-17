@@ -100,15 +100,6 @@ ActiveRecord::Schema.define(:version => 20150116194145) do
   add_index "items", ["id"], :name => "index_items_on_id"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
-  create_table "people", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "location"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "user_id"
-  end
-
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
     t.string   "ToState"

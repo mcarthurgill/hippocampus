@@ -12,6 +12,8 @@ Hippocampus::Application.routes.draw do
   resources :bucket_item_pairs, :only => [:create, :destroy]
 
   resources :emails, :only => [:create]
+
+  get 'info', to: 'pages#info', as: 'info'
   
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
