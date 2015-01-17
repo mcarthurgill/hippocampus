@@ -25,6 +25,7 @@ class BucketItemPair < ActiveRecord::Base
 
   def handle_counts
     self.bucket.increment_count if self.bucket
+    self.item.index if self.item
   end
 
 end
