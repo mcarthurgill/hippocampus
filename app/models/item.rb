@@ -34,6 +34,9 @@ class Item < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :check_status
 
+  after_save :index
+
+
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
     self.item_type = self.item_type ? self.item_type.strip : nil
@@ -126,6 +129,14 @@ class Item < ActiveRecord::Base
 
   def has_media?
     return (self.media_urls && self.media_urls.count > 0)
+  end
+
+  def buckets_string
+    s = ''
+    self.buckets.each do |b|
+      s = "#{s} #{b.display_name}"
+    end
+    return s
   end
 
   def has_buckets?
@@ -236,6 +247,29 @@ class Item < ActiveRecord::Base
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
+  end
+
+
+
+  #  swiftype
+
+  def index
+    client = Swiftype::Client.new
+
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'items'
+
+    # create Documents within the DocumentType
+    client.create_or_update_documents(engine_slug, document_slug, [
+      {:external_id => self.id, :fields => [
+        {:name => 'message', :value => self.message, :type => 'string'},
+        {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+        {:name => 'item_type', :value => self.item_type, :type => 'string'},
+        {:name => 'buckets_string', :value => self.buckets_string, :type => 'string'},
+        {:name => 'item_id', :value => self.id, :type => 'integer'},
+      ]}
+    ])
   end
 
 end

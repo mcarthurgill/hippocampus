@@ -72,4 +72,29 @@ class Bucket < ActiveRecord::Base
   def belongs_to_user?(u)
     self.user == u
   end
+
+
+
+  #  swiftype
+
+  def index
+    client = Swiftype::Client.new
+
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'buckets'
+
+    # create Documents within the DocumentType
+    client.create_or_update_documents(engine_slug, document_slug, [
+      {:external_id => self.id, :fields => [
+        {:name => 'first_name', :value => self.first_name, :type => 'string'},
+        {:name => 'items_count', :value => self.items_count, :type => 'integer'},
+        {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+        {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
+        {:name => 'bucket_id', :value => self.id, :type => 'integer'},
+      ]}
+    ])
+  end
+
+
 end
