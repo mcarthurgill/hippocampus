@@ -50,7 +50,7 @@
           <div class="list-group">
             <li class="list-group-item list-group-item-info">Person</li>
             <% @user.buckets.excluding_pairs_for_item_id(@item.id).person_type.by_first_name.each do |b| %>
-              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item'} %>
+              <%= link_to "<h4 class='list-group-item-heading'>#{b.display_name} <span class='badge'>#{b.items_count}</span></h4>".html_safe, bucket_item_pairs_path(bucket_item_pair: {bucket_id: b.id, item_id: @item.id}), {method: :post, class: 'list-group-item bucket-container'} %>
             <% end %>
           </div>
         <% end %>
