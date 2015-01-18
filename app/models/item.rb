@@ -103,6 +103,10 @@ class Item < ActiveRecord::Base
 
   # -- ATTRIBUTES
 
+  def deleted?
+    return self.status == 'deleted'
+  end
+
   def outstanding?
     return self.status == 'outstanding'
   end
@@ -264,16 +268,20 @@ class Item < ActiveRecord::Base
     engine_slug = 'engine'
     document_slug = 'items'
 
-    # create Documents within the DocumentType
-    client.create_or_update_documents(engine_slug, document_slug, [
-      {:external_id => self.id, :fields => [
-        {:name => 'message', :value => self.message, :type => 'string'},
-        {:name => 'user_id', :value => self.user_id, :type => 'integer'},
-        {:name => 'item_type', :value => self.item_type, :type => 'string'},
-        {:name => 'buckets_string', :value => self.buckets_string, :type => 'string'},
-        {:name => 'item_id', :value => self.id, :type => 'integer'},
-      ]}
-    ])
+    if self.deleted?
+      client.destroy_document(engine_slug, document_slug, self.id)
+    else
+      # create Documents within the DocumentType
+      client.create_or_update_documents(engine_slug, document_slug, [
+        {:external_id => self.id, :fields => [
+          {:name => 'message', :value => self.message, :type => 'string'},
+          {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+          {:name => 'item_type', :value => self.item_type, :type => 'string'},
+          {:name => 'buckets_string', :value => self.buckets_string, :type => 'string'},
+          {:name => 'item_id', :value => self.id, :type => 'integer'},
+        ]}
+      ])
+    end
   end
 
 end
