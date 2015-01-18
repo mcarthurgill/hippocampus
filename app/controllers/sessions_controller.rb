@@ -13,15 +13,15 @@ class SessionsController < ApplicationController
     @user = User.find_by_phone(format_phone(params[:phone], "1"))
     if @user && @user.correct_passcode?(params[:passcode])
       cookies[:user_id] = { value: @user.id.to_s, expires: 10.years.from_now }
-      redirect_to user_path(@user), :notice => "Logged In!"
+      redirect_to user_path(@user)
       return
     end
-    redirect_to login_path, :notice => "Sorry your passcode was wrong."
+    redirect_to login_path, :notice => "You entered the wrong passcode."
   end
 
   def destroy
     cookies.delete :user_id
-    redirect_to root_path, :notice => "Successfully signed out!"
+    redirect_to root_path, :notice => "You've been logged out successfully."
   end
 
 end

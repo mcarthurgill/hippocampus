@@ -19,10 +19,10 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
-        format.html { redirect_to item_path(@item), :notice => "Woohoo! It worked." }
+        format.html { redirect_to item_path(@item) }
         format.json { render json: @item, status: :created, location: @item }
       else
-        format.html { redirect_to new_item_path, :notice => "Whoops. Try again." }
+        format.html { redirect_to new_item_path, :notice => "Error creating note." }
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end
@@ -78,7 +78,7 @@ class ItemsController < ApplicationController
     respond_to do |format|
       if @item.update_attributes(params[:item])
         @item.update_outstanding
-        format.html { redirect_to item_path(@item), :notice => "That worked!" }
+        format.html { redirect_to item_path(@item), :notice => "Note updated." }
         format.json { head :no_content }
       else
         format.html { redirect_to edit_item_path(@item), :notice => "Sorry that didn't work" }
@@ -94,7 +94,7 @@ class ItemsController < ApplicationController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to user_path(current_user) }
+      format.html { redirect_to user_path(current_user), :notice => "Note deleted successfully." }
       format.json { head :no_content }
     end
   end

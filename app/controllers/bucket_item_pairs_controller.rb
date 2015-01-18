@@ -7,7 +7,7 @@ class BucketItemPairsController < ApplicationController
 
     respond_to do |format|
       if @bucket_item_pair.save
-        format.html { redirect_to @bucket_item_pair.item, notice: 'Bucket item pair was successfully created.' }
+        format.html { redirect_to @bucket_item_pair.item, notice: "Added note to the '#{@bucket_item_pair.bucket.display_name}' stack." }
         format.json { render json: @bucket_item_pair, status: :created, location: @bucket_item_pair }
       else
         format.html { render action: "new" }

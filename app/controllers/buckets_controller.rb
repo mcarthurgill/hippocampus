@@ -49,9 +49,9 @@ class BucketsController < ApplicationController
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
             item.add_to_bucket(@bucket)
-            redirect_to item, notice: 'Successfully added Note to Stack.' 
+            redirect_to item, notice: "Added note to the '#{@bucket.display_name}' stack."
           else
-            redirect_to @bucket, notice: 'Stack was successfully created.' 
+            redirect_to @bucket, notice: 'Stack created!' 
           end
         end
         format.json { render json: @bucket, status: :created, location: @bucket }
@@ -69,7 +69,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
-        format.html { redirect_to @bucket, notice: 'Bucket was successfully updated.' }
+        format.html { redirect_to @bucket, notice: 'Stack updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
