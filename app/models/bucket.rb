@@ -31,6 +31,8 @@ class Bucket < ActiveRecord::Base
 
   after_save :index_delayed
 
+  before_destroy :remove_from_engine
+
   def before_save
     self.items_count = self.items.count
     self.first_name = (self.first_name && self.first_name.length > 0) ? self.first_name.strip : self.first_name
@@ -100,6 +102,14 @@ class Bucket < ActiveRecord::Base
         {:name => 'bucket_id', :value => self.id, :type => 'integer'},
       ]}
     ])
+  end
+
+  def remove_from_engine
+    client = Swiftype::Client.new
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'buckets'
+    client.destroy_document(engine_slug, document_slug, self.id)
   end
 
 

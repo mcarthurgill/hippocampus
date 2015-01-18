@@ -36,6 +36,8 @@ class Item < ActiveRecord::Base
 
   after_save :index_delayed
 
+  before_destroy :remove_from_engine
+
 
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
@@ -269,7 +271,7 @@ class Item < ActiveRecord::Base
     document_slug = 'items'
 
     if self.deleted?
-      client.destroy_document(engine_slug, document_slug, self.id)
+      self.remove_from_engine
     else
       # create Documents within the DocumentType
       client.create_or_update_documents(engine_slug, document_slug, [
@@ -282,6 +284,14 @@ class Item < ActiveRecord::Base
         ]}
       ])
     end
+  end
+
+  def remove_from_engine
+    client = Swiftype::Client.new
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'items'
+    client.destroy_document(engine_slug, document_slug, self.id)
   end
 
 end
