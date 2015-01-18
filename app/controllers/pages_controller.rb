@@ -4,7 +4,7 @@ class PagesController < ApplicationController
   def search
     @active = 'search'
 
-    @results = []
+    @results = nil
     if params.has_key?(:t) && params[:t].strip.length > 0
       client = Swiftype::Client.new
       # get users + topics, return as one array
