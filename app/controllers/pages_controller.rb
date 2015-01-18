@@ -11,7 +11,7 @@ class PagesController < ApplicationController
       @results = client.search('engine', params[:t], {:document_types => ['items','buckets'], :search_fields => { 'items' => ['message','buckets_string'], 'buckets' => ['first_name'] }, :filters => { 'items' => {'user_id' => current_user.id}, 'buckets' => {'user_id' => current_user.id} } } )
     end
 
-    puts results
+    puts @results
 
   end
 
