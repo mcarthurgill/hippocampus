@@ -50,6 +50,9 @@ class Item < ActiveRecord::Base
     self.status = "outstanding" if !self.has_buckets?
   end
 
+
+
+
   # -- SETTERS
 
   def self.create_with_sms(sms)
@@ -97,11 +100,43 @@ class Item < ActiveRecord::Base
     return nil
   end
 
+
+
+
   # -- DESTROY
 
   def delete
     self.update_attribute(:status, 'deleted')
   end
+
+
+
+
+  # -- CLOUDINARY
+
+  def upload_main_asset(file)
+    public_id = "item_#{Time.now.to_f}_#{self.user_id}"
+    url = self.upload_image_to_cloudinary(file, public_id, 'jpg')
+    if url && url.length > 0
+      return self.add_media_url(url)
+    end
+  end
+
+  def upload_image_to_cloudinary(file, public_id, format)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format)
+    return data['url']
+  end
+
+  def add_media_url url
+    if !self.media_urls
+      self.media_urls = []
+    end
+    self.media_urls << url
+    self.save!
+    return self.media_urls
+  end
+
+
 
   # -- ATTRIBUTES
 
@@ -130,6 +165,10 @@ class Item < ActiveRecord::Base
   def add_to_bucket b
     BucketItemPair.with_or_create_with_bucket_id_and_item_id(b.id, self.id)
   end
+
+
+
+
   
   # -- HELPERS
 
@@ -180,6 +219,7 @@ class Item < ActiveRecord::Base
     end
     return Bucket.create_for_addon_and_user(addon_name, user)
   end
+
 
   
 
@@ -254,6 +294,7 @@ class Item < ActiveRecord::Base
       msg.send
     end
   end
+
 
 
 
