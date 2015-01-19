@@ -82,7 +82,7 @@ class Item < ActiveRecord::Base
 
   def self.create_from_api_endpoint(params)
     i = Item.new
-    addon = Addon.find_by_addon_name(addon)
+    addon = Addon.find_by_addon_name(params[:addon])
     i.user = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], addon, params[:user][:token]) 
     return nil if !i.user
 
