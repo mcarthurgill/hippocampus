@@ -37,6 +37,10 @@ gem 'httparty'
 
 gem 'rails_autolink'
 
+gem 'swiftype', '~> 1.0.0'
+
+gem 'cloudinary'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

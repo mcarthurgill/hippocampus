@@ -23,6 +23,20 @@ class ApplicationController < ActionController::Base
   end
   helper_method :logged_in?
 
+  def redirect_if_not_logged_in
+    if !logged_in?
+      redirect_to root_path
+      return true
+    end
+  end
+
+  def redirect_if_not_authorized uid
+    if !logged_in? || current_user.id.to_i != uid.to_i
+      redirect_to root_path
+      return true
+    end
+  end
+
   def current_user
     @current_user ||= User.find(cookies[:user_id]) if cookies[:user_id]
     return @current_user

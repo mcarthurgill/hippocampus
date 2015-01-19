@@ -1,4 +1,5 @@
 class Item < ActiveRecord::Base
+
   attr_accessible :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
@@ -34,6 +35,11 @@ class Item < ActiveRecord::Base
   before_validation :strip_whitespace
   before_save :check_status
 
+  after_save :index_delayed
+
+  before_destroy :remove_from_engine
+
+
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
     self.item_type = self.item_type ? self.item_type.strip : nil
@@ -44,6 +50,9 @@ class Item < ActiveRecord::Base
   def check_status
     self.status = "outstanding" if !self.has_buckets?
   end
+
+
+
 
   # -- SETTERS
 
@@ -90,13 +99,48 @@ class Item < ActiveRecord::Base
     return nil
   end
 
+
+
+
   # -- DESTROY
 
   def delete
     self.update_attribute(:status, 'deleted')
   end
 
+
+
+
+  # -- CLOUDINARY
+
+  def upload_main_asset(file)
+    public_id = "item_#{Time.now.to_f}_#{self.user_id}"
+    url = self.upload_image_to_cloudinary(file, public_id, 'jpg')
+    if url && url.length > 0
+      return self.add_media_url(url)
+    end
+  end
+
+  def upload_image_to_cloudinary(file, public_id, format)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format)
+    return data['url']
+  end
+
+  def add_media_url url
+    if !self.media_urls
+      self.media_urls = []
+    end
+    self.media_urls << url
+    return self.media_urls
+  end
+
+
+
   # -- ATTRIBUTES
+
+  def deleted?
+    return self.status == 'deleted'
+  end
 
   def outstanding?
     return self.status == 'outstanding'
@@ -119,11 +163,23 @@ class Item < ActiveRecord::Base
   def add_to_bucket b
     BucketItemPair.with_or_create_with_bucket_id_and_item_id(b.id, self.id)
   end
+
+
+
+
   
   # -- HELPERS
 
   def has_media?
     return (self.media_urls && self.media_urls.count > 0)
+  end
+
+  def buckets_string
+    s = ''
+    self.buckets.each do |b|
+      s = "#{s} #{b.display_name}"
+    end
+    return s
   end
 
   def has_buckets?
@@ -223,6 +279,46 @@ class Item < ActiveRecord::Base
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
+  end
+
+
+
+
+  #  swiftype
+
+  def index_delayed
+    self.delay.index
+  end
+
+  def index
+    client = Swiftype::Client.new
+
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'items'
+
+    if self.deleted?
+      self.remove_from_engine
+    else
+      # create Documents within the DocumentType
+      client.create_or_update_documents(engine_slug, document_slug, [
+        {:external_id => self.id, :fields => [
+          {:name => 'message', :value => self.message, :type => 'string'},
+          {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+          {:name => 'item_type', :value => self.item_type, :type => 'string'},
+          {:name => 'buckets_string', :value => self.buckets_string, :type => 'string'},
+          {:name => 'item_id', :value => self.id, :type => 'integer'},
+        ]}
+      ])
+    end
+  end
+
+  def remove_from_engine
+    client = Swiftype::Client.new
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'items'
+    client.destroy_document(engine_slug, document_slug, self.id)
   end
 
 end

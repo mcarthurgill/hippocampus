@@ -1,4 +1,5 @@
 Hippocampus::Application.routes.draw do
+
   root :to => "sessions#new"
 
   get "login", :to => "sessions#new", :as => "login"
@@ -11,6 +12,8 @@ Hippocampus::Application.routes.draw do
   resources :bucket_item_pairs, :only => [:create, :destroy]
 
   resources :emails, :only => [:create]
+
+  get 'info', to: 'pages#info', as: 'info'
   
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
@@ -26,4 +29,5 @@ Hippocampus::Application.routes.draw do
   post 'users/:id/add_to_addon/:addon_id', to: 'users#add_to_addon', as: 'user_add_to_addon'  
   post 'users/:id/remove_from_addon/:addon_id', to: 'users#remove_from_addon', as: 'user_remove_from_addon'
   post "api_endpoint", :to => "addons#api_endpoint", :as => "api_endpoint"
+
 end

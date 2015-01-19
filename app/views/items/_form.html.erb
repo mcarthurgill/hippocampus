@@ -17,7 +17,12 @@
   
   <div class="field">
     <h6>Note type:</h6>
-    <%= f.select :item_type, options_for_select(Item.item_types), {}, class: 'form-control' %>
+    <%= f.select :item_type, options_for_select(Item.item_types, @item.item_type), {}, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <h6>Image:</h6>
+    <%= f.file_field 'file', accept: 'image/png,image/gif,image/jpeg' %>
   </div>
   
   <div class="field">
@@ -31,5 +36,11 @@
     <br/>
     <%= f.submit "Save", :class => "btn btn-primary btn-md btn-block" %>
   </div>
+
+  <% if @item.id %>
+    <p></p>
+    <%= link_to 'Delete Note', @item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-md btn-block' %>
+  <% end %>
+
   <br/>
 <% end %>

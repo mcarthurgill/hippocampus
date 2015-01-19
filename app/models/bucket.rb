@@ -29,6 +29,10 @@ class Bucket < ActiveRecord::Base
 
   before_validation :strip_whitespace
 
+  after_save :index_delayed
+
+  before_destroy :remove_from_engine
+
   def before_save
     self.items_count = self.items.count
     self.first_name = (self.first_name && self.first_name.length > 0) ? self.first_name.strip : self.first_name
@@ -62,7 +66,7 @@ class Bucket < ActiveRecord::Base
   # -- HELPERS
 
   def display_name
-    return ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') ).strip
+    return self.first_name   # ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') ).strip
   end
 
   def self.bucket_types
@@ -72,4 +76,41 @@ class Bucket < ActiveRecord::Base
   def belongs_to_user?(u)
     self.user == u
   end
+
+
+
+  #  swiftype
+
+  def index_delayed
+    self.delay.index
+  end
+
+  def index
+    client = Swiftype::Client.new
+
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'buckets'
+
+    # create Documents within the DocumentType
+    client.create_or_update_documents(engine_slug, document_slug, [
+      {:external_id => self.id, :fields => [
+        {:name => 'first_name', :value => self.first_name, :type => 'string'},
+        {:name => 'items_count', :value => self.items_count, :type => 'integer'},
+        {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+        {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
+        {:name => 'bucket_id', :value => self.id, :type => 'integer'},
+      ]}
+    ])
+  end
+
+  def remove_from_engine
+    client = Swiftype::Client.new
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'buckets'
+    client.destroy_document(engine_slug, document_slug, self.id)
+  end
+
+
 end

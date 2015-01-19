@@ -1,8 +1,14 @@
-<div class="row">
-  <div class="col-xs-12">
-    <p id="notice"><%= notice %></p>
+<% if notice %>
+  <div class="row">
+    <div class="col-xs-12">
+      <br/>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class="row">
   <div class="col-xs-12">
@@ -39,17 +45,13 @@
 
 <% end %>
 
-
-<% if @user.items.assigned.count > 0 %>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="list-group">
-        <% @user.items.by_date.assigned.includes(:buckets).each do |i| %>
-          <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
-        <% end %>
-      </div>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group" id="items-container">
+      <%= render 'items' %>
     </div>
+    <% if true %>
+      <%= link_to '+ Load More', current_user, remote: true, :class => "btn btn-primary btn-md btn-block" %>
+    <% end %>
   </div>
-
-<% end %>
+</div>

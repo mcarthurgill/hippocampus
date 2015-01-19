@@ -1,12 +1,29 @@
+<% if notice %>
+  <div class="row">
+    <div class="col-xs-12">
+      <br/>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-xs-12">
-    <p id="notice"><%= notice %></p>
+    <br/>
+    <br/>
+    <p class="lead">We just texted a passcode to <%= number_to_phone(@user.phone_without_country_code) %>. Enter it below.</p>
+    <br/>
   </div>
 </div>
 
-<h3>We've texted a passcode to <%= @user.phone %></h3>
-
-<%= form_tag create_session_path(@user.phone) do %>
-  <%= text_field_tag :passcode, "", :placeholder => "Enter passcode here", :class => "form-controls" %>
-  <%= submit_tag "Submit", :class => "btn btn-default" %>
-<% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_tag create_session_path(@user.phone) do %>
+      <%= number_field_tag :passcode, "", :placeholder => "Enter passcode here", :class => "form-control", :style => "margin-bottom:5px;" %>
+      <%= submit_tag "Verify", :class => "btn btn-primary btn-md btn-block" %>
+    <% end %>
+  </div>
+</div>
