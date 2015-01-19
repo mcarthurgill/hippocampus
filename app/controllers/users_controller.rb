@@ -57,7 +57,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     addon = Addon.find(params[:addon_id])
     respond_to do |format|
-      if u.add_to_addon(addon)
+      if user.add_to_addon(addon)
         format.html { redirect_to user_path(user), :notice => "Great Success!" }
       else
         format.html { redirect_to user_path(user), :notice => "Whoops. Try that again!" }
@@ -69,7 +69,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     addon = Addon.find(params[:addon_id])
     respond_to do |format|
-      if u.remove_from_addon(addon)
+      if user.remove_from_addon(addon)
         format.html { redirect_to user_path(user), :notice => "Great Success!" }
       else
         format.html { redirect_to user_path(user), :notice => "Whoops. Try that again!" }

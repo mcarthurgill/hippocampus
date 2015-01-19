@@ -73,20 +73,18 @@ class Item < ActiveRecord::Base
 
   def self.create_from_api_endpoint(params)
     i = Item.new
-    i.user = User.validated_with_id_addon_and_token(params[:user][:id], params[:addon], params[:user][:token]) 
+    i.user = User.validated_with_id_addon_and_token_and_bucket_id(params[:user][:id], params[:addon], params[:user][:token], params[:user][:bucket_id]) 
     return nil if !i.user
 
     i.message = params[:message]
     i.input_method = params[:addon]
     i.item_type = 'note'
     i.status = 'assigned'
-    
-    b = Item.determine_bucket_for_addon_and_user(params[:addon], i.user, params[:user][:bucket_id])
-    i.bucket_id = b.id
+    i.bucket_id = params[:user][:bucket_id]
 
     if i.user && i.message && i.message.length > 0
       i.save!
-      i.add_to_bucket(b)
+      i.add_to_bucket(Bucket.find(params[:user][:bucket_id]))
       return i
     end
     return nil
@@ -153,17 +151,6 @@ class Item < ActiveRecord::Base
   def self.item_types
     return ['note', 'yearly', 'monthly', 'weekly', 'daily']
   end
-
-  def self.determine_bucket_for_addon_and_user(addon_name, user, bid)
-    if bid && bid.length > 0
-      b = Bucket.find(bid)
-      if b && b.belongs_to_user?(user)
-        return b
-      end
-    end
-    return Bucket.create_for_addon_and_user(addon_name, user)
-  end
-
   
 
   # -- REMINDERS

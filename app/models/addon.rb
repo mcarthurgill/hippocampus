@@ -30,9 +30,9 @@
   end
 
   # --- HTTP
-  def self.create_user_for_addon(user, addon)
+  def self.create_user_for_addon(user, addon, bucket)
     response = HTTParty.post(addon.create_user_url, :query => { 
-                      :user => { :hippocampus_user_id => user.id, :token => Token.for_user_and_addon(user.id, addon.id).first.token_string },
+                      :user => { :hippocampus_user_id => user.id, :token => Token.for_user_and_addon(user.id, addon.id).first.token_string, :bucket_id => bucket.id },
                       :addon => "hippocampus",
                       :addon_token => Token.for_addon(addon.id).live.first.token_string
                   })
@@ -47,7 +47,7 @@
 
   def params_to_create_bucket_for_user(user)
     if self == Addon.daily_j.first
-      return {:first_name => "Daily J", :last_name => "Journal", :bucket_type => "Journal", :user_id => user.id}
+      return {:first_name => "Daily Journal", :bucket_type => "Journal", :user_id => user.id}
     end
   end
 end

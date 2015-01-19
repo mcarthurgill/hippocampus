@@ -27,8 +27,7 @@ class Token < ActiveRecord::Base
       self.token_string = "#{Random.new.rand(1111...9999)}"[0..3]
     end
   end
-
-
+  
   # --- ACTIONS
   def text_login_token code
     message = "Your Hippocampus code: #{code}"
@@ -39,5 +38,11 @@ class Token < ActiveRecord::Base
   def update_status(new_status)
     self.status = new_status 
     self.save
+  end
+
+
+  # --- HELPERS
+  def live?
+    self.status == "live"
   end
 end
