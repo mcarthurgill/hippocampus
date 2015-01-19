@@ -84,13 +84,13 @@ class Item < ActiveRecord::Base
     i = Item.new
     addon = Addon.find_by_addon_name(params[:addon])
     i.user = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], addon, params[:user][:token]) 
-    return nil if !i.user
+    return nil if !i.user || !addon
 
     i.message = params[:message]
     i.input_method = params[:addon]
     i.item_type = 'note'
     i.status = 'assigned'
-    bucket = Bucket.find_or_create_for_addon_and_user(addon, self)
+    bucket = Bucket.find_or_create_for_addon_and_user(addon, i.user)
     i.bucket_id = bucket.id
 
     if i.user && i.message && i.message.length > 0
