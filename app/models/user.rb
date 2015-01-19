@@ -110,7 +110,7 @@ class User < ActiveRecord::Base
       t.assign_token 
       t.save
       b = Bucket.create_for_addon_and_user(addon, self)
-      Addon.create_user_for_addon(self, addon, b)
+      Addon.delay.create_user_for_addon(self, addon, b)
     end
 
     t.update_status("live") if !t.live?
