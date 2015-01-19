@@ -2,6 +2,9 @@ class PagesController < ApplicationController
 
 
   def search
+
+    redirect_if_not_logged_in ? return : nil
+
     @active = 'search'
 
     @results = nil

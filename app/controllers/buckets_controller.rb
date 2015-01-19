@@ -3,7 +3,11 @@ class BucketsController < ApplicationController
   # GET /buckets/1
   # GET /buckets/1.json
   def show
+
     @bucket = Bucket.find(params[:id])
+
+    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+
     @active = 'stacks'
 
     respond_to do |format|
@@ -29,6 +33,9 @@ class BucketsController < ApplicationController
 
   def edit
     @bucket = Bucket.find(params[:id])
+
+    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+
     @active = 'stacks'
 
     respond_to do |format|
@@ -67,6 +74,8 @@ class BucketsController < ApplicationController
   def update
     @bucket = Bucket.find(params[:id])
 
+    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
         format.html { redirect_to @bucket, notice: 'Stack updated.' }
@@ -82,6 +91,9 @@ class BucketsController < ApplicationController
   # DELETE /buckets/1.json
   def destroy
     @bucket = Bucket.find(params[:id])
+
+    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+    
     @bucket.destroy
 
     @bucket.items.each do |i|

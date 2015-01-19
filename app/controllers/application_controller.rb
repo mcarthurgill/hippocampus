@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_not_authorized uid
-    if !logged_in? || current_user.id != uid
+    if !logged_in? || current_user.id.to_i != uid.to_i
       redirect_to root_path
       return true
     end

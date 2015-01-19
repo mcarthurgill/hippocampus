@@ -2,6 +2,9 @@ class ItemsController < ApplicationController
 
   def show
     @item = Item.find(params[:id])
+
+    redirect_if_not_authorized(@item.user_id) ? return : nil
+
     @active = 'notes'
 
     respond_to do |format|
@@ -48,6 +51,9 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
+
+    redirect_if_not_authorized(@item.user_id) ? return : nil
+
     @active = 'notes'
 
     @options_for_buckets = current_user.formatted_buckets_options
@@ -61,6 +67,9 @@ class ItemsController < ApplicationController
 
   def assign
     @item = Item.find(params[:id])
+
+    redirect_if_not_authorized(@item.user_id) ? return : nil
+
     @active = 'notes'
     @user = current_user
     # @sort_by = params.has_key?(:sort_by) ? params[:sort_by] : 'alphabetical'
@@ -79,6 +88,8 @@ class ItemsController < ApplicationController
   def update
     @item = Item.find(params[:id])
 
+    redirect_if_not_authorized(@item.user_id) ? return : nil
+
     respond_to do |format|
       if @item.update_attributes(params[:item])
         @item.update_outstanding
@@ -95,6 +106,9 @@ class ItemsController < ApplicationController
   # DELETE /items/1.json
   def destroy
     @item = Item.find(params[:id])
+
+    redirect_if_not_authorized(@item.user_id) ? return : nil
+    
     @item.destroy
 
     respond_to do |format|
