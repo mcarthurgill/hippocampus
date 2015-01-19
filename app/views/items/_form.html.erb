@@ -17,7 +17,7 @@
   
   <div class="field">
     <h6>Note type:</h6>
-    <%= f.select :item_type, options_for_select(Item.item_types), {}, class: 'form-control' %>
+    <%= f.select :item_type, options_for_select(Item.item_types, @item.item_type), {}, class: 'form-control' %>
   </div>
 
   <div class="field">
