@@ -19,6 +19,11 @@
     <h6>Note type:</h6>
     <%= f.select :item_type, options_for_select(Item.item_types), {}, class: 'form-control' %>
   </div>
+
+  <div class="field">
+    <h6>Image:</h6>
+    <%= f.file_field 'file', accept: 'image/png,image/gif,image/jpeg' %>
+  </div>
   
   <div class="field">
     <h6>Reminder date:</h6>

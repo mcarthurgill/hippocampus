@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  
+
   attr_accessible :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
@@ -133,7 +133,6 @@ class Item < ActiveRecord::Base
       self.media_urls = []
     end
     self.media_urls << url
-    self.save!
     return self.media_urls
   end
 

@@ -17,6 +17,10 @@ class ItemsController < ApplicationController
     
     @item = Item.new(params[:item])
 
+    if params[:item].has_key?(:file) && params[:item][:file]
+      @item.upload_main_asset(params[:item][:file])
+    end
+
     respond_to do |format|
       if @item.save
         format.html { redirect_to item_path(@item) }
