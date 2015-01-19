@@ -51,7 +51,7 @@ class Bucket < ActiveRecord::Base
     self.bucket_type = self.bucket_type ? self.bucket_type.strip : nil
   end
 
-  def self.create_for_addon_and_user(addon, user)  
+  def self.find_or_create_for_addon_and_user(addon, user)  
     attrs_hash = addon.params_to_create_bucket_for_user(user)
     bucket = Bucket.where(attrs_hash).first
 

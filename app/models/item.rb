@@ -82,18 +82,19 @@ class Item < ActiveRecord::Base
 
   def self.create_from_api_endpoint(params)
     i = Item.new
-    i.user = User.validated_with_id_addon_and_token_and_bucket_id(params[:user][:hippocampus_user_id], params[:addon], params[:user][:token], params[:user][:bucket_id]) 
+    i.user = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], params[:addon], params[:user][:token]) 
     return nil if !i.user
 
     i.message = params[:message]
     i.input_method = params[:addon]
     i.item_type = 'note'
     i.status = 'assigned'
-    i.bucket_id = params[:user][:bucket_id]
+    bucket = Bucket.find_or_create_for_addon_and_user(addon, self)
+    i.bucket_id = bucket.id
 
     if i.user && i.message && i.message.length > 0
       i.save!
-      i.add_to_bucket(Bucket.find(params[:user][:bucket_id]))
+      i.add_to_bucket(bucket)
       return i
     end
     return nil

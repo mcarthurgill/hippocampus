@@ -91,13 +91,12 @@ class User < ActiveRecord::Base
     Token.match(code, self.id, nil).recent.live.count > 0
   end
   
-  def self.validated_with_id_addon_and_token_and_bucket_id(user_id, addon, token_string, bucket_id)
+  def self.validated_with_id_addon_and_token(user_id, addon, token_string)
     u = User.find(user_id)
     a = Addon.find_by_addon_name(addon)
     if u && a
       t = Token.for_user_and_addon(u.id, a.id).live.first
-      b = Bucket.find(bucket_id)
-      if t && t.token_string == token_string && b && b.belongs_to_user?(u)
+      if t && t.token_string == token_string
         return u
       end
     end
@@ -109,7 +108,7 @@ class User < ActiveRecord::Base
     if t.new_record?
       t.assign_token 
       t.save
-      b = Bucket.create_for_addon_and_user(addon, self)
+      b = Bucket.find_or_create_for_addon_and_user(addon, self)
       Addon.delay.create_user_for_addon(self, addon, b)
     end
 
