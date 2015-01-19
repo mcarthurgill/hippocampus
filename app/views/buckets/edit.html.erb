@@ -1,9 +1,15 @@
+
 <div class="row">
   <div class="col-xs-12">
-    <h3>Edit Stack</h3>
-    
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Notes</a></li>
+      <li><a href="<%= user_buckets_path(current_user) %>">Stacks</a></li>
+      <li><a href="<%= bucket_path(@bucket) %>"><%= @bucket.display_name %></a></li>
+      <li class="active">Edit</li>
+    </ol>
   </div>
 </div>
+
 
 <%= render 'form' %>
 

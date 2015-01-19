@@ -1,6 +1,11 @@
+
 <div class="row">
   <div class="col-xs-12">
-    <h3>Edit Item</h3>
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Notes</a></li>
+      <li><a href="<%= item_path(@item) %>">Note</a></li>
+      <li class="active">Edit</li>
+    </ol>
   </div>
 </div>
 
