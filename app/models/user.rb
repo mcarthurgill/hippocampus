@@ -93,9 +93,8 @@ class User < ActiveRecord::Base
   
   def self.validated_with_id_addon_and_token(user_id, addon, token_string)
     u = User.find(user_id)
-    a = Addon.find_by_addon_name(addon)
-    if u && a
-      t = Token.for_user_and_addon(u.id, a.id).live.first
+    if u && addon
+      t = Token.for_user_and_addon(u.id, addon.id).live.first
       if t && t.token_string == token_string
         return u
       end
