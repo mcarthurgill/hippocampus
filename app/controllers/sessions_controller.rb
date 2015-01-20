@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     @user.update_and_send_passcode 
     respond_to do |format|
       format.html
-      format.json { render json: { :success => true } }
+      format.json { render json: { :success => 'success' } }
     end
   end
 
