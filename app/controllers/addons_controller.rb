@@ -10,3 +10,5 @@ class AddonsController < ApplicationController
     end
   end
 end
+
+
