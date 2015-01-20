@@ -44,7 +44,8 @@
     if self.daily_j?
       case params[:request_type]
       when "create_item"
-        return Item.create_from_api_endpoint(params) ? Item.create_from_api_endpoint(params).bucket_id : nil
+        i = Item.create_from_api_endpoint(params) 
+        return i ? i.bucket_id : nil
       when "get_items"
         u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) 
         return u ? u.items_for_addon(self) : nil
