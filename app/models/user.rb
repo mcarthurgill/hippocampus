@@ -124,6 +124,6 @@ class User < ActiveRecord::Base
     return nil if addon.nil?
     
     b = Bucket.for_addon_and_user(addon, self)
-    return b.items.by_date
+    return b.items.not_deleted.by_date
   end
 end
