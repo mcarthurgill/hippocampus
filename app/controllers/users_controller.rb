@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @active = 'notes'
@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json
       format.js
     end
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   # GET /users/1/items.json
   def items
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @active = 'notes'
@@ -36,14 +36,14 @@ class UsersController < ApplicationController
   # GET /users/1/buckets.json
   def buckets
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @active = 'stacks'
     @sort = params[:s]
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json { render json: @user.buckets.above(params[:above]) }
     end
   end
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @user.destroy

@@ -6,12 +6,12 @@ class BucketsController < ApplicationController
 
     @bucket = Bucket.find(params[:id])
 
-    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+    # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
     @active = 'stacks'
 
     respond_to do |format|
-        format.html
+        format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
         format.json { render json: @bucket }
     end
 
@@ -34,12 +34,12 @@ class BucketsController < ApplicationController
   def edit
     @bucket = Bucket.find(params[:id])
 
-    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+    # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
     @active = 'stacks'
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
       format.json { head :no_content }
     end
   end
@@ -74,7 +74,7 @@ class BucketsController < ApplicationController
   def update
     @bucket = Bucket.find(params[:id])
 
-    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+    # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
@@ -92,7 +92,7 @@ class BucketsController < ApplicationController
   def destroy
     @bucket = Bucket.find(params[:id])
 
-    redirect_if_not_authorized(@bucket.user_id) ? return : nil
+    # redirect_if_not_authorized(@bucket.user_id) ? return : nil
     
     @bucket.destroy
 

@@ -3,12 +3,12 @@ class ItemsController < ApplicationController
   def show
     @item = Item.find(params[:id])
 
-    redirect_if_not_authorized(@item.user_id) ? return : nil
+    # redirect_if_not_authorized(@item.user_id) ? return : nil
 
     @active = 'notes'
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
       format.json
     end
   end
@@ -52,14 +52,14 @@ class ItemsController < ApplicationController
   def edit
     @item = Item.find(params[:id])
 
-    redirect_if_not_authorized(@item.user_id) ? return : nil
+    # redirect_if_not_authorized(@item.user_id) ? return : nil
 
     @active = 'notes'
 
     @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
       format.json { head :no_content }
     end
   end
@@ -68,7 +68,7 @@ class ItemsController < ApplicationController
   def assign
     @item = Item.find(params[:id])
 
-    redirect_if_not_authorized(@item.user_id) ? return : nil
+    # redirect_if_not_authorized(@item.user_id) ? return : nil
 
     @active = 'notes'
     @user = current_user
@@ -78,7 +78,7 @@ class ItemsController < ApplicationController
     @options_for_buckets = @item.user.formatted_buckets_options
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
       format.json { head :no_content }
     end
   end
@@ -88,7 +88,7 @@ class ItemsController < ApplicationController
   def update
     @item = Item.find(params[:id])
 
-    redirect_if_not_authorized(@item.user_id) ? return : nil
+    # redirect_if_not_authorized(@item.user_id) ? return : nil
 
     respond_to do |format|
       if @item.update_attributes(params[:item])
@@ -107,7 +107,7 @@ class ItemsController < ApplicationController
   def destroy
     @item = Item.find(params[:id])
 
-    redirect_if_not_authorized(@item.user_id) ? return : nil
+    # redirect_if_not_authorized(@item.user_id) ? return : nil
     
     @item.destroy
 
