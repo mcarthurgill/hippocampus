@@ -24,13 +24,14 @@ class SessionsController < ApplicationController
         end
         format.json { render json: { :success => 'success', :user => @user } }
       end
-    end
-    respond_to do |format|
-      format.html do 
-        redirect_to login_path, :notice => "You entered the wrong passcode."
-        return
+    else
+      respond_to do |format|
+        format.html do 
+          redirect_to login_path, :notice => "You entered the wrong passcode."
+          return
+        end
+        format.json { render json: { :success => 'failed' } }
       end
-      format.json { render json: { :success => 'failed' } }
     end
   end
 
