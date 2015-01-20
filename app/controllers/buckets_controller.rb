@@ -11,7 +11,7 @@ class BucketsController < ApplicationController
     @active = 'stacks'
 
     respond_to do |format|
-        format.html
+        format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
         format.json { render json: @bucket }
     end
 
@@ -39,7 +39,7 @@ class BucketsController < ApplicationController
     @active = 'stacks'
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
       format.json { head :no_content }
     end
   end

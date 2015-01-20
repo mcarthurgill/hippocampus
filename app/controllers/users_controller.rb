@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json
       format.js
     end
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     @sort = params[:s]
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json { render json: @user.buckets.above(params[:above]) }
     end
   end

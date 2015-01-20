@@ -8,7 +8,7 @@ class ItemsController < ApplicationController
     @active = 'notes'
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
       format.json
     end
   end
@@ -59,7 +59,7 @@ class ItemsController < ApplicationController
     @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
       format.json { head :no_content }
     end
   end
@@ -78,7 +78,7 @@ class ItemsController < ApplicationController
     @options_for_buckets = @item.user.formatted_buckets_options
 
     respond_to do |format|
-      format.html
+      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
       format.json { head :no_content }
     end
   end
