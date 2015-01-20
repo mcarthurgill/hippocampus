@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     @user.update_and_send_passcode 
     respond_to do |format|
       format.html
-      format.json { render json: { :success => true } }
+      format.json { render json: { :success => 'success' } }
     end
   end
 
@@ -24,13 +24,14 @@ class SessionsController < ApplicationController
         end
         format.json { render json: { :success => 'success', :user => @user } }
       end
-    end
-    respond_to do |format|
-      format.html do 
-        redirect_to login_path, :notice => "You entered the wrong passcode."
-        return
+    else
+      respond_to do |format|
+        format.html do 
+          redirect_to login_path, :notice => "You entered the wrong passcode."
+          return
+        end
+        format.json { render json: { :success => 'failed' } }
       end
-      format.json { render json: { :success => 'failed' } }
     end
   end
 
