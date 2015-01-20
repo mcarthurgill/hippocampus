@@ -41,18 +41,21 @@
   end
 
   def determine_endpoint_action(params)
+    u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token])
+
     if self.daily_j?
       case params[:request_type]
       when "create_item"
-        i = Item.create_from_api_endpoint(params) 
+        i = Item.create_from_api_endpoint(params, u, self) 
         return i ? i.bucket_id : nil
       when "get_items"
-        u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) 
         return u ? u.items_for_addon(self) : nil
       when "update_item"
-        u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) 
         i = Item.find(params[:item][:id])
-        return i.update_attributes(:message => params[:item][:message]) ? i : nil
+        return i ? i.update_message(params[:item][:message]) : nil
+      when "delete_item"
+        i = Item.find(params[:item][:id])
+        return i ? i.update_status("deleted") : nil
       end
     end
   end

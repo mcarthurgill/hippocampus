@@ -22,6 +22,7 @@ class Item < ActiveRecord::Base
 
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
+  scope :not_deleted, -> { where("status != ?", "deleted") }
   scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Date.today, "note").includes(:user) } 
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
@@ -80,10 +81,9 @@ class Item < ActiveRecord::Base
     return i
   end
 
-  def self.create_from_api_endpoint(params)
+  def self.create_from_api_endpoint(params, user, addon)
     i = Item.new
-    addon = Addon.find_by_addon_name(params[:addon])
-    i.user = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], addon, params[:user][:token]) 
+    i.user = user
     return nil if !i.user || !addon
 
     i.message = params[:message]
@@ -156,9 +156,9 @@ class Item < ActiveRecord::Base
 
   def update_outstanding
     if self.has_buckets?
-      self.update_attribute(:status, 'assigned')
+      self.update_status(:status, 'assigned')
     else
-      self.update_attribute(:status, 'outstanding')
+      self.update_status(:status, 'outstanding')
     end
   end
 
@@ -166,9 +166,14 @@ class Item < ActiveRecord::Base
     BucketItemPair.with_or_create_with_bucket_id_and_item_id(b.id, self.id)
   end
 
+  def update_status(new_status)
+    self.update_attribute(:status, new_status)
+  end
 
-
-
+  def update_message(new_message)
+    self.update_attributes(:message => new_message)
+    return self
+  end
   
   # -- HELPERS
 
