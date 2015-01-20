@@ -19,7 +19,7 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="list-group">
-      <% @bucket.items.by_date.each do |i| %>
+      <% @bucket.items.undeleted.by_date.each do |i| %>
         <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
       <% end %>
     </div>
