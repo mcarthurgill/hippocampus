@@ -81,7 +81,9 @@ class Bucket < ActiveRecord::Base
     self.user == u
   end
 
-
+  def created_by_addon?
+    !Bucket.bucket_types.include?(self.bucket_type)
+  end
 
   #  swiftype
 
