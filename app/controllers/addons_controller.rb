@@ -1,8 +1,9 @@
 class AddonsController < ApplicationController
   def api_endpoint
+    addon = Addon.for_addon_name_and_token(params[:addon], params[:addon_token])
     respond_to do |format|
-      if Addon.for_addon_name_and_token(params[:addon], params[:addon_token]) && i = Item.create_from_api_endpoint(params)  
-        format.json { render json: i.bucket_id, :status => 200 }
+      if addon && resp = addon.determine_endpoint_action(params)
+        format.json { render json: resp, :status => 200 }
       else 
         format.json { render :nothing => true, :status => 401 }
       end

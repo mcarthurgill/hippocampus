@@ -119,4 +119,11 @@ class User < ActiveRecord::Base
     t = Token.for_user_and_addon(self.id, addon.id).live
     t.update_status("deleted")
   end
+
+  def items_for_addon(addon)
+    return nil if addon.nil?
+    
+    b = Bucket.for_addon_and_user(addon, self)
+    return b.items
+  end
 end

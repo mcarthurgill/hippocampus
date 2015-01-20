@@ -40,14 +40,34 @@
     return response.code == 200
   end
 
+  def deterime_endpoint_action(params)
+    if self.daily_j?
+      case params[:request_type]
+      when "create_item"
+        return Item.create_from_api_endpoint(params) ? Item.create_from_api_endpoint(params).bucket_id : nil
+      when "get_items"
+        u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) 
+        return u ? u.items_for_addon(self) : nil
+      end
+    end
+  end
+
   # --- HELPERS
   def create_user_url
     self.addon_url + "/users.json"
   end
 
-  def params_to_create_bucket_for_user(user)
-    if self == Addon.daily_j.first
-      return {:first_name => "Daily Journal", :bucket_type => "Journal", :user_id => user.id}
+  def params_to_create_bucket_for_user(user, first_name=true)
+    if self.daily_j?
+      if first_name
+        return {:first_name => "Daily Journal", :bucket_type => "Journal", :user_id => user.id}
+      else
+        return {:bucket_type => "Journal", :user_id => user.id}
+      end
     end
+  end
+
+  def daily_j?
+    self == Addon.daily_j.first
   end
 end
