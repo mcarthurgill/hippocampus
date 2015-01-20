@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @active = 'notes'
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   # GET /users/1/items.json
   def items
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @active = 'notes'
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   # GET /users/1/buckets.json
   def buckets
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @active = 'stacks'
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
 
-    redirect_if_not_authorized(params[:id]) ? return : nil
+    # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
     @user.destroy
