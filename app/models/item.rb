@@ -82,20 +82,20 @@ class Item < ActiveRecord::Base
 
   def self.create_from_api_endpoint(params)
     i = Item.new
-    i.user = User.validated_with_id_addon_and_token(params[:user][:id], params[:addon], params[:user][:token]) 
-    return nil if !i.user
+    addon = Addon.find_by_addon_name(params[:addon])
+    i.user = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], addon, params[:user][:token]) 
+    return nil if !i.user || !addon
 
     i.message = params[:message]
     i.input_method = params[:addon]
     i.item_type = 'note'
     i.status = 'assigned'
-    
-    b = Item.determine_bucket_for_addon_and_user(params[:addon], i.user, params[:user][:bucket_id])
-    i.bucket_id = b.id
+    bucket = Bucket.find_or_create_for_addon_and_user(addon, i.user)
+    i.bucket_id = bucket.id
 
     if i.user && i.message && i.message.length > 0
       i.save!
-      i.add_to_bucket(b)
+      i.add_to_bucket(bucket)
       return i
     end
     return nil
@@ -209,18 +209,6 @@ class Item < ActiveRecord::Base
   def self.item_types
     return ['note', 'yearly', 'monthly', 'weekly', 'daily']
   end
-
-  def self.determine_bucket_for_addon_and_user(addon_name, user, bid)
-    if bid && bid.length > 0
-      b = Bucket.find(bid)
-      if b && b.belongs_to_user?(user)
-        return b
-      end
-    end
-    return Bucket.create_for_addon_and_user(addon_name, user)
-  end
-
-
   
 
   # -- REMINDERS

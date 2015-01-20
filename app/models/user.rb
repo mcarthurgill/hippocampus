@@ -93,10 +93,9 @@ class User < ActiveRecord::Base
   
   def self.validated_with_id_addon_and_token(user_id, addon, token_string)
     u = User.find(user_id)
-    a = Addon.find_by_addon_name(addon)
-    if u && a
-      t = Token.for_user_and_addon(u.id, a.id).live.first
-      if t && t.token_string == token_string  
+    if u && addon
+      t = Token.for_user_and_addon(u.id, addon.id).live.first
+      if t && t.token_string == token_string
         return u
       end
     end
@@ -108,13 +107,23 @@ class User < ActiveRecord::Base
     if t.new_record?
       t.assign_token 
       t.save
-      Addon.delay.create_user_for_addon(self, addon)
+      b = Bucket.find_or_create_for_addon_and_user(addon, self)
+      Addon.delay.create_user_for_addon(self, addon, b)
     end
+
+    t.update_status("live") if !t.live?
     return t
   end
 
   def remove_from_addon(addon)
     t = Token.for_user_and_addon(self.id, addon.id).live
     t.update_status("deleted")
+  end
+
+  def items_for_addon(addon)
+    return nil if addon.nil?
+    
+    b = Bucket.for_addon_and_user(addon, self)
+    return b.items.by_date
   end
 end

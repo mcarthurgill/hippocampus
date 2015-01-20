@@ -25,9 +25,9 @@ Hippocampus::Application.routes.draw do
   resources :users, :except => [:index, :new, :create]
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets', as: 'user_buckets'
+
   post 'users/:id/add_to_addon/:addon_id', to: 'users#add_to_addon', as: 'user_add_to_addon'  
   post 'users/:id/remove_from_addon/:addon_id', to: 'users#remove_from_addon', as: 'user_remove_from_addon'
-
   post "api_endpoint", :to => "addons#api_endpoint", :as => "api_endpoint"
 
 end
