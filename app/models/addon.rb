@@ -41,7 +41,7 @@
   end
 
   def determine_endpoint_action(params)
-    u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) if params[:user][:hippocampus_user_id] && params[:user][:token]
+    u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) if params[:user] && params[:user][:hippocampus_user_id] && params[:user][:token]
 
     if self.daily_j?
       case params[:request_type]
