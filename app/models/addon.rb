@@ -40,7 +40,7 @@
     return response.code == 200
   end
 
-  def deterime_endpoint_action(params)
+  def determine_endpoint_action(params)
     if self.daily_j?
       case params[:request_type]
       when "create_item"
