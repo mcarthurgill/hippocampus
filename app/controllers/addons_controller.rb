@@ -4,7 +4,7 @@ class AddonsController < ApplicationController
     respond_to do |format|
       if addon
         resp = addon.determine_endpoint_action(params)
-        format.json { render json: resp, :status => 200 }
+        format.json { render json: resp.as_json, :status => 200 }
       else 
         format.json { render :nothing => true, :status => 401 }
       end
