@@ -49,6 +49,10 @@
       when "get_items"
         u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) 
         return u ? u.items_for_addon(self) : nil
+      when "update_item"
+        u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) 
+        i = Item.find(params[:item][:id])
+        return i.update_attributes(:message => params[:item][:message]) ? i : nil
       end
     end
   end
