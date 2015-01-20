@@ -49,7 +49,7 @@ class Item < ActiveRecord::Base
   end
 
   def check_status
-    self.status = "outstanding" if !self.has_buckets?
+    self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
   end
 
 
@@ -156,9 +156,9 @@ class Item < ActiveRecord::Base
 
   def update_outstanding
     if self.has_buckets?
-      self.update_status(:status, 'assigned')
+      self.update_status('assigned')
     else
-      self.update_status(:status, 'outstanding')
+      self.update_status('outstanding')
     end
   end
 
