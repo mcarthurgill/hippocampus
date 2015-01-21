@@ -9,7 +9,7 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
-      format.json
+      format.json { render json: { @item.as_json(methods: :buckets) } }
     end
   end
 
