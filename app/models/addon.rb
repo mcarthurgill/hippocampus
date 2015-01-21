@@ -57,7 +57,7 @@
         i = Item.find(params[:item][:id])
         return i ? i.update_status("deleted") : nil
       when "get_user"
-        return User.find_by_phone(params[:phone_number])
+        return User.login_from_addon(params[:phone_number], self)
       end
     end
   end

@@ -126,4 +126,16 @@ class User < ActiveRecord::Base
     b = Bucket.for_addon_and_user(addon, self)
     return b.items.not_deleted.by_date
   end
+
+  def self.login_from_addon(phone_number, addon)
+    u = User.find_by_phone(phone_number)
+    if u 
+      return_hash = {:user => {}}
+      return_hash[:user][:bucket_id] = Bucket.find_or_create_for_addon_and_user(addon, u).id
+      return_hash[:user][:hippocampus_user_id] = u.id
+      return_hash[:user][:token] = Token.for_user_and_addon(u.id, addon.id).first.token_string
+      return return_hash
+    end
+    return nil
+  end
 end
