@@ -312,7 +312,9 @@ class Item < ActiveRecord::Base
 
 
   def next_reminder_date
-    if self.reminder_date && !(self.reminder_date < Date.today && self.once?)
+    if self.reminder_date.nil? || (self.reminder_date < Date.today && self.once?)
+      return nil
+    else
       d = self.reminder_date 
       case self.item_type
       when "once"
@@ -334,7 +336,6 @@ class Item < ActiveRecord::Base
       end
       return d
     end
-    return nil
   end
   
 
