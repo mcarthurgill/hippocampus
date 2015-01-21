@@ -41,7 +41,7 @@
   end
 
   def determine_endpoint_action(params)
-    u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token])
+    u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) if params[:user] && params[:user][:hippocampus_user_id] && params[:user][:token]
 
     if self.daily_j?
       case params[:request_type]
@@ -56,6 +56,8 @@
       when "delete_item"
         i = Item.find(params[:item][:id])
         return i ? i.update_status("deleted") : nil
+      when "get_user"
+        return User.find_by_phone(params[:phone_number])
       end
     end
   end
