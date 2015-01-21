@@ -98,4 +98,14 @@ class UsersController < ApplicationController
       end
     end
   end
+
+  def reminders
+    @user = User.find(params[:id])
+    @upcoming_items = @user.sorted_reminders
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @upcoming_items }
+    end
+  end
 end

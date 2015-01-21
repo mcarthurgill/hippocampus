@@ -77,8 +77,12 @@ class User < ActiveRecord::Base
     return self.phone && self.phone.length > 0 ? self.phone[1..-1] : ''
   end
 
+  def sorted_reminders
+    self.items.not_deleted.limit(64).sort_by(&:next_reminder_date)
+  end
 
-  # --- TOKEN/ADDON
+
+  # --- TOKENS
 
   def update_and_send_passcode
     t = Token.with_params(user_id: self.id)
@@ -101,6 +105,9 @@ class User < ActiveRecord::Base
     end
     return nil
   end
+
+
+# --- ADDONS
 
   def add_to_addon(addon)
     t = Token.find_or_initialize_by_user_id_and_addon_id(self.id, addon.id)

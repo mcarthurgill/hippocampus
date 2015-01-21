@@ -216,7 +216,26 @@ class Item < ActiveRecord::Base
   def self.item_types
     return ['once', 'yearly', 'monthly', 'weekly', 'daily']
   end
+
+  def once?
+    self.item_type == "once"
+  end
+
+  def daily?
+    self.item_type == "daily"
+  end
+
+  def weekly?
+    self.item_type == "weekly"
+  end
   
+  def monthly?
+    self.item_type == "monthly"
+  end
+
+  def yearly?
+    self.item_type == "yearly"
+  end
 
   # -- REMINDERS
 
@@ -291,7 +310,33 @@ class Item < ActiveRecord::Base
   end
 
 
-
+  def next_reminder_date
+    if self.reminder_date.nil? || (self.reminder_date < Date.today && self.once?)
+      return nil
+    else
+      d = self.reminder_date 
+      case self.item_type
+      when "once"
+        #d is already set to reminder_date
+      when "daily"
+        d =  Date.today
+      when "weekly"
+        while d < Date.today
+          d = d + 7.days
+        end
+      when "monthly"
+        while d < Date.today
+          d = d + 1.month
+        end
+      when "yearly"
+        while d < Date.today
+          d = d + 1.year
+        end
+      end
+      return d
+    end
+  end
+  
 
   #  swiftype
 
