@@ -5,7 +5,7 @@ class Item < ActiveRecord::Base
   serialize :media_content_types, Array
   serialize :media_urls, Array
 
-  # types: note, yearly, monthly, weekly, daily
+  # types: once, yearly, monthly, weekly, daily
 
 
   # -- RELATIONSHIPS
@@ -23,7 +23,7 @@ class Item < ActiveRecord::Base
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :not_deleted, -> { where("status != ?", "deleted") }
-  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Date.today, "note").includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Date.today, "once").includes(:user) } 
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
@@ -63,7 +63,7 @@ class Item < ActiveRecord::Base
     i.user = User.with_phone_number(sms.From)
     i.media_urls = sms.MediaUrls
     i.media_content_types = sms.MediaContentTypes
-    i.item_type = 'note'
+    i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
     i.save!
@@ -74,7 +74,7 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = email.parsed_text
     i.user = User.with_email(email.From)
-    i.item_type = 'note'
+    i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'email'
     i.save!
@@ -88,7 +88,7 @@ class Item < ActiveRecord::Base
 
     i.message = params[:message]
     i.input_method = params[:addon]
-    i.item_type = 'note'
+    i.item_type = 'once'
     i.status = 'assigned'
     bucket = Bucket.find_or_create_for_addon_and_user(addon, i.user)
     i.bucket_id = bucket.id
@@ -212,7 +212,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.item_types
-    return ['note', 'yearly', 'monthly', 'weekly', 'daily']
+    return ['once', 'yearly', 'monthly', 'weekly', 'daily']
   end
   
 
