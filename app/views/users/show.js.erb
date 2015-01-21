@@ -1,2 +1,2 @@
-console.log('here');
-$('#items-container').append();
+$('#items-container').append("<%= j render(:partial => 'items') %>");
+$('#load-more').html("<%= j render(:partial => 'load_more') %>")

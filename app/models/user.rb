@@ -77,8 +77,8 @@ class User < ActiveRecord::Base
     return self.phone && self.phone.length > 0 ? self.phone[1..-1] : ''
   end
 
-  def sorted_reminders
-    self.items.not_deleted.with_reminder.limit(64).delete_if{ |i| i.once? && i.reminder_date < Date.today }.sort_by(&:next_reminder_date)
+  def sorted_reminders(limit=64, page=0)
+    self.items.not_deleted.with_reminder.limit(limit).offset(1*page).delete_if{ |i| i.once? && i.reminder_date < Date.today }.sort_by(&:next_reminder_date)
   end
 
 

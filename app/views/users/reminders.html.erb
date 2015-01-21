@@ -15,25 +15,13 @@
   <div class="col-xs-12">
     <div class="list-group">
       <li class="list-group-item list-group-item-info category-header">Upcoming Reminders</li>
-      <% @upcoming_items.each do |i| %>
-        <a href=<%= item_path(i) %> class="list-group-item bucket-container">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="col-md-1">
-                <h4 class="list-group-item-heading"><%= i.next_reminder_date.strftime("%D") %></h4>
-                <p class="list-group-item-text" style="overflow:hidden;"><small><small><em><%= i.item_type %></em></small></small></p>
-              </div>
-              <div class="col-md-11">
-                <p class="list-group-item-text" style="overflow:hidden;"><%= i.message %></p>
-              </div>
-            </div>
-          </div>
-        </a>
-      <% end %>
+      <div id="reminders-container">
+        <%= render "users/reminders/upcoming_reminders" %>
+      </div>
     </div>
-    <% if true %>
-      <%= link_to '+ Load More', current_user, remote: true, :class => "btn btn-primary btn-md btn-block" %>
-    <% end %>  
+    <div id="load-more">
+      <%= render "users/reminders/load_more_reminders" %>
+    </div>
   </div>
 </div>
 

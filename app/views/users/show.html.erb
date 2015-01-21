@@ -50,8 +50,8 @@
     <div class="list-group" id="items-container">
       <%= render 'items' %>
     </div>
-    <% if true %>
-      <%= link_to '+ Load More', current_user, remote: true, :class => "btn btn-primary btn-md btn-block" %>
-    <% end %>
+    <div id="load-more">
+      <%= render 'load_more' %>
+    </div>
   </div>
 </div>

@@ -8,9 +8,9 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'notes'
-
+    
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
-
+  
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json do 
@@ -101,11 +101,13 @@ class UsersController < ApplicationController
 
   def reminders
     @user = User.find(params[:id])
-    @upcoming_items = @user.sorted_reminders
+
+    @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     respond_to do |format|
       format.html
       format.json { render json: @upcoming_items }
+      format.js
     end
   end
 end
