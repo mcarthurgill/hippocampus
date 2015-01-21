@@ -99,17 +99,21 @@ class Bucket < ActiveRecord::Base
     document_slug = 'buckets'
 
     # create Documents within the DocumentType
-    client.create_or_update_documents(engine_slug, document_slug, [
-      {:external_id => self.id, :fields => [
-        {:name => 'first_name', :value => self.first_name, :type => 'string'},
-        {:name => 'items_count', :value => self.items_count, :type => 'integer'},
-        {:name => 'user_id', :value => self.user_id, :type => 'integer'},
-        {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
-        {:name => 'bucket_id', :value => self.id, :type => 'integer'},
-        {:name => 'created_at', :value => self.created_at, :type => 'string'},
-        {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
-      ]}
-    ])
+    begin
+      client.create_or_update_documents(engine_slug, document_slug, [
+        {:external_id => self.id, :fields => [
+          {:name => 'first_name', :value => self.first_name, :type => 'string'},
+          {:name => 'items_count', :value => self.items_count, :type => 'integer'},
+          {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+          {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
+          {:name => 'bucket_id', :value => self.id, :type => 'integer'},
+          {:name => 'created_at', :value => self.created_at, :type => 'string'},
+          {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
+        ]}
+      ])
+    rescue Exception => e
+      puts 'rescued a swiptype exception!'
+    end
   end
 
   def remove_from_engine
@@ -117,7 +121,11 @@ class Bucket < ActiveRecord::Base
     # The automatically created engine has a slug of 'engine'
     engine_slug = 'engine'
     document_slug = 'buckets'
-    client.destroy_document(engine_slug, document_slug, self.id)
+    begin
+      client.destroy_document(engine_slug, document_slug, self.id)
+    rescue Exception => e
+      puts 'rescued a swiptype exception!'
+    end
   end
 
 
