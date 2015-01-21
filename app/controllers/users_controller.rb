@@ -13,7 +13,13 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
-      format.json
+      format.json do 
+        if @page > 0
+          render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page) }
+        else
+          render json: { :outstanding_items => @user.items.by_date.outstanding, :items => @user.items.by_date.assigned.limit(64).offset(64*@page) }
+        end
+      end
       format.js
     end
   end
