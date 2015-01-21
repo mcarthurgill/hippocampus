@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :buckets_string, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
@@ -50,6 +50,7 @@ class Item < ActiveRecord::Base
 
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
+    self.buckets_string = self.description_string
   end
 
 
@@ -181,11 +182,12 @@ class Item < ActiveRecord::Base
     return (self.media_urls && self.media_urls.count > 0)
   end
 
-  def buckets_string
+  def description_string
     s = ''
     self.buckets.each do |b|
       s = "#{s} #{b.display_name}"
     end
+    s = nil if s == ''
     return s
   end
 
@@ -308,17 +310,21 @@ class Item < ActiveRecord::Base
       self.remove_from_engine
     else
       # create Documents within the DocumentType
-      client.create_or_update_documents(engine_slug, document_slug, [
-        {:external_id => self.id, :fields => [
-          {:name => 'message', :value => self.message, :type => 'string'},
-          {:name => 'user_id', :value => self.user_id, :type => 'integer'},
-          {:name => 'item_type', :value => self.item_type, :type => 'string'},
-          {:name => 'buckets_string', :value => self.buckets_string, :type => 'string'},
-          {:name => 'item_id', :value => self.id, :type => 'integer'},
-          {:name => 'created_at', :value => self.created_at, :type => 'string'},
-          {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
-        ]}
-      ])
+      begin
+        client.create_or_update_documents(engine_slug, document_slug, [
+          {:external_id => self.id, :fields => [
+            {:name => 'message', :value => self.message, :type => 'string'},
+            {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+            {:name => 'item_type', :value => self.item_type, :type => 'string'},
+            {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
+            {:name => 'item_id', :value => self.id, :type => 'integer'},
+            {:name => 'created_at', :value => self.created_at, :type => 'string'},
+            {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
+          ]}
+        ])
+      rescue Exception => e
+        puts 'rescued a swiptype exception!'
+      end
     end
   end
 
@@ -327,7 +333,11 @@ class Item < ActiveRecord::Base
     # The automatically created engine has a slug of 'engine'
     engine_slug = 'engine'
     document_slug = 'items'
-    client.destroy_document(engine_slug, document_slug, self.id)
+    begin
+      client.destroy_document(engine_slug, document_slug, self.id)
+    rescue Exception => e
+      puts 'rescued a swiptype exception!'
+    end
   end
 
 end
