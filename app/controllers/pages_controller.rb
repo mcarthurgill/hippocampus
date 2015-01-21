@@ -16,6 +16,11 @@ class PagesController < ApplicationController
 
     puts @results
 
+    respond_to do |format|
+      format.html
+      format.json { render json: { :buckets => @results.records['buckets'], :items => @results.records['items'], :term => params[:t] } }
+    end
+
   end
 
 
