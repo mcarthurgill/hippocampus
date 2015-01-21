@@ -315,6 +315,8 @@ class Item < ActiveRecord::Base
           {:name => 'item_type', :value => self.item_type, :type => 'string'},
           {:name => 'buckets_string', :value => self.buckets_string, :type => 'string'},
           {:name => 'item_id', :value => self.id, :type => 'integer'},
+          {:name => 'created_at', :value => self.created_at, :type => 'string'},
+          {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
         ]}
       ])
     end

@@ -106,6 +106,8 @@ class Bucket < ActiveRecord::Base
         {:name => 'user_id', :value => self.user_id, :type => 'integer'},
         {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
         {:name => 'bucket_id', :value => self.id, :type => 'integer'},
+        {:name => 'created_at', :value => self.created_at, :type => 'string'},
+        {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
       ]}
     ])
   end
