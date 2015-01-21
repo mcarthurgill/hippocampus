@@ -77,8 +77,12 @@ class User < ActiveRecord::Base
     return self.phone && self.phone.length > 0 ? self.phone[1..-1] : ''
   end
 
+  def sorted_reminders
+    items = self.items.not_deleted.with_reminder.limit(64).sort_by(&:next_reminder_date)
+  end
 
-  # --- TOKEN/ADDON
+
+  # --- TOKENS
 
   def update_and_send_passcode
     t = Token.with_params(user_id: self.id)
@@ -101,6 +105,9 @@ class User < ActiveRecord::Base
     end
     return nil
   end
+
+
+# --- ADDONS
 
   def add_to_addon(addon)
     t = Token.find_or_initialize_by_user_id_and_addon_id(self.id, addon.id)
@@ -125,5 +132,17 @@ class User < ActiveRecord::Base
     
     b = Bucket.for_addon_and_user(addon, self)
     return b.items.not_deleted.by_date
+  end
+
+  def self.login_from_addon(phone_number, addon)
+    u = User.find_by_phone(phone_number)
+    if u 
+      return_hash = {:user => {}}
+      return_hash[:user][:bucket_id] = Bucket.find_or_create_for_addon_and_user(addon, u).id
+      return_hash[:user][:hippocampus_user_id] = u.id
+      return_hash[:user][:token] = Token.for_user_and_addon(u.id, addon.id).first.token_string
+      return return_hash
+    end
+    return nil
   end
 end
