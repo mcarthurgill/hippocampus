@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   end
 
   def sorted_reminders
-    self.items.not_deleted.with_reminder.limit(64).sort_by(&:next_reminder_date)
+    self.items.not_deleted.with_reminder.limit(64).sort_by(&:next_reminder_date rescue nil)
   end
 
 
