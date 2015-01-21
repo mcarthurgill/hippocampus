@@ -315,7 +315,7 @@ class Item < ActiveRecord::Base
     " ArgumentError (comparison of Date with nil failed):
 2015-01-21T19:52:09.214183+00:00 app[web.1]:   app/models/user.rb:81:in `sorted_reminders'
 2015-01-21T19:52:09.214185+00:00 app[web.1]:   app/controllers/users_controller.rb:104:in `reminders'"
-    if self.reminder_date.nil? || (self.reminder_date < Date.today && self.once?)
+    if self.reminder_date.nil? #|| (self.reminder_date < Date.today && self.once?)
       return nil
     else
       d = self.reminder_date 
