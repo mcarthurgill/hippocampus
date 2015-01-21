@@ -310,17 +310,21 @@ class Item < ActiveRecord::Base
       self.remove_from_engine
     else
       # create Documents within the DocumentType
-      client.create_or_update_documents(engine_slug, document_slug, [
-        {:external_id => self.id, :fields => [
-          {:name => 'message', :value => self.message, :type => 'string'},
-          {:name => 'user_id', :value => self.user_id, :type => 'integer'},
-          {:name => 'item_type', :value => self.item_type, :type => 'string'},
-          {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
-          {:name => 'item_id', :value => self.id, :type => 'integer'},
-          {:name => 'created_at', :value => self.created_at, :type => 'string'},
-          {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
-        ]}
-      ])
+      begin
+        client.create_or_update_documents(engine_slug, document_slug, [
+          {:external_id => self.id, :fields => [
+            {:name => 'message', :value => self.message, :type => 'string'},
+            {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+            {:name => 'item_type', :value => self.item_type, :type => 'string'},
+            {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
+            {:name => 'item_id', :value => self.id, :type => 'integer'},
+            {:name => 'created_at', :value => self.created_at, :type => 'string'},
+            {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
+          ]}
+        ])
+      rescue Exception => e
+        puts 'rescued a swiptype exception!'
+      end
     end
   end
 
@@ -329,7 +333,11 @@ class Item < ActiveRecord::Base
     # The automatically created engine has a slug of 'engine'
     engine_slug = 'engine'
     document_slug = 'items'
-    client.destroy_document(engine_slug, document_slug, self.id)
+    begin
+      client.destroy_document(engine_slug, document_slug, self.id)
+    rescue Exception => e
+      puts 'rescued a swiptype exception!'
+    end
   end
 
 end
