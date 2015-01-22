@@ -88,11 +88,11 @@ class Item < ActiveRecord::Base
     i.user = user
     return nil if !i.user || !addon
 
-    i.message = params[:message]
-    i.input_method = params[:addon]
+    i.message = params["message"]
+    i.input_method = params["addon"]
     i.item_type = 'once'
     i.status = 'assigned'
-    bucket = Bucket.find(params[:user][:bucket_id])
+    bucket = Bucket.find(params["user"]["bucket_id"])
     i.bucket_id = bucket.id
 
     if i.user && i.message && i.message.length > 0
