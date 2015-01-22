@@ -49,7 +49,7 @@
         i = Item.create_from_api_endpoint(params, u, self) 
         return i ? i.bucket_id : nil
       when "get_items"
-        return u ? u.items_for_addon(params) : [Item.first]
+        return u ? u.items_for_addon(params) : nil
       when "update_item"
         i = Item.find(params["item"]["id"])
         return i ? i.update_message(params["item"]["message"]) : nil
