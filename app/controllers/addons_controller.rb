@@ -7,7 +7,7 @@ class AddonsController < ApplicationController
         if resp
           format.json { render json: resp.to_json, :status => 200 }  
         else
-          format.json { render :nothing => true, :status => 401 }
+          format.json { render :nothing => true, :status => 402 }
         end
       else 
         format.json { render :nothing => true, :status => 401 }
