@@ -359,7 +359,8 @@ class Item < ActiveRecord::Base
       begin
         client.create_or_update_documents(engine_slug, document_slug, [
           {:external_id => self.id, :fields => [
-            {:name => 'message', :value => self.message, :type => 'text'},
+            {:name => 'message', :value => self.message, :type => 'string'},
+            {:name => 'text', :value => self.message, :type => 'text'},
             {:name => 'user_id', :value => self.user_id, :type => 'integer'},
             {:name => 'item_type', :value => self.item_type, :type => 'string'},
             {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
