@@ -92,7 +92,7 @@ class Item < ActiveRecord::Base
     i.input_method = params[:addon]
     i.item_type = 'once'
     i.status = 'assigned'
-    bucket = Bucket.find_or_create_for_addon_and_user(addon, i.user)
+    bucket = Bucket.create_for_addon_and_user(addon, i.user)
     i.bucket_id = bucket.id
 
     if i.user && i.message && i.message.length > 0
