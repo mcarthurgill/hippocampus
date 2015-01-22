@@ -56,11 +56,6 @@ class Bucket < ActiveRecord::Base
     return Bucket.create(attrs_hash)
   end
 
-  def self.for_addon_and_user(addon, user)
-    attrs_hash = addon.params_to_create_bucket_for_user(user, false)
-    Bucket.where(attrs_hash).first
-  end
-
   # -- HELPERS
 
   def display_name
@@ -73,10 +68,6 @@ class Bucket < ActiveRecord::Base
 
   def belongs_to_user?(u)
     self.user == u
-  end
-
-  def created_by_addon?
-    self.bucket_type && !Bucket.bucket_types.include?(self.bucket_type)
   end
 
   #  swiftype
