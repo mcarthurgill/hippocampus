@@ -82,7 +82,7 @@ class Bucket < ActiveRecord::Base
   end
 
   def created_by_addon?
-    !self.bucket_type || !Bucket.bucket_types.include?(self.bucket_type)
+    self.bucket_type && !Bucket.bucket_types.include?(self.bucket_type)
   end
 
   #  swiftype
