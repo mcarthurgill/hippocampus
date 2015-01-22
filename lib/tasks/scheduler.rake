@@ -40,8 +40,8 @@ task :send_random_notes => :environment do
   3.times do 
     u = User.find(1)
     bucket = u.buckets.sample
-    note = bucket.notes.sample
-    txt_message = "#{bucket.first_name} - #{note.message}"
+    item = bucket.items.sample
+    txt_message = "#{bucket.first_name} - #{item.message}"
     text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, txt_message)
     text.send
   end
