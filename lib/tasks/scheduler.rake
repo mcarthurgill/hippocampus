@@ -38,7 +38,7 @@ task :send_random_notes => :environment do
   p "*"*50
   p "texting random notes"
   3.times do 
-    u = User.find(1)
+    u = User.find(2)
     bucket = u.buckets.sample
     item = bucket.items.sample
     txt_message = "#{bucket.first_name} - #{item.message}"
