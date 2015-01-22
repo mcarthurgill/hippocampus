@@ -33,6 +33,22 @@ task :send_mcarthur_text => :environment do
   p "*"*50
 end
 
+desc "Text three random notes a day to those interested"
+task :send_random_notes => :environment do 
+  p "*"*50
+  p "texting random notes"
+  3.times do 
+    u = User.find(1)
+    bucket = u.buckets.sample
+    note = bucket.notes.sample
+    txt_message = "#{bucket.first_name} - #{note.message}"
+    text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, txt_message)
+    text.send
+  end
+  p "done"
+  p "*"*50
+end
+
 require "net/http"
  
 desc "Ping app"
