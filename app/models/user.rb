@@ -127,17 +127,15 @@ class User < ActiveRecord::Base
     t.update_status("deleted")
   end
 
-  def items_for_addon(addon)
-    return nil if addon.nil?
-    
-    b = Bucket.for_addon_and_user(addon, self)
+  def items_for_addon(params)
+    b = Bucket.find(params[:user][:bucket_id])
     return b ? b.items.not_deleted.by_date : nil
   end
 
-  def self.login_from_addon(phone_number, addon)
-    u = User.find_by_phone(phone_number)
+  def self.login_from_addon(params, addon)
+    u = User.find_by_phone(params[:phone_number])
     if u 
-      b = Bucket.for_addon_and_user(addon, u) 
+      b = Bucket.find(params[:user][:bucket_id]) 
       return_hash = {:user => {}}
       return_hash[:user][:bucket_id] = b ? b.id : nil
       return_hash[:user][:hippocampus_user_id] = u.id
