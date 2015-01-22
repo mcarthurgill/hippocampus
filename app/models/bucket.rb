@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type
 
-  # possible bucket_type: "Other", "Person", "Event", "Place", "Journal"
+  # possible bucket_type: "Other", "Person", "Event", "Place"
 
 
   # -- RELATIONSHIPS
@@ -23,7 +23,6 @@ class Bucket < ActiveRecord::Base
   scope :person_type, -> { where('bucket_type = ?', 'Person') }
   scope :event_type, -> { where('bucket_type = ?', 'Event') }
   scope :place_type, -> { where('bucket_type = ?', 'Place') }
-  scope :journal_type, -> { where('bucket_type = ?', 'Journal') }
 
 
   # -- VALIDATIONS
@@ -52,14 +51,9 @@ class Bucket < ActiveRecord::Base
     self.bucket_type = self.bucket_type ? self.bucket_type.strip : nil
   end
 
-  def self.find_or_create_for_addon_and_user(addon, user)  
-    bucket = Bucket.for_addon_and_user(addon, user)
-
-    if bucket.nil?
-      b = Bucket.create(attrs_hash)
-      return b
-    end
-    return bucket
+  def self.create_for_addon_and_user(addon, user)  
+    attrs_hash = addon.params_to_create_bucket_for_user(user)
+    return Bucket.create(attrs_hash)
   end
 
   def self.for_addon_and_user(addon, user)
