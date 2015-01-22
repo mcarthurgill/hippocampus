@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
     if t.new_record?
       t.assign_token 
       t.save
-      b = Bucket.find_or_create_for_addon_and_user(addon, self)
+      b = Bucket.create_for_addon_and_user(addon, self)
       Addon.delay.create_user_for_addon(self, addon, b)
     end
 
@@ -131,14 +131,15 @@ class User < ActiveRecord::Base
     return nil if addon.nil?
     
     b = Bucket.for_addon_and_user(addon, self)
-    return b.items.not_deleted.by_date
+    return b ? b.items.not_deleted.by_date : nil
   end
 
   def self.login_from_addon(phone_number, addon)
     u = User.find_by_phone(phone_number)
     if u 
+      b = Bucket.for_addon_and_user(addon, u) 
       return_hash = {:user => {}}
-      return_hash[:user][:bucket_id] = Bucket.find_or_create_for_addon_and_user(addon, u).id
+      return_hash[:user][:bucket_id] = b ? b.id : nil
       return_hash[:user][:hippocampus_user_id] = u.id
       return_hash[:user][:token] = Token.for_user_and_addon(u.id, addon.id).first.token_string
       return return_hash

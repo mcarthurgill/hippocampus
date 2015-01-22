@@ -70,9 +70,9 @@
   def params_to_create_bucket_for_user(user, first_name=true)
     if self.daily_j?
       if first_name
-        return {:first_name => "Daily Journal", :bucket_type => "Journal", :user_id => user.id}
+        return {:first_name => "Daily Journal", :bucket_type => "Other", :user_id => user.id}
       else
-        return {:bucket_type => "Journal", :user_id => user.id}
+        return {:bucket_type => "Other", :user_id => user.id}
       end
     end
   end
