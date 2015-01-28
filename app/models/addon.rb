@@ -41,20 +41,20 @@
   end
 
   def determine_endpoint_action(params)
-    u = User.validated_with_id_addon_and_token(params[:user][:hippocampus_user_id], self, params[:user][:token]) if params[:user] && params[:user][:hippocampus_user_id] && params[:user][:token]
+    u = User.validated_with_id_addon_and_token(params["user"]["hippocampus_user_id"], self, params["user"]["token"]) if params["user"] && params["user"]["hippocampus_user_id"] && params["user"]["token"]
 
     if self.daily_j?
-      case params[:request_type]
+      case params["request_type"]
       when "create_item"
         i = Item.create_from_api_endpoint(params, u, self) 
         return i ? i.bucket_id : nil
       when "get_items"
         return u ? u.items_for_addon(params) : nil
       when "update_item"
-        i = Item.find(params[:item][:id])
-        return i ? i.update_message(params[:item][:message]) : nil
+        i = Item.find(params["item"]["id"])
+        return i ? i.update_message(params["item"]["message"]) : nil
       when "delete_item"
-        i = Item.find(params[:item][:id])
+        i = Item.find(params["item"]["id"])
         return i ? i.update_status("deleted") : nil
       when "get_user"
         return User.login_from_addon(params, self)

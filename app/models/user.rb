@@ -128,18 +128,15 @@ class User < ActiveRecord::Base
   end
 
   def items_for_addon(params)
-    b = Bucket.find(params[:user][:bucket_id])
+    b = Bucket.find(params["user"]["bucket_id"])
     return b ? b.items.not_deleted.by_date : nil
   end
 
   def self.login_from_addon(params, addon)
-    u = User.find_by_phone(params[:phone_number])
+    u = User.find_by_phone(params["phone_number"])
     if u 
-      b = Bucket.find(params[:user][:bucket_id]) 
       return_hash = {:user => {}}
-      return_hash[:user][:bucket_id] = b ? b.id : nil
       return_hash[:user][:hippocampus_user_id] = u.id
-      return_hash[:user][:token] = Token.for_user_and_addon(u.id, addon.id).first.token_string
       return return_hash
     end
     return nil
