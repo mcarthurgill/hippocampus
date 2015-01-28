@@ -37,7 +37,7 @@ gem 'httparty'
 
 gem 'rails_autolink'
 
-gem 'swiftype', '~> 1.0.0'
+gem 'swiftype'
 
 gem 'cloudinary'
 

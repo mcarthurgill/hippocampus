@@ -159,7 +159,7 @@ DEPENDENCIES
   rails_autolink
   sass-rails (~> 3.2.3)
   sqlite3
-  swiftype (~> 1.0.0)
+  swiftype
   therubyracer
   twilio-ruby
   twitter-bootstrap-rails!
