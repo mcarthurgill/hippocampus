@@ -52,17 +52,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.remind_about_events
-    items = Item.notes_for_today
-    items.each do |i|
-      message = "Your Hippocampus reminder for today:\n" + i.message
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
-    end
-  end
-
-
-
   # -- HELPERS
 
   def formatted_buckets_options

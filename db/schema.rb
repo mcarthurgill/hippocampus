@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150122184605) do
+ActiveRecord::Schema.define(:version => 20150128162120) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -80,6 +80,21 @@ ActiveRecord::Schema.define(:version => 20150122184605) do
     t.integer  "item_id"
     t.string   "email"
     t.text     "Attachments"
+  end
+
+  create_table "introduction_questions", :force => true do |t|
+    t.string   "question_text"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.string   "status",        :default => "live"
+  end
+
+  create_table "introduction_responses", :force => true do |t|
+    t.string   "response_text"
+    t.integer  "introduction_question_id"
+    t.boolean  "flagged"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
 
   create_table "items", :force => true do |t|

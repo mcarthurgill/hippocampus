@@ -11,7 +11,7 @@ desc "This texts all users about their events today"
 task :send_reminders_about_events => :environment do
   p "*"*50
   p "texting users about their events"
-  User.remind_about_events
+  Item.remind_about_events
   p "done"
   p "*"*50
 end
