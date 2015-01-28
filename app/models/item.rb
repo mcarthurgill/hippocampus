@@ -357,7 +357,7 @@ class Item < ActiveRecord::Base
     else
       # create Documents within the DocumentType
       begin
-        client.create_or_update_documents(engine_slug, document_slug, [
+        client.create_or_update_documents_verbose(engine_slug, document_slug, [
           {:external_id => self.id, :fields => [
             {:name => 'message', :value => self.message, :type => 'string'},
             {:name => 'text', :value => self.message, :type => 'text'},

@@ -85,7 +85,7 @@ class Bucket < ActiveRecord::Base
 
     # create Documents within the DocumentType
     begin
-      client.create_or_update_documents(engine_slug, document_slug, [
+      client.create_or_update_documents_verbose(engine_slug, document_slug, [
         {:external_id => self.id, :fields => [
           {:name => 'first_name', :value => self.first_name, :type => 'string'},
           {:name => 'items_count', :value => self.items_count, :type => 'integer'},
