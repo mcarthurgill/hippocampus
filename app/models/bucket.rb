@@ -85,17 +85,17 @@ class Bucket < ActiveRecord::Base
 
     # create Documents within the DocumentType
     begin
-      client.create_or_update_documents_verbose(engine_slug, document_slug, [
+      client.create_or_update_document(engine_slug, document_slug,
         {:external_id => self.id, :fields => [
           {:name => 'first_name', :value => self.first_name, :type => 'string'},
           {:name => 'items_count', :value => self.items_count, :type => 'integer'},
           {:name => 'user_id', :value => self.user_id, :type => 'integer'},
           {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
           {:name => 'bucket_id', :value => self.id, :type => 'integer'},
-          {:name => 'created_at', :value => self.created_at, :type => 'string'},
-          {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
+          {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
+          {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
         ]}
-      ])
+      )
     rescue Exception => e
       puts 'rescued a swiptype exception!'
     end

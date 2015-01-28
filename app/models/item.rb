@@ -357,22 +357,24 @@ class Item < ActiveRecord::Base
     else
       # create Documents within the DocumentType
       begin
-        client.create_or_update_documents_verbose(engine_slug, document_slug, [
-          {:external_id => self.id, :fields => [
-            {:name => 'message', :value => self.message, :type => 'string'},
-            {:name => 'text', :value => self.message, :type => 'text'},
-            {:name => 'user_id', :value => self.user_id, :type => 'integer'},
-            {:name => 'item_type', :value => self.item_type, :type => 'string'},
-            {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
-            {:name => 'item_id', :value => self.id, :type => 'integer'},
-            {:name => 'created_at', :value => self.created_at, :type => 'string'},
-            {:name => 'updated_at', :value => self.updated_at, :type => 'string'},
-          ]}
-        ])
+        client.create_or_update_document(engine_slug, document_slug, self.index_representation)
       rescue Exception => e
         puts 'rescued a swiptype exception!'
       end
     end
+  end
+
+  def index_representation
+    return {:external_id => self.id, :fields => [
+      {:name => 'message', :value => self.message, :type => 'string'},
+      {:name => 'text', :value => self.message, :type => 'text'},
+      {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+      {:name => 'item_type', :value => self.item_type, :type => 'string'},
+      {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
+      {:name => 'item_id', :value => self.id, :type => 'integer'},
+      {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
+      {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
+    ]}
   end
 
   def remove_from_engine
@@ -382,6 +384,32 @@ class Item < ActiveRecord::Base
     document_slug = 'items'
     begin
       client.destroy_document(engine_slug, document_slug, self.id)
+    rescue Exception => e
+      puts 'rescued a swiptype exception!'
+    end
+  end
+
+
+  def self.index_bulk_wrapper
+    cur = []
+    Item.all.each_with_index do |item, i|
+      cur << item.index_representation
+      if i%100 == 0
+        Item.index_bulk(cur)
+        cur = []
+      end
+    end
+    Item.index_bulk(cur)
+  end
+
+  def self.index_bulk items
+    client = Swiftype::Client.new
+    # The automatically created engine has a slug of 'engine'
+    engine_slug = 'engine'
+    document_slug = 'items'
+    # create Documents within the DocumentType
+    begin
+      client.create_or_update_documents(engine_slug, document_slug, items)
     rescue Exception => e
       puts 'rescued a swiptype exception!'
     end
