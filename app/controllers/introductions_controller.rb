@@ -13,10 +13,10 @@ class IntroductionsController < ApplicationController
 
     if index == @qids.length - 1
       if @flagged/2.0 > (@qids.length - 1)/2.0
-        redirect_to fail_path(:format => "html"), :notice => "Sorry. Hippocampus just isn't for you." 
+        render :js => "window.location.href='"+fail_path+"'", :notice => "Sorry Hippocampus just isn't for you."
         return
       else
-        redirect_to login_path(:format => "html"), :notice => "Hippocampus is perfect for you. Let's do this." 
+        render :js => "window.location.href='"+login_path+"'", :notice => "We built Hippocampus for you."
         return
       end      
     end
@@ -29,6 +29,5 @@ class IntroductionsController < ApplicationController
   end
 
   def fail
-    p "*"*50
   end
 end
