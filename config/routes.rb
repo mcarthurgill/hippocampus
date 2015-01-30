@@ -7,8 +7,10 @@ Hippocampus::Application.routes.draw do
   post 'session', :to => "sessions#create"
   get 'logout', :to => "sessions#destroy", :as => "logout"
   match 'passcode', :to => "sessions#passcode", :as => "passcode"
+  
   match 'next', :to => "introductions#next", :as => "next"
   match 'fail', :to => "introductions#fail", :as => "fail"
+  match 'intro_questions', :to => "introductions#get_questions", :as => "get_intro_questions"
 
   resources :buckets, :only => [:show, :new, :edit, :create, :update, :destroy]
   
