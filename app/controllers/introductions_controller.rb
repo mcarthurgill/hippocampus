@@ -33,7 +33,7 @@ class IntroductionsController < ApplicationController
 
   def get_questions
     respond_to do |format|
-      format.json { render json: IntroductionQuestion.live_with_responses.as_json }
+      format.json { render json: IntroductionQuestion.live_with_responses.as_json(:methods => :introduction_responses) }
     end
   end
 end
