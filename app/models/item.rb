@@ -177,6 +177,10 @@ class Item < ActiveRecord::Base
     return self
   end
   
+  def update_buckets_string
+    self.update_attributes(:buckets_string => self.description_string)
+  end
+  
   # -- HELPERS
 
   def has_media?

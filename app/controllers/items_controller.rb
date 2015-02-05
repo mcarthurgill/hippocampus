@@ -26,6 +26,8 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
+        @item.add_to_bucket(Bucket.find(params[:bucket_id])) if params[:bucket_id] && params[:bucket_id].length > 0
+
         format.html { redirect_to item_path(@item) }
         format.json { render json: @item, status: :created, location: @item }
       else
