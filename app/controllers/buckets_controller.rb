@@ -12,7 +12,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
         format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
-        format.json { render json: @bucket.items.not_deleted.by_date }
+        format.json { render json: @bucket.items.not_deleted.newest_last }
     end
 
   end

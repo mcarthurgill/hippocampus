@@ -30,6 +30,7 @@ class Item < ActiveRecord::Base
   scope :yearly, -> { where("item_type = ?", "yearly").includes(:user) } 
   scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
   scope :by_date, -> { order("created_at DESC") }
+  scope :newest_last, -> { order("created_at ASC") }
   scope :with_reminder, -> { where("reminder_date IS NOT NULL") }
   
   # -- CALLBACKS
