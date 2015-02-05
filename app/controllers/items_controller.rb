@@ -24,9 +24,10 @@ class ItemsController < ApplicationController
       @item.upload_main_asset(params[:item][:file])
     end
 
+    #this needs to be cleaned up
     respond_to do |format|
       if @item.save
-        @item.add_to_bucket(Bucket.find(params[:bucket_id])) if params[:bucket_id] && params[:bucket_id].length > 0
+        @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0
         @item.update_buckets_string
         format.html { redirect_to item_path(@item) }
         format.json { render json: @item, status: :created, location: @item }
