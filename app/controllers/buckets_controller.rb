@@ -9,10 +9,11 @@ class BucketsController < ApplicationController
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
     @active = 'stacks'
+    @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     respond_to do |format|
         format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
-        format.json { render json: @bucket.items.not_deleted.newest_last }
+        format.json { render json: :items => @bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse, :page => @page }
     end
 
   end

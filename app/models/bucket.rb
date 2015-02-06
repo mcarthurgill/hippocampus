@@ -1,6 +1,6 @@
 class Bucket < ActiveRecord::Base
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
