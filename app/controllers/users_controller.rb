@@ -17,7 +17,7 @@ class UsersController < ApplicationController
         if @page > 0
           render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :count => 64 }
         else
-          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.newest_last.assigned.limit(64).offset(64*@page).reverse }
+          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse }
         end
       end
       format.js
