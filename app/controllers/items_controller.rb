@@ -26,6 +26,8 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
+        @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0
+
         format.html { redirect_to item_path(@item) }
         format.json { render json: @item, status: :created, location: @item }
       else
@@ -109,7 +111,7 @@ class ItemsController < ApplicationController
 
     # redirect_if_not_authorized(@item.user_id) ? return : nil
     
-    @item.destroy
+    @item.update_status("deleted")
 
     respond_to do |format|
       format.html { redirect_to user_path(current_user), :notice => "Note deleted successfully." }

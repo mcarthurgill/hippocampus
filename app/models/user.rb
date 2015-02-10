@@ -22,7 +22,11 @@ class User < ActiveRecord::Base
     return User.find_by_email(e.strip.downcase)
   end
 
-
+  def recent_buckets_with_shell
+    return_buckets = [Bucket.new(:first_name => "All Notes", :items_count => self.items.outstanding.count, :updated_at => self.items.last.updated_at)]
+    return_buckets << self.buckets.recent_for_user_id(self.id)
+    return return_buckets.flatten
+  end
   # -- SETTERS
 
   def self.with_or_initialize_with_phone_number phone_number
