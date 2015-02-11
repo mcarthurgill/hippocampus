@@ -106,7 +106,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: {:reminders => @user.sorted_reminders(64, @page)} }
+      format.json { render json: {:reminders => @user.sorted_reminders(64, @page).to_json(:methods => :next_reminder_date)} }
       format.js
     end
   end
