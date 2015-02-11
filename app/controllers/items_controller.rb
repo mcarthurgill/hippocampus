@@ -112,7 +112,7 @@ class ItemsController < ApplicationController
     # redirect_if_not_authorized(@item.user_id) ? return : nil
     
     @item.update_status("deleted")
-    @item.bucket.update_count
+    @item.buckets.each do {|b| b.update_count }
 
     respond_to do |format|
       format.html { redirect_to user_path(current_user), :notice => "Note deleted successfully." }
