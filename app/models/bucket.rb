@@ -40,8 +40,8 @@ class Bucket < ActiveRecord::Base
     self.last_name = (self.last_name && self.last_name.length > 0) ? self.last_name.strip : self.last_name
   end
 
-  def increment_count
-    self.items_count = self.items.count
+  def update_count
+    self.items_count = self.items.not_deleted.count
     self.save!
   end
 
