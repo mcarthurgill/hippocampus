@@ -23,7 +23,9 @@ class User < ActiveRecord::Base
   end
 
   def recent_buckets_with_shell
-    return_buckets = [Bucket.new(:first_name => "All Notes", :items_count => self.items.outstanding.count, :updated_at => self.items.last.updated_at)]
+    all_bucket = Bucket.new(:first_name => "All Notes", :items_count => self.items.outstanding.count, :updated_at => self.items.last.updated_at)
+    all_bucket.id = 0
+    return_buckets = [all_bucket]
     return_buckets << self.buckets.recent_for_user_id(self.id)
     return return_buckets.flatten
   end
