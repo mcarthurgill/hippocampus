@@ -18,7 +18,12 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     
-    @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp], params[:item][:user_id])
+    @item = nil
+    
+    if params[:item].has_key?(:device_timestamp) && params[:item][:device_timestamp].to_f > 0
+      @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp], params[:item][:user_id])
+    end
+
     if !@item
 
       @item = Item.new(params[:item])
@@ -31,7 +36,7 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
-        @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0
+        @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0 && params[:item][:bucket_id].to_i > 0
 
         format.html { redirect_to item_path(@item) }
         format.json { render json: Item.find(@item.id), status: :created, location: @item } #rails was caching @item and not sending back the updated status if we were assigning to a bucket. 
