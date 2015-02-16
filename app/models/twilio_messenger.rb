@@ -15,7 +15,6 @@ class TwilioMessenger < ActiveRecord::Base
       self.send_split_texts
     else
       @message = @account.sms.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
-      sleep(0.5)
     end
   end
 
