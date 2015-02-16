@@ -18,10 +18,15 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     
-    @item = Item.new(params[:item])
+    @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp, params[:item][:user_id])
+    if !@item
 
-    if params[:item].has_key?(:file) && params[:item][:file]
-      @item.upload_main_asset(params[:item][:file])
+      @item = Item.new(params[:item])
+      
+      if params[:item].has_key?(:file) && params[:item][:file]
+        @item.upload_main_asset(params[:item][:file])
+      end
+
     end
 
     respond_to do |format|
