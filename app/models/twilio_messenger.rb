@@ -25,6 +25,7 @@ class TwilioMessenger < ActiveRecord::Base
       if message_string.length + w.length + 1 < 160 #added 1 for the space
         message_string << w + " "
         if i == split_words.count - 1 #last word
+          sleep(0.5) #last text was coming in early
           @account.sms.messages.create({:body => message_string, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})  
         end
       else
