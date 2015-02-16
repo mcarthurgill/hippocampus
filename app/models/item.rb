@@ -294,8 +294,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_monthly_items
-    date_as_string = Date.today.strftime("%d/%m/%Y")
-    items = Item.where("strftime('%d', reminder_date) = ?", Date.parse(date_as_string).strftime('%d')).monthly
+    items = Item.where('extract(day from reminder_date) = ?', Date.today.day).monthly
 
     items.each do |i|
       message = "Your monthly Hippocampus reminder:\n" + i.message
@@ -305,8 +304,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_yearly_items
-    date_as_string = Date.today.strftime("%d/%m/%Y")
-    items = Item.where("strftime('%d', reminder_date) = ? AND strftime('%m', reminder_date) = ?", Date.parse(date_as_string).strftime('%d'), Date.parse(date_as_string).strftime('%m')).yearly
+    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Date.today.month, Date.today.day).yearly
     
     items.each do |i|
       message = "Your yearly Hippocampus reminder:\n" + i.message

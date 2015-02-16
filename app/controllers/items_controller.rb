@@ -21,7 +21,7 @@ class ItemsController < ApplicationController
     @item = nil
     
     if params[:item].has_key?(:device_timestamp) && params[:item][:device_timestamp].to_f > 0
-      @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp, params[:item][:user_id])
+      @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp], params[:item][:user_id])
     end
 
     if !@item
