@@ -18,7 +18,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     
-    @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp, params[:item][:user_id])
+    @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp], params[:item][:user_id])
     if !@item
 
       @item = Item.new(params[:item])
