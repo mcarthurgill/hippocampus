@@ -19,11 +19,13 @@ class TwilioMessenger < ActiveRecord::Base
           message_string << w + " "
         else
           @message = @account.sms.messages.create({:body => message_string, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
+          sleep(0.5)
           message_string = w + " "
         end
       end
     else
       @message = @account.sms.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
+      sleep(0.5)
     end
   end
 
