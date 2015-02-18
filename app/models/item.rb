@@ -32,6 +32,7 @@ class Item < ActiveRecord::Base
   scope :by_date, -> { order("created_at DESC") }
   scope :newest_last, -> { order("created_at ASC") }
   scope :with_reminder, -> { where("reminder_date IS NOT NULL") }
+  scope :last_24_hours, -> { where("created_at > ? AND created_at < ?", 24.hours.ago, Time.now) }
   
   # -- CALLBACKS
 
