@@ -80,7 +80,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
-        @bucket.update_items_with_new_bucket_name if bucket_name_changed
+        @bucket.delay.update_items_with_new_bucket_name if bucket_name_changed
         format.html { redirect_to @bucket, notice: 'Stack updated.' }
         format.json { head :no_content }
       else
