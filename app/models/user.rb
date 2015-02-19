@@ -49,12 +49,10 @@ class User < ActiveRecord::Base
   # -- SCHEDULES
 
   def self.remind_about_outstanding_items
-    items = Item.outstanding.uniq_by {|i| i.user_id }
+    items = Item.outstanding.last_24_hours.uniq_by {|i| i.user_id }
     items.each do |i|
-      if i.user.phone != "12059360524"
-        msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, "You have pending notes on Hippocampus. Open the app to handle them.")
-        msg.send
-      end
+      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, "You have pending notes on Hippocampus. Open the app to handle them.")
+      msg.send
     end
   end
 
