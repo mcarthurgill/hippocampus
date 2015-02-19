@@ -71,6 +71,12 @@ class Bucket < ActiveRecord::Base
     self.user == u
   end
 
+  def update_items_with_new_bucket_name
+    self.items.each do |i|
+      i.delay.update_buckets_string
+    end
+  end
+
   #  swiftype
 
   def index_delayed

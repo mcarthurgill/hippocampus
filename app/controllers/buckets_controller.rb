@@ -76,9 +76,11 @@ class BucketsController < ApplicationController
     @bucket = Bucket.find(params[:id])
 
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
+    bucket_name_changed = @bucket.first_name == params[:bucket][:first_name]
 
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
+        @bucket.update_items_with_new_bucket_name if bucket_name_changed
         format.html { redirect_to @bucket, notice: 'Stack updated.' }
         format.json { head :no_content }
       else
