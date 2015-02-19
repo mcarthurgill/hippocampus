@@ -10,6 +10,7 @@ class BucketItemPair < ActiveRecord::Base
 
   after_save :handle_counts
   after_destroy :handle_counts
+  before_destroy :update_item_status
 
 
   def self.with_or_create_with_params params
@@ -28,4 +29,10 @@ class BucketItemPair < ActiveRecord::Base
     self.item.index_delayed if self.item
   end
 
+  def update_item_status
+    i = self.item
+    if i.buckets.count == 1 #if after this BIP is destroyed it will have no buckets
+      i.update_status("outstanding")
+    end
+  end
 end

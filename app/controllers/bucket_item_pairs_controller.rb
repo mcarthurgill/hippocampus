@@ -16,6 +16,18 @@ class BucketItemPairsController < ApplicationController
     end
   end
 
+
+  def destroy_with_bucket_and_item
+    @bucket_item_pair = BucketItemPair.find_by_bucket_id_and_item_id(params[:bucket_id], params[:item_id])
+    @bucket_item_pair.destroy
+
+    respond_to do |format|
+      format.html { redirect_to bucket_item_pairs_url }
+      format.json { head :no_content }
+    end
+  end
+
+
   # DELETE /bucket_item_pairs/1
   # DELETE /bucket_item_pairs/1.json
   def destroy
