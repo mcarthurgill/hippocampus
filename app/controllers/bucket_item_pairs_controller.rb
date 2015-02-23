@@ -23,7 +23,7 @@ class BucketItemPairsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to bucket_item_pairs_url }
-      format.json { head :no_content }
+      format.json { render json: Item.find(params[:item_id]).as_json(methods: :buckets) }
     end
   end
 
