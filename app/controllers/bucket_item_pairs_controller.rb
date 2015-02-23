@@ -18,12 +18,15 @@ class BucketItemPairsController < ApplicationController
 
 
   def destroy_with_bucket_and_item
-    @bucket_item_pair = BucketItemPair.find_by_bucket_id_and_item_id(params[:bucket_id], params[:item_id])
+    item = Item.find(params[:item_id])
+    @bucket_item_pair = BucketItemPair.find_by_bucket_id_and_item_id(params[:bucket_id], item.id)
     @bucket_item_pair.destroy
+
+    item.delay.update_buckets_string
 
     respond_to do |format|
       format.html { redirect_to bucket_item_pairs_url }
-      format.json { render json: Item.find(params[:item_id]).as_json(methods: :buckets) }
+      format.json { render json: item.as_json(methods: :buckets) }
     end
   end
 
