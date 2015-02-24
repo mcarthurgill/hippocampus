@@ -6,8 +6,8 @@ class SessionsController < ApplicationController
 
   def passcode
     @user = User.with_or_initialize_with_phone_number(params[:phone])
-    @user.save if @user.new_object?
-    
+    @user.save if @user.new_record?
+
     @user.update_and_send_passcode 
     respond_to do |format|
       format.html
