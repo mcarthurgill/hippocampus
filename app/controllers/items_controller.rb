@@ -105,7 +105,7 @@ class ItemsController < ApplicationController
     # redirect_if_not_authorized(@item.user_id) ? return : nil
 
     respond_to do |format|
-      if @item.is_most_recent_request?(params[:item][:device_timestamp]) && @item.update_attributes(params[:item])
+      if @item.update_attributes(params[:item])
         @item.update_outstanding
         format.html { redirect_to item_path(@item), :notice => "Note updated." }
         format.json { head :no_content }
