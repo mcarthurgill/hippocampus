@@ -253,6 +253,10 @@ class Item < ActiveRecord::Base
     self.item_type == "yearly"
   end
 
+  def is_most_recent_request?(timestamp)
+    self.user.items.where("device_timestamp > ?", timestamp).empty?
+  end
+
   # -- REMINDERS
 
   def self.remind_about_events
