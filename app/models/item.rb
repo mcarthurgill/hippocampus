@@ -388,6 +388,8 @@ class Item < ActiveRecord::Base
       {:name => 'item_type', :value => self.item_type, :type => 'string'},
       {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
       {:name => 'item_id', :value => self.id, :type => 'integer'},
+      {:name => 'latitude', :value => self.latitude, :type => 'float'},
+      {:name => 'longitude', :value => self.longitude, :type => 'float'},
       {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
       {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
     ]}
