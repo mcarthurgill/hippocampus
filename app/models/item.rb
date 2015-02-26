@@ -65,13 +65,12 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
-    i.media_urls = sms.MediaUrls
+    i.upload_media(sms.MediaUrls)
     i.media_content_types = sms.MediaContentTypes
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
     i.save!
-    i.upload_media(sms.MediaUrls)
     return i
   end
 
