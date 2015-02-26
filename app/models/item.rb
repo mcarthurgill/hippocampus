@@ -143,7 +143,7 @@ class Item < ActiveRecord::Base
 
   def upload_media arr
     if arr && arr.count > 0
-      arr.each do url
+      arr.each do |url|
         self.upload_main_asset(url)
       end
     end
