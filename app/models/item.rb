@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :buckets_string, :device_timestamp, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :buckets_string, :device_timestamp, :latitude, :longitude, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
