@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :buckets_string, :device_timestamp, :latitude, :longitude, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
@@ -253,7 +253,7 @@ class Item < ActiveRecord::Base
   end
 
   def is_most_recent_request?(timestamp)
-    self.user.items.where("device_timestamp > ?", timestamp).empty?
+    return !self.device_request_timestamp || timestamp.to_f > self.device_request_timestamp
   end
 
   # -- REMINDERS
