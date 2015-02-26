@@ -71,6 +71,7 @@ class Item < ActiveRecord::Base
     i.status = 'outstanding'
     i.input_method = 'sms'
     i.save!
+    i.upload_media(sms.MediaUrls)
     return i
   end
 
@@ -138,6 +139,14 @@ class Item < ActiveRecord::Base
     end
     self.media_urls << url
     return self.media_urls
+  end
+
+  def upload_media arr
+    if arr && arr.count > 0
+      arr.each do url
+        self.upload_main_asset(url)
+      end
+    end
   end
 
 
