@@ -31,7 +31,7 @@ class BucketItemPair < ActiveRecord::Base
 
   def update_item_status
     i = self.item
-    if i.buckets.count == 1 #if after this BIP is destroyed it will have no buckets
+    if i.buckets.count == 1 && !i.deleted? #if after this BIP is destroyed it will have no buckets
       i.update_status("outstanding")
     end
   end
