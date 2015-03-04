@@ -387,6 +387,7 @@ class Item < ActiveRecord::Base
       {:name => 'user_id', :value => self.user_id, :type => 'integer'},
       {:name => 'item_type', :value => self.item_type, :type => 'string'},
       {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
+      {:name => 'media_urls', :value => self.media_urls, :type => 'string'},
       {:name => 'item_id', :value => self.id, :type => 'integer'},
       {:name => 'latitude', :value => self.latitude, :type => 'float'},
       {:name => 'longitude', :value => self.longitude, :type => 'float'},
