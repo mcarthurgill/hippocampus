@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :buckets_string, :device_timestamp, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
@@ -65,7 +65,7 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
-    i.media_urls = sms.MediaUrls
+    i.upload_media(sms.MediaUrls)
     i.media_content_types = sms.MediaContentTypes
     i.item_type = 'once'
     i.status = 'outstanding'
@@ -138,6 +138,14 @@ class Item < ActiveRecord::Base
     end
     self.media_urls << url
     return self.media_urls
+  end
+
+  def upload_media arr
+    if arr && arr.count > 0
+      arr.each do |url|
+        self.upload_main_asset(url)
+      end
+    end
   end
 
 
@@ -245,7 +253,7 @@ class Item < ActiveRecord::Base
   end
 
   def is_most_recent_request?(timestamp)
-    self.user.items.where("device_timestamp > ?", timestamp).empty?
+    return !self.device_request_timestamp || timestamp.to_f > self.device_request_timestamp
   end
 
   # -- REMINDERS
@@ -379,7 +387,10 @@ class Item < ActiveRecord::Base
       {:name => 'user_id', :value => self.user_id, :type => 'integer'},
       {:name => 'item_type', :value => self.item_type, :type => 'string'},
       {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
+      {:name => 'media_urls', :value => self.media_urls, :type => 'string'},
       {:name => 'item_id', :value => self.id, :type => 'integer'},
+      {:name => 'latitude', :value => self.latitude, :type => 'float'},
+      {:name => 'longitude', :value => self.longitude, :type => 'float'},
       {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
       {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
     ]}
