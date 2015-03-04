@@ -99,7 +99,7 @@ class BucketsController < ApplicationController
     
     @bucket.destroy
 
-    @bucket.items.each do |i|
+    @bucket.items.not_deleted.each do |i|
       i.update_outstanding
     end
 
