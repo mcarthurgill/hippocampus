@@ -1,5 +1,11 @@
 class ItemsController < ApplicationController
 
+  def index
+    @items = Item.order('id DESC').limit(512)
+
+    render layout: false
+  end
+
   def show
     @item = Item.find(params[:id])
 

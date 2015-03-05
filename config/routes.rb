@@ -21,7 +21,7 @@ Hippocampus::Application.routes.draw do
 
   get 'info', to: 'pages#info', as: 'info'
   
-  resources :items, :only => [:create, :update, :destroy, :show, :edit, :new]
+  resources :items, :only => [:create, :update, :destroy, :show, :edit, :new, :index]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
 
   get 'search', to: 'pages#search', as: 'search'
