@@ -32,7 +32,7 @@ class Bucket < ActiveRecord::Base
 
   after_save :index_delayed
 
-  before_destroy :remove_from_engine
+  before_destroy :remove_from_engine, :update_items_before_destroy
 
   def before_save
     self.items_count = self.items.count
@@ -55,6 +55,20 @@ class Bucket < ActiveRecord::Base
   def self.create_for_addon_and_user(addon, user)  
     attrs_hash = addon.params_to_create_bucket_for_user(user)
     return Bucket.create(attrs_hash)
+  end
+
+  def update_items_before_destroy
+    self.delay.remove_from_items
+  end
+
+  def remove_from_items
+    self.items.not_deleted.each do |i|
+      bip = BucketItemPair.find_by_bucket_id_and_item_id(self.id, i.id)
+      if bip
+        bip.destroy
+        i.update_outstanding
+      end
+    end  
   end
 
   # -- HELPERS
