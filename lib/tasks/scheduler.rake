@@ -16,6 +16,24 @@ task :send_reminders_about_events => :environment do
   p "*"*50
 end
 
+desc "Let people know they can text hippocampus"
+task :alert_about_ability_to_text => :environment do
+  p "*"*50
+  p "letting people know they can text hippo"
+  users = User.where("created_at > ?", 1.day.ago)
+
+  if users && users.count > 0
+    users.each do |u|
+      message = "Add this number to your contacts. You can text notes to this number and they'll be in the app waiting for you."
+      msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
+  p "done"
+  p "*"*50
+end
+
 desc "Text three random notes a day to those interested"
 task :send_random_notes => :environment do 
   p "*"*50
