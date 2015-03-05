@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
 
   def index
-    @items = Item.all.order('id DESC').limit(512)
+    @items = Item.order('id DESC').limit(512)
   end
 
   def show
