@@ -7,6 +7,33 @@ class User < ActiveRecord::Base
   has_many :buckets
   has_many :items
   has_many :tokens
+
+  # -- CALLBACKS
+  after_create :should_create_default_buckets_and_items
+
+  def should_create_default_buckets_and_items
+    self.delay.create_default_buckets_and_items if self.buckets.empty?
+  end
+
+  def create_default_buckets_and_items
+    b = Bucket.create(:first_name => "McArthur Gill", :user_id => self.id, :bucket_type => "Person")
+
+    hometown = Item.create(:user_id => self.id, :message => "From Montgomery, AL", :item_type => "once", :status => "outstanding")
+    hometown.add_to_bucket(b)
+
+    current_gf = Item.create(:user_id => self.id, :message => "Went to Vanderbilt", :item_type => "once", :status => "outstanding")
+    current_gf.add_to_bucket(b)
+
+    current_town = Item.create(:user_id => self.id, :message => "Currently lives in Nashville. Sam and Will are his roommates", :item_type => "once", :status => "outstanding")
+
+    wine = Bucket.create(:first_name => "Wine", :user_id => self.id, :bucket_type => "Other") 
+
+    meiomi = Item.create(:user_id => self.id, :message => "Really great red wine. Not too heavy.", :item_type => "once", :status => "outstanding")
+    meiomi.add_to_bucket(wine)
+
+    cuvaison = Item.create(:user_id => self.id, :message => "Delicious. Drinkable, but has plenty of flavor", :item_type => "once", :status => "outstanding")
+    cuvaison.add_to_bucket(wine)
+  end
   
   # -- GETTERS
 
