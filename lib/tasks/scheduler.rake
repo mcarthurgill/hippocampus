@@ -16,6 +16,7 @@ task :send_reminders_about_events => :environment do
   p "*"*50
 end
 
+#havent added this to the heroku scheduler yet
 desc "Let people know they can text hippocampus"
 task :alert_about_ability_to_text => :environment do
   p "*"*50
