@@ -25,7 +25,7 @@ task :alert_about_ability_to_text => :environment do
 
   if users && users.count > 0
     users.each do |u|
-      message = "Add this number to your contacts. You can text notes to this number and they'll be in the app waiting for you."
+      message = "Add this number to your contacts. You can text notes to this number and they'll be in Hippocampus waiting for you."
       msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
