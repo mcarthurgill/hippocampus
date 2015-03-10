@@ -66,7 +66,7 @@ class Bucket < ActiveRecord::Base
       bip = BucketItemPair.find_by_bucket_id_and_item_id(self.id, i.id)
       if bip
         bip.destroy
-        i.update_outstanding
+        i.update_deleted
       end
     end  
   end

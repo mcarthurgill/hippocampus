@@ -174,6 +174,14 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def update_deleted
+    if self.has_buckets?
+      self.update_status('assigned')
+    else
+      self.update_status('deleted')
+    end
+  end
+
   def add_to_bucket b
     BucketItemPair.with_or_create_with_bucket_id_and_item_id(b.id, self.id)
   end
