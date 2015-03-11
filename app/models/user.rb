@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
     school = Item.create(:user_id => self.id, :message => "Went to Vanderbilt", :item_type => "once", :status => "assigned")
     school.add_to_bucket(b)
 
-    birthday = Item.create(:user_id => self.id, :message => "September 10th", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("10-9-2015"))
+    birthday = Item.create(:user_id => self.id, :message => "Birthday - September 10th", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("10-9-2015"))
     birthday.add_to_bucket(b)
 
     current_town = Item.create(:user_id => self.id, :message => "Currently lives in Nashville. Sam and Will are his roommates", :item_type => "once", :status => "outstanding")
