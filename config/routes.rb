@@ -23,6 +23,7 @@ Hippocampus::Application.routes.draw do
   
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new, :index]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
+  get 'random_items', to: 'items#random_items', as: 'random_items'
 
   get 'search', to: 'pages#search', as: 'search'
   
