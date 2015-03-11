@@ -144,7 +144,23 @@ class ItemsController < ApplicationController
     items = user.items.not_deleted.limit(limit).order("RANDOM()") if user
 
     respond_to do |format|
-      if user && items && items.count > 0
+      if user && items
+        format.html
+        format.json { render json: { items: items } }
+      else
+        format.html { redirect_to user_path(current_user), :notice => "Something went wrong" }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def near_location
+    user = User.find(params[:user_id])
+    
+    items = user.items_near_location(params[:longitude], params[:latitude])
+
+    respond_to do |format|
+      if user && items
         format.html
         format.json { render json: { items: items } }
       else

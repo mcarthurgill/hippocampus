@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150128162120) do
+ActiveRecord::Schema.define(:version => 20150311211307) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -101,19 +101,25 @@ ActiveRecord::Schema.define(:version => 20150128162120) do
     t.text     "message"
     t.integer  "person_id"
     t.integer  "user_id"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.string   "item_type"
     t.date     "reminder_date"
-    t.string   "status",              :default => "outstanding"
+    t.string   "status",                   :default => "outstanding"
     t.string   "input_method"
     t.integer  "bucket_id"
     t.text     "media_urls"
     t.text     "media_content_types"
     t.text     "buckets_string"
+    t.string   "device_timestamp"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.float    "device_request_timestamp"
   end
 
   add_index "items", ["id"], :name => "index_items_on_id"
+  add_index "items", ["latitude"], :name => "index_items_on_latitude"
+  add_index "items", ["longitude"], :name => "index_items_on_longitude"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
   create_table "people", :force => true do |t|

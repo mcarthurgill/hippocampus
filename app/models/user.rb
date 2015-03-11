@@ -104,6 +104,19 @@ class User < ActiveRecord::Base
     self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Date.today }.sort_by(&:next_reminder_date)
   end
 
+  #with 1519 Ashwood Ave as current location
+  #0.000025 - edleys/jenis are not included
+  #0.00006 - edleys/jenis in, natchez + charlotte + bridgestone out
+  #0.002 - #natchez + charlotte + bridgestone included
+  def items_near_location(long, lat)
+    long = long.to_f
+    lat = lat.to_f
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.000025)
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.00006) if nearby_items.empty?
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.002) if nearby_items.empty?
+    return nearby_items
+  end
+
 
   # --- TOKENS
 
