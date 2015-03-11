@@ -147,7 +147,7 @@ class ItemsController < ApplicationController
       if user && items && items.count > 0
         format.html
         # format.json { render json: { items: items } }
-        format.json { render json: { items: [] } }
+        format.json { render json: { items: items[0..3] } }
       else
         format.html { redirect_to user_path(current_user), :notice => "Something went wrong" }
         format.json { head :no_content }
