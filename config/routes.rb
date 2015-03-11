@@ -21,10 +21,10 @@ Hippocampus::Application.routes.draw do
 
   get 'info', to: 'pages#info', as: 'info'
   
+  get 'random', to: 'items#random_items', as: 'random_items'
+  get 'near_location', to: 'items#near_location', as: 'items_near_location'
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new, :index]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
-  get 'random_items', to: 'items#random_items', as: 'random_items'
-  get 'near_location', to: 'items#near_location', as: 'items_near_location'
 
   get 'search', to: 'pages#search', as: 'search'
   
