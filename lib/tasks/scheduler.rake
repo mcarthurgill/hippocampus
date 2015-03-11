@@ -39,8 +39,7 @@ desc "Text three random notes a day to those interested"
 task :send_random_notes => :environment do 
   p "*"*50
   p "texting random notes"
-  # users = User.where("phone = ? OR phone = ?", "12059360524", "13343994374")
-  users = User.where("phone = ?", "13343994374")
+  users = User.where("phone = ? OR phone = ?", "12059360524", "13343994374")
   users.each do |u|
     items = u.items.assigned.limit(3).order("RANDOM()")
     items.each do |i|
