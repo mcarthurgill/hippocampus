@@ -21,10 +21,13 @@ class User < ActiveRecord::Base
     hometown = Item.create(:user_id => self.id, :message => "From Montgomery, AL", :item_type => "once", :status => "outstanding")
     hometown.add_to_bucket(b)
 
-    current_gf = Item.create(:user_id => self.id, :message => "Went to Vanderbilt", :item_type => "once", :status => "outstanding")
-    current_gf.add_to_bucket(b)
+    school = Item.create(:user_id => self.id, :message => "Went to Vanderbilt", :item_type => "once", :status => "outstanding")
+    school.add_to_bucket(b)
 
-    current_town = Item.create(:user_id => self.id, :message => "Currently lives in Nashville. Sam and Will are his roommates", :item_type => "once", :status => "outstanding")
+    birthday = Item.create(:user_id => self.id, :message => "September 10th", :item_type => "yearly", :status => "outstanding", :reminder_date => Date.parse("10-9-2015"))
+    birthday.add_to_bucket(b)
+
+    current_town = Item.create(:user_id => self.id, :message => "Currently lives in Nashville. Sam and Will are his roommates", :item_type => "once", :status => "pending")
 
     wine = Bucket.create(:first_name => "Wine", :user_id => self.id, :bucket_type => "Other") 
 
