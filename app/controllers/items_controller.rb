@@ -141,7 +141,7 @@ class ItemsController < ApplicationController
   def random_items
     user = User.find(params[:user_id])
     limit = params[:limit] && params[:limit].length > 0 ? params[:limit] : 15
-    items = user.items.undeleted.limit(limit).order("RANDOM()") if user
+    items = user.items.not_deleted.limit(limit).order("RANDOM()") if user
 
     respond_to do |format|
       if user && items && items.count > 0
