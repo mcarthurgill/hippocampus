@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
     lat = lat.to_f
     #nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.000025)
     #nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.00006) if nearby_items.empty?
-    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.002) if nearby_items.empty?
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.002) #if nearby_items.empty?
     nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 10.0) if nearby_items.empty?
     return nearby_items
   end
