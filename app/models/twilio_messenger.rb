@@ -10,28 +10,25 @@ class TwilioMessenger < ActiveRecord::Base
   def send
     @client = Twilio::REST::Client.new(Hippocampus::Application.config.account_sid, Hippocampus::Application.config.auth_token)
     @account = @client.account
-
-    if @body && @body.length > 160
+    if @body && @body.length > 1600
       self.send_split_texts
     else
-      @message = @account.sms.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
-    end
+      @message = @account.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
+    end    
   end
 
   def send_split_texts
     message_string = ""
     split_words = @body.split(" ")
     split_words.each_with_index do |w, i|
-      if message_string.length + w.length + 1 < 160 #added 1 for the space
+      if message_string.length + w.length + 1 < 1600 #added 1 for the space
         message_string << w + " "
         if i == split_words.count - 1 #last word
-          sleep(0.5) #last text was coming in early
-          @account.sms.messages.create({:body => message_string, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})  
+          @account.messages.create({:body => message_string, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})  
         end
       else
-        @account.sms.messages.create({:body => message_string, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
+        @account.messages.create({:body => message_string, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
         message_string = w + " "
-        sleep(0.5)
       end
     end
   end
