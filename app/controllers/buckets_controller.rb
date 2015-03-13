@@ -105,4 +105,14 @@ class BucketsController < ApplicationController
     end
   end
 
+  def media_urls
+    bucket = Bucket.find(params[:id])
+    user = User.find(params[:user_id])
+
+    urls = bucket.items.pluck(:media_urls).flatten if (bucket && bucket.user == user)
+
+    respond_to do |format|
+      format.json { render json: { :media_urls => urls } }
+    end
+  end
 end

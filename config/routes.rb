@@ -13,6 +13,7 @@ Hippocampus::Application.routes.draw do
   match 'intro_questions', :to => "introductions#get_questions", :as => "get_intro_questions"
 
   resources :buckets, :only => [:show, :new, :edit, :create, :update, :destroy]
+  get 'buckets/:id/media_urls', :to => 'buckets#media_urls', :as => "bucket_media_urls"
   
   resources :bucket_item_pairs, :only => [:create, :destroy]
   match 'destroy_with_bucket_and_item', :to => "bucket_item_pairs#destroy_with_bucket_and_item", :as => "destroy_with_bucket_and_item"
