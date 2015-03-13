@@ -92,7 +92,7 @@ class Bucket < ActiveRecord::Base
   end
 
   def get_media_urls
-    self.items.order("created_at DESC").pluck(:media_urls).flatten
+    self.items.order("items.created_at DESC").pluck(:media_urls).flatten
   end
 
   #  swiftype
