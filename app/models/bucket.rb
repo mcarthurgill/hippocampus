@@ -91,6 +91,10 @@ class Bucket < ActiveRecord::Base
     end
   end
 
+  def get_media_urls
+    self.items.order("created_at DESC").pluck(:media_urls).flatten
+  end
+
   #  swiftype
 
   def index_delayed
