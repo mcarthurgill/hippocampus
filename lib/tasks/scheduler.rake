@@ -39,11 +39,9 @@ desc "Text three random notes a day to those interested"
 task :send_random_notes => :environment do 
   p "*"*50
   p "texting random notes"
-  # users = User.where("phone = ? OR phone = ?", "12059360524", "13343994374")
-  users = User.where("phone = ?", "13343994374")
+  users = User.where("phone = ? OR phone = ?", "12059360524", "13343994374")
   users.each do |u|
-    # items = u.items.assigned.limit(3).order("RANDOM()")
-    items = [Item.find(22)]
+    items = u.items.assigned.limit(3).order("RANDOM()")
     items.each do |i|
       txt_message = "#{i.buckets.first.first_name} - #{i.message}"
       text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, txt_message)
