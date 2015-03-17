@@ -31,6 +31,8 @@ Hippocampus::Application.routes.draw do
   
   resources :sms, :only => [:create]
 
+  resources :device_tokens, :only => [:create]
+
   resources :users, :except => [:index, :new, :create, :destroy]
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets', as: 'user_buckets'

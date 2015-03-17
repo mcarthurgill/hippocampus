@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   has_many :buckets
   has_many :items
   has_many :tokens
-
+  has_many :device_tokens
+  
   # -- CALLBACKS
   after_create :should_create_default_buckets_and_items
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150311211307) do
+ActiveRecord::Schema.define(:version => 20150317202511) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -60,6 +60,15 @@ ActiveRecord::Schema.define(:version => 20150311211307) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "device_tokens", :force => true do |t|
+    t.string   "android_device_token"
+    t.string   "ios_device_token"
+    t.integer  "user_id"
+    t.string   "environment"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "emails", :force => true do |t|
     t.string   "From"

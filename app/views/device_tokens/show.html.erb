@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Android device token:</b>
+  <%= @device_token.android_device_token %>
+</p>
+
+<p>
+  <b>Ios device token:</b>
+  <%= @device_token.ios_device_token %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @device_token.user_id %>
+</p>
+
+<p>
+  <b>Environment:</b>
+  <%= @device_token.environment %>
+</p>
+
+
+<%= link_to 'Edit', edit_device_token_path(@device_token) %> |
+<%= link_to 'Back', device_tokens_path %>
