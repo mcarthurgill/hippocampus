@@ -121,7 +121,32 @@ class User < ActiveRecord::Base
   end
 
   def items_within_bounds(centerx, centery, dx, dy)
-    return self.items.not_deleted.limit(64).within_bounds_centerx_centery_dx_dy(centerx.to_f, centery.to_f, dx.to_f, dy.to_f)
+    centerx = centerx.to_f
+    centery = centery.to_f
+    dx = dx.to_f
+    dy = dy.to_f
+    max_long = 0.0
+    min_long = 0.0
+    max_lat = 0.0
+    min_lat = 0.0
+
+    #account for negative values 
+    if (centerx + dx) > (centerx - dx)
+      max_long = centerx + dx
+      min_long = centerx - dx
+    else
+      max_long = centerx - dx
+      min_long = centerx + dx
+    end
+    if (centery + dy) > (centery - dy)
+      max_lat = centery + dy
+      min_lat = centery - dy
+    else
+      max_lat = centery - dy
+      min_lat = centery + dy
+    end
+
+    return self.items.not_deleted.limit(64).within_bounds_centerx_centery_dx_dy(max_long, min_long, max_lat, min_lat)
   end
 
   # --- TOKENS

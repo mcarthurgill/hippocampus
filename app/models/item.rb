@@ -34,7 +34,7 @@ class Item < ActiveRecord::Base
   scope :with_reminder, -> { where("reminder_date IS NOT NULL") }
   scope :last_24_hours, -> { where("created_at > ? AND created_at < ?", 24.hours.ago, Time.now) }
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
-  scope :within_bounds_centerx_centery_dx_dy, ->(centerx, centery, dx, dy) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", centerx + dx, centerx - dx, centery + dy, centery - dy) }
+  scope :within_bounds_centerx_centery_dx_dy, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
   # -- CALLBACKS
 
