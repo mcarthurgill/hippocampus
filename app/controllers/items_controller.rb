@@ -157,7 +157,7 @@ class ItemsController < ApplicationController
   def near_location
     user = User.find(params[:user_id])
     
-    items = user.items_near_location(params[:longitude], params[:latitude])
+    items = user.items_near_location(params[:centerx], params[:centery], params[:dx], params[:dy])
 
     respond_to do |format|
       if user && items
