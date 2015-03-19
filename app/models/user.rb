@@ -110,7 +110,17 @@ class User < ActiveRecord::Base
   #0.00006 - edleys/jenis in, natchez + charlotte + bridgestone out
   #0.002 - #natchez + charlotte + bridgestone included
   #10.0 - arbitrary large number
-  def items_near_location(centerx, centery, dx, dy)
+  def items_near_location(long, lat)
+    long = long.to_f
+    lat = lat.to_f
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.000025)
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.00006) if nearby_items.empty?
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 0.002) if nearby_items.empty?
+    nearby_items = self.items.not_deleted.limit(64).with_long_lat_and_radius(long, lat, 10.0) if nearby_items.empty?
+    return nearby_items
+  end
+
+  def items_within_bounds(centerx, centery, dx, dy)
     return self.items.not_deleted.limit(64).within_bounds_centerx_centery_dx_dy(centerx.to_f, centery.to_f, dx.to_f, dy.to_f)
   end
 

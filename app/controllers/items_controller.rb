@@ -154,10 +154,26 @@ class ItemsController < ApplicationController
     end
   end
 
-  def near_location
+  def near_current_location
     user = User.find(params[:user_id])
     
-    items = user.items_near_location(params[:centerx], params[:centery], params[:dx], params[:dy])
+    items = user.items_near_location(params[:longitude], params[:latitude]) if user
+
+    respond_to do |format|
+      if user && items
+        format.html
+        format.json { render json: { items: items } }
+      else
+        format.html { redirect_to user_path(current_user), :notice => "Something went wrong" }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def within_bounds
+    user = User.find(params[:user_id])
+    
+    items = user.items_within_bounds(params[:centerx], params[:centery], params[:dx], params[:dy]) if user
 
     respond_to do |format|
       if user && items
