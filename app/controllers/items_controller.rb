@@ -154,7 +154,7 @@ class ItemsController < ApplicationController
     end
   end
 
-  def near_current_location
+  def near_location
     user = User.find(params[:user_id])
     
     items = user.items_near_location(params[:longitude], params[:latitude]) if user
