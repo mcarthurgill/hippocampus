@@ -146,7 +146,7 @@ class User < ActiveRecord::Base
       min_lat = centery + dy
     end
 
-    return self.items.not_deleted.limit(64).within_bounds_centerx_centery_dx_dy(max_long, min_long, max_lat, min_lat)
+    return self.items.not_deleted.limit(64).within_bounds(max_long, min_long, max_lat, min_lat)
   end
 
   # --- TOKENS
