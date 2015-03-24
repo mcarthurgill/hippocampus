@@ -17,7 +17,16 @@ class User < ActiveRecord::Base
   end
 
   def create_default_buckets_and_items
+    quotes = Bucket.create(:first_name => "Quotes (Sample Thread)", :user_id => self.id, :bucket_type => "Other") 
     b = Bucket.create(:first_name => "Tom Hanks (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
+    c = Bucket.create(:first_name => "Emily Scott (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
+
+    q7 = Item.create(:user_id => self.id, :message => "\"You are no more than a few seconds of attention other people give to a Facebook status. In 2014, no one has time to care about others in such a crowded, noisy world.\". (Sample Note)", :item_type => "once", :status => "assigned")
+    q7.add_to_bucket(quotes)
+    q1 = Item.create(:user_id => self.id, :message => '"We are interested in others when they are interested in us." -Dale Carnegie (Sample Note)', :item_type => "once", :status => "assigned")
+    q1.add_to_bucket(quotes)
+    q2 = Item.create(:user_id => self.id, :message => '"Some of Virgin\'s most successful companies have been born from random moments – if we hadn\'t opened our notebooks, they would never have happened." -Richard Branson (Sample Note)', :item_type => "once", :status => "assigned")
+    q2.add_to_bucket(quotes)
 
     hometown = Item.create(:user_id => self.id, :message => "From Concord, CA, but currently in LA. (Sample Note)", :item_type => "once", :status => "assigned")
     hometown.add_to_bucket(b)
@@ -25,20 +34,35 @@ class User < ActiveRecord::Base
     school.add_to_bucket(b)
     birthday = Item.create(:user_id => self.id, :message => "Birthday - July 9th (Sample Note)", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("2015-07-09"))
     birthday.add_to_bucket(b)
-    f1 = Item.create(:user_id => self.id, :message => "Wife is Rita Wilson, has two kids w/ Rita: Chester and Marlon. (Sample Note)", :item_type => "once", :status => "outstanding")
+
+    c1 = Item.create(:user_id => self.id, :message => "Leaving today for India. She's going to visit her college roommate in Mumbai. (Sample Note)", :item_type => "once", :status => "assigned", :reminder_date => Time.now+10.days)
+    c1.add_to_bucket(c)
+    c2 = Item.create(:user_id => self.id, :message => "Roommate names are Kate (brunette) and Sarah. (Sample Note)", :item_type => "once", :status => "assigned")
+    c2.add_to_bucket(c)
+    c3 = Item.create(:user_id => self.id, :message => "Getting her wisdom teeth removed. (Sample Note)", :item_type => "once", :status => "assigned", :reminder_date => Time.now+3.days)
+    c3.add_to_bucket(c)
+
+    q3 = Item.create(:user_id => self.id, :message => '"A lot of people died fighting tyranny. The least I can do is vote against it." -Carl Icahn at Texaco annual meeting, 1988 (Sample Note)', :item_type => "once", :status => "assigned")
+    q3.add_to_bucket(quotes)
+    q5 = Item.create(:user_id => self.id, :message => "\"Evil is relatively rare. Ignorance is an epidemic.\". -Jon Stewart (Sample Note)", :item_type => "once", :status => "assigned")
+    q5.add_to_bucket(quotes)
+    q6 = Item.create(:user_id => self.id, :message => "\"Over billions of years on a unique sphere, chance has painted a thin covering of life -- complex, improbable, wonderful and fragile. Suddenly, we humans -- a recently arrived species, no longer subject to the checks and balances inherent in nature -- have grown in population, technology and intelligence to a position of terrible power. We now wield the paintbrush. And that's serious: we're not very bright. We're short on wisdom; we're high on technology. Where's it going to lead?\". -Paul MacCready in Nature vs. Humans (Sample Note)", :item_type => "once", :status => "assigned")
+    q6.add_to_bucket(quotes)
+
+    q4 = Item.create(:user_id => self.id, :message => "\"It's the execution, not the idea\" is frequently true for large classes of ideas. But you wouldn't say \"it's the CPU, not the algorithm\". (Sample Note)", :item_type => "once", :status => "assigned")
+    q4.add_to_bucket(quotes)
+    
+    c4 = Item.create(:user_id => self.id, :message => "Went to Desano's with Emily. Had a bottle of 'Los Dos', recommended by Ed. Was light-bodied and paired well with pizza. (Sample Note)", :item_type => "once", :status => "assigned", :media_urls => ["http://res.cloudinary.com/hbztmvh3r/image/upload/v1425318520/item_1425318520.1776307_2.jpg"])
+    c4.add_to_bucket(c)
+    
+    f1 = Item.create(:user_id => self.id, :message => "Wife is Rita Wilson, has two kids w/ Rita: Chester and Marlon. (Sample Note)", :item_type => "once", :status => "assigned")
     f1.add_to_bucket(b)
-    f2 = Item.create(:user_id => self.id, :message => "Ex-wife Samantha Lewes. Kids Colin Hanks and Elizabeth Hanks (Sample Note)", :item_type => "once", :status => "outstanding")
+    f2 = Item.create(:user_id => self.id, :message => "Ex-wife Samantha Lewes. Kids Colin Hanks and Elizabeth Hanks (Sample Note)", :item_type => "once", :status => "assigned")
     f2.add_to_bucket(b)
-    f3 = Item.create(:user_id => self.id, :message => "Diabetic. (Sample Note)", :item_type => "once", :status => "outstanding")
+    f3 = Item.create(:user_id => self.id, :message => "Diabetic. (Sample Note)", :item_type => "once", :status => "assigned")
     f3.add_to_bucket(b)
 
-    wine = Bucket.create(:first_name => "Wine", :user_id => self.id, :bucket_type => "Other") 
-
-    meiomi = Item.create(:user_id => self.id, :message => "Really great red wine. Not too heavy.", :item_type => "once", :status => "assigned")
-    meiomi.add_to_bucket(wine)
-
-    cuvaison = Item.create(:user_id => self.id, :message => "Delicious. Drinkable, but has plenty of flavor", :item_type => "once", :status => "assigned")
-    cuvaison.add_to_bucket(wine)
+    # longer
   end
   
   # -- GETTERS
