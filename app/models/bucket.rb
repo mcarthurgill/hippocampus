@@ -122,7 +122,7 @@ class Bucket < ActiveRecord::Base
         ]}
       )
     rescue Exception => e
-      puts 'rescued a swiptype exception!'
+      puts 'rescued a swiftype exception!'
     end
   end
 
@@ -134,7 +134,7 @@ class Bucket < ActiveRecord::Base
     begin
       client.destroy_document(engine_slug, document_slug, self.id)
     rescue Exception => e
-      puts 'rescued a swiptype exception!'
+      puts 'rescued a swiftype exception!'
     end
   end
 

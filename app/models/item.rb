@@ -279,7 +279,7 @@ class Item < ActiveRecord::Base
   def self.remind_about_notes_for_today
     items = Item.notes_for_today
     items.each do |i|
-      message = "Your Hippocampus reminder for today:\n" + i.message
+      message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
@@ -288,7 +288,7 @@ class Item < ActiveRecord::Base
   def self.remind_about_daily_items
     items = Item.daily
     items.each do |i|
-      message = "Your daily Hippocampus reminder:\n" + i.message
+      message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
@@ -297,7 +297,7 @@ class Item < ActiveRecord::Base
   def self.remind_about_weekly_items
     items = Item.get_weekly_items_for_today
     items.each do |i|
-      message = "Your weekly Hippocampus reminder:\n" + i.message
+      message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
@@ -320,7 +320,7 @@ class Item < ActiveRecord::Base
     items = Item.where('extract(day from reminder_date) = ?', Date.today.day).monthly
 
     items.each do |i|
-      message = "Your monthly Hippocampus reminder:\n" + i.message
+      message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
@@ -330,7 +330,7 @@ class Item < ActiveRecord::Base
     items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Date.today.month, Date.today.day).yearly
     
     items.each do |i|
-      message = "Your yearly Hippocampus reminder:\n" + i.message
+      message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
       msg.send
     end
@@ -385,7 +385,7 @@ class Item < ActiveRecord::Base
       begin
         client.create_or_update_document(engine_slug, document_slug, self.index_representation)
       rescue Exception => e
-        puts 'rescued a swiptype exception!'
+        puts 'rescued a swiftype exception!'
       end
     end
   end
@@ -414,7 +414,7 @@ class Item < ActiveRecord::Base
     begin
       client.destroy_document(engine_slug, document_slug, self.id)
     rescue Exception => e
-      puts 'rescued a swiptype exception!'
+      puts 'rescued a swiftype exception!'
     end
   end
 
@@ -440,7 +440,7 @@ class Item < ActiveRecord::Base
     begin
       client.create_or_update_documents(engine_slug, document_slug, items)
     rescue Exception => e
-      puts 'rescued a swiptype exception!'
+      puts 'rescued a swiftype exception!'
     end
   end
 
