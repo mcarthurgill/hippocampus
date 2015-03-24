@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Bucket:</b>
+  <%= @contact_card.bucket_id %>
+</p>
+
+<p>
+  <b>Contact info:</b>
+  <%= @contact_card.contact_info %>
+</p>
+
+
+<%= link_to 'Edit', edit_contact_card_path(@contact_card) %> |
+<%= link_to 'Back', contact_cards_path %>

@@ -1,0 +1,25 @@
+<h1>Listing contact_cards</h1>
+
+<table>
+  <tr>
+    <th>Bucket</th>
+    <th>Contact info</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @contact_cards.each do |contact_card| %>
+  <tr>
+    <td><%= contact_card.bucket_id %></td>
+    <td><%= contact_card.contact_info %></td>
+    <td><%= link_to 'Show', contact_card %></td>
+    <td><%= link_to 'Edit', edit_contact_card_path(contact_card) %></td>
+    <td><%= link_to 'Destroy', contact_card, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Contact card', new_contact_card_path %>
