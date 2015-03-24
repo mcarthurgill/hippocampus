@@ -17,18 +17,20 @@ class User < ActiveRecord::Base
   end
 
   def create_default_buckets_and_items
-    b = Bucket.create(:first_name => "McArthur Gill", :user_id => self.id, :bucket_type => "Person")
+    b = Bucket.create(:first_name => "Tom Hanks (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
 
-    hometown = Item.create(:user_id => self.id, :message => "From Montgomery, AL", :item_type => "once", :status => "assigned")
+    hometown = Item.create(:user_id => self.id, :message => "From Concord, CA, but currently in LA. (Sample Note)", :item_type => "once", :status => "assigned")
     hometown.add_to_bucket(b)
-
-    school = Item.create(:user_id => self.id, :message => "Went to Vanderbilt", :item_type => "once", :status => "assigned")
+    school = Item.create(:user_id => self.id, :message => "Went to Cal State before moving to Hollywood. (Sample Note)", :item_type => "once", :status => "assigned")
     school.add_to_bucket(b)
-
-    birthday = Item.create(:user_id => self.id, :message => "Birthday - September 10th", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("10-9-2015"))
+    birthday = Item.create(:user_id => self.id, :message => "Birthday - July 9th (Sample Note)", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("2015-07-09"))
     birthday.add_to_bucket(b)
-
-    current_town = Item.create(:user_id => self.id, :message => "Currently lives in Nashville. Sam and Will are his roommates", :item_type => "once", :status => "outstanding")
+    f1 = Item.create(:user_id => self.id, :message => "Wife is Rita Wilson, has two kids w/ Rita: Chester and Marlon. (Sample Note)", :item_type => "once", :status => "outstanding")
+    f1.add_to_bucket(b)
+    f2 = Item.create(:user_id => self.id, :message => "Ex-wife Samantha Lewes. Kids Colin Hanks and Elizabeth Hanks (Sample Note)", :item_type => "once", :status => "outstanding")
+    f2.add_to_bucket(b)
+    f3 = Item.create(:user_id => self.id, :message => "Diabetic. (Sample Note)", :item_type => "once", :status => "outstanding")
+    f3.add_to_bucket(b)
 
     wine = Bucket.create(:first_name => "Wine", :user_id => self.id, :bucket_type => "Other") 
 
