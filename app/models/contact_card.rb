@@ -27,4 +27,16 @@ class ContactCard < ActiveRecord::Base
   def emails
     JSON.parse(self.contact_info)["emails"]
   end
+
+  def note
+    JSON.parse(self.contact_info)["note"]
+  end
+
+  def birthday
+    JSON.parse(self.contact_info)["birthday"]
+  end
+
+  def company
+    JSON.parse(self.contact_info)["company"]
+  end
 end
