@@ -107,7 +107,20 @@ class Item < ActiveRecord::Base
     return nil
   end
 
-
+  def self.create_from_contact_card(contact_card)
+    i = Item.new
+    i.user = contact_card.bucket.user
+    i.message = contact_card.note
+    i.item_type = 'once'
+    i.status = 'assigned'
+    i.add_to_bucket(contact_card.bucket)
+    i.input_method = "contacts"
+    if i.user && i.message
+      i.save!
+      return i
+    end
+    return nil
+  end
 
 
   # -- DESTROY

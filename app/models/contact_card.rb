@@ -3,6 +3,14 @@ class ContactCard < ActiveRecord::Base
 
   belongs_to :bucket
 
+  after_create :create_item_for_note
+
+  # -- CALLBACKS
+
+  def create_item_for_note
+    Item.create_from_contact_card(self) if self.note
+  end
+
   # -- GETTERS
   def first_name
     JSON.parse(self.contact_info)["first_name"]
