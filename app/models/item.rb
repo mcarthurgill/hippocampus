@@ -113,10 +113,10 @@ class Item < ActiveRecord::Base
     i.message = contact_card.note
     i.item_type = 'once'
     i.status = 'assigned'
-    i.add_to_bucket(contact_card.bucket)
     i.input_method = "contacts"
     if i.user && i.message
       i.save!
+      i.add_to_bucket(contact_card.bucket)
       return i
     end
     return nil
