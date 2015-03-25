@@ -7,7 +7,7 @@ class ContactCardsController < ApplicationController
     respond_to do |format|
       if @contact_card.save
         format.html { redirect_to @contact_card, notice: 'Contact card was successfully created.' }
-        format.json { render json: @contact_card, status: :created, location: @contact_card }
+        format.json { render json: @contact_card }
       else
         format.html { render action: "new" }
         format.json { render json: @contact_card.errors, status: :unprocessable_entity }
