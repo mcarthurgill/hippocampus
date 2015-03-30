@@ -16,12 +16,35 @@ task :send_reminders_about_events => :environment do
   p "*"*50
 end
 
-#havent added this to the heroku scheduler yet
 desc "Let people know they can text hippocampus"
 task :alert_about_ability_to_text => :environment do
   p "*"*50
   p "letting people know they can text hippo"
   users = User.where("created_at > ?", 1.day.ago)
+
+  if users && users.count > 0
+    users.each do |u|
+      message = "Add this number to your contacts. You can text notes to this number and they'll be in Hippocampus waiting for you."
+      msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
+      msg.send
+    end
+  end
+
+  p "done"
+  p "*"*50
+end
+
+desc "1 week later reminder if they've never texted"
+task :reminding_users_they_can_text => :environment do
+  p "*"*50
+  p "reminding peeps they can text hippo"
+  sms = Sm.where("created_at > ?", 7.days.ago).includes(:item)
+  users_to_exclude = []
+  sms.each do |t|
+    users_to_exclude << t.item.user.id unless users_to_exclude.include?(t.item.user.id)
+  end
+
+  users = User.where("created_at > ? AND created_at < ? AND id NOT IN (?)", 7.days.ago, 6.days.ago, users_to_exclude)
 
   if users && users.count > 0
     users.each do |u|

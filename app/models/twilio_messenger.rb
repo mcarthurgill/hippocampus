@@ -8,13 +8,21 @@ class TwilioMessenger < ActiveRecord::Base
   end
 
   def send
-    @client = Twilio::REST::Client.new(Hippocampus::Application.config.account_sid, Hippocampus::Application.config.auth_token)
-    @account = @client.account
-    if @body && @body.length > 1600
-      self.send_split_texts
-    else
-      @message = @account.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
-    end    
+    begin
+      @client = Twilio::REST::Client.new(Hippocampus::Application.config.account_sid, Hippocampus::Application.config.auth_token)
+      @account = @client.account
+      if @body && @body.length > 1600
+        self.send_split_texts
+      else
+        @message = @account.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
+      end    
+    rescue Twilio::REST::RequestError => e
+      p "*"*50
+      puts e.message
+      p "*"*50
+    end
+    
+    
   end
 
   def send_split_texts

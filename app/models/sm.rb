@@ -7,7 +7,6 @@ class Sm < ActiveRecord::Base
   
   belongs_to :item
 
-
   # -- ACTIONS
 
   def create_item
