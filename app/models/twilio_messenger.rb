@@ -17,9 +17,7 @@ class TwilioMessenger < ActiveRecord::Base
         @message = @account.messages.create({:body => @body, :to => append_plus_to_number(@to_number), :from => append_plus_to_number(@from_number)})
       end    
     rescue Twilio::REST::RequestError => e
-      p "*"*50
-      puts e.message
-      p "*"*50
+      p e.message
     end
     
     
