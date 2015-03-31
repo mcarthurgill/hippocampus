@@ -1,0 +1,29 @@
+<h1>Listing device_tokens</h1>
+
+<table>
+  <tr>
+    <th>Android device token</th>
+    <th>Ios device token</th>
+    <th>User</th>
+    <th>Environment</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @device_tokens.each do |device_token| %>
+  <tr>
+    <td><%= device_token.android_device_token %></td>
+    <td><%= device_token.ios_device_token %></td>
+    <td><%= device_token.user_id %></td>
+    <td><%= device_token.environment %></td>
+    <td><%= link_to 'Show', device_token %></td>
+    <td><%= link_to 'Edit', edit_device_token_path(device_token) %></td>
+    <td><%= link_to 'Destroy', device_token, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Device token', new_device_token_path %>

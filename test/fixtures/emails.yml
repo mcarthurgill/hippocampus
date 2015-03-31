@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  From: MyString
+  FromName: MyString
+  To: MyString
+  Cc: MyText
+  Bcc: MyText
+  ReplyTo: MyString
+  Subject: MyText
+  MessageID: MyString
+  Date: MyString
+  MailboxHash: MyText
+  TextBody: MyText
+  HtmlBody: MyText
+  StrippedTextReply: MyText
+
+two:
+  From: MyString
+  FromName: MyString
+  To: MyString
+  Cc: MyText
+  Bcc: MyText
+  ReplyTo: MyString
+  Subject: MyText
+  MessageID: MyString
+  Date: MyString
+  MailboxHash: MyText
+  TextBody: MyText
+  HtmlBody: MyText
+  StrippedTextReply: MyText

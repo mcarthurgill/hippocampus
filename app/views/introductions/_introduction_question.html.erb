@@ -1,0 +1,6 @@
+<div class="inner-question">
+  <h4><%= question.question_text %></h4>
+  <% question.introduction_responses.each do |r| %>
+    <%= link_to r.response_text, next_path({:qid => question.id, :qids => qids, :flagged => r.flagged? ? flagged + 1 : flagged }), :class => "btn btn-link", :remote => true %>
+  <% end %>
+</div>

@@ -1,0 +1,46 @@
+<%= form_for(@item) do |f| %>
+  <% if @item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+      <% @item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.text_area :message, :rows => 4, class: 'form-control' %>
+  </div>
+  
+  <div class="field">
+    <h6>Note type:</h6>
+    <%= f.select :item_type, options_for_select(Item.item_types, @item.item_type), {}, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <h6>Image:</h6>
+    <%= f.file_field 'file', accept: 'image/png,image/gif,image/jpeg' %>
+  </div>
+  
+  <div class="field">
+    <h6>Reminder date:</h6>
+    <%= f.date_select(:reminder_date, {:order => [:month, :day, :year], :include_blank => true, :start_year => Date.today.year, :end_year => Date.today.year+100 }, ) %>
+  </div>
+  
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+
+  <div class="actions">
+    <br/>
+    <%= f.submit "Save", :class => "btn btn-primary btn-md btn-block" %>
+  </div>
+
+  <% if @item.id %>
+    <p></p>
+    <%= link_to 'Delete Note', @item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-md btn-block' %>
+  <% end %>
+
+  <br/>
+<% end %>

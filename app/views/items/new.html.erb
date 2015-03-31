@@ -1,0 +1,22 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Notes</a></li>
+      <li class="active">+ New Note</li>
+    </ol>
+  </div>
+</div>
+
+<%= render 'form' %>
+
+<div class="row">
+  <div class="col-xs-12">
+    <br/>
+    <%= link_to "All Notes", user_path(current_user), :class => "btn btn-default btn-md btn-block" %>
+  </div>
+</div>
+
+<br/>
+<br/>
+<br/>

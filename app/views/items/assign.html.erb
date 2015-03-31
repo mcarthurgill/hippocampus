@@ -1,0 +1,32 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Notes</a></li>
+      <li><a href="<%= item_path(@item) %>">Note</a></li>
+      <li class="active">Add to Stack</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    
+    <% if notice %>
+      <div class="row">
+        <div class="col-xs-12">
+          <br/>
+          <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <%= notice %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render 'assign_options' %>
+
+    <%= render 'detail' %>
+
+  </div>  
+</div>

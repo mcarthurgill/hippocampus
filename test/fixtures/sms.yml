@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  ToCountry: MyString
+  ToState: MyString
+  SmsMessageSid: MyString
+  NumMedia: MyString
+  ToCity: MyString
+  FromZip: MyString
+  SmsSid: MyString
+  FromState: MyString
+  SmsStatus: MyString
+  FromCity: MyString
+  Body: MyText
+  FromCountry: MyString
+  To: MyString
+  ToZip: MyString
+  MessageSid: MyString
+  AccountSid: MyString
+  From: MyString
+  ApiVersion: MyString
+
+two:
+  ToCountry: MyString
+  ToState: MyString
+  SmsMessageSid: MyString
+  NumMedia: MyString
+  ToCity: MyString
+  FromZip: MyString
+  SmsSid: MyString
+  FromState: MyString
+  SmsStatus: MyString
+  FromCity: MyString
+  Body: MyText
+  FromCountry: MyString
+  To: MyString
+  ToZip: MyString
+  MessageSid: MyString
+  AccountSid: MyString
+  From: MyString
+  ApiVersion: MyString

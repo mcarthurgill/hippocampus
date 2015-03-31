@@ -1,0 +1,14 @@
+.gray-background {
+  background-color: #c8c8c8;
+}
+
+td a {
+  display:block;
+  width:100%;
+}
+
+a:hover {
+  background-color: transparent; 
+  text-decoration: none;
+  color:black;
+}

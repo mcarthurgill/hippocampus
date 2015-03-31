@@ -1,0 +1,15 @@
+
+
+<p>
+  <b>Bucket:</b>
+  <%= @bucket_item_pair.bucket_id %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @bucket_item_pair.item_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_bucket_item_pair_path(@bucket_item_pair) %> |
+<%= link_to 'Back', bucket_item_pairs_path %>

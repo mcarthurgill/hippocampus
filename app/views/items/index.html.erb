@@ -1,0 +1,22 @@
+<h1>Listing items</h1>
+
+<table>
+  <tr>
+    <th>Message</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @items.each do |item| %>
+  <tr>
+    <td><%= item.message %></td>
+    <td><%= item.user.phone %></td>
+    <td><%= link_to 'Show', item %></td>
+    <td><%= link_to 'Edit', edit_item_path(item) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

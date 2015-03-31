@@ -1,0 +1,23 @@
+<% if notice %>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <br/>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    </div>
+  </div>
+<% else %>
+<br/>
+<% end %>
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <br/>
+    <p class="lead"><b>Hippocampus.</b><br/>The palest ink is better than the best memory. Start converting short term memory to long term memory.</p>
+    <br/>
+  </div>
+</div>
+
+<%= render 'sign_in_form' %>

@@ -1,0 +1,76 @@
+
+<div class="row">
+  <div class="col-xs-12">
+
+    <div class="list-group">
+      <li class="list-group-item list-group-item-info category-header">Recent</li>
+      <% @user.buckets.recent_for_user_id(@user.id).each do |b| %>
+        <a href=<%= bucket_path(b) %> class="list-group-item bucket-container">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="list-group-item-heading"></h4>
+              <p class="list-group-item-text" style="overflow:hidden;"><%= b.display_name %> <span class='badge'><%= b.items_count %></span></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+    </div>
+
+    <div class="list-group">
+      <li class="list-group-item list-group-item-info category-header">Other</li>
+      <% @user.buckets.other_type.by_first_name.each do |b| %>
+        <a href=<%= bucket_path(b) %> class="list-group-item bucket-container">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="list-group-item-heading"></h4>
+              <p class="list-group-item-text" style="overflow:hidden;"><%= b.display_name %> <span class='badge'><%= b.items_count %></span></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+    </div>
+
+    <div class="list-group">
+      <li class="list-group-item list-group-item-info category-header">Person</li>
+      <% @user.buckets.person_type.by_first_name.each do |b| %>
+        <a href=<%= bucket_path(b) %> class="list-group-item bucket-container">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="list-group-item-heading"></h4>
+              <p class="list-group-item-text" style="overflow:hidden;"><%= b.display_name %> <span class='badge'><%= b.items_count %></span></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+    </div>
+
+    <div class="list-group">
+      <li class="list-group-item list-group-item-info category-header">Event</li>
+      <% @user.buckets.event_type.order('id DESC').each do |b| %>
+        <a href=<%= bucket_path(b) %> class="list-group-item bucket-container">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="list-group-item-heading"></h4>
+              <p class="list-group-item-text" style="overflow:hidden;"><%= b.display_name %> <span class='badge'><%= b.items_count %></span></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+    </div>
+
+    <div class="list-group">
+      <li class="list-group-item list-group-item-info category-header">Place</li>
+      <% @user.buckets.place_type.by_first_name.each do |b| %>
+        <a href=<%= bucket_path(b) %> class="list-group-item bucket-container">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="list-group-item-heading"></h4>
+              <p class="list-group-item-text" style="overflow:hidden;"><%= b.display_name %> <span class='badge'><%= b.items_count %></span></p>
+            </div>
+          </div>
+        </a>
+      <% end %>
+    </div>
+  
+  </div>
+</div>

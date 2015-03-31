@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hippocampus</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body style="padding-top:60px;padding-bottom:16px">
+
+<div class="container-fluid" style="padding-top:1%;overflow:hidden;">
+
+  <%= render 'shared/header' %>
+
+  <%= yield %>
+
+</div>
+
+</body>
+</html>

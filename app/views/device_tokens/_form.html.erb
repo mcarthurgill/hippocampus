@@ -1,0 +1,33 @@
+<%= form_for(@device_token) do |f| %>
+  <% if @device_token.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@device_token.errors.count, "error") %> prohibited this device_token from being saved:</h2>
+
+      <ul>
+      <% @device_token.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :android_device_token %><br />
+    <%= f.text_field :android_device_token %>
+  </div>
+  <div class="field">
+    <%= f.label :ios_device_token %><br />
+    <%= f.text_field :ios_device_token %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :environment %><br />
+    <%= f.text_field :environment %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

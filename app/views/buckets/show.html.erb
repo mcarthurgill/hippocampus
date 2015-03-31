@@ -1,0 +1,29 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Notes</a></li>
+      <li><a href="<%= user_buckets_path(current_user) %>">Stacks</a></li>
+      <li class="active"><%= @bucket.display_name %></li>
+    </ol>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h3><%= @bucket.display_name %></h3>
+    <br/>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <% @bucket.items.not_deleted.by_date.each do |i| %>
+        <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= render 'footer' %>

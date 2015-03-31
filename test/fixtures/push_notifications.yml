@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  device_token_id: 1
+  message: MyText
+  badge_count: 1
+  item_id: 1
+  bucket_id: 1
+  status: MyString
+
+two:
+  device_token_id: 1
+  message: MyText
+  badge_count: 1
+  item_id: 1
+  bucket_id: 1
+  status: MyString
