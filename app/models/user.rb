@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :phone, :country_code
+
+  attr_accessible :email, :phone, :country_code, :number_items, :number_buckets
   extend Formatting
+
+  
 
   # -- RELATIONSHIPS
 
@@ -10,9 +13,11 @@ class User < ActiveRecord::Base
   has_many :tokens
   has_many :device_tokens
   
-  # -- CALLBACKS
-  after_create :should_create_default_buckets_and_items
+  
 
+  # -- CALLBACKS
+
+  after_create :should_create_default_buckets_and_items
   def should_create_default_buckets_and_items
     self.delay.create_default_buckets_and_items if self.buckets.empty?
   end
@@ -21,15 +26,12 @@ class User < ActiveRecord::Base
     quotes = Bucket.create(:first_name => "Quotes (Sample Thread)", :user_id => self.id, :bucket_type => "Other") 
     b = Bucket.create(:first_name => "Tom Hanks (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
     c = Bucket.create(:first_name => "Emily Scott (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
-
     q7 = Item.create(:user_id => self.id, :message => "\"You are no more than a few seconds of attention other people give to a Facebook status. In 2014, no one has time to care about others in such a crowded, noisy world.\". (Sample Note)", :item_type => "once", :status => "assigned")
     q7.add_to_bucket(quotes)
     q1 = Item.create(:user_id => self.id, :message => '"We are interested in others when they are interested in us." -Dale Carnegie (Sample Note)', :item_type => "once", :status => "assigned")
     q1.add_to_bucket(quotes)
     q2 = Item.create(:user_id => self.id, :message => '"Some of Virgin\'s most successful companies have been born from random moments – if we hadn\'t opened our notebooks, they would never have happened." -Richard Branson (Sample Note)', :item_type => "once", :status => "assigned")
     q2.add_to_bucket(quotes)
-    # hometown = Item.create(:user_id => self.id, :message => "From Concord, CA, but currently in LA. (Sample Note)", :item_type => "once", :status => "assigned")
-    # hometown.add_to_bucket(b)
     school = Item.create(:user_id => self.id, :message => "Went to Cal State before moving to Hollywood. (Sample Note)", :item_type => "once", :status => "assigned")
     school.add_to_bucket(b)
     birthday = Item.create(:user_id => self.id, :message => "Birthday - July 9th (Sample Note)", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("2015-07-09"))
@@ -44,20 +46,14 @@ class User < ActiveRecord::Base
     q3.add_to_bucket(quotes)
     q5 = Item.create(:user_id => self.id, :message => "\"Evil is relatively rare. Ignorance is an epidemic.\" -Jon Stewart (Sample Note)", :item_type => "once", :status => "assigned")
     q5.add_to_bucket(quotes)
-    # q6 = Item.create(:user_id => self.id, :message => "\"Over billions of years on a unique sphere, chance has painted a thin covering of life -- complex, improbable, wonderful and fragile. Suddenly, we humans -- a recently arrived species, no longer subject to the checks and balances inherent in nature -- have grown in population, technology and intelligence to a position of terrible power. We now wield the paintbrush. And that's serious: we're not very bright. We're short on wisdom; we're high on technology. Where's it going to lead?\". -Paul MacCready in Nature vs. Humans (Sample Note)", :item_type => "once", :status => "assigned")
-    # q6.add_to_bucket(quotes)
-    # q4 = Item.create(:user_id => self.id, :message => "\"It's the execution, not the idea\" is frequently true for large classes of ideas. But you wouldn't say \"it's the CPU, not the algorithm\". (Sample Note)", :item_type => "once", :status => "assigned")
-    # q4.add_to_bucket(quotes)
     c4 = Item.create(:user_id => self.id, :message => "Went to Desano's with Emily. Had a bottle of 'Los Dos', recommended by Ed. Was light-bodied and paired well with pizza. (Sample Note)", :item_type => "once", :status => "assigned", :media_urls => ["http://res.cloudinary.com/hbztmvh3r/image/upload/v1425318520/item_1425318520.1776307_2.jpg"])
     c4.add_to_bucket(c)
     f1 = Item.create(:user_id => self.id, :message => "Wife is Rita Wilson, has two kids w/ Rita: Chester and Marlon. (Sample Note)", :item_type => "once", :status => "assigned")
     f1.add_to_bucket(b)
-    # f2 = Item.create(:user_id => self.id, :message => "Ex-wife Samantha Lewes. Kids Colin Hanks and Elizabeth Hanks (Sample Note)", :item_type => "once", :status => "assigned")
-    # f2.add_to_bucket(b)
-    # f3 = Item.create(:user_id => self.id, :message => "Diabetic. (Sample Note)", :item_type => "once", :status => "assigned")
-    # f3.add_to_bucket(b)
   end
   
+  
+
   # -- GETTERS
 
   def self.with_phone_number phone_number
@@ -79,6 +75,9 @@ class User < ActiveRecord::Base
     return_buckets << self.buckets.recent_for_user_id(self.id).order('updated_at DESC')
     return return_buckets.flatten
   end
+  
+
+
   # -- SETTERS
 
   def self.with_or_initialize_with_phone_number phone_number
@@ -96,6 +95,7 @@ class User < ActiveRecord::Base
   end
 
 
+  
   # -- SCHEDULES
 
   def self.remind_about_outstanding_items
@@ -105,6 +105,8 @@ class User < ActiveRecord::Base
       msg.send
     end
   end
+
+  
 
   # -- HELPERS
 
@@ -168,6 +170,24 @@ class User < ActiveRecord::Base
     return self.items.not_deleted.limit(64).within_bounds(max_long, min_long, max_lat, min_lat)
   end
 
+  def score
+    return self.number_items+self.number_buckets
+  end
+
+
+
+  # --- ACTIONS
+
+  def update_items_count
+    self.update_attribute(:number_items, self.items.count)
+  end
+
+  def update_buckets_count
+    self.update_attribute(:number_buckets, self.buckets.count)
+  end
+
+  
+
   # --- TOKENS
 
   def update_and_send_passcode
@@ -191,6 +211,7 @@ class User < ActiveRecord::Base
     end
     return nil
   end
+
 
 
 # --- ADDONS
@@ -227,4 +248,5 @@ class User < ActiveRecord::Base
     end
     return nil
   end
+
 end

@@ -18,6 +18,7 @@ class Item < ActiveRecord::Base
   has_many :sms
   has_many :emails
 
+
   # -- SCOPES
 
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
@@ -39,13 +40,6 @@ class Item < ActiveRecord::Base
   # -- CALLBACKS
 
   before_validation :strip_whitespace
-  before_save :check_status
-
-  after_save :index_delayed
-
-  before_destroy :remove_from_engine
-
-
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
     self.item_type = self.item_type ? self.item_type.strip : nil
@@ -53,10 +47,20 @@ class Item < ActiveRecord::Base
     self.input_method = self.input_method ? self.input_method.strip : nil
   end
 
+  before_save :check_status
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
     self.buckets_string = self.description_string
   end
+
+  after_create :update_user_items_count
+  def update_user_items_count
+    self.user.update_items_count
+  end
+
+  after_save :index_delayed
+
+  before_destroy :remove_from_engine
 
 
 
