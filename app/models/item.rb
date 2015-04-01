@@ -418,6 +418,7 @@ class Item < ActiveRecord::Base
       {:name => 'item_id', :value => self.id, :type => 'integer'},
       {:name => 'latitude', :value => self.latitude, :type => 'float'},
       {:name => 'longitude', :value => self.longitude, :type => 'float'},
+      {:name => 'reminder_date', :value => self.reminder_date, :type => 'string'},
       {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
       {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
     ]}
