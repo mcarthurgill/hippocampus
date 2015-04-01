@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :country_code, :number_items, :number_buckets
+  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets
   extend Formatting
 
   
