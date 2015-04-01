@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
           redirect_to user_path(@user)
           return
         end
-        format.json { render json: { :success => 'success', :user => @user } }
+        format.json { render json: { :success => 'success', :user => @user.as_json(only: [:phone, :country_code, :number_items, :number_buckets]) } }
       end
     else
       respond_to do |format|
