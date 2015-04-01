@@ -9,6 +9,7 @@ class Bucket < ActiveRecord::Base
 
   has_many :bucket_user_pairs
   has_many :users, :through => :bucket_user_pairs
+  belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
   has_many :bucket_item_pairs, dependent: :destroy
   has_many :items, :through => :bucket_item_pairs
   has_many :contact_cards
@@ -75,7 +76,7 @@ class Bucket < ActiveRecord::Base
 
   after_create :update_user_buckets_count
   def update_user_buckets_count
-    self.user.update_buckets_count
+    self.creator.update_buckets_count
   end
 
 
@@ -103,9 +104,6 @@ class Bucket < ActiveRecord::Base
     self.items.order("items.created_at DESC").pluck(:media_urls).flatten
   end
 
-  def creator
-    User.find(self.user_id)
-  end
 
   # -- ACTIONS
 
