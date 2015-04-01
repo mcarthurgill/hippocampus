@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
-      format.json { render json: { 'Other' => @user.buckets.other_type.by_first_name,  'Person' => @user.buckets.person_type.by_first_name,  'Event' => @user.buckets.event_type.order('id DESC'),  'Place' => @user.buckets.place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score } }
+      format.json { render json: { 'Other' => @user.buckets.other_type.by_first_name,  'Person' => @user.buckets.person_type.by_first_name,  'Event' => @user.buckets.event_type.order('id DESC'),  'Place' => @user.buckets.place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell } }
     end
   end
 
