@@ -54,7 +54,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if @bucket.save
-        @bucket.add_user_from_phone_and_country_code(user.phone, user.country_code) if user
+        @bucket.add_user(user) if user
         format.html do 
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
@@ -120,7 +120,7 @@ class BucketsController < ApplicationController
 
   def add_collaborators
     bucket = Bucket.find(params[:id])
-    bucket.delay.add_collaborators_from_contacts(params[:contacts]) if bucket
+    bucket.delay.add_collaborators_from_contacts_with_calling_code(params[:contacts], User.find_by_id(params[:auth][:uid]).calling_code) if bucket
 
     respond_to do |format|
       if bucket

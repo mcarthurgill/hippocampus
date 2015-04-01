@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
   # -- GETTERS
 
   def self.with_phone_number phone_number
-    return User.with_phone_number_and_calling_code(phone_number, '1')
+    return User.where("phone = ?", phone_number).first
   end
 
   def self.with_phone_number_and_calling_code phone_number, calling_code

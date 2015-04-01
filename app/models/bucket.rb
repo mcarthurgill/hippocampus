@@ -107,19 +107,21 @@ class Bucket < ActiveRecord::Base
 
   # -- ACTIONS
 
-  def add_collaborators_from_contacts(contacts_array)
+  def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code)
     contacts_array.each do |contact|
-      self.add_user_from_phone_and_country_code(contact[:phone_number], contact[:country_code])
+      self.add_user_from_phone(format_phone(contact[:phone_number], calling_code))
     end
   end
 
-  def add_user_from_phone_and_country_code(phone_number, country_code)
-    phone_number = format_phone(phone_number, country_code)
-    u = User.where("phone = ?", phone_number).first
+  def add_user_from_phone(phone_number)
+    self.add_user(User.with_phone_number(phone_number))
+  end
+
+  def add_user u
     if u && !self.belongs_to_user?(u)
       self.users << u
     elsif u.nil?
-      BucketUserPair.create_with_bucket_id_and_phone_number(self.id, phone_number)
+      BucketUserPair.create_with_bucket_id_and_phone_number(self.id, u.phone)
     end
   end
 
