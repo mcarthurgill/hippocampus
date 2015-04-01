@@ -1,5 +1,5 @@
 class Bucket < ActiveRecord::Base
-
+  include Formatting
   attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
@@ -9,6 +9,7 @@ class Bucket < ActiveRecord::Base
 
   has_many :bucket_user_pairs
   has_many :users, :through => :bucket_user_pairs
+  belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
   has_many :bucket_item_pairs, dependent: :destroy
   has_many :items, :through => :bucket_item_pairs
   has_many :contact_cards
@@ -75,7 +76,7 @@ class Bucket < ActiveRecord::Base
 
   after_create :update_user_buckets_count
   def update_user_buckets_count
-    self.user.update_buckets_count
+    self.creator.update_buckets_count
   end
 
 
@@ -103,9 +104,6 @@ class Bucket < ActiveRecord::Base
     self.items.order("items.created_at DESC").pluck(:media_urls).flatten
   end
 
-  def creator
-    User.find(self.user_id)
-  end
 
   # -- ACTIONS
 
@@ -118,7 +116,7 @@ class Bucket < ActiveRecord::Base
   def add_user_from_phone_and_country_code(phone_number, country_code)
     phone_number = format_phone(phone_number, country_code)
     u = User.where("phone = ?", phone_number).first
-    if u && !self.belongs_to_user(u)
+    if u && !self.belongs_to_user?(u)
       self.users << u
     elsif u.nil?
       BucketUserPair.create_with_bucket_id_and_phone_number(self.id, phone_number)

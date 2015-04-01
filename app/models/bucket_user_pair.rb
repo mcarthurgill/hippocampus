@@ -8,7 +8,7 @@ class BucketUserPair < ActiveRecord::Base
 
   def self.create_with_bucket_id_and_phone_number(bid, pn)
     bup = BucketUserPair.find_or_initialize_by_bucket_id_and_phone_number(bid, pn)
-    bup.save if bup.new_object?
+    bup.save if bup.new_record?
     return bup
   end
 end

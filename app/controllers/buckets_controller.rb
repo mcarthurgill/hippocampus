@@ -54,8 +54,8 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if @bucket.save
+        @bucket.add_user_from_phone_and_country_code(user.phone, user.country_code) if user
         format.html do 
-          @bucket.add_user_from_phone_and_country_code(user.phone, user.country_code) if user
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
             item.add_to_bucket(@bucket)
