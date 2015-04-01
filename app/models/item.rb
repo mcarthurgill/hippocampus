@@ -53,7 +53,7 @@ class Item < ActiveRecord::Base
     self.buckets_string = self.description_string
   end
 
-  after_save :update_user_items_count
+  after_create :update_user_items_count
   def update_user_items_count
     self.user.update_items_count
   end
