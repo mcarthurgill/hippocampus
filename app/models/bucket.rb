@@ -116,7 +116,7 @@ class Bucket < ActiveRecord::Base
   def add_user_from_phone_and_country_code(phone_number, country_code)
     phone_number = format_phone(phone_number, country_code)
     u = User.where("phone = ?", phone_number).first
-    if u && !self.belongs_to_user(u)
+    if u && !self.belongs_to_user?(u)
       self.users << u
     elsif u.nil?
       BucketUserPair.create_with_bucket_id_and_phone_number(self.id, phone_number)
