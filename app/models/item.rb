@@ -114,7 +114,7 @@ class Item < ActiveRecord::Base
   def self.create_from_contact_card(contact_card)
     i = Item.new
     i.user = contact_card.bucket.creator
-    i.message = contact_card.note
+    i.message = "Created from the notes section in your phone book: \n\n" + contact_card.note
     i.item_type = 'once'
     i.status = 'assigned'
     i.input_method = "contacts"
