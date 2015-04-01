@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
     q7.add_to_bucket(quotes)
     q1 = Item.create(:user_id => self.id, :message => '"We are interested in others when they are interested in us." -Dale Carnegie (Sample Note)', :item_type => "once", :status => "assigned")
     q1.add_to_bucket(quotes)
-    q2 = Item.create(:user_id => self.id, :message => '"Some of Virgin\'s most successful companies have been born from random moments – if we hadn\'t opened our notebooks, they would never have happened." -Richard Branson (Sample Note)', :item_type => "once", :status => "assigned")
+    q2 = Item.create(:user_id => self.id, :message => '"Some of Virgin\'s most successful companies have been born from random moments. If we hadn\'t opened our notebooks, they would never have happened." -Richard Branson (Sample Note)', :item_type => "once", :status => "assigned")
     q2.add_to_bucket(quotes)
     school = Item.create(:user_id => self.id, :message => "Went to Cal State before moving to Hollywood. (Sample Note)", :item_type => "once", :status => "assigned")
     school.add_to_bucket(b)
