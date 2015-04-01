@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by_phone(format_phone(params[:phone], params[:calling_code]))
+    @user = User.find_by_phone(format_phone(params[:phone], (params.has_key?(:calling_code) ? params[:calling_code] : '1')))
     if @user && @user.correct_passcode?(params[:passcode])
       cookies[:user_id] = { value: @user.id.to_s, expires: 10.years.from_now }
       respond_to do |format|
