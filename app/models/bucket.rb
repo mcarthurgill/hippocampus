@@ -72,6 +72,12 @@ class Bucket < ActiveRecord::Base
     end  
   end
 
+  after_create :update_user_buckets_count
+  def update_user_buckets_count
+    self.user.update_buckets_count
+  end
+
+
   # -- HELPERS
 
   def display_name

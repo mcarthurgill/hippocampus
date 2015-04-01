@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :country_code, :number_items
+  attr_accessible :email, :phone, :country_code, :number_items, :number_buckets
   extend Formatting
 
   
@@ -169,12 +169,20 @@ class User < ActiveRecord::Base
     return self.items.not_deleted.limit(64).within_bounds(max_long, min_long, max_lat, min_lat)
   end
 
+  def score
+    return self.number_items+self.number_buckets
+  end
+
 
 
   # --- ACTIONS
 
   def update_items_count
     self.update_attribute(:number_items, self.items.count)
+  end
+
+  def update_buckets_count
+    self.update_attribute(:number_buckets, self.buckets.count)
   end
 
   
