@@ -7,7 +7,8 @@ class Bucket < ActiveRecord::Base
 
   # -- RELATIONSHIPS
 
-  belongs_to :user
+  has_many :bucket_user_pairs
+  has_many :users, :through => :bucket_user_pairs
   has_many :bucket_item_pairs, dependent: :destroy
   has_many :items, :through => :bucket_item_pairs
   has_many :contact_cards
@@ -83,7 +84,7 @@ class Bucket < ActiveRecord::Base
   end
 
   def belongs_to_user?(u)
-    self.user == u
+    self.users.include?(u)
   end
 
   def update_items_with_new_bucket_name
@@ -94,6 +95,28 @@ class Bucket < ActiveRecord::Base
 
   def get_media_urls
     self.items.order("items.created_at DESC").pluck(:media_urls).flatten
+  end
+
+  def creator
+    User.find(self.user_id)
+  end
+
+  # -- ACTIONS
+
+  def add_collaborators_from_contacts(contacts_array)
+    contacts_array.each do |contact|
+      self.add_user_from_phone_and_country_code(contact[:phone_number], contact[:country_code])
+    end
+  end
+
+  def add_user_from_phone_and_country_code(phone_number, country_code)
+    phone_number = format_phone(phone_number, country_code)
+    u = User.where("phone = ?", phone_number).first
+    if u && !self.belongs_to_user(u)
+      self.users << u
+    elsif u.nil?
+      BucketUserPair.create_with_bucket_id_and_phone_number(self.id, phone_number)
+    end
   end
 
   #  swiftype

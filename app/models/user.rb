@@ -4,7 +4,8 @@ class User < ActiveRecord::Base
 
   # -- RELATIONSHIPS
 
-  has_many :buckets
+  has_many :bucket_user_pairs, :foreign_key => "phone_number", :primary_key => :phone
+  has_many :buckets, :through => :bucket_user_pairs, :foreign_key => "phone_number", :primary_key => :phone
   has_many :items
   has_many :tokens
   has_many :device_tokens

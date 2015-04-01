@@ -50,10 +50,12 @@ class BucketsController < ApplicationController
   # POST /buckets.json
   def create
     @bucket = Bucket.new(params[:bucket])
+    user = User.find(params[:bucket][:user_id])
 
     respond_to do |format|
       if @bucket.save
         format.html do 
+          @bucket.add_user_from_phone_and_country_code(user.phone, user.country_code) if user
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
             item.add_to_bucket(@bucket)
@@ -109,10 +111,23 @@ class BucketsController < ApplicationController
     bucket = Bucket.find(params[:id])
     user = User.find(params[:user_id])
 
-    urls = bucket.get_media_urls if (bucket && bucket.user == user)
+    urls = bucket.get_media_urls if (bucket && bucket.belongs_to_user?(user))
 
     respond_to do |format|
       format.json { render json: { :media_urls => urls } }
+    end
+  end
+
+  def add_collaborators
+    bucket = Bucket.find(params[:id])
+    bucket.delay.add_collaborators_from_contacts(params[:contacts]) if bucket
+
+    respond_to do |format|
+      if bucket
+        format.json { render json: { :bucket => bucket } }
+      else
+        format.json { render json: bucket.errors, status: :unprocessable_entity }
+      end
     end
   end
 end

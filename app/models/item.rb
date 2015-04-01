@@ -109,7 +109,7 @@ class Item < ActiveRecord::Base
 
   def self.create_from_contact_card(contact_card)
     i = Item.new
-    i.user = contact_card.bucket.user
+    i.user = contact_card.bucket.creator
     i.message = contact_card.note
     i.item_type = 'once'
     i.status = 'assigned'

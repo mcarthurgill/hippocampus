@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150317202511) do
+ActiveRecord::Schema.define(:version => 20150331195130) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(:version => 20150317202511) do
   add_index "bucket_item_pairs", ["id"], :name => "index_bucket_item_pairs_on_id"
   add_index "bucket_item_pairs", ["item_id"], :name => "index_bucket_item_pairs_on_item_id"
 
+  create_table "bucket_user_pairs", :force => true do |t|
+    t.integer  "bucket_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "phone_number"
+  end
+
   create_table "buckets", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -44,6 +51,13 @@ ActiveRecord::Schema.define(:version => 20150317202511) do
 
   add_index "buckets", ["id"], :name => "index_buckets_on_id"
   add_index "buckets", ["user_id"], :name => "index_buckets_on_user_id"
+
+  create_table "contact_cards", :force => true do |t|
+    t.integer  "bucket_id"
+    t.text     "contact_info"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -131,14 +145,76 @@ ActiveRecord::Schema.define(:version => 20150317202511) do
   add_index "items", ["longitude"], :name => "index_items_on_longitude"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
-  create_table "people", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "location"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "user_id"
+  create_table "push_notifications", :force => true do |t|
+    t.integer  "device_token_id"
+    t.text     "message"
+    t.integer  "badge_count"
+    t.integer  "item_id"
+    t.integer  "bucket_id"
+    t.string   "status"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
+
+  create_table "rpush_apps", :force => true do |t|
+    t.string   "name",                                   :null => false
+    t.string   "environment"
+    t.text     "certificate"
+    t.string   "password"
+    t.integer  "connections",             :default => 1, :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "type",                                   :null => false
+    t.string   "auth_key"
+    t.string   "client_id"
+    t.string   "client_secret"
+    t.string   "access_token"
+    t.datetime "access_token_expiration"
+  end
+
+  create_table "rpush_feedback", :force => true do |t|
+    t.string   "device_token", :limit => 64,  :null => false
+    t.datetime "failed_at",                   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "app_id",       :limit => 255
+  end
+
+  add_index "rpush_feedback", ["device_token"], :name => "index_rapns_feedback_on_device_token"
+
+  create_table "rpush_notifications", :force => true do |t|
+    t.integer  "badge"
+    t.string   "device_token",      :limit => 64
+    t.string   "sound",                            :default => "default"
+    t.string   "alert"
+    t.text     "data"
+    t.integer  "expiry",                           :default => 86400
+    t.boolean  "delivered",                        :default => false,     :null => false
+    t.datetime "delivered_at"
+    t.boolean  "failed",                           :default => false,     :null => false
+    t.datetime "failed_at"
+    t.integer  "error_code"
+    t.text     "error_description", :limit => 255
+    t.datetime "deliver_after"
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
+    t.boolean  "alert_is_json",                    :default => false
+    t.string   "type",                                                    :null => false
+    t.string   "collapse_key"
+    t.boolean  "delay_while_idle",                 :default => false,     :null => false
+    t.text     "registration_ids"
+    t.integer  "app_id",                                                  :null => false
+    t.integer  "retries",                          :default => 0
+    t.string   "uri"
+    t.datetime "fail_after"
+    t.boolean  "processing",                       :default => false,     :null => false
+    t.integer  "priority"
+    t.text     "url_args"
+    t.string   "category"
+  end
+
+  add_index "rpush_notifications", ["app_id", "delivered", "failed", "deliver_after"], :name => "index_rapns_notifications_multi"
+  add_index "rpush_notifications", ["delivered", "failed"], :name => "index_rpush_notifications_multi"
 
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
