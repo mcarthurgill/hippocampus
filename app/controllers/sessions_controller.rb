@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   end
 
   def passcode
-    @user = User.with_or_initialize_with_phone_number(params[:phone])
+    @user = User.with_or_initialize_with_phone_number_country_code_and_calling_code(params[:phone], (params.has_key?(:country_code) ? params[:country_code] : 'US'), (params.has_key?(:calling_code) ? params[:calling_code] : '1'))
     @user.save if @user.new_record?
 
     @user.update_and_send_passcode 
@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by_phone(format_phone(params[:phone], "1"))
+    @user = User.find_by_phone(format_phone(params[:phone], params[:calling_code]))
     if @user && @user.correct_passcode?(params[:passcode])
       cookies[:user_id] = { value: @user.id.to_s, expires: 10.years.from_now }
       respond_to do |format|

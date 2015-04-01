@@ -1,17 +1,19 @@
 module Formatting
-  def format_phone(number, country_code="1")
+  
+  def format_phone(number, calling_code="1")
     strip_whitespace!(number)
-    prepare_country_code!(country_code)
+    prepare_calling_code!(calling_code)
     if number && number.first == "+"
-      return strip_non_numeric!(number)
-    elsif country_code && country_code.length > 0
+      return "+"+strip_non_numeric!(number)
+    elsif calling_code && calling_code.length > 0
       strip_non_numeric!(number)
-      if number_has_country_code?(number, country_code)
-        remove_country_code!(number, country_code)
+      if number_has_calling_code?(number, calling_code)
+        remove_calling_code!(number, calling_code)
       end
       remove_leading_zeros!(number)
-      return add_country_code(number, country_code)
+      return "+"+add_calling_code(number, calling_code)
     end
+    return "+"+number
   end
 
   def strip_whitespace!(number)
@@ -22,30 +24,31 @@ module Formatting
     number.gsub!(/\D/, '')
   end
 
-  def number_has_country_code?(number, country_code)
-    number.slice(0...country_code.length) == country_code
+  def number_has_calling_code?(number, calling_code)
+    number.slice(0...calling_code.length) == calling_code
   end
 
-  def remove_country_code!(number, country_code)
-    number.slice!(0...country_code.length)
+  def remove_calling_code!(number, calling_code)
+    number.slice!(0...calling_code.length)
   end
 
   def remove_leading_zeros!(number)
     number.sub!(/^0+/, "")
   end
 
-  def add_country_code(number, country_code)
-    number.prepend(country_code)
+  def add_calling_code(number, calling_code)
+    number.prepend(calling_code)
   end
 
-  def prepare_country_code!(country_code)
-    strip_whitespace!(country_code)
-    strip_non_numeric!(country_code)
-    return country_code
+  def prepare_calling_code!(calling_code)
+    strip_whitespace!(calling_code)
+    strip_non_numeric!(calling_code)
+    return calling_code
   end
 
 
   def encrypt_password(string)
     return Digest::SHA1.hexdigest("#{string}sf098354sl#!^m$$yeaYou@a!")
   end
+
 end
