@@ -12,6 +12,13 @@ class User < ActiveRecord::Base
   has_many :items
   has_many :tokens
   has_many :device_tokens
+
+
+
+  # -- VALIDATORS
+
+  validates_presence_of :phone
+  validates_uniqueness_of :phone, case_sensitive: false
   
   
 
