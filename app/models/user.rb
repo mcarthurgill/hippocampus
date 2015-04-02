@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets
   extend Formatting
-
+  include Formatting
   
 
   # -- RELATIONSHIPS
@@ -23,52 +23,61 @@ class User < ActiveRecord::Base
   
 
   # -- CALLBACKS
+  after_create :should_send_introduction_text
 
-  after_create :should_create_default_buckets_and_items
-  def should_create_default_buckets_and_items
-    self.delay.create_default_buckets_and_items if self.buckets.empty?
+  # after_create :should_create_default_buckets_and_items, :should_send_introduction_text
+  # def should_create_default_buckets_and_items
+  #   self.delay.create_default_buckets_and_items if self.buckets.empty?
+  # end
+
+  # def create_default_buckets_and_items
+  #   quotes = Bucket.create(:first_name => "Quotes (Sample Thread)", :user_id => self.id, :bucket_type => "Other") 
+  #   b = Bucket.create(:first_name => "Tom Hanks (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
+  #   c = Bucket.create(:first_name => "Emily Scott (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
+  #   q7 = Item.create(:user_id => self.id, :message => "\"You are no more than a few seconds of attention other people give to a Facebook status. In 2014, no one has time to care about others in such a crowded, noisy world.\". (Sample Note)", :item_type => "once", :status => "assigned")
+  #   q7.add_to_bucket(quotes)
+  #   q1 = Item.create(:user_id => self.id, :message => '"We are interested in others when they are interested in us." -Dale Carnegie (Sample Note)', :item_type => "once", :status => "assigned")
+  #   q1.add_to_bucket(quotes)
+  #   q2 = Item.create(:user_id => self.id, :message => '"Some of Virgin\'s most successful companies have been born from random moments. If we hadn\'t opened our notebooks, they would never have happened." -Richard Branson (Sample Note)', :item_type => "once", :status => "assigned")
+  #   q2.add_to_bucket(quotes)
+  #   school = Item.create(:user_id => self.id, :message => "Went to Cal State before moving to Hollywood. (Sample Note)", :item_type => "once", :status => "assigned")
+  #   school.add_to_bucket(b)
+  #   birthday = Item.create(:user_id => self.id, :message => "Birthday - July 9th (Sample Note)", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("2015-07-09"))
+  #   birthday.add_to_bucket(b)
+  #   c1 = Item.create(:user_id => self.id, :message => "Leaving today for India. She's going to visit her college roommate in Mumbai. (Sample Note)", :item_type => "once", :status => "assigned", :reminder_date => Time.now+10.days)
+  #   c1.add_to_bucket(c)
+  #   c2 = Item.create(:user_id => self.id, :message => "Roommate names are Kate (brunette) and Sarah. (Sample Note)", :item_type => "once", :status => "assigned")
+  #   c2.add_to_bucket(c)
+  #   c3 = Item.create(:user_id => self.id, :message => "Getting her wisdom teeth removed. (Sample Note)", :item_type => "once", :status => "assigned", :reminder_date => Time.now+3.days)
+  #   c3.add_to_bucket(c)
+  #   q3 = Item.create(:user_id => self.id, :message => '"A lot of people died fighting tyranny. The least I can do is vote against it." -Carl Icahn at Texaco annual meeting, 1988 (Sample Note)', :item_type => "once", :status => "assigned")
+  #   q3.add_to_bucket(quotes)
+  #   q5 = Item.create(:user_id => self.id, :message => "\"Evil is relatively rare. Ignorance is an epidemic.\" -Jon Stewart (Sample Note)", :item_type => "once", :status => "assigned")
+  #   q5.add_to_bucket(quotes)
+  #   c4 = Item.create(:user_id => self.id, :message => "Went to Desano's with Emily. Had a bottle of 'Los Dos', recommended by Ed. Was light-bodied and paired well with pizza. (Sample Note)", :item_type => "once", :status => "assigned", :media_urls => ["http://res.cloudinary.com/hbztmvh3r/image/upload/v1425318520/item_1425318520.1776307_2.jpg"])
+  #   c4.add_to_bucket(c)
+  #   f1 = Item.create(:user_id => self.id, :message => "Wife is Rita Wilson, has two kids w/ Rita: Chester and Marlon. (Sample Note)", :item_type => "once", :status => "assigned")
+  #   f1.add_to_bucket(b)
+  # end
+  
+  def should_send_introduction_text
+    self.delay.send_introduction_text
   end
 
-  def create_default_buckets_and_items
-    quotes = Bucket.create(:first_name => "Quotes (Sample Thread)", :user_id => self.id, :bucket_type => "Other") 
-    b = Bucket.create(:first_name => "Tom Hanks (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
-    c = Bucket.create(:first_name => "Emily Scott (Sample Thread)", :user_id => self.id, :bucket_type => "Person")
-    q7 = Item.create(:user_id => self.id, :message => "\"You are no more than a few seconds of attention other people give to a Facebook status. In 2014, no one has time to care about others in such a crowded, noisy world.\". (Sample Note)", :item_type => "once", :status => "assigned")
-    q7.add_to_bucket(quotes)
-    q1 = Item.create(:user_id => self.id, :message => '"We are interested in others when they are interested in us." -Dale Carnegie (Sample Note)', :item_type => "once", :status => "assigned")
-    q1.add_to_bucket(quotes)
-    q2 = Item.create(:user_id => self.id, :message => '"Some of Virgin\'s most successful companies have been born from random moments. If we hadn\'t opened our notebooks, they would never have happened." -Richard Branson (Sample Note)', :item_type => "once", :status => "assigned")
-    q2.add_to_bucket(quotes)
-    school = Item.create(:user_id => self.id, :message => "Went to Cal State before moving to Hollywood. (Sample Note)", :item_type => "once", :status => "assigned")
-    school.add_to_bucket(b)
-    birthday = Item.create(:user_id => self.id, :message => "Birthday - July 9th (Sample Note)", :item_type => "yearly", :status => "assigned", :reminder_date => Date.parse("2015-07-09"))
-    birthday.add_to_bucket(b)
-    c1 = Item.create(:user_id => self.id, :message => "Leaving today for India. She's going to visit her college roommate in Mumbai. (Sample Note)", :item_type => "once", :status => "assigned", :reminder_date => Time.now+10.days)
-    c1.add_to_bucket(c)
-    c2 = Item.create(:user_id => self.id, :message => "Roommate names are Kate (brunette) and Sarah. (Sample Note)", :item_type => "once", :status => "assigned")
-    c2.add_to_bucket(c)
-    c3 = Item.create(:user_id => self.id, :message => "Getting her wisdom teeth removed. (Sample Note)", :item_type => "once", :status => "assigned", :reminder_date => Time.now+3.days)
-    c3.add_to_bucket(c)
-    q3 = Item.create(:user_id => self.id, :message => '"A lot of people died fighting tyranny. The least I can do is vote against it." -Carl Icahn at Texaco annual meeting, 1988 (Sample Note)', :item_type => "once", :status => "assigned")
-    q3.add_to_bucket(quotes)
-    q5 = Item.create(:user_id => self.id, :message => "\"Evil is relatively rare. Ignorance is an epidemic.\" -Jon Stewart (Sample Note)", :item_type => "once", :status => "assigned")
-    q5.add_to_bucket(quotes)
-    c4 = Item.create(:user_id => self.id, :message => "Went to Desano's with Emily. Had a bottle of 'Los Dos', recommended by Ed. Was light-bodied and paired well with pizza. (Sample Note)", :item_type => "once", :status => "assigned", :media_urls => ["http://res.cloudinary.com/hbztmvh3r/image/upload/v1425318520/item_1425318520.1776307_2.jpg"])
-    c4.add_to_bucket(c)
-    f1 = Item.create(:user_id => self.id, :message => "Wife is Rita Wilson, has two kids w/ Rita: Chester and Marlon. (Sample Note)", :item_type => "once", :status => "assigned")
-    f1.add_to_bucket(b)
+  def send_introduction_text
+    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are a few questions. What's your best friend's birthday?\n(reply to this text)"
+    msg = TwilioMessenger.new(self.phone, Hippocampus::Application.config.phone_number, message)
+    msg.send
   end
-  
-  
 
   # -- GETTERS
 
   def self.with_phone_number phone_number
-    return User.where("phone = ?", phone_number).first
+    return User.find_or_create_by_phone(format_phone(phone_number))
   end
 
   def self.with_phone_number_and_calling_code phone_number, calling_code
-    return User.find_by_phone(self.format_phone(phone_number, calling_code))
+    return User.find_by_phone(format_phone(phone_number, calling_code))
   end
 
   def self.with_email e
@@ -95,8 +104,8 @@ class User < ActiveRecord::Base
     user = User.with_phone_number_and_calling_code(phone_number, calling_code)
     if !user
       user = User.new
-      user.phone = User.format_phone(phone_number, calling_code)
-      user.calling_code = User.prepare_calling_code!(calling_code)
+      user.phone = format_phone(phone_number, calling_code)
+      user.calling_code = prepare_calling_code!(calling_code)
       user.country_code = country_code
     end
     return user

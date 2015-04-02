@@ -7,7 +7,9 @@ class SmsController < ApplicationController
     @sm.add_media_if_present(params)
 
     respond_to do |format|
-      if @sm.save
+      if @sm.initial_signup_text?
+        User.with_phone_number(@sm.From)
+      elsif @sm.save
         @sm.create_item
         format.json { render json: @sm, status: :created }
       else
@@ -15,5 +17,4 @@ class SmsController < ApplicationController
       end
     end
   end
-
 end

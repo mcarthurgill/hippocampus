@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150402164119) do
+ActiveRecord::Schema.define(:version => 20150402204444) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -249,6 +249,7 @@ ActiveRecord::Schema.define(:version => 20150402164119) do
     t.text     "MediaUrls"
   end
 
+  add_index "sms", ["From"], :name => "index_sms_on_From"
   add_index "sms", ["id"], :name => "index_sms_on_id"
   add_index "sms", ["item_id"], :name => "index_sms_on_item_id"
 
