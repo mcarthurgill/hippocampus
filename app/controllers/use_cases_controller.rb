@@ -18,7 +18,9 @@ class UseCasesController < ApplicationController
     @use_case = UseCase.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do 
+        render layout: 'outside'
+      end
       format.json { render json: @use_case }
     end
   end
@@ -29,7 +31,9 @@ class UseCasesController < ApplicationController
     @use_case = UseCase.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html do 
+        render layout: 'outside'
+      end
       format.json { render json: @use_case }
     end
   end
@@ -37,6 +41,7 @@ class UseCasesController < ApplicationController
   # GET /use_cases/1/edit
   def edit
     @use_case = UseCase.find(params[:id])
+    render layout: 'outside'
   end
 
   # POST /use_cases
@@ -46,6 +51,11 @@ class UseCasesController < ApplicationController
 
     respond_to do |format|
       if @use_case.save
+
+        if params.has_key?(:file) && params[:file]
+          @use_case.upload_main_asset(params[:file])
+        end
+
         format.html { redirect_to @use_case, notice: 'Use case was successfully created.' }
         format.json { render json: @use_case, status: :created, location: @use_case }
       else

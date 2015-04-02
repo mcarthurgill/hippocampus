@@ -16,8 +16,7 @@
     <%= f.text_area :text %>
   </div>
   <div class="field">
-    <%= f.label :image_url %><br />
-    <%= f.text_field :image_url %>
+    <%= f.file_field 'file', accept: 'image/png,image/gif,image/jpeg' %>
   </div>
   <div class="field">
     <%= f.label :order %><br />
