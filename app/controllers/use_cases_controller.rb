@@ -5,7 +5,9 @@ class UseCasesController < ApplicationController
     @use_cases = UseCase.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html do 
+        render layout: 'outside'
+      end
       format.json { render json: @use_cases }
     end
   end
