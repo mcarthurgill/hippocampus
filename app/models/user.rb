@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
   # end
   
   def should_send_introduction_text
+    Sm.create_blank_if_none(self)
     self.delay.send_introduction_text
   end
 

@@ -52,11 +52,11 @@ class Sm < ActiveRecord::Base
 
   def should_send_follow_up_texts
     number_texts = Sm.where(:From => self.From).count
-    if number_texts == 1
+    if number_texts == 2
       self.send_follow_up_text_with_message("Very cool. Another question, what are the names of your best friend's parents?")
-    elsif number_texts == 2
-      self.send_follow_up_text_with_message("Awesome. Last question, who was the last person you met and what did you learn about them?")
     elsif number_texts == 3
+      self.send_follow_up_text_with_message("Awesome. Last question, who was the last person you met and what did you learn about them?")
+    elsif number_texts == 4
       self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: https://appsto.re/us/_BWZ5.i")
     end
   end
@@ -69,9 +69,10 @@ class Sm < ActiveRecord::Base
     end
   end
 
-  # -- HELPERS
-
-  def initial_signup_text?
-    return self.Body.gsub(/[^0-9a-z\\s]/i, '').downcase == "hippo" #removes spaces and non alphanumeric chars
+  def self.create_blank_if_none(user)
+    if Sm.where(:From => user.phone).count == 0
+      Sm.create(:From => user.phone)
+    end
   end
+
 end
