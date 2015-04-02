@@ -1,6 +1,6 @@
 Hippocampus::Application.routes.draw do
 
-  root :to => "sessions#new"
+  root :to => "outside#splash"
     
   get "login", :to => "sessions#new", :as => "login"
   post 'session/:phone', :to => "sessions#create", :as => "create_session"

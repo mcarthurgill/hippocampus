@@ -1,4 +1,5 @@
 class IntroductionsController < ApplicationController
+
   def show
     redirect_logged_in_user
     @questions = IntroductionQuestion.live_with_responses
@@ -36,4 +37,5 @@ class IntroductionsController < ApplicationController
       format.json { render json: IntroductionQuestion.live_with_responses.as_json(:methods => :introduction_responses) }
     end
   end
+  
 end
