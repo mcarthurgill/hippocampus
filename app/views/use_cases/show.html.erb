@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Text:</b>
+  <%= @use_case.text %>
+</p>
+
+<p>
+  <b>Image url:</b>
+  <%= @use_case.image_url %>
+</p>
+
+<p>
+  <b>Order:</b>
+  <%= @use_case.order %>
+</p>
+
+
+<%= link_to 'Edit', edit_use_case_path(@use_case) %> |
+<%= link_to 'Back', use_cases_path %>

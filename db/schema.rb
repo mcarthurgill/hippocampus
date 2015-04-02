@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150401220114) do
+ActiveRecord::Schema.define(:version => 20150402164119) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -267,6 +267,14 @@ ActiveRecord::Schema.define(:version => 20150401220114) do
     t.string   "from_number"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "use_cases", :force => true do |t|
+    t.text     "text"
+    t.string   "image_url"
+    t.float    "order"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -1,0 +1,27 @@
+<h1>Listing use_cases</h1>
+
+<table>
+  <tr>
+    <th>Text</th>
+    <th>Image url</th>
+    <th>Order</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @use_cases.each do |use_case| %>
+  <tr>
+    <td><%= use_case.text %></td>
+    <td><%= use_case.image_url %></td>
+    <td><%= use_case.order %></td>
+    <td><%= link_to 'Show', use_case %></td>
+    <td><%= link_to 'Edit', edit_use_case_path(use_case) %></td>
+    <td><%= link_to 'Destroy', use_case, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Use case', new_use_case_path %>

@@ -46,4 +46,6 @@ Hippocampus::Application.routes.draw do
   post 'users/:id/remove_from_addon/:addon_id', to: 'users#remove_from_addon', as: 'user_remove_from_addon'
   post "api_endpoint", :to => "addons#api_endpoint", :as => "api_endpoint"
 
+  resources :use_cases
+
 end
