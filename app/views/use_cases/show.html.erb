@@ -18,3 +18,4 @@
 
 <%= link_to 'Edit', edit_use_case_path(@use_case) %> |
 <%= link_to 'Back', use_cases_path %>
+<%= link_to 'Destroy', @use_case, method: :delete, data: { confirm: 'Are you sure?' } %>
