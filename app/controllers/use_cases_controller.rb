@@ -52,7 +52,9 @@ class UseCasesController < ApplicationController
     respond_to do |format|
       if @use_case.save
 
-        if params.has_key?(:file) && params[:file]
+        if params[:use_case].has_key?(:file) && params[:use_case][:file]
+          @use_case.upload_main_asset(params[:use_case][:file])
+        elsif params.has_key?(:file) && params[:file]
           @use_case.upload_main_asset(params[:file])
         end
 
