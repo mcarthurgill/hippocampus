@@ -74,6 +74,13 @@ class UseCasesController < ApplicationController
 
     respond_to do |format|
       if @use_case.update_attributes(params[:use_case])
+
+        if params[:use_case].has_key?(:file) && params[:use_case][:file]
+          @use_case.upload_main_asset(params[:use_case][:file])
+        elsif params.has_key?(:file) && params[:file]
+          @use_case.upload_main_asset(params[:file])
+        end
+        
         format.html { redirect_to @use_case, notice: 'Use case was successfully updated.' }
         format.json { head :no_content }
       else
