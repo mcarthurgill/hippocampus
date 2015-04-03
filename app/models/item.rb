@@ -294,7 +294,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_notes_for_today
-    items = Item.notes_for_today
+    items = Item.notes_for_today.not_deleted
     items.each do |i|
       message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
@@ -303,7 +303,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_daily_items
-    items = Item.daily
+    items = Item.daily.not_deleted
     items.each do |i|
       message = "Reminder:\n" + i.message
       msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
@@ -325,7 +325,7 @@ class Item < ActiveRecord::Base
     days_mod = (Date.today - epoch).to_i%7
     items = []
 
-    Item.weekly.each do |i|
+    Item.weekly.not_deleted.each do |i|
       if (i.reminder_date - epoch).to_i%7 == days_mod
         items << i
       end
@@ -334,7 +334,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_monthly_items
-    items = Item.where('extract(day from reminder_date) = ?', Date.today.day).monthly
+    items = Item.where('extract(day from reminder_date) = ?', Date.today.day).monthly.not_deleted
 
     items.each do |i|
       message = "Reminder:\n" + i.message
@@ -344,7 +344,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_yearly_items
-    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Date.today.month, Date.today.day).yearly
+    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Date.today.month, Date.today.day).yearly.not_deleted
     
     items.each do |i|
       message = "Reminder:\n" + i.message
