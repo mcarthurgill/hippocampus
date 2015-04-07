@@ -109,7 +109,11 @@ class Bucket < ActiveRecord::Base
 
   def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code)
     contacts_array.each do |contact|
-      self.add_user_from_phone(format_phone(contact[:phone_number], calling_code))
+      if contact[:phones] && contact[:phones].count > 0
+        contact[:phones].each do |p|
+          self.add_user_from_phone(format_phone(p, calling_code))
+        end
+      end
     end
   end
 
