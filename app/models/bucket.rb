@@ -100,7 +100,7 @@ class Bucket < ActiveRecord::Base
     end
   end
 
-  def get_media_urls
+  def media_urls
     self.items.not_deleted.order("items.created_at DESC").pluck(:media_urls).flatten
   end
 

@@ -127,7 +127,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if bucket && user && bucket.belongs_to_user?(user)
-        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:users, :get_media_urls]) } }
+        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:users, :media_urls]) } }
       else
         format.json { render json: bucket.errors, status: :unprocessable_entity }
       end
