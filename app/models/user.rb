@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
     all_bucket = Bucket.new(:first_name => "All Notes", :items_count => self.items.outstanding.count, :updated_at => self.items.last ? self.items.last.updated_at : DateTime.now)
     all_bucket.id = 0
     return_buckets = [all_bucket]
-    return_buckets << self.buckets.recent_for_user_id(self.id).order('updated_at DESC').with_users
+    return_buckets << self.buckets.recent_for_user_id(self.id).order('updated_at DESC').as_json(methods: :users)
     return return_buckets.flatten
   end
   
