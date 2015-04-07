@@ -111,7 +111,7 @@ class BucketsController < ApplicationController
     bucket = Bucket.find(params[:id])
     user = User.find(params[:user_id])
 
-    urls = bucket.get_media_urls if (bucket && bucket.belongs_to_user?(user))
+    urls = bucket.media_urls if (bucket && bucket.belongs_to_user?(user))
 
     respond_to do |format|
       format.json { render json: { :media_urls => urls } }
