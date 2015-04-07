@@ -121,9 +121,9 @@ class BucketsController < ApplicationController
   def info
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
-    bucket = Bucket.where("id = ?", params[:id]).includes(:users)
+    bucket = Bucket.where("id = ?", params[:id]).includes(:users).first
     user = User.find_by_id(params[:auth][:uid])
-    items = bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse
+    items = bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse if bucket
 
     respond_to do |format|
       if bucket && user && bucket.belongs_to_user?(user)
