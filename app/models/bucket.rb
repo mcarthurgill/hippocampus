@@ -111,21 +111,21 @@ class Bucket < ActiveRecord::Base
     contacts_array.each do |contact|
       if contact[:phones] && contact[:phones].count > 0
         contact[:phones].each do |p|
-          self.add_user_from_phone(format_phone(p, calling_code))
+          self.add_user_from_phone_and_name(format_phone(p, calling_code), contact[:name])
         end
       end
     end
   end
 
-  def add_user_from_phone(phone_number)
-    self.add_user(User.find_by_phone(phone_number))
+  def add_user_from_phone_and_name(phone_number, name)
+    self.add_user(User.find_by_phone(phone_number), name, phone_number)
   end
 
-  def add_user u
+  def add_user u, name="You", phone_number=nil
     if u && !self.belongs_to_user?(u)
-      self.users << u
-    elsif u.nil?
-      BucketUserPair.create_with_bucket_id_and_phone_number(self.id, phone_number)
+      BucketUserPair.create_with_bucket_id_and_phone_number_and_name(self.id, u.phone, name)
+    elsif u.nil? && phone_number
+      BucketUserPair.create_with_bucket_id_and_phone_number_and_name(self.id, phone_number, name)
     end
   end
 

@@ -121,13 +121,13 @@ class BucketsController < ApplicationController
   def info
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
-    bucket = Bucket.where("id = ?", params[:id]).includes(:users).first
+    bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
     user = User.find_by_id(params[:auth][:uid])
     items = bucket.items.not_deleted.by_date.limit(64).offset(64*page).reverse if bucket
 
     respond_to do |format|
       if bucket && user && bucket.belongs_to_user?(user)
-        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:users, :media_urls]) } }
+        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls]) } }
       else
         format.json { render json: bucket.errors, status: :unprocessable_entity }
       end

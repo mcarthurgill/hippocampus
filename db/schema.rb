@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150402204444) do
+ActiveRecord::Schema.define(:version => 20150408182521) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -33,9 +33,10 @@ ActiveRecord::Schema.define(:version => 20150402204444) do
 
   create_table "bucket_user_pairs", :force => true do |t|
     t.integer  "bucket_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "phone_number"
+    t.string   "name",         :default => "You"
   end
 
   create_table "buckets", :force => true do |t|
