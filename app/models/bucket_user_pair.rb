@@ -20,7 +20,7 @@ class BucketUserPair < ActiveRecord::Base
   # -- FIND
 
   def self.for_bucket_and_user(b, u)
-    BucketUserPair.where("bucket_id = ? AND user_id = ?", b.id, u.id).first
+    BucketUserPair.where("bucket_id = ? AND phone_number = ?", b.id, u.phone).first
   end
 
 
