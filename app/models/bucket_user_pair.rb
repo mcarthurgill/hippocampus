@@ -4,6 +4,7 @@ class BucketUserPair < ActiveRecord::Base
   belongs_to :bucket
   belongs_to :user, :class_name => "User", :foreign_key => :phone_number, :primary_key => :phone
 
+
   # -- CREATORS
 
   def self.create_with_bucket_id_and_phone_number_and_name(bid, pn, n="You")
@@ -13,5 +14,20 @@ class BucketUserPair < ActiveRecord::Base
       bup.save
     end
     return bup
+  end
+
+
+  # -- FIND
+
+  def self.for_bucket_and_user(b, u)
+    BucketUserPair.where("bucket_id = ? AND user_id = ?", b.id, u.id).first
+  end
+
+
+  # -- UPDATE
+
+  def update_name(new_name)
+    self.name = new_name
+    self.save
   end
 end

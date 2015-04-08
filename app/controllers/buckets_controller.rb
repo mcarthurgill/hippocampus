@@ -136,7 +136,12 @@ class BucketsController < ApplicationController
 
   def add_collaborators
     bucket = Bucket.find(params[:id])
-    bucket.delay.add_collaborators_from_contacts_with_calling_code(params[:contacts], User.find_by_id(params[:auth][:uid]).calling_code) if bucket
+    user = User.find(params[:auth][:uid])
+
+    bup = BucketUserPair.for_bucket_and_user(bucket, user)
+    bup.update_name(params[:current_user_name]) if bup
+
+    bucket.delay.add_collaborators_from_contacts_with_calling_code(params[:contacts], User.find_by_id(params[:auth][:uid]).calling_code) if bucket && bucket.belongs_to_user?(user)
 
     respond_to do |format|
       if bucket
