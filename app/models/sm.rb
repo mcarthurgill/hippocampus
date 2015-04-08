@@ -57,7 +57,7 @@ class Sm < ActiveRecord::Base
     elsif number_texts == 3
       self.send_follow_up_text_with_message("Awesome. Last question, who was the last person you met and what did you learn about them?")
     elsif number_texts == 4
-      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: https://appsto.re/us/_BWZ5.i")
+      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: http://hppcmps.com/")
     end
   end
 

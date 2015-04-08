@@ -118,14 +118,14 @@ class Bucket < ActiveRecord::Base
   end
 
   def add_user_from_phone(phone_number)
-    self.add_user(User.with_phone_number(phone_number))
+    self.add_user(User.find_by_phone(phone_number))
   end
 
   def add_user u
     if u && !self.belongs_to_user?(u)
       self.users << u
     elsif u.nil?
-      BucketUserPair.create_with_bucket_id_and_phone_number(self.id, u.phone)
+      BucketUserPair.create_with_bucket_id_and_phone_number(self.id, phone_number)
     end
   end
 
