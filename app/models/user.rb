@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
   end
 
   def set_name n
-    if self.name.no_name?
+    if self.no_name?
       self.name = n
       return true
     end
