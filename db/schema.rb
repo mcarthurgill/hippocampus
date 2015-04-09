@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150408182521) do
+ActiveRecord::Schema.define(:version => 20150409163359) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -288,6 +288,7 @@ ActiveRecord::Schema.define(:version => 20150408182521) do
     t.integer  "number_items",   :default => 0
     t.integer  "number_buckets", :default => 0
     t.string   "calling_code"
+    t.string   "name"
   end
 
   add_index "users", ["id"], :name => "index_users_on_id"

@@ -9,22 +9,24 @@ class BucketUserPair < ActiveRecord::Base
 
   def self.create_with_bucket_id_and_phone_number_and_name(bid, pn, n="You")
     bup = BucketUserPair.find_or_initialize_by_bucket_id_and_phone_number(bid, pn)
-    if bup.new_record? || bup.name != n
-      bup.name = n
+    curr_user = bup.user
+
+    if bup.new_record?
+      bup.name = curr_user.no_name? ? n : curr_user.name
       bup.save
     end
     return bup
   end
 
 
-  # -- FIND
-
-  def self.for_bucket_and_user(b, u)
-    BucketUserPair.where("bucket_id = ? AND phone_number = ?", b.id, u.phone).first
-  end
-
-
   # -- UPDATE
+
+  def self.update_all_for_user_name(u)
+    bucket_user_pairs = BucketUserPair.where("phone_numer = ?", u.phone)
+    bucket_user_pairs.each do |bup|
+      bup.update_name(u.name)
+    end
+  end
 
   def update_name(new_name)
     self.name = new_name

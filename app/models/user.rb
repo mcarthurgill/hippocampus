@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets
+  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name
   extend Formatting
   include Formatting
   
@@ -76,7 +76,27 @@ class User < ActiveRecord::Base
     return user
   end
 
+  def update_with_params params
+    if params[:name] && params[:name].length > 0
+      self.update_name(params[:name])
+    end
+    return true
+  end
 
+  def update_name n
+    if self.set_name(n)
+      self.save
+      BucketUserPair.delay.update_all_for_user_name(self)
+    end
+  end
+
+  def set_name n
+    if self.name.no_name?
+      self.name = n
+      return true
+    end
+    return false
+  end
   
   # -- SCHEDULES
 
@@ -102,6 +122,10 @@ class User < ActiveRecord::Base
 
   def sorted_reminders(limit=100000, page=0)
     self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Date.today }.sort_by(&:next_reminder_date)
+  end
+
+  def no_name?
+    return self.name.nil? || self.name == "You"
   end
 
   #with 1519 Ashwood Ave as current location

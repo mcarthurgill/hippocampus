@@ -60,6 +60,20 @@ class UsersController < ApplicationController
     #login/signup runs through sessions controller
   # end
 
+  def update
+    user = User.find(params[:auth][:uid])
+
+    respond_to do |format|
+      if user.update_with_params(params[:user])
+        format.html { redirect_to user, notice: 'User updated.' }
+        format.json { render json: { :user => user } }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
