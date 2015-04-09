@@ -22,7 +22,7 @@ class BucketUserPair < ActiveRecord::Base
   # -- UPDATE
 
   def self.update_all_for_user_name(u)
-    bucket_user_pairs = BucketUserPair.where("phone_numer = ?", u.phone)
+    bucket_user_pairs = BucketUserPair.where("phone_number = ?", u.phone)
     bucket_user_pairs.each do |bup|
       bup.update_name(u.name)
     end
