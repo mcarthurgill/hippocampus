@@ -4,6 +4,14 @@ class BucketUserPair < ActiveRecord::Base
   belongs_to :bucket
   belongs_to :user, :class_name => "User", :foreign_key => :phone_number, :primary_key => :phone
 
+  after_save :update_bucket_visibility
+  after_destroy :update_bucket_visibility
+
+  # -- CALLBACKS
+
+  def update_bucket_visibility
+    self.bucket.update_visibility    
+  end
 
   # -- CREATORS
 

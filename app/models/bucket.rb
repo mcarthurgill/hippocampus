@@ -129,6 +129,11 @@ class Bucket < ActiveRecord::Base
     end
   end
 
+  def update_visibility
+    self.visibility = (self.users.count > 1 ? "collaborative" : "private")
+    self.save
+  end
+
   #  swiftype
 
   def index_delayed
