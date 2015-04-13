@@ -1,4 +1,4 @@
-class BucketUserPair < ActiveRecord::Base
+  class BucketUserPair < ActiveRecord::Base
   attr_accessible :bucket_id, :phone_number, :name
 
   belongs_to :bucket
@@ -23,6 +23,7 @@ class BucketUserPair < ActiveRecord::Base
       bup.name = curr_user.no_name? ? n : curr_user.name
       bup.save
     end
+    # bup.delay.alert_if_collaborative
     return bup
   end
 
@@ -40,4 +41,12 @@ class BucketUserPair < ActiveRecord::Base
     self.name = new_name
     self.save
   end
+
+  # -- ACTIONS
+  # def alert_if_collaborative
+  #   if self.bucket.collaborative?
+  #     message = ""
+  #     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone_number, message, "collaborator")
+  #   end
+  # end
 end

@@ -104,6 +104,9 @@ class Bucket < ActiveRecord::Base
     self.items.not_deleted.order("items.created_at DESC").pluck(:media_urls).flatten
   end
 
+  def collaborative?
+    return self.users.count > 1
+  end
 
   # -- ACTIONS
 
