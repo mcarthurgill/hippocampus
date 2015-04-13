@@ -62,8 +62,13 @@ class Email < ActiveRecord::Base
     hash = u.items_since_date_sorted_days(6.days.ago)
     hash.each_key do |key|
       text = text+"<p>"
-      text = text+"<h2>#{key}</h2><br><br>"
+      text = text+"<h2>#{key}</h2><br>"
       hash[key].each do |i|
+        if i.media_urls
+          i.media_urls.each do |url|
+            text = text+"<img src='#{url}'><br>"
+          end
+        end
         text = text+"#{i.message}<br>"
         text = text+"<i>-belongs to #{i.buckets_string}</i>" if i.buckets_string
         text = text+"<br><br>"
