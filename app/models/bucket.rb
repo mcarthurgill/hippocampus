@@ -1,7 +1,8 @@
 class Bucket < ActiveRecord::Base
 
   include Formatting
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at
+
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -181,6 +182,7 @@ class Bucket < ActiveRecord::Base
           {:name => 'available_to', :value => self.user_ids_array, :type => 'integer'},
           {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
           {:name => 'bucket_id', :value => self.id, :type => 'integer'},
+          {:name => 'visibility', :value => self.visibility, :type => 'string'},
           {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
           {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
         ]}
