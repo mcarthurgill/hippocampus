@@ -172,6 +172,15 @@ class User < ActiveRecord::Base
     return self.items.not_deleted.limit(64).within_bounds(max_long, min_long, max_lat, min_lat)
   end
 
+  def items_since_date_sorted_days date
+    hash = Hash.new
+    while date < Time.now
+      hash[date.strftime('%A, %B %d, %Y')] = self.items.where('created_at > ? AND created_at < ?', date.beginning_of_day, date.end_of_day)
+      date = date+1.day
+    end
+    return hash
+  end
+
   def score
     return self.number_items+self.number_buckets
   end
