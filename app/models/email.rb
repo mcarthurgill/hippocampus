@@ -71,7 +71,11 @@ class Email < ActiveRecord::Base
           end
         end
         text = text+"#{i.message}<br>"
-        text = text+"<i>-belongs to #{i.buckets_string}</i>" if i.buckets_string
+        if i.buckets_string
+          text = text+"<i>-#{i.buckets_string}</i>"
+        else
+          text = text+"<i>-Unassigned</i>"
+        end
         text = text+"<br><br>"
       end
       text = text+"</p><br>"
