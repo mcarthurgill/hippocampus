@@ -37,7 +37,7 @@ class Email < ActiveRecord::Base
     users.each do |u|
       arr << self.to_hash_for_user(u) if u
     end
-    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippocampus', 'html' => html, 'to' => arr }
+    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippocampus', 'html' => html, 'to' => arr, 'bcc_address' => 'w@lxv.io' }
     result = m.messages.send message, true, 'Main Pool'
   end
 
@@ -51,7 +51,7 @@ class Email < ActiveRecord::Base
   # SUNDAY EMAIL
 
   def self.send_sunday_summaries
-    users = [User.find(2)]
+    users = [User.find(2), User.find(23)]
     users.each do |u|
       self.send_to_user_with_html_and_subject(u, self.sunday_email_html_for_user(u), "Weekly Notes Summary - #{Time.now.strftime('%B %d, %Y')}")
     end
@@ -66,6 +66,7 @@ class Email < ActiveRecord::Base
       hash[key].each do |i|
         if i.media_urls
           i.media_urls.each do |url|
+            url = url.sub('upload/', 'upload/c_scale,w_320/')
             text = text+"<img src='#{url}'><br>"
           end
         end
