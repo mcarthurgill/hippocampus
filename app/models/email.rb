@@ -53,18 +53,20 @@ class Email < ActiveRecord::Base
   def self.send_sunday_summaries
     users = [User.find(2)]
     users.each do |u|
-      self.send_to_user_with_html_and_subject(u, self.sunday_email_html_for_user(u), "Weekly Thoughts Summary - #{Time.now.strftime('%B %d, %Y')}")
+      self.send_to_user_with_html_and_subject(u, self.sunday_email_html_for_user(u), "Weekly Notes Summary - #{Time.now.strftime('%B %d, %Y')}")
     end
   end
 
   def self.sunday_email_html_for_user u
-    text = ""
-    hash = u.items_since_date_sorted_days(7.days.ago)
+    text = "Your weekly Hippocampus notes summary. Enjoy!<br><br>"
+    hash = u.items_since_date_sorted_days(6.days.ago)
     hash.each_key do |key|
       text = text+"<p>"
-      text = text+"<b>#{key}</b>"
+      text = text+"<h2>#{key}</h2><br><br>"
       hash[key].each do |i|
         text = text+"#{i.message}<br>"
+        text = text+"<i>-belongs to #{i.buckets_string}</i>" if i.buckets_string
+        text = text+"<br><br>"
       end
       text = text+"</p><br>"
     end

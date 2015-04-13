@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
   def items_since_date_sorted_days date
     hash = Hash.new
     while date < Time.now
-      hash[date.strftime('%A, %B %d, %Y')] = self.items.where('created_at > ? AND created_at < ?', date.beginning_of_day, date.end_of_day)
+      hash[date.strftime('%A, %B %d, %Y')] = self.items.not_deleted.where('created_at > ? AND created_at < ?', date.beginning_of_day, date.end_of_day)
       date = date+1.day
     end
     return hash
