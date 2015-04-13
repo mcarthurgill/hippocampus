@@ -1,4 +1,5 @@
 class Bucket < ActiveRecord::Base
+
   include Formatting
   attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at
 
@@ -27,6 +28,8 @@ class Bucket < ActiveRecord::Base
   scope :person_type, -> { where('bucket_type = ?', 'Person') }
   scope :event_type, -> { where('bucket_type = ?', 'Event') }
   scope :place_type, -> { where('bucket_type = ?', 'Place') }
+
+
 
 
   # -- VALIDATIONS
@@ -80,6 +83,10 @@ class Bucket < ActiveRecord::Base
   end
 
 
+
+
+
+
   # -- HELPERS
 
   def display_name
@@ -103,6 +110,18 @@ class Bucket < ActiveRecord::Base
   def media_urls
     self.items.not_deleted.order("items.created_at DESC").pluck(:media_urls).flatten
   end
+
+  def user_ids_array
+    arr = [self.user_id]
+    self.users.each do |u|
+      arr << u.id
+    end
+    return arr.uniq
+  end
+
+
+
+
 
 
   # -- ACTIONS
@@ -134,6 +153,11 @@ class Bucket < ActiveRecord::Base
     self.save
   end
 
+
+
+
+
+
   #  swiftype
 
   def index_delayed
@@ -154,6 +178,7 @@ class Bucket < ActiveRecord::Base
           {:name => 'first_name', :value => self.first_name, :type => 'string'},
           {:name => 'items_count', :value => self.items_count, :type => 'integer'},
           {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+          {:name => 'available_to', :value => self.user_ids_array, :type => 'integer'},
           {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
           {:name => 'bucket_id', :value => self.id, :type => 'integer'},
           {:name => 'created_at_server', :value => self.created_at, :type => 'string'},

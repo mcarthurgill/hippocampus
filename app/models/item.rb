@@ -65,6 +65,7 @@ class Item < ActiveRecord::Base
 
 
 
+
   # -- SETTERS
 
   def self.create_with_sms(sms)
@@ -127,11 +128,16 @@ class Item < ActiveRecord::Base
   end
 
 
+
+
+
   # -- DESTROY
 
   def delete
     self.update_attribute(:status, 'deleted')
   end
+
+
 
 
 
@@ -169,6 +175,8 @@ class Item < ActiveRecord::Base
 
 
 
+
+
   # -- ATTRIBUTES
 
   def deleted?
@@ -182,6 +190,11 @@ class Item < ActiveRecord::Base
   def assigned?
     return self.status == 'assigned'
   end
+
+
+
+
+
 
   # -- ACTIONS
 
@@ -217,6 +230,10 @@ class Item < ActiveRecord::Base
   def update_buckets_string
     self.update_attributes(:buckets_string => self.description_string)
   end
+
+
+
+
   
   # -- HELPERS
 
@@ -282,6 +299,20 @@ class Item < ActiveRecord::Base
   def is_most_recent_request?(timestamp)
     return !self.device_request_timestamp || timestamp.to_f > self.device_request_timestamp
   end
+
+  def user_ids_array
+    arr = [self.user_id]
+    self.buckets.includes(:users).each do |b|
+      b.users.each do |u|
+        arr << u.id
+      end
+    end
+    return arr.uniq
+  end
+  
+
+
+
 
   # -- REMINDERS
 
@@ -382,6 +413,9 @@ class Item < ActiveRecord::Base
   end
   
 
+
+
+
   #  swiftype
 
   def index_delayed
@@ -412,6 +446,7 @@ class Item < ActiveRecord::Base
       {:name => 'message', :value => self.message, :type => 'string'},
       {:name => 'text', :value => self.message, :type => 'text'},
       {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+      {:name => 'available_to', :value => self.user_ids_array, :type => 'integer'},
       {:name => 'item_type', :value => self.item_type, :type => 'string'},
       {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
       {:name => 'media_urls', :value => self.media_urls, :type => 'string'},
