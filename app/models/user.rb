@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def send_introduction_text
-    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. What's your best friend's birthday?\n(reply to this text)"
+    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "first_intro")
   end
 
