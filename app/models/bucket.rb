@@ -151,7 +151,16 @@ class Bucket < ActiveRecord::Base
 
   def update_visibility
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")
-    self.save
+    self.save!
+
+    self.index_delayed
+    self.delay.update_items_indexes
+  end
+
+  def update_items_indexes
+    self.items.each do |i|
+      i.index_delayed
+    end
   end
 
 
