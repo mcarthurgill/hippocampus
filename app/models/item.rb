@@ -297,8 +297,7 @@ class Item < ActiveRecord::Base
     items = Item.notes_for_today.not_deleted
     items.each do |i|
       message = "Reminder:\n" + i.message
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_once")
     end
   end
 
@@ -306,8 +305,7 @@ class Item < ActiveRecord::Base
     items = Item.daily.not_deleted
     items.each do |i|
       message = "Reminder:\n" + i.message
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_daily")
     end
   end
 
@@ -315,8 +313,7 @@ class Item < ActiveRecord::Base
     items = Item.get_weekly_items_for_today
     items.each do |i|
       message = "Reminder:\n" + i.message
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_weekly")
     end
   end
 
@@ -338,8 +335,7 @@ class Item < ActiveRecord::Base
 
     items.each do |i|
       message = "Reminder:\n" + i.message
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_monthly")
     end
   end
 
@@ -348,8 +344,7 @@ class Item < ActiveRecord::Base
     
     items.each do |i|
       message = "Reminder:\n" + i.message
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_yearly")
     end
   end
 

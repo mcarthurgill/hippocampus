@@ -38,8 +38,7 @@ task :alert_about_ability_to_text => :environment do
   if users && users.count > 0
     users.each do |u|
       message = "Add this number to your contacts. You can text notes to this number and they'll be in Hippocampus waiting for you."
-      msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "add_to_contacts")
     end
   end
 
@@ -62,8 +61,7 @@ task :reminding_users_they_can_text => :environment do
   if users && users.count > 0
     users.each do |u|
       message = "Don't forget, you can text this number anything you want to remember. Just replying to this text is a quick and easy way to save a note in Hippocampus. Anything sent here will be waiting for you when you open the app."
-      msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_add_to_contacts")
     end
   end
 
@@ -80,8 +78,7 @@ task :send_random_notes => :environment do
     items = u.items.assigned.limit(3).order("RANDOM()")
     items.each do |i|
       txt_message = "#{i.buckets.first.first_name} - #{i.message}"
-      text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, txt_message)
-      text.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, txt_message, "random")
     end
   end
   p "done"

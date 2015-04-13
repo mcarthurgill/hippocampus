@@ -31,8 +31,7 @@ class User < ActiveRecord::Base
 
   def send_introduction_text
     message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. What's your best friend's birthday?\n(reply to this text)"
-    msg = TwilioMessenger.new(self.phone, Hippocampus::Application.config.phone_number, message)
-    msg.send
+    OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "first_intro")
   end
 
   # -- GETTERS
@@ -103,8 +102,7 @@ class User < ActiveRecord::Base
   def self.remind_about_outstanding_items
     items = Item.outstanding.last_24_hours.uniq_by {|i| i.user_id }
     items.each do |i|
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, "You have pending notes on Hippocampus. Open the app to handle them.")
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "outstanding")
     end
   end
 

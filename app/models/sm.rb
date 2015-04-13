@@ -64,8 +64,7 @@ class Sm < ActiveRecord::Base
   def send_follow_up_text_with_message message
     user = User.where("phone = ?", self.From).first
     if user && (user.created_at > Date.today - 48.hours)
-      msg = TwilioMessenger.new(user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "tutorial")
     end
   end
 
