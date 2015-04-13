@@ -1,3 +1,16 @@
+desc "This sends a morning summary email"
+task :send_summary_emails => :environment do
+  p "*"*50
+  p "sending users a summary email"
+  if Time.now.sunday?
+    Email.send_sunday_summaries
+  else
+    Email.send_daily_summaries
+  end
+  p "done"
+  p "*"*50
+end
+
 desc "This texts all users who have outstanding items"
 task :send_reminders_about_outstanding_items => :environment do
   p "*"*50
