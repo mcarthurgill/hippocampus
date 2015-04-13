@@ -31,6 +31,7 @@ class Email < ActiveRecord::Base
   end
 
   def self.send_to_users_with_html_and_subject users, html, subject
+    require 'mandrill'
     m = Mandrill::API.new
     arr = []
     users.each do |u|
@@ -63,9 +64,9 @@ class Email < ActiveRecord::Base
       text = text+"<p>"
       text = text+"<b>#{key}</b>"
       hash[key].each do |i|
-        text = text+"i.message<br>"
+        text = text+"#{i.message}<br>"
       end
-      text = text+"</p>"
+      text = text+"</p><br>"
     end
     return text
   end
