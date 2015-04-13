@@ -181,6 +181,13 @@ class User < ActiveRecord::Base
     return hash
   end
 
+  def yesterdays_items_sorted_days
+    hash = Hash.new
+    date = 1.day.ago
+    hash[date.strftime('%A, %B %d, %Y')] = self.items.not_deleted.where('created_at > ? AND created_at < ?', date.beginning_of_day, date.end_of_day)
+    return hash
+  end
+
   def score
     return self.number_items+self.number_buckets
   end

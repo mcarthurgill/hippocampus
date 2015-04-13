@@ -57,9 +57,42 @@ class Email < ActiveRecord::Base
     end
   end
 
+  def self.send_daily_summaries
+    users = [User.find(2), User.find(23)]
+    users.each do |u|
+      self.send_to_user_with_html_and_subject(u, self.daily_email_html_for_user(u), "#{1.day.ago.strftime('%A')}'s Notes Summary (#{1.day.ago.strftime('%B %d')})")
+    end
+  end
+
   def self.sunday_email_html_for_user u
     text = "Your weekly Hippocampus notes summary. Enjoy!<br><br>"
     hash = u.items_since_date_sorted_days(6.days.ago)
+    hash.each_key do |key|
+      text = text+"<p>"
+      text = text+"<h2>#{key}</h2><br>"
+      hash[key].each do |i|
+        if i.media_urls
+          i.media_urls.each do |url|
+            url = url.sub('upload/', 'upload/c_scale,w_320/')
+            text = text+"<img src='#{url}'><br>"
+          end
+        end
+        text = text+"#{i.message}<br>"
+        if i.buckets_string
+          text = text+"<i>-#{i.buckets_string}</i>"
+        else
+          text = text+"<i>-Unassigned</i>"
+        end
+        text = text+"<br><br>"
+      end
+      text = text+"</p><br>"
+    end
+    return text
+  end
+
+  def self.daily_email_html_for_user u
+    text = "Yesterday's Hippocampus notes summary. Enjoy!<br><br>"
+    hash = u.yesterdays_items_sorted_days
     hash.each_key do |key|
       text = text+"<p>"
       text = text+"<h2>#{key}</h2><br>"
