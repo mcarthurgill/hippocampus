@@ -4,6 +4,7 @@
   <tr>
     <th>Message</th>
     <th>User</th>
+    <td>Created</td>
     <th></th>
     <th></th>
     <th></th>
@@ -13,6 +14,7 @@
   <tr>
     <td><%= item.message %></td>
     <td><%= item.user.phone %></td>
+    <td><%= item.created_at_central_time.strftime("%D") %></td>
     <td><%= link_to 'Show', item %></td>
     <td><%= link_to 'Edit', edit_item_path(item) %></td>
   </tr>

@@ -138,11 +138,27 @@ class BucketsController < ApplicationController
     bucket = Bucket.find(params[:id])
     user = User.find(params[:auth][:uid])
 
-    bucket.delay.add_collaborators_from_contacts_with_calling_code(params[:contacts], User.find_by_id(params[:auth][:uid]).calling_code) if bucket && bucket.belongs_to_user?(user)
+    bucket.add_collaborators_from_contacts_with_calling_code(params[:contacts], User.find_by_id(params[:auth][:uid]).calling_code, user) if bucket && bucket.belongs_to_user?(user)
 
     respond_to do |format|
       if bucket
         format.json { render json: { :bucket => bucket } }
+      else
+        format.json { render json: bucket.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def remove_collaborators
+    bucket = Bucket.find(params[:id])
+    user_to_remove = User.find_by_phone(params[:phone])
+    user = User.find(params[:auth][:uid])
+
+    bucket.remove_user(user_to_remove) if bucket && bucket.belongs_to_user?(user) && user_to_remove
+
+    respond_to do |format|
+      if user
+        format.json { render json: { :user => user } }
       else
         format.json { render json: bucket.errors, status: :unprocessable_entity }
       end

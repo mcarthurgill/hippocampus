@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TwilioMessengerTest < ActiveSupport::TestCase
+class OutgoingMessageTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

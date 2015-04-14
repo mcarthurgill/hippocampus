@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  body: MyString
   to_number: MyString
   from_number: MyString
+  message: MyString
+  reason: MyString
 
 two:
-  body: MyString
   to_number: MyString
   from_number: MyString
+  message: MyString
+  reason: MyString

@@ -16,6 +16,7 @@ Hippocampus::Application.routes.draw do
   get 'buckets/:id/media_urls', :to => 'buckets#media_urls', :as => "bucket_media_urls"
   get 'buckets/:id/info', :to => 'buckets#info', :as => "bucket_info"
   post 'buckets/:id/add_collaborators', :to => 'buckets#add_collaborators', :as => "bucket_add_collaborators"
+  post 'buckets/:id/remove_collaborators', :to => 'buckets#remove_collaborators', :as => "bucket_remove_collaborators"
   
   resources :bucket_item_pairs, :only => [:create, :destroy]
   match 'destroy_with_bucket_and_item', :to => "bucket_item_pairs#destroy_with_bucket_and_item", :as => "destroy_with_bucket_and_item"

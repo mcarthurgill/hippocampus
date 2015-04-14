@@ -1,4 +1,4 @@
-class BucketUserPair < ActiveRecord::Base
+  class BucketUserPair < ActiveRecord::Base
   attr_accessible :bucket_id, :phone_number, :name
 
   belongs_to :bucket
@@ -15,15 +15,28 @@ class BucketUserPair < ActiveRecord::Base
 
   # -- CREATORS
 
-  def self.create_with_bucket_id_and_phone_number_and_name(bid, pn, n="You")
+  def self.create_with_bucket_id_and_phone_number_and_name(bid, pn, n="You", invited_by_user=nil)
     bup = BucketUserPair.find_or_initialize_by_bucket_id_and_phone_number(bid, pn)
     curr_user = bup.user
 
+    if curr_user && bup.bucket.creator != curr_user
+      curr_user.update_name(n)
+    end
+
     if bup.new_record?
-      bup.name = curr_user.no_name? ? n : curr_user.name
+      bup.name = (curr_user.nil? || curr_user.no_name?) ? n : curr_user.name
       bup.save
+      bup.delay.alert_if_collaborative(invited_by_user)
     end
     return bup
+  end
+
+
+  # -- DESTROY
+
+  def self.destroy_for_phone_number_and_bucket pn, b
+    bup = BucketUserPair.where("phone_number = ? AND bucket_id = ?", pn, b.id).first
+    bup.destroy if bup
   end
 
 
@@ -39,5 +52,18 @@ class BucketUserPair < ActiveRecord::Base
   def update_name(new_name)
     self.name = new_name
     self.save
+  end
+
+  # -- ACTIONS
+  def alert_if_collaborative invited_by_user
+    if invited_by_user
+      message = "#{invited_by_user.name} invited you to collaborate on their #{self.bucket.first_name} thread in Hippocampus. Go to http://hppcmps.com/ and we'll show you how Hippocampus works so you can start remembering the things that matter."
+      reason = "invite"
+      if self.user
+        message = "#{invited_by_user.name} invited you to collaborate on their #{self.bucket.first_name} thread in Hippocampus."  
+        reason = "add_collaborator"
+      end
+      OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone_number, message, reason)
+    end
   end
 end

@@ -112,6 +112,10 @@ class Bucket < ActiveRecord::Base
     self.items.not_deleted.order("items.created_at DESC").pluck(:media_urls).flatten
   end
 
+  def collaborative?
+    return self.users.count > 1
+  end
+
   def user_ids_array
     arr = [self.user_id]
     self.users.each do |u|
@@ -121,32 +125,32 @@ class Bucket < ActiveRecord::Base
   end
 
 
-
-
-
-
   # -- ACTIONS
 
-  def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code)
+  def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code, invited_by_user)
     contacts_array.each do |contact|
       if contact[:phones] && contact[:phones].count > 0
         contact[:phones].each do |p|
-          self.add_user_from_phone_and_name(format_phone(p, calling_code), contact[:name])
+          self.add_user_from_phone_and_name(format_phone(p, calling_code), contact[:name], invited_by_user)
         end
       end
     end
   end
 
-  def add_user_from_phone_and_name(phone_number, name)
-    self.add_user(User.find_by_phone(phone_number), name, phone_number)
+  def add_user_from_phone_and_name(phone_number, name, invited_by_user)
+    self.add_user(User.find_by_phone(phone_number), name, phone_number, invited_by_user)
   end
 
-  def add_user u, name="You", phone_number=nil
+  def add_user u, name="You", phone_number=nil, invited_by_user=nil
     if u && !self.belongs_to_user?(u)
-      BucketUserPair.create_with_bucket_id_and_phone_number_and_name(self.id, u.phone, name)
+      BucketUserPair.create_with_bucket_id_and_phone_number_and_name(self.id, u.phone, name, invited_by_user)
     elsif u.nil? && phone_number
-      BucketUserPair.create_with_bucket_id_and_phone_number_and_name(self.id, phone_number, name)
+      BucketUserPair.create_with_bucket_id_and_phone_number_and_name(self.id, phone_number, name, invited_by_user)
     end
+  end
+
+  def remove_user u
+    BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
   end
 
   def update_visibility

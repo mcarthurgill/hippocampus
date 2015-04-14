@@ -31,8 +31,7 @@ class Token < ActiveRecord::Base
   # --- ACTIONS
   def text_login_token code
     message = "Your Hippocampus code: #{code}"
-    msg = TwilioMessenger.new(self.user.phone, Hippocampus::Application.config.phone_number, message)
-    msg.send
+    OutgoingMessage.send_text_to_number_with_message_and_reason(self.user.phone, message, "token")
   end
 
   def update_status(new_status)

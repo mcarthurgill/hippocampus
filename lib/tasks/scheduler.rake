@@ -29,65 +29,6 @@ task :send_reminders_about_events => :environment do
   p "*"*50
 end
 
-desc "Let people know they can text hippocampus"
-task :alert_about_ability_to_text => :environment do
-  p "*"*50
-  p "letting people know they can text hippo"
-  users = User.where("created_at > ?", 1.day.ago)
-
-  if users && users.count > 0
-    users.each do |u|
-      message = "Add this number to your contacts. You can text notes to this number and they'll be in Hippocampus waiting for you."
-      msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
-    end
-  end
-
-  p "done"
-  p "*"*50
-end
-
-desc "1 week later reminder if they've never texted"
-task :reminding_users_they_can_text => :environment do
-  p "*"*50
-  p "reminding peeps they can text hippo"
-  sms = Sm.where("created_at > ?", 7.days.ago).includes(:item)
-  users_to_exclude = []
-  sms.each do |t|
-    users_to_exclude << t.item.user.id unless users_to_exclude.include?(t.item.user.id)
-  end
-
-  users = User.where("created_at > ? AND created_at < ? AND id NOT IN (?)", 7.days.ago, 6.days.ago, users_to_exclude)
-
-  if users && users.count > 0
-    users.each do |u|
-      message = "Don't forget, you can text this number anything you want to remember. Just replying to this text is a quick and easy way to save a note in Hippocampus. Anything sent here will be waiting for you when you open the app."
-      msg = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
-    end
-  end
-
-  p "done"
-  p "*"*50
-end
-
-desc "Text three random notes a day to those interested"
-task :send_random_notes => :environment do 
-  p "*"*50
-  p "texting random notes"
-  users = User.where("phone = ? OR phone = ?", "12059360524", "13343994374")
-  users.each do |u|
-    items = u.items.assigned.limit(3).order("RANDOM()")
-    items.each do |i|
-      txt_message = "#{i.buckets.first.first_name} - #{i.message}"
-      text = TwilioMessenger.new(u.phone, Hippocampus::Application.config.phone_number, txt_message)
-      text.send
-    end
-  end
-  p "done"
-  p "*"*50
-end
-
 require "net/http"
  
 desc "Ping app"
@@ -98,4 +39,28 @@ task :ping => :environment do
   puts "ping? (#{url})"
   r = Net::HTTP.new(url, 80).request_head('/')
   puts "pong! (#{r.code} #{r.message})"
+end
+
+desc "7 day tutorial"
+task :seven_day_tutorial => :environment do
+  p "*"*50
+  p "texting users going through the tutorial"
+
+  messages = ["day 7 message", "day 6 message", "day 5 message", "day 4 message", "day 3 message", "day 2 message", "day 1 message"]
+  reasons = ["day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
+  exclude_phones = []
+  reasons.each_with_index do |r, i|
+    exclude_phones << OutgoingMessage.completed_with_reason(r)
+    exclude_phones = exclude_phones.flatten.uniq
+
+    completed_previous_day = OutgoingMessage.completed_with_reason(reasons[i+1]) unless i+1 == reasons.count
+    phones_to_text = (completed_previous_day ? completed_previous_day : []) - exclude_phones
+
+    phones_to_text.each do |p|
+      OutgoingMessage.send_text_to_number_with_message_and_reason(p, messages[i], r)
+    end
+  end
+
+  p "done"
+  p "*"*50
 end

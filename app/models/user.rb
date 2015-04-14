@@ -30,9 +30,8 @@ class User < ActiveRecord::Base
   end
 
   def send_introduction_text
-    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. What's your best friend's birthday?\n(reply to this text)"
-    msg = TwilioMessenger.new(self.phone, Hippocampus::Application.config.phone_number, message)
-    msg.send
+    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
+    OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "first_intro")
   end
 
 
@@ -80,20 +79,20 @@ class User < ActiveRecord::Base
 
   def update_with_params params
     if params[:name] && params[:name].length > 0
-      self.update_name(params[:name])
+      self.update_name(params[:name], true)
     end
     return true
   end
 
-  def update_name n
+  def update_name n, override=false
     if self.set_name(n)
       self.save
-      BucketUserPair.delay.update_all_for_user_name(self)
+      BucketUserPair.delay.update_all_for_user_name(self) if override
     end
   end
 
-  def set_name n
-    if self.no_name?
+  def set_name n, override=false
+    if self.no_name? || override
       self.name = n
       return true
     end
@@ -108,8 +107,7 @@ class User < ActiveRecord::Base
   def self.remind_about_outstanding_items
     items = Item.outstanding.last_24_hours.uniq_by {|i| i.user_id }
     items.each do |i|
-      msg = TwilioMessenger.new(i.user.phone, Hippocampus::Application.config.phone_number, "You have pending notes on Hippocampus. Open the app to handle them.")
-      msg.send
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "outstanding")
     end
   end
 
@@ -126,7 +124,7 @@ class User < ActiveRecord::Base
   end
 
   def sorted_reminders(limit=100000, page=0)
-    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Date.today }.sort_by(&:next_reminder_date)
+    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Time.zone.now.to_date }.sort_by(&:next_reminder_date)
   end
 
   def no_name?

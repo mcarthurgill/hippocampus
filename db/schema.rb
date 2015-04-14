@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150409222401) do
+ActiveRecord::Schema.define(:version => 20150413132714) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -153,6 +153,15 @@ ActiveRecord::Schema.define(:version => 20150409222401) do
   add_index "items", ["latitude"], :name => "index_items_on_latitude"
   add_index "items", ["longitude"], :name => "index_items_on_longitude"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
+
+  create_table "outgoing_messages", :force => true do |t|
+    t.string   "to_number"
+    t.string   "from_number"
+    t.string   "message"
+    t.string   "reason"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "push_notifications", :force => true do |t|
     t.integer  "device_token_id"

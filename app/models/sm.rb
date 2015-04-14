@@ -53,19 +53,18 @@ class Sm < ActiveRecord::Base
   def should_send_follow_up_texts
     number_texts = Sm.where(:From => self.From).count
     if number_texts == 2
-      self.send_follow_up_text_with_message("Very cool. Another question, what are the names of your best friend's parents?")
+      self.send_follow_up_text_with_message("Very cool. Where did you meet them?")
     elsif number_texts == 3
-      self.send_follow_up_text_with_message("Awesome. Last question, who was the last person you met and what did you learn about them?")
+      self.send_follow_up_text_with_message("Awesome. Last question, what is your best friend's birthday?")
     elsif number_texts == 4
-      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: http://hppcmps.com/")
+      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: http://hppcmps.com/\n\nAlso, you can store this number in your phone book and text it any time you don't want to forget something.")
     end
   end
 
   def send_follow_up_text_with_message message
     user = User.where("phone = ?", self.From).first
-    if user && (user.created_at > Date.today - 48.hours)
-      msg = TwilioMessenger.new(user.phone, Hippocampus::Application.config.phone_number, message)
-      msg.send
+    if user && (user.created_at > Time.zone.now.to_date - 48.hours)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "day_1")
     end
   end
 
