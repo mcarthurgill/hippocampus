@@ -1,4 +1,5 @@
 class OutgoingMessage < ActiveRecord::Base
+
   attr_accessible :from_number, :message, :reason, :to_number
 
   def self.send_text_to_number_with_message_and_reason to_num, m, r
@@ -58,4 +59,5 @@ class OutgoingMessage < ActiveRecord::Base
   def self.completed_with_reason r
     OutgoingMessage.where("reason = ? AND created_at < ?", r, Time.zone.now.to_date).pluck(:to_number).uniq #exclude users created today
   end
+  
 end
