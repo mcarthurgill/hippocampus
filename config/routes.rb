@@ -5,6 +5,7 @@ Hippocampus::Application.routes.draw do
   get "login", :to => "sessions#new", :as => "login"
   post 'session/:phone', :to => "sessions#create", :as => "create_session"
   post 'session', :to => "sessions#create"
+  post 'session_token', :to => "sessions#create_with_token"
   get 'logout', :to => "sessions#destroy", :as => "logout"
   match 'passcode', :to => "sessions#passcode", :as => "passcode"
   

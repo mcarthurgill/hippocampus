@@ -13,7 +13,7 @@ class SmsController < ApplicationController
       # get or create user
       user = User.with_phone_number(@sm.From)
       # create token
-      token = Token.create(token_string: token_for_verification_text(@sm.Body) , user_id: user.id, status: 'live')
+      token = Token.create(token_string: token_for_verification_text(@sm.Body) , user_id: user.id, status: 'sms')
       # send web socket
 
       respond_to do |format|

@@ -40,6 +40,20 @@ class SessionsController < ApplicationController
     end
   end
 
+  def create_with_token
+    token = Token.where('token_string = ?', params[:token]).recent.first
+    @user = token.user if token
+    if @user
+      respond_to do |format|
+        format.json { render json: { :success => 'success', :user => @user.as_json(only: [:phone, :id, :created_at, :updated_at]) } }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { :success => 'failed' } }
+      end
+    end
+  end
+
   def destroy
     cookies.delete :user_id
     redirect_to root_path, :notice => "You've been logged out successfully."
