@@ -151,9 +151,10 @@ class BucketsController < ApplicationController
 
   def remove_collaborators
     bucket = Bucket.find(params[:id])
+    user_to_remove = User.find_by_phone(params[:phone])
     user = User.find(params[:auth][:uid])
 
-    bucket.remove_user(user) if bucket && bucket.belongs_to_user?(user)
+    bucket.remove_user(user_to_remove) if bucket && bucket.belongs_to_user?(user) && user_to_remove
 
     respond_to do |format|
       if user
