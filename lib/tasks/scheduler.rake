@@ -41,14 +41,11 @@ task :ping => :environment do
   puts "pong! (#{r.code} #{r.message})"
 end
 
-#**************DONT FORGET TO CREATE A DAY 7 OUTGOING MESSAGE FOR EVERY USER ******************
 desc "7 day tutorial"
-#**************DONT FORGET TO CREATE A DAY 7 OUTGOING MESSAGE FOR EVERY USER ******************
 task :seven_day_tutorial => :environment do
   p "*"*50
   p "texting users going through the tutorial"
 
-  #**************DONT FORGET TO CREATE A DAY 7 OUTGOING MESSAGE FOR EVERY USER ******************
   messages = ["day 7 message", "day 6 message", "day 5 message", "day 4 message", "day 3 message", "day 2 message", "day 1 message"]
   reasons = ["day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
   exclude_phones = []
