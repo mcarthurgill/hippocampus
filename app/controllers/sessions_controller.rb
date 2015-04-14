@@ -9,6 +9,9 @@ class SessionsController < ApplicationController
     @user.save if @user.new_record?
 
     @user.update_and_send_passcode 
+
+    @user.check_for_item
+
     respond_to do |format|
       format.html
       format.json { render json: { :success => 'success', :phone => @user.phone } }

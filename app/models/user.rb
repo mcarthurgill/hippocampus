@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name
+  
   extend Formatting
   include Formatting
   
@@ -114,6 +115,18 @@ class User < ActiveRecord::Base
   
 
   # -- HELPERS
+
+  def check_for_item
+    if self.items.count == 0
+      i = Item.new
+      i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
+      i.user_id = self.id
+      i.item_type = 'once'
+      i.status = 'outstanding'
+      i.input_method = 'system'
+      i.save!
+    end
+  end
 
   def formatted_buckets_options
     buckets = [["", nil]]

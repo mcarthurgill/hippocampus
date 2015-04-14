@@ -51,4 +51,13 @@ module Formatting
     return Digest::SHA1.hexdigest("#{string}sf098354sl#!^m$$yeaYou@a!")
   end
 
+
+
+  def token_for_verification_text token
+    i = token.index('(')
+    j = token.index('==')
+    length = j-i-1
+    return token[i+1, length]
+  end
+
 end
