@@ -309,9 +309,16 @@ class Item < ActiveRecord::Base
     end
     return arr.uniq
   end
-  
 
-
+  def users_array
+    arr = [self.user]
+    self.buckets.includes(:users).each do |b|
+      b.users.each do |u|
+        arr << u
+      end
+    end
+    return arr.uniq
+  end
 
 
   # -- REMINDERS
@@ -327,24 +334,33 @@ class Item < ActiveRecord::Base
   def self.remind_about_notes_for_today
     items = Item.notes_for_today.not_deleted
     items.each do |i|
+      users = self.users_array
       message = "Reminder:\n" + i.message
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_once")
+      users.each do |u|
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once")
+      end
     end
   end
 
   def self.remind_about_daily_items
     items = Item.daily.not_deleted
     items.each do |i|
+      users = self.users_array
       message = "Reminder:\n" + i.message
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_daily")
+      users.each do |u|
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily")
+      end
     end
   end
 
   def self.remind_about_weekly_items
     items = Item.get_weekly_items_for_today
     items.each do |i|
+      users = self.users_array
       message = "Reminder:\n" + i.message
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_weekly")
+      users.each do |u|
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly")
+      end
     end
   end
 
@@ -365,8 +381,11 @@ class Item < ActiveRecord::Base
     items = Item.where('extract(day from reminder_date) = ?', Time.zone.now.to_date.day).monthly.not_deleted
 
     items.each do |i|
+      users = self.users_array
       message = "Reminder:\n" + i.message
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_monthly")
+      users.each do |u|
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly")
+      end
     end
   end
 
@@ -374,8 +393,11 @@ class Item < ActiveRecord::Base
     items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Time.zone.now.to_date.month, Time.zone.now.to_date.day).yearly.not_deleted
     
     items.each do |i|
+      users = self.users_array
       message = "Reminder:\n" + i.message
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "remind_yearly")
+      users.each do |u|
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly")
+      end
     end
   end
 

@@ -149,6 +149,10 @@ class Bucket < ActiveRecord::Base
     end
   end
 
+  def remove_user u
+    BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
+  end
+
   def update_visibility
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")
     self.save!

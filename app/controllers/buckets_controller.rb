@@ -148,4 +148,19 @@ class BucketsController < ApplicationController
       end
     end
   end
+
+  def remove_collaborators
+    bucket = Bucket.find(params[:id])
+    user = User.find(params[:auth][:uid])
+
+    bucket.remove_user(user) if bucket && bucket.belongs_to_user?(user)
+
+    respond_to do |format|
+      if user
+        format.json { render json: { :user => user } }
+      else
+        format.json { render json: bucket.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 end

@@ -32,6 +32,14 @@
   end
 
 
+  # -- DESTROY
+
+  def self.destroy_for_phone_number_and_bucket pn, b
+    bup = BucketUserPair.where("phone_number = ? AND bucket_id = ?", pn, b.id).first
+    bup.destroy if bup
+  end
+
+
   # -- UPDATE
 
   def self.update_all_for_user_name(u)
