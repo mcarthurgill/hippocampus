@@ -1,6 +1,8 @@
 class Bucket < ActiveRecord::Base
+
   include Formatting
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at
+
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -27,6 +29,8 @@ class Bucket < ActiveRecord::Base
   scope :person_type, -> { where('bucket_type = ?', 'Person') }
   scope :event_type, -> { where('bucket_type = ?', 'Event') }
   scope :place_type, -> { where('bucket_type = ?', 'Place') }
+
+
 
 
   # -- VALIDATIONS
@@ -80,6 +84,10 @@ class Bucket < ActiveRecord::Base
   end
 
 
+
+
+
+
   # -- HELPERS
 
   def display_name
@@ -108,6 +116,15 @@ class Bucket < ActiveRecord::Base
     return self.users.count > 1
   end
 
+  def user_ids_array
+    arr = [self.user_id]
+    self.users.each do |u|
+      arr << u.id
+    end
+    return arr.uniq
+  end
+
+
   # -- ACTIONS
 
   def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code, invited_by_user)
@@ -134,8 +151,22 @@ class Bucket < ActiveRecord::Base
 
   def update_visibility
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")
-    self.save
+    self.save!
+
+    self.index_delayed
+    self.delay.update_items_indexes
   end
+
+  def update_items_indexes
+    self.items.each do |i|
+      i.index_delayed
+    end
+  end
+
+
+
+
+
 
   #  swiftype
 
@@ -157,8 +188,10 @@ class Bucket < ActiveRecord::Base
           {:name => 'first_name', :value => self.first_name, :type => 'string'},
           {:name => 'items_count', :value => self.items_count, :type => 'integer'},
           {:name => 'user_id', :value => self.user_id, :type => 'integer'},
+          {:name => 'available_to', :value => self.user_ids_array, :type => 'integer'},
           {:name => 'bucket_type', :value => self.bucket_type, :type => 'string'},
           {:name => 'bucket_id', :value => self.id, :type => 'integer'},
+          {:name => 'visibility', :value => self.visibility, :type => 'string'},
           {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
           {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
         ]}
