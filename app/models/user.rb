@@ -35,6 +35,8 @@ class User < ActiveRecord::Base
     msg.send
   end
 
+
+
   # -- GETTERS
 
   def self.with_phone_number phone_number
@@ -97,6 +99,9 @@ class User < ActiveRecord::Base
     end
     return false
   end
+
+
+
   
   # -- SCHEDULES
 

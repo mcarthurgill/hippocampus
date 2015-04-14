@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     @user.update_and_send_passcode 
     respond_to do |format|
       format.html
-      format.json { render json: { :success => 'success' } }
+      format.json { render json: { :success => 'success', :phone => @user.phone } }
     end
   end
 
