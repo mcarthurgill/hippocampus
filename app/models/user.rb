@@ -77,20 +77,20 @@ class User < ActiveRecord::Base
 
   def update_with_params params
     if params[:name] && params[:name].length > 0
-      self.update_name(params[:name])
+      self.update_name(params[:name], true)
     end
     return true
   end
 
-  def update_name n
+  def update_name n, override=false
     if self.set_name(n)
       self.save
-      BucketUserPair.delay.update_all_for_user_name(self)
+      BucketUserPair.delay.update_all_for_user_name(self) if override
     end
   end
 
-  def set_name n
-    if self.no_name?
+  def set_name n, override=false
+    if self.no_name? || override
       self.name = n
       return true
     end
@@ -119,7 +119,7 @@ class User < ActiveRecord::Base
   end
 
   def sorted_reminders(limit=100000, page=0)
-    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Date.today }.sort_by(&:next_reminder_date)
+    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Time.zone.now.to_date }.sort_by(&:next_reminder_date)
   end
 
   def no_name?

@@ -63,8 +63,8 @@ class Sm < ActiveRecord::Base
 
   def send_follow_up_text_with_message message
     user = User.where("phone = ?", self.From).first
-    if user && (user.created_at > Date.today - 48.hours)
-      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "tutorial")
+    if user && (user.created_at > Time.zone.now.to_date - 48.hours)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "day_1")
     end
   end
 

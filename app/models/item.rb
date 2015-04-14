@@ -24,7 +24,7 @@ class Item < ActiveRecord::Base
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :not_deleted, -> { where("status != ?", "deleted") }
-  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Date.today, "once").includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Time.zone.now.to_date, "once").includes(:user) } 
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
@@ -319,7 +319,7 @@ class Item < ActiveRecord::Base
 
   def self.get_weekly_items_for_today
     epoch = Date.parse("1/1/1970")
-    days_mod = (Date.today - epoch).to_i%7
+    days_mod = (Time.zone.now.to_date - epoch).to_i%7
     items = []
 
     Item.weekly.not_deleted.each do |i|
@@ -331,7 +331,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_monthly_items
-    items = Item.where('extract(day from reminder_date) = ?', Date.today.day).monthly.not_deleted
+    items = Item.where('extract(day from reminder_date) = ?', Time.zone.now.to_date.day).monthly.not_deleted
 
     items.each do |i|
       message = "Reminder:\n" + i.message
@@ -340,7 +340,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_yearly_items
-    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Date.today.month, Date.today.day).yearly.not_deleted
+    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Time.zone.now.to_date.month, Time.zone.now.to_date.day).yearly.not_deleted
     
     items.each do |i|
       message = "Reminder:\n" + i.message
@@ -350,7 +350,7 @@ class Item < ActiveRecord::Base
 
 
   def next_reminder_date
-    if self.reminder_date.nil? || (self.reminder_date < Date.today && self.once?)
+    if self.reminder_date.nil? || (self.reminder_date < Time.zone.now.to_date && self.once?)
       return nil
     else
       d = self.reminder_date 
@@ -358,17 +358,17 @@ class Item < ActiveRecord::Base
       when "once"
         #d is already set to reminder_date
       when "daily"
-        d =  Date.today
+        d =  Time.zone.now.to_date
       when "weekly"
-        while d < Date.today
+        while d < Time.zone.now.to_date
           d = d + 7.days
         end
       when "monthly"
-        while d < Date.today
+        while d < Time.zone.now.to_date
           d = d + 1.month
         end
       when "yearly"
-        while d < Date.today
+        while d < Time.zone.now.to_date
           d = d + 1.year
         end
       end

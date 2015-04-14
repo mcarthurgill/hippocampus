@@ -50,4 +50,12 @@ class OutgoingMessage < ActiveRecord::Base
     end
     return self.from_number
   end
+
+
+
+  # -- TUTORIAL
+
+  def self.completed_with_reason r
+    OutgoingMessage.where("reason = ? AND created_at < ?", r, Time.zone.now.to_date).pluck(:to_number).uniq #exclude users created today
+  end
 end

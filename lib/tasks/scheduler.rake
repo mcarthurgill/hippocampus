@@ -40,3 +40,30 @@ task :ping => :environment do
   r = Net::HTTP.new(url, 80).request_head('/')
   puts "pong! (#{r.code} #{r.message})"
 end
+
+#**************DONT FORGET TO CREATE A DAY 7 OUTGOING MESSAGE FOR EVERY USER ******************
+desc "7 day tutorial"
+#**************DONT FORGET TO CREATE A DAY 7 OUTGOING MESSAGE FOR EVERY USER ******************
+task :seven_day_tutorial => :environment do
+  p "*"*50
+  p "texting users going through the tutorial"
+
+  #**************DONT FORGET TO CREATE A DAY 7 OUTGOING MESSAGE FOR EVERY USER ******************
+  messages = ["day 7 message", "day 6 message", "day 5 message", "day 4 message", "day 3 message", "day 2 message", "day 1 message"]
+  reasons = ["day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
+  exclude_phones = []
+  reasons.each_with_index do |r, i|
+    exclude_phones << OutgoingMessage.completed_with_reason(r)
+    exclude_phones = exclude_phones.flatten.uniq
+
+    completed_previous_day = OutgoingMessage.completed_with_reason(reasons[i+1]) unless i+1 == reasons.count
+    phones_to_text = (completed_previous_day ? completed_previous_day : []) - exclude_phones
+
+    phones_to_text.each do |p|
+      OutgoingMessage.send_text_to_number_with_message_and_reason(p, messages[i], r)
+    end
+  end
+
+  p "done"
+  p "*"*50
+end
