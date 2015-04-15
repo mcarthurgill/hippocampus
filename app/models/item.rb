@@ -320,6 +320,16 @@ class Item < ActiveRecord::Base
     return arr.uniq
   end
   
+  def visible_buckets_for_user(u)
+    bucket_ids = self.buckets.pluck(:id)
+    bups = BucketUserPair.for_bucket_ids_and_phone(bucket_ids, u.phone)
+    return bups.inject([]) { |arr, bup| arr << bup.bucket } #returns array of buckets
+  end
+
+  def json_representation(u)
+    return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => u)
+  end
+
 
   # -- REMINDERS
 

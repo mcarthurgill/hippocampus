@@ -7,14 +7,17 @@ include Formatting
 
   def show
     @item = Item.find(params[:id])
-
-    # redirect_if_not_authorized(@item.user_id) ? return : nil
-
+    curr_user = (params[:auth][:uid] && params[:auth][:uid].length > 0) ? User.find(params[:auth][:uid]) : nil
     @active = 'notes'
 
     respond_to do |format|
-      format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
-      format.json { render json: @item.as_json(methods: [:buckets, :user]) }
+      if curr_user
+        format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
+        format.json { render json: @item.json_representation(curr_user) }
+      else
+        format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
+        format.json { render json: @item.as_json(methods: [:buckets, :user]) }
+      end
     end
   end
 
