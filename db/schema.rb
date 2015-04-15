@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150413132714) do
+ActiveRecord::Schema.define(:version => 20150415170954) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20150413132714) do
     t.string   "reason"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "media_url"
   end
 
   create_table "push_notifications", :force => true do |t|
