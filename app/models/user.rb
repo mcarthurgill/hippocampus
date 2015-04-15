@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name
+  
   extend Formatting
   include Formatting
   
@@ -33,6 +34,8 @@ class User < ActiveRecord::Base
     message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "first_intro")
   end
+
+
 
   # -- GETTERS
 
@@ -96,6 +99,9 @@ class User < ActiveRecord::Base
     end
     return false
   end
+
+
+
   
   # -- SCHEDULES
 
@@ -110,6 +116,18 @@ class User < ActiveRecord::Base
   
 
   # -- HELPERS
+
+  def check_for_item
+    if self.items.count == 0
+      i = Item.new
+      i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
+      i.user_id = self.id
+      i.item_type = 'once'
+      i.status = 'outstanding'
+      i.input_method = 'system'
+      i.save!
+    end
+  end
 
   def formatted_buckets_options
     buckets = [["", nil]]

@@ -2,6 +2,9 @@ class Sm < ActiveRecord::Base
 
   attr_accessible :AccountSid, :ApiVersion, :Body, :From, :FromCity, :FromCountry, :FromState, :FromZip, :MediaContentTypes, :MediaUrls, :MessageSid, :NumMedia, :SmsMessageSid, :SmsSid, :SmsStatus, :To, :ToCity, :ToCountry, :ToState, :ToZip, :item_id
 
+  extend Formatting
+  include Formatting
+
   serialize :MediaContentTypes, Array
   serialize :MediaUrls, Array
   
@@ -72,6 +75,13 @@ class Sm < ActiveRecord::Base
     if Sm.where(:From => user.phone).count == 0
       Sm.create(:From => user.phone)
     end
+  end
+
+
+  # -- HELPERS
+
+  def token_text?
+    return self.Body.length > 10 && self.Body.downcase[0...10] == 'my code: (' && self.Body.index('(') && self.Body.index('==')
   end
 
 end
