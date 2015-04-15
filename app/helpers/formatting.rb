@@ -52,3 +52,4 @@ module Formatting
   end
 
 end
+
