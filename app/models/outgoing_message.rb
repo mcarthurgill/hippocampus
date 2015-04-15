@@ -3,7 +3,8 @@ class OutgoingMessage < ActiveRecord::Base
   attr_accessible :from_number, :message, :reason, :to_number, :media_url
 
   def self.send_text_to_number_with_message_and_reason to_num, m, r, med_url=nil
-    o = OutgoingMessage.new(to_number: to_num, message: m, reason: r, media_url: med_url)
+    o = OutgoingMessage.new(to_number: to_num, message: m, reason: r)
+    o.media_url = med_url if med_url
     o.determine_from_number(to_num)
     o.save
     o.send_text
