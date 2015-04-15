@@ -7,7 +7,7 @@ include Formatting
 
   def show
     @item = Item.find(params[:id])
-    curr_user = (params[:auth][:uid] && params[:auth][:uid].length > 0) ? User.find(params[:auth][:uid]) : nil
+    curr_user = (params[:auth] && params[:auth][:uid] && params[:auth][:uid].length > 0) ? User.find(params[:auth][:uid]) : nil
     @active = 'notes'
 
     respond_to do |format|
