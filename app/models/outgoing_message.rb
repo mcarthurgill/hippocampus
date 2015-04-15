@@ -2,7 +2,7 @@ class OutgoingMessage < ActiveRecord::Base
 
   attr_accessible :from_number, :message, :reason, :to_number, :media_url
 
-  def self.send_text_to_number_with_message_and_reason to_num, m, r, med_url=nil
+  def self.send_text_to_number_with_message_and_reason to_num, m, r, med_url=[]
     o = OutgoingMessage.new(to_number: to_num, message: m, reason: r, media_url: med_url)
     o.determine_from_number(to_num)
     o.save
@@ -40,7 +40,7 @@ class OutgoingMessage < ActiveRecord::Base
   end
 
   def send_to_twilio account
-    self.media_url ? account.messages.create({:body => self.message, :to => append_plus_to_number(self.to_number), :from => append_plus_to_number(self.from_number), :media_url => self.media_url}) : account.messages.create({:body => self.message, :to => append_plus_to_number(self.to_number), :from => append_plus_to_number(self.from_number)})
+    self.media_url && !self.media_url.empty? ? account.messages.create({:body => self.message, :to => append_plus_to_number(self.to_number), :from => append_plus_to_number(self.from_number), :media_url => self.media_url}) : account.messages.create({:body => self.message, :to => append_plus_to_number(self.to_number), :from => append_plus_to_number(self.from_number)})
   end
 
   def append_plus_to_number(number)
