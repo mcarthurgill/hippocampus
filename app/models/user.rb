@@ -100,6 +100,15 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def set_country_and_calling_codes_from_sm sm
+    country_code_text = sm.FromCountry
+    country_code_object = CountryCode.find_by_country_code(country_code_text)
+    if country_code_object
+      self.update_attributes(calling_code: country_code_object.calling_code, country_code: country_code_text)
+    end
+  end
+
+
   # -- HELPERS
 
   def check_for_item

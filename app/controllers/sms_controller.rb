@@ -12,6 +12,7 @@ class SmsController < ApplicationController
       puts 'TOKEN ============================= '+token_for_verification_text(@sm.Body)
       # get or create user
       user = User.with_phone_number(@sm.From)
+      user.delay.set_country_and_calling_codes_from_sm(@sm)
       # create token
       token = Token.create(token_string: token_for_verification_text(@sm.Body) , user_id: user.id, status: 'sms')
       # send web socket
@@ -20,16 +21,21 @@ class SmsController < ApplicationController
         format.json { render json: @sm, status: :created }
       end
 
+
     elsif @sm.hippo_text?
       user = User.with_phone_number(@sm.From)
 
       respond_to do |format|
         format.json { render json: @sm, status: :created }
       end
+
+
     elsif @sm.ignore_text?
       respond_to do |format|
         format.json { render json: @sm, status: :created }
       end
+
+
     else
       @sm.add_media_if_present(params)
       respond_to do |format|
