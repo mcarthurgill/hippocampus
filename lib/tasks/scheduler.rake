@@ -57,7 +57,14 @@ task :seven_day_tutorial => :environment do
   p "*"*50
   p "texting users going through the tutorial"
 
-  messages = ["day 7 message", "day 6 message", "day 5 message", "day 4 message", "day 3 message", "day 2 message", "day 1 message"]
+  messages = [
+    "Day 7: Do you know anyone going on a trip? If so, when are they leaving?", 
+    "Day 6: What is the best gift you've received lately? Who else would like that gift?", 
+    "Day 5: What is your favorite coworker's Chipotle order?", 
+    "Day 4: What is your barber's name?", 
+    "Day 3: What is your favorite barista's name at your favorite coffee shop?", 
+    "Yesterday you completed the first day of our seven day Hippocampus tutorial. Each day we will ask you a question to help you build the habits to make people feel like they matter. So, what's the name of your favorite coworker's spouse? Do they have kids? How did they meet?"
+  ]
   reasons = ["day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
   exclude_phones = []
   reasons.each_with_index do |r, i|
@@ -68,6 +75,7 @@ task :seven_day_tutorial => :environment do
     phones_to_text = (completed_previous_day ? completed_previous_day : []) - exclude_phones
 
     phones_to_text.each do |p|
+      p "texting #{p} - #{messages[i]}"
       OutgoingMessage.send_text_to_number_with_message_and_reason(p, messages[i], r)
     end
   end
