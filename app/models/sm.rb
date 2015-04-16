@@ -14,7 +14,6 @@ class Sm < ActiveRecord::Base
 
   def create_item
     i = Item.create_with_sms(self)
-    self.should_send_follow_up_texts
     self.update_attribute(:item_id, i.id)
     self.delay(run_at: 1.5.seconds.from_now).concat_if_necessary
     return i
