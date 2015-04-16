@@ -2,7 +2,14 @@ class OutgoingMessage < ActiveRecord::Base
 
   attr_accessible :from_number, :message, :reason, :to_number, :media_url
 
+
+  # -- SCOPES 
+
   scope :sent_today, ->{ where("created_at > ?", Time.zone.now.to_date) }
+  scope :for_phone_with_reason, ->(phone, r) { where("to_number = ? AND reason = ?", phone, r) }
+
+
+  # -- CREATORS
 
   def self.send_text_to_number_with_message_and_reason to_num, m, r, med_url=[]
     o = OutgoingMessage.new(to_number: to_num, message: m, reason: r, media_url: med_url)
@@ -10,6 +17,9 @@ class OutgoingMessage < ActiveRecord::Base
     o.save
     o.send_text
   end
+
+
+  # -- ACTIONS
 
   def send_text
     begin
@@ -45,6 +55,9 @@ class OutgoingMessage < ActiveRecord::Base
     self.media_url && !self.media_url.empty? ? account.messages.create({:body => self.message, :to => append_plus_to_number(self.to_number), :from => append_plus_to_number(self.from_number), :media_url => self.media_url}) : account.messages.create({:body => self.message, :to => append_plus_to_number(self.to_number), :from => append_plus_to_number(self.from_number)})
   end
 
+
+  # -- HELPERS 
+
   def append_plus_to_number(number)
     number.first == "+" ? number : number.prepend("+")
   end
@@ -57,7 +70,6 @@ class OutgoingMessage < ActiveRecord::Base
     end
     return self.from_number
   end
-
 
 
   # -- TUTORIAL

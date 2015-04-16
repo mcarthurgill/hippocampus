@@ -14,7 +14,7 @@ class Sm < ActiveRecord::Base
 
   def create_item
     i = Item.create_with_sms(self)
-    self.delay.should_send_follow_up_texts
+    self.should_send_follow_up_texts
     self.update_attribute(:item_id, i.id)
     self.delay(run_at: 1.5.seconds.from_now).concat_if_necessary
     return i
@@ -54,18 +54,19 @@ class Sm < ActiveRecord::Base
   end
 
   def should_send_follow_up_texts
-    number_texts = Sm.where(:From => self.From).count
-    if number_texts == 2
+    msgs = OutgoingMessage.for_phone_with_reason(self.From, "day_1")
+
+    if msgs.count == 1
       self.send_follow_up_text_with_message("Very cool. Where did you meet them?")
-    elsif number_texts == 3
+    elsif msgs.count == 2
       self.send_follow_up_text_with_message("Awesome. Last question, what is your best friend's birthday?")
-    elsif number_texts == 4
+    elsif msgs.count == 3
       self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: http://hppcmps.com/\n\nAlso, you can store this number in your phone book and text it any time you don't want to forget something.")
     end
   end
 
   def send_follow_up_text_with_message message
-    user = User.where("phone = ?", self.From).first
+    user = User.find_by_phone(self.From)
     if user && (user.created_at > Time.zone.now.to_date - 48.hours)
       OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "day_1")
     end
@@ -84,4 +85,13 @@ class Sm < ActiveRecord::Base
     return self.Body.length > 10 && self.Body.downcase[0...10] == 'my code: (' && self.Body.index('(') && self.Body.index('==')
   end
 
+  def hippo_text?
+    u = User.find_by_phone(self.From)
+    return self.Body.gsub(/\s+/, "").downcase == "hippo" && u.nil?
+  end
+
+  def ignore_text?
+    u = User.find_by_phone(self.From)
+    return u.nil? || u.created_at > 2.seconds.ago
+  end
 end

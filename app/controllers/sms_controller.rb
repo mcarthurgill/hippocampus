@@ -20,7 +20,16 @@ class SmsController < ApplicationController
         format.json { render json: @sm, status: :created }
       end
 
-    
+    elsif @sm.hippo_text?
+      user = User.with_phone_number(@sm.From)
+
+      respond_to do |format|
+        format.json { render json: @sm, status: :created }
+      end
+    elsif @sm.ignore_text?
+      respond_to do |format|
+        format.json { render json: @sm, status: :created }
+      end
     else
       @sm.add_media_if_present(params)
       respond_to do |format|
