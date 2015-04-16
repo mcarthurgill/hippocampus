@@ -319,6 +319,16 @@ class Item < ActiveRecord::Base
     end
     return arr.uniq
   end
+  
+  def visible_buckets_for_user(u)
+    bucket_ids = self.buckets.pluck(:id)
+    bups = BucketUserPair.for_bucket_ids_and_phone(bucket_ids, u.phone)
+    return bups.inject([]) { |arr, bup| arr << bup.bucket } #returns array of buckets
+  end
+
+  def json_representation(u)
+    return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => u)
+  end
 
 
   # -- REMINDERS
@@ -334,10 +344,10 @@ class Item < ActiveRecord::Base
   def self.remind_about_notes_for_today
     items = Item.notes_for_today.not_deleted
     items.each do |i|
-      users = self.users_array
+      users = i.users_array
       message = "Reminder:\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once")
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once", i.media_urls)
       end
     end
   end
@@ -345,10 +355,10 @@ class Item < ActiveRecord::Base
   def self.remind_about_daily_items
     items = Item.daily.not_deleted
     items.each do |i|
-      users = self.users_array
+      users = i.users_array
       message = "Reminder:\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily")
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily", i.media_urls)
       end
     end
   end
@@ -356,10 +366,10 @@ class Item < ActiveRecord::Base
   def self.remind_about_weekly_items
     items = Item.get_weekly_items_for_today
     items.each do |i|
-      users = self.users_array
+      users = i.users_array
       message = "Reminder:\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly")
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly", i.media_urls)
       end
     end
   end
@@ -381,10 +391,10 @@ class Item < ActiveRecord::Base
     items = Item.where('extract(day from reminder_date) = ?', Time.zone.now.to_date.day).monthly.not_deleted
 
     items.each do |i|
-      users = self.users_array
+      users = i.users_array
       message = "Reminder:\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly")
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly", i.media_urls)
       end
     end
   end
@@ -393,10 +403,10 @@ class Item < ActiveRecord::Base
     items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Time.zone.now.to_date.month, Time.zone.now.to_date.day).yearly.not_deleted
     
     items.each do |i|
-      users = self.users_array
+      users = i.users_array
       message = "Reminder:\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly")
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly", i.media_urls)
       end
     end
   end
