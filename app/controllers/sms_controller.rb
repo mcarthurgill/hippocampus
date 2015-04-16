@@ -34,8 +34,8 @@ class SmsController < ApplicationController
       @sm.add_media_if_present(params)
       respond_to do |format|
         if @sm.save
-          @sm.create_item
           @sm.should_send_follow_up_texts
+          @sm.create_item
           format.json { render json: @sm, status: :created }
         else
           format.json { render json: @sm.errors, status: :unprocessable_entity }
