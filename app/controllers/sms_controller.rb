@@ -24,6 +24,7 @@ class SmsController < ApplicationController
 
     elsif @sm.hippo_text?
       user = User.with_phone_number(@sm.From)
+      user.delay.set_country_and_calling_codes_from_sm(@sm)
 
       respond_to do |format|
         format.json { render json: @sm, status: :created }
