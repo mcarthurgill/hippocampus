@@ -15,7 +15,18 @@ desc "This texts all users who have outstanding items"
 task :send_reminders_about_outstanding_items => :environment do
   p "*"*50
   p "texting users about their outstanding items"
-  User.remind_about_outstanding_items
+  
+  items = Item.outstanding.last_24_hours.includes(:user).uniq_by {|i| i.user_id }
+  phones_already_texted = OutgoingMessage.sent_today.pluck(:to_number).uniq
+  users_already_texted = User.find_all_by_phone(phones_already_texted)
+
+  items.each do |i|
+    if !users_already_texted.include?(i.user)
+      message = "You have pending notes on Hippocampus. Open the app to handle them."
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "outstanding")
+    end
+  end
+
   p "done"
   p "*"*50
 end

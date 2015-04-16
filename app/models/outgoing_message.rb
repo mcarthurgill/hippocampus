@@ -2,6 +2,8 @@ class OutgoingMessage < ActiveRecord::Base
 
   attr_accessible :from_number, :message, :reason, :to_number, :media_url
 
+  scope :sent_today, ->{ where("created_at > ?", Time.zone.now.to_date) }
+
   def self.send_text_to_number_with_message_and_reason to_num, m, r, med_url=[]
     o = OutgoingMessage.new(to_number: to_num, message: m, reason: r, media_url: med_url)
     o.determine_from_number(to_num)

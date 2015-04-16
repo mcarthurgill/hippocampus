@@ -100,21 +100,6 @@ class User < ActiveRecord::Base
     return false
   end
 
-
-
-  
-  # -- SCHEDULES
-
-  def self.remind_about_outstanding_items
-    items = Item.outstanding.last_24_hours.uniq_by {|i| i.user_id }
-    items.each do |i|
-      message = "You have pending notes on Hippocampus. Open the app to handle them."
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "outstanding")
-    end
-  end
-
-  
-
   # -- HELPERS
 
   def check_for_item
