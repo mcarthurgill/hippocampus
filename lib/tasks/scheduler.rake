@@ -67,7 +67,7 @@ task :seven_day_tutorial => :environment do
   ]
   reasons = ["day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
   exclude_phones = []
-  reasons.each_with_index do |r, i|
+  reasons.each_with_index do |r, i| 
     exclude_phones << OutgoingMessage.completed_with_reason(r)
     exclude_phones = exclude_phones.flatten.uniq
 

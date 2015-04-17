@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name
+  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name, :setup_completion
   
   extend Formatting
   include Formatting
@@ -206,7 +206,6 @@ class User < ActiveRecord::Base
   def score
     return self.number_items+self.number_buckets
   end
-
 
 
   # --- ACTIONS
