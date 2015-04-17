@@ -82,6 +82,10 @@ class User < ActiveRecord::Base
     if params[:name] && params[:name].length > 0
       self.update_name(params[:name], true)
     end
+    if params[:setup_completion] && params[:setup_completion].length > 0
+      self.update_setup_completion(params[:setup_completion])
+    end
+    self.save
     return true
   end
 
@@ -91,7 +95,6 @@ class User < ActiveRecord::Base
       n = bup.name if bup
     end
     if self.set_name(n)
-      self.save
       BucketUserPair.delay.update_all_for_user_name(self) if override
     end
   end
@@ -102,6 +105,10 @@ class User < ActiveRecord::Base
       return true
     end
     return false
+  end
+
+  def update_setup_completion percentage
+    self.setup_completion = percentage
   end
 
   def set_country_and_calling_codes_from_sm sm

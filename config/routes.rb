@@ -38,6 +38,8 @@ Hippocampus::Application.routes.draw do
   
   resources :sms, :only => [:create]
 
+  get 'setup_questions', to: 'setup_questions#get_questions', as: 'setup_questions'
+
   resources :device_tokens, :only => [:create]
 
   resources :users, :except => [:index, :new, :create, :destroy]

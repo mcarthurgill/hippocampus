@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150416194629) do
+ActiveRecord::Schema.define(:version => 20150417152851) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -235,6 +235,13 @@ ActiveRecord::Schema.define(:version => 20150416194629) do
   add_index "rpush_notifications", ["app_id", "delivered", "failed", "deliver_after"], :name => "index_rapns_notifications_multi"
   add_index "rpush_notifications", ["delivered", "failed"], :name => "index_rpush_notifications_multi"
 
+  create_table "setup_questions", :force => true do |t|
+    t.string   "question"
+    t.integer  "percentage"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "sms", :force => true do |t|
     t.string   "ToCountry"
     t.string   "ToState"
@@ -292,14 +299,15 @@ ActiveRecord::Schema.define(:version => 20150416194629) do
 
   create_table "users", :force => true do |t|
     t.string   "phone"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.string   "country_code"
     t.string   "email"
-    t.integer  "number_items",   :default => 0
-    t.integer  "number_buckets", :default => 0
+    t.integer  "number_items",     :default => 0
+    t.integer  "number_buckets",   :default => 0
     t.string   "calling_code"
     t.string   "name"
+    t.integer  "setup_completion", :default => 25
   end
 
   add_index "users", ["id"], :name => "index_users_on_id"
