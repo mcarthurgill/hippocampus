@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
   # -- CALLBACKS
   after_create :should_send_introduction_text
   def should_send_introduction_text
-    Sm.create_blank_if_none(self)
     self.send_introduction_text
   end
 
