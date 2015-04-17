@@ -74,6 +74,7 @@ class User < ActiveRecord::Base
       user.phone = format_phone(phone_number, calling_code)
       user.calling_code = prepare_calling_code!(calling_code)
       user.country_code = country_code
+      user.update_name(nil) #update name from bups
     end
     return user
   end
@@ -86,6 +87,10 @@ class User < ActiveRecord::Base
   end
 
   def update_name n, override=false
+    if n.nil? 
+      bup = BucketUserPair.for_phone_number(self.phone).limit(1).first 
+      n = bup.name if bup
+    end
     if self.set_name(n)
       self.save
       BucketUserPair.delay.update_all_for_user_name(self) if override
