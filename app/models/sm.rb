@@ -71,13 +71,6 @@ class Sm < ActiveRecord::Base
     end
   end
 
-  def self.create_blank_if_none(user)
-    if Sm.where(:From => user.phone).count == 0
-      Sm.create(:From => user.phone)
-    end
-  end
-
-
   # -- HELPERS
 
   def token_text?
