@@ -133,14 +133,12 @@ class Item < ActiveRecord::Base
     i.user = User.find(params[:auth][:uid])
     i.item_type = 'once'
     i.input_method = 'setup'
+    i.status = "outstanding"
     b = Bucket.for_user_and_creation_reason(i.user, params[:setup_question][:question][:parent_id]).first
-    if b && b.belongs_to_user?(i.user)
-      i.status = 'assigned'
-      i.add_to_bucket(b) 
-    else
-      i.status = "outstanding"
-    end
     i.save!
+    if b && b.belongs_to_user?(i.user)
+      i.add_to_bucket(b) 
+    end
     return i
   end
 
