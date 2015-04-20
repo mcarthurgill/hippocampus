@@ -134,7 +134,7 @@ class Item < ActiveRecord::Base
     i.item_type = 'once'
     i.status = 'assigned'
     i.input_method = 'setup'
-    b = Bucket.for_user_and_creation_reason(i.user, params[:setup_question][:question][:id]).first
+    b = Bucket.for_user_and_creation_reason(i.user, params[:setup_question][:question][:parent_id]).first
     i.add_to_bucket(b) if b && b.belongs_to_user?(i.user)
     i.save!
     return i
