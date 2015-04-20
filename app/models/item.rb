@@ -127,7 +127,18 @@ class Item < ActiveRecord::Base
     return nil
   end
 
-
+  def self.create_from_setup_question params
+    i = Item.new
+    i.message = params[:setup_question][:response]
+    i.user = User.find(params[:auth][:uid])
+    i.item_type = 'once'
+    i.status = 'assigned'
+    i.input_method = 'setup'
+    b = Bucket.find(params[:setup_question][:bucket_id])
+    i.add_to_bucket(b) if b && b.belongs_to_user?(i.user)
+    i.save!
+    return i
+  end
 
 
 

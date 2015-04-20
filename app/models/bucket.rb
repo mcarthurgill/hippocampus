@@ -59,9 +59,23 @@ class Bucket < ActiveRecord::Base
     self.bucket_type = self.bucket_type ? self.bucket_type.strip : nil
   end
 
+
+  # -- CREATORS
+
   def self.create_for_addon_and_user(addon, user)  
     attrs_hash = addon.params_to_create_bucket_for_user(user)
     return Bucket.create(attrs_hash)
+  end
+
+  def self.create_from_setup_question params
+    u = User.find(params[:auth][:uid])
+    b = Bucket.new
+    b.first_name = params[:setup_question][:response]
+    b.bucket_type = "Person"
+    b.visibility = "private"
+    b.save
+    b.add_user(u)
+    return b
   end
 
   def update_items_before_destroy
