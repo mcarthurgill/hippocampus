@@ -75,6 +75,7 @@ class Bucket < ActiveRecord::Base
     b.creation_reason = params[:setup_question][:question][:id]
     b.bucket_type = "Person"
     b.visibility = "private"
+    b.user_id = u.id
     b.save
     b.add_user(u)
     return b
