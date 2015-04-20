@@ -17,7 +17,7 @@ class UsersController < ApplicationController
         if @page > 0
           render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :count => 64, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score }
         else
-          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score }
+          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :setup_completion => @user.setup_completion }
         end
       end
       format.js

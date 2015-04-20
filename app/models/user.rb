@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name
+  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name, :setup_completion
   
   extend Formatting
   include Formatting
@@ -26,12 +26,11 @@ class User < ActiveRecord::Base
   # -- CALLBACKS
   after_create :should_send_introduction_text
   def should_send_introduction_text
-    Sm.create_blank_if_none(self)
     self.send_introduction_text
   end
 
   def send_introduction_text
-    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
+    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
 
@@ -74,6 +73,7 @@ class User < ActiveRecord::Base
       user.phone = format_phone(phone_number, calling_code)
       user.calling_code = prepare_calling_code!(calling_code)
       user.country_code = country_code
+      user.update_name(nil) #update name from bups
     end
     return user
   end
@@ -82,12 +82,22 @@ class User < ActiveRecord::Base
     if params[:name] && params[:name].length > 0
       self.update_name(params[:name], true)
     end
+    if params[:setup_completion] && params[:setup_completion].length > 0
+      self.update_setup_completion(params[:setup_completion])
+    end
+    if params[:percentage] && params[:percentage].length > 0
+      self.update_setup_completion(params[:percentage])
+    end
+    self.save
     return true
   end
 
   def update_name n, override=false
+    if n.nil? 
+      bup = BucketUserPair.for_phone_number(self.phone).limit(1).first 
+      n = bup.name if bup
+    end
     if self.set_name(n)
-      self.save
       BucketUserPair.delay.update_all_for_user_name(self) if override
     end
   end
@@ -98,6 +108,10 @@ class User < ActiveRecord::Base
       return true
     end
     return false
+  end
+
+  def update_setup_completion percentage
+    self.setup_completion = percentage
   end
 
   def set_country_and_calling_codes_from_sm sm
@@ -202,7 +216,6 @@ class User < ActiveRecord::Base
   def score
     return self.number_items+self.number_buckets
   end
-
 
 
   # --- ACTIONS

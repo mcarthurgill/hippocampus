@@ -127,7 +127,20 @@ class Item < ActiveRecord::Base
     return nil
   end
 
-
+  def self.create_from_setup_question params
+    i = Item.new
+    i.message = params[:setup_question][:response]
+    i.user = User.find(params[:auth][:uid])
+    i.item_type = 'once'
+    i.input_method = 'setup'
+    i.status = "outstanding"
+    b = Bucket.for_user_and_creation_reason(i.user, params[:setup_question][:question][:parent_id]).first
+    i.save!
+    if b && b.belongs_to_user?(i.user)
+      i.add_to_bucket(b) 
+    end
+    return i
+  end
 
 
 
@@ -153,7 +166,7 @@ class Item < ActiveRecord::Base
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
-    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format, :angle => :exif)
     return data['url']
   end
 

@@ -8,6 +8,7 @@
   after_destroy :update_bucket_visibility
 
   scope :for_bucket_ids_and_phone, ->(bucket_ids, phone) { where(:bucket_id => bucket_ids, :phone_number => phone).includes(:bucket) }
+  scope :for_phone_number, ->(phone) { where(:phone_number => phone) }
 
   # -- CALLBACKS
 

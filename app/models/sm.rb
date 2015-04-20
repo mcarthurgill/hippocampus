@@ -60,7 +60,7 @@ class Sm < ActiveRecord::Base
     elsif msgs.count == 2
       self.send_follow_up_text_with_message("Awesome. Last question, what is your best friend's birthday?")
     elsif msgs.count == 3
-      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world.\n\nDownload the app to see and organize your notes: http://hppcmps.com/\n\nAlso, you can store this number in your phone book and text it any time you don't want to forget something.")
+      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world and will make people feel like they matter.\n\nDownload the app to see and organize your notes: http://hppcmps.com/\n\nAlso, you can store this number in your phone book and text it any time you don't want to forget something.")
     end
   end
 
@@ -70,13 +70,6 @@ class Sm < ActiveRecord::Base
       OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "day_1")
     end
   end
-
-  def self.create_blank_if_none(user)
-    if Sm.where(:From => user.phone).count == 0
-      Sm.create(:From => user.phone)
-    end
-  end
-
 
   # -- HELPERS
 
