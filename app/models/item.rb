@@ -166,7 +166,7 @@ class Item < ActiveRecord::Base
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
-    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format, :angle => :exif)
     return data['url']
   end
 

@@ -85,6 +85,9 @@ class User < ActiveRecord::Base
     if params[:setup_completion] && params[:setup_completion].length > 0
       self.update_setup_completion(params[:setup_completion])
     end
+    if params[:percentage] && params[:percentage].length > 0
+      self.update_setup_completion(params[:percentage])
+    end
     self.save
     return true
   end

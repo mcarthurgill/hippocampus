@@ -11,8 +11,11 @@ class SetupQuestionsController < ApplicationController
   def create_from_question
     resp = SetupQuestion.create_from_question(params)
 
+    u = User.find(params[:auth][:uid])
+    u.update_with_params(params[:setup_question][:question])
+
     respond_to do |format|
-      format.json { render json: { :response => resp } }
+      format.json { render json: { :response => resp, :setup_completion => u.setup_completion } }
     end
   end  
 end
