@@ -7,10 +7,11 @@ class SetupQuestion < ActiveRecord::Base
 
   # -- ACTIONS
   def self.create_from_question params
-    if params[:setup_question] && params[:setup_question][:build_type] == "item"
+    if params[:setup_question] && params[:setup_question][:question] && params[:setup_question][:question][:build_type] == "item"
       return Item.create_from_setup_question(params)
-    elsif params[:setup_question] && params[:setup_question][:build_type] == "bucket"
+    elsif params[:setup_question] && params[:setup_question][:question] && params[:setup_question][:question][:build_type] == "bucket"
       return Bucket.create_from_setup_question(params)
     end
   end
 end
+  

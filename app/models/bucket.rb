@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -24,6 +24,7 @@ class Bucket < ActiveRecord::Base
   scope :recent_first, -> { order("id DESC") }
   scope :excluding_pairs_for_item_id, ->(iid) { where( (BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id).count > 0 ? '"buckets"."id" NOT IN (?)' : ''), BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id)) }
   scope :recent_for_user_id, ->(uid) { where('"buckets"."id" IN (?)', BucketItemPair.where('"bucket_item_pairs"."bucket_id" IN (?)', User.find(uid).buckets.pluck(:id)).order('updated_at DESC').limit(8).pluck(:bucket_id)) }
+  scope :for_user_and_creation_reason, ->(uid, r) { where("id IN (?) AND creation_reason = ?", User.find(uid).buckets.pluck(:id), r) }
 
   scope :other_type, -> { where('bucket_type = ?', 'Other') }
   scope :person_type, -> { where('bucket_type = ?', 'Person') }
@@ -71,6 +72,7 @@ class Bucket < ActiveRecord::Base
     u = User.find(params[:auth][:uid])
     b = Bucket.new
     b.first_name = params[:setup_question][:response]
+    b.creation_reason = params[:setup_question][:question][:id]
     b.bucket_type = "Person"
     b.visibility = "private"
     b.save
