@@ -58,6 +58,8 @@ class Item < ActiveRecord::Base
     self.user.update_items_count
   end
 
+  after_create :check_for_and_set_date
+
   after_save :index_delayed
 
   before_destroy :remove_from_engine
@@ -344,6 +346,20 @@ class Item < ActiveRecord::Base
   end
 
 
+
+
+
+  # -- AUTO-DATE DETECTION
+
+  def check_for_and_set_date
+    
+  end
+
+
+
+
+
+
   # -- REMINDERS
 
   def self.remind_about_events
@@ -358,7 +374,7 @@ class Item < ActiveRecord::Base
     items = Item.notes_for_today.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Reminder:\n" + i.message
+      message = "Reminder (once):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once", i.media_urls)
       end
@@ -369,7 +385,7 @@ class Item < ActiveRecord::Base
     items = Item.daily.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Reminder:\n" + i.message
+      message = "Reminder (daily):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily", i.media_urls)
       end
@@ -380,7 +396,7 @@ class Item < ActiveRecord::Base
     items = Item.get_weekly_items_for_today
     items.each do |i|
       users = i.users_array
-      message = "Reminder:\n" + i.message
+      message = "Reminder (weekly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly", i.media_urls)
       end
@@ -405,7 +421,7 @@ class Item < ActiveRecord::Base
 
     items.each do |i|
       users = i.users_array
-      message = "Reminder:\n" + i.message
+      message = "Reminder (monthly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly", i.media_urls)
       end
@@ -417,7 +433,7 @@ class Item < ActiveRecord::Base
     
     items.each do |i|
       users = i.users_array
-      message = "Reminder:\n" + i.message
+      message = "Reminder (yearly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly", i.media_urls)
       end
