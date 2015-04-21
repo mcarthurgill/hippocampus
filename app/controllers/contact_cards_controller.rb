@@ -16,7 +16,7 @@ class ContactCardsController < ApplicationController
   end
 
   def destroy
-    @contact_card = ContactCard.find(params[:contact_card][:id])
+    @contact_card = ContactCard.find(params[:id])
 
     respond_to do |format|
       if @contact_card.destroy
