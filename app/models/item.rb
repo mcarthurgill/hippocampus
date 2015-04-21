@@ -4,6 +4,7 @@ class Item < ActiveRecord::Base
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
+  serialize :links, Array
 
   # types: once, yearly, monthly, weekly, daily
 
@@ -59,6 +60,8 @@ class Item < ActiveRecord::Base
   end
 
   before_create :check_for_and_set_date
+
+  before_save :extract_links
 
   after_save :index_delayed
 
@@ -344,6 +347,17 @@ class Item < ActiveRecord::Base
   def json_representation(u)
     return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => u)
   end
+
+
+
+
+
+  # -- LINK HANDLING
+
+  def extract_links
+    self.assign_attributes(links: (self.message ? URI.extract(self.message, ['http', 'https']) : []))
+  end
+
 
 
 
