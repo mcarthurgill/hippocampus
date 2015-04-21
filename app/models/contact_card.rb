@@ -5,6 +5,11 @@ class ContactCard < ActiveRecord::Base
 
   after_create :create_item_for_note
 
+
+  def as_json(options={})
+    super(:methods => [:phones, :first_name, :last_name, :name, :record_id, :emails, :note, :birthday, :company])
+  end 
+
   # -- CALLBACKS
 
   def create_item_for_note
