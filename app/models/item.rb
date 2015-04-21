@@ -58,7 +58,7 @@ class Item < ActiveRecord::Base
     self.user.update_items_count
   end
 
-  after_create :check_for_and_set_date
+  before_create :check_for_and_set_date
 
   after_save :index_delayed
 
@@ -352,7 +352,25 @@ class Item < ActiveRecord::Base
   # -- AUTO-DATE DETECTION
 
   def check_for_and_set_date
-    
+    time = self.time_from_message
+    # Time.zone = 'Central Time (US & Canada)'
+    if time # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
+      self.assign_attributes(reminder_date: time.to_date, item_type: (self.guess_yearly_reminder? ? 'yearly' : 'once'))
+    end
+  end
+
+  def time_from_message
+    return nil if !self.message
+    return self.message.parse_for_time
+  end
+
+  def guess_yearly_reminder?
+    return false if !self.message
+    lowercase_str = self.message.downcase
+    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry', 'die'].each do |check_for|
+      return true if lowercase_str.include?(check_for)
+    end
+    return false
   end
 
 

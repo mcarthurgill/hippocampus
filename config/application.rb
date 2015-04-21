@@ -62,3 +62,5 @@ module Hippocampus
     config.time_zone = "America/Chicago"
   end
 end
+
+require 'ext/string'
