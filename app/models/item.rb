@@ -164,7 +164,8 @@ class Item < ActiveRecord::Base
 
   def upload_main_asset(file)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
-    url = self.upload_image_to_cloudinary(file, public_id, file.content_type)
+    format = file.content_type == "image/jpeg" ? "jpg" : "mp4"
+    url = self.upload_image_to_cloudinary(file, public_id, format)
     if url && url.length > 0
       return self.add_media_url(url)
     end
