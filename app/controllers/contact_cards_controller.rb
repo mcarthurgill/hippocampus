@@ -14,4 +14,16 @@ class ContactCardsController < ApplicationController
       end
     end
   end
+
+  def destroy
+    @contact_card = ContactCard.find(params[:id])
+
+    respond_to do |format|
+      if @contact_card.destroy
+        format.json { head :no_content }
+      else
+        format.json { render json: @contact_card.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 end
