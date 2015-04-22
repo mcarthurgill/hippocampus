@@ -14,8 +14,7 @@ class String
         time = Chronic.parse(self[0...length_check])
       end
       return time
-    rescue  
-      return nil
+    rescue
     end 
   end
 
