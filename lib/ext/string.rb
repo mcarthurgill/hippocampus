@@ -9,7 +9,7 @@ class String
       time = Chronic.parse(self[(-1*length_check+2)..-1])
     end
     if !time && self.length > length_check
-      time = Chronic.parse(self[0...(length_check-2)])
+      time = Chronic.parse(self[0...length_check])
     end
     return time
   end
