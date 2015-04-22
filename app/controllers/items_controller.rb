@@ -37,7 +37,6 @@ class ItemsController < ApplicationController
     if !@item
 
       @item = Item.new(params[:item])
-      
       if params[:item].has_key?(:file) && params[:item][:file]
         @item.upload_main_asset(params[:item][:file])
       elsif params.has_key?(:file) && params[:file]
