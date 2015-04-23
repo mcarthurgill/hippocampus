@@ -90,6 +90,7 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     net-http-persistent (2.9.4)
+    nickel (0.1.6)
     pg (0.17.1)
     polyglot (0.3.5)
     rack (1.4.5)
@@ -170,6 +171,7 @@ DEPENDENCIES
   jquery-rails
   less-rails
   mandrill-api
+  nickel
   pg
   rails (= 3.2.13)
   rails_autolink

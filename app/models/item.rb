@@ -367,22 +367,31 @@ class Item < ActiveRecord::Base
   # -- AUTO-DATE DETECTION
 
   def check_for_and_set_date
-    time = self.time_from_message
-    # Time.zone = 'Central Time (US & Canada)'
-    if time # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
-      self.assign_attributes(reminder_date: time.to_date, item_type: (self.guess_yearly_reminder? ? 'yearly' : 'once'))
-    end
+    return if !self.message || self.message.length == 0
+    begin  
+      n = Nickel.parse self.message
+      # Time.zone = 'Central Time (US & Canada)'
+      if n.occurrences.count > 0 # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
+        self.assign_attributes(reminder_date: n.occurrences.first.to_date, item_type: self.reminder_frequency_with_nickel_keyword(n.occurrences.first.type.to_s))
+      end      
+    rescue
+    end 
   end
 
-  def time_from_message
-    return nil if !self.message
-    return self.message.parse_for_time
+  def reminder_frequency_with_nickel_keyword k
+    return "yearly" if self.guess_yearly_reminder?
+    return "once" if k == 'single'
+    return "monthly" if k == 'daymonthly'
+    return "monthly" if k == 'datemonthly'
+    return "daily" if k == 'daily'
+    return "weekly" if k == 'weekly'
+    return "once"
   end
 
   def guess_yearly_reminder?
     return false if !self.message
     lowercase_str = self.message.downcase
-    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry', 'die'].each do |check_for|
+    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry'].each do |check_for|
       return true if lowercase_str.include?(check_for)
     end
     return false
