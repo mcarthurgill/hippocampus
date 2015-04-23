@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def send_introduction_text
-    message = "Hippocampus.\nThoughts worth remembering.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
+    message = "Hippocampus.\nTo be interesting, be interested.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter.\n\nTo get you started, here are three questions. 1) Who was the last person you met and what did you learn about them?\n(reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
 
@@ -129,6 +129,7 @@ class User < ActiveRecord::Base
     if self.items.count == 0
       i = Item.new
       i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
+      # i.message = 'This is an example thought. Assign it to a collection! (thoughts belong to collections)'
       i.user_id = self.id
       i.item_type = 'once'
       i.status = 'outstanding'
