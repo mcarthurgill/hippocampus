@@ -191,9 +191,9 @@ class Bucket < ActiveRecord::Base
   def update_visibility
     cur_vis = "#{self.visibility}"
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")
+    self.save!
 
     if cur_vis != self.visibility
-      self.save!
       self.index_delayed
       self.delay.update_items_indexes
     end
