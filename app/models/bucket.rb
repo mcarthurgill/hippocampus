@@ -158,7 +158,7 @@ class Bucket < ActiveRecord::Base
 
   def mark_collaborators_as_unseen bucket_item_pair
     self.bucket_user_pairs.where('phone_number != ? AND (last_viewed IS NULL OR last_viewed < ?)', bucket_item_pair.item.user.phone, bucket_item_pair.created_at).each do |bucket_user_pair|
-      bucket_user_pair.mark_as_new_unseen
+      bucket_user_pair.mark_as_new_unseen if bucket_user_pair.user.id != bucket_item_pair.item.user.id
     end
   end
 
