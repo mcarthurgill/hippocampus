@@ -9,6 +9,9 @@ class Item < ActiveRecord::Base
   # types: once, yearly, monthly, weekly, daily
 
 
+
+
+
   # -- RELATIONSHIPS
 
   belongs_to :user
@@ -18,6 +21,9 @@ class Item < ActiveRecord::Base
 
   has_many :sms
   has_many :emails
+
+
+
 
 
   # -- SCOPES
@@ -38,6 +44,10 @@ class Item < ActiveRecord::Base
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
+
+
+
+
   # -- CALLBACKS
 
   before_validation :strip_whitespace
@@ -56,7 +66,7 @@ class Item < ActiveRecord::Base
 
   after_create :update_user_items_count
   def update_user_items_count
-    self.user.update_items_count
+    self.user.delay.update_items_count
   end
 
   before_create :check_for_and_set_date
@@ -146,6 +156,8 @@ class Item < ActiveRecord::Base
     end
     return i
   end
+
+
 
 
 

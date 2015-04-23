@@ -144,6 +144,21 @@ class Bucket < ActiveRecord::Base
 
   # -- ACTIONS
 
+  def viewed_by_user_id uid
+    u = uid ? User.find_by_id(uid) : nil
+    if u
+      u.bucket_user_pairs.where('bucket_id = ?', self.id).each do |bucket_user_pair|
+        bucket_user_pair.touch_as_viewed
+      end
+    end
+  end
+
+  def mark_collaborators_as_unseen bucket_item_pair
+    self.bucket_user_pairs.where('phone_number != ? AND (last_viewed IS NULL OR last_viewed < ?)', bucket_item_pair.item.user.phone, bucket_item_pair.created_at).each do |bucket_user_pair|
+      bucket_user_pair.mark_as_new_unseen
+    end
+  end
+
   def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code, invited_by_user)
     contacts_array.each do |contact|
       if contact[:phones] && contact[:phones].count > 0

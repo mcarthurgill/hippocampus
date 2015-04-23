@@ -11,6 +11,8 @@ class BucketsController < ApplicationController
     @active = 'stacks'
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
+    @bucket.delay.viewed_by_user_id(params[:auth][:uid]) if params.has_key?(:auth)
+
     respond_to do |format|
         format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
         format.json { render json: {:items => @bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse, :page => @page } }
