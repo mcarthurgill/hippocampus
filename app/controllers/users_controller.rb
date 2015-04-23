@@ -54,6 +54,8 @@ class UsersController < ApplicationController
     end
   end
 
+  # .select("rights.*,tags.TagName,tags.TagColor")
+
   # # POST /users
   # # POST /users.json
   # def create

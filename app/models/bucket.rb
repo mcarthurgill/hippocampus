@@ -142,6 +142,9 @@ class Bucket < ActiveRecord::Base
   end
 
 
+
+
+
   # -- ACTIONS
 
   def viewed_by_user_id uid
@@ -186,11 +189,14 @@ class Bucket < ActiveRecord::Base
   end
 
   def update_visibility
+    cur_vis = "#{self.visibility}"
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")
-    self.save!
 
-    self.index_delayed
-    self.delay.update_items_indexes
+    if cur_vis != self.visibility
+      self.save!
+      self.index_delayed
+      self.delay.update_items_indexes
+    end
   end
 
   def update_items_indexes
