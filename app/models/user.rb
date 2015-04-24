@@ -128,8 +128,8 @@ class User < ActiveRecord::Base
   def check_for_item
     if self.items.count == 0
       i = Item.new
-      i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
-      # i.message = 'This is an example thought. Assign it to a collection! (thoughts belong to collections)'
+      # i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
+      i.message = 'This is an example thought. Assign it to a collection! (thoughts belong to collections)'
       i.user_id = self.id
       i.item_type = 'once'
       i.status = 'outstanding'
