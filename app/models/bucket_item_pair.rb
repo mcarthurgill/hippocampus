@@ -32,12 +32,20 @@ class BucketItemPair < ActiveRecord::Base
 
   def handle_bucket_user_pairs
     self.bucket.delay.mark_collaborators_as_unseen(self)
+    self.delay.send_push_notifications
   end
 
   def update_item_status
     i = self.item
     if i.buckets.count == 1 && !i.deleted? #if after this BIP is destroyed it will have no buckets
       i.update_status("deleted")
+    end
+  end
+
+  def send_push_notifications
+    message = "#{self.item.user.name} in #{self.bucket.first_name}: #{self.item.message}"
+    self.bucket.users.each do |u|
+      u.send_push_notification_with_message_and_item_and_bucket(message, self.item, self.bucket) if u.id != self.item.user_id
     end
   end
 
