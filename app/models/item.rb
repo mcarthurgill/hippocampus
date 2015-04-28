@@ -178,7 +178,7 @@ class Item < ActiveRecord::Base
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
     url = ""
     
-    if file.is_a?(String) && file.content_type
+    if !file.is_a?(String) && file.content_type
       self.media_content_types << file.content_type
     end
 
