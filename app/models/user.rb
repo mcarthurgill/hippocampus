@@ -157,7 +157,7 @@ class User < ActiveRecord::Base
   end
 
   def sorted_reminders(limit=100000, page=0)
-    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Time.zone.now.to_date }.sort_by(&:next_reminder_date)
+    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < (Time.zone.now - 6.hours).to_date }.sort_by(&:next_reminder_date)
   end
 
   def no_name?

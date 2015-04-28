@@ -5,7 +5,7 @@ class OutgoingMessage < ActiveRecord::Base
 
   # -- SCOPES 
 
-  scope :sent_today, ->{ where("created_at > ?", Time.zone.now.to_date) }
+  scope :sent_today, ->{ where("created_at > ?", (Time.zone.now - 6.hours).to_date) }
   scope :for_phone_with_reason, ->(phone, r) { where("to_number = ? AND reason = ?", phone, r) }
 
 
@@ -75,7 +75,7 @@ class OutgoingMessage < ActiveRecord::Base
   # -- TUTORIAL
 
   def self.completed_with_reason r
-    OutgoingMessage.where("reason = ? AND created_at < ?", r, Time.zone.now.to_date).pluck(:to_number).uniq #exclude users created today
+    OutgoingMessage.where("reason = ? AND created_at < ?", r, (Time.zone.now - 6.hours).to_date).pluck(:to_number).uniq #exclude users created today
   end
   
 end
