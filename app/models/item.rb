@@ -31,7 +31,7 @@ class Item < ActiveRecord::Base
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :not_deleted, -> { where("status != ?", "deleted") }
-  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Time.zone.now.to_date, "once").includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", (Time.zone.now - 6.hours).to_date, "once").includes(:user) } 
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
@@ -87,8 +87,8 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
-    i.upload_media(sms.MediaUrls)
     i.media_content_types = sms.MediaContentTypes
+    i.upload_media(sms.MediaUrls)
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
@@ -174,20 +174,32 @@ class Item < ActiveRecord::Base
 
   # -- CLOUDINARY
 
-  def upload_main_asset(file)
+  def upload_main_asset(file, num_uploaded=0)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
     url = ""
-    # if file.content_type == "image/jpeg"
+    
+    if !file.is_a?(String) && file.content_type
+      self.media_content_types << file.content_type
+    end
+
+    if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
-      p "*"*50
-      p file
-      p "*"*50      
-    # else
-      # url = self.upload_video_to_cloudinary(file, public_id)
-    # end
+    elsif self.media_is_video?(num_uploaded)
+      url = self.upload_video_to_cloudinary(file, public_id)
+    end
     if url && url.length > 0
       return self.add_media_url(url)
     end
+  end
+
+  def media_is_image? index
+    image_content_types = ["image/jpeg", "image/png", "image/jpg"]
+    return self.media_content_types[index] && image_content_types.include?(self.media_content_types[index])
+  end
+
+  def media_is_video? index
+    video_content_types = ["video/3gpp", "video/mov", "video/quicktime"]
+    return self.media_content_types[index] && video_content_types.include?(self.media_content_types[index])
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
@@ -210,8 +222,8 @@ class Item < ActiveRecord::Base
 
   def upload_media arr
     if arr && arr.count > 0
-      arr.each do |url|
-        self.upload_main_asset(url)
+      arr.each_with_index do |url, index|
+        self.upload_main_asset(url, index)
       end
     end
   end
@@ -470,7 +482,7 @@ class Item < ActiveRecord::Base
 
   def self.get_weekly_items_for_today
     epoch = Date.parse("1/1/1970")
-    days_mod = (Time.zone.now.to_date - epoch).to_i%7
+    days_mod = ((Time.zone.now - 6.hours).to_date - epoch).to_i%7
     items = []
 
     Item.weekly.not_deleted.each do |i|
@@ -482,7 +494,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_monthly_items
-    items = Item.where('extract(day from reminder_date) = ?', Time.zone.now.to_date.day).monthly.not_deleted
+    items = Item.where('extract(day from reminder_date) = ?', (Time.zone.now - 6.hours).to_date.day).monthly.not_deleted
 
     items.each do |i|
       users = i.users_array
@@ -494,7 +506,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_yearly_items
-    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Time.zone.now.to_date.month, Time.zone.now.to_date.day).yearly.not_deleted
+    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', (Time.zone.now - 6.hours).to_date.month, (Time.zone.now - 6.hours).to_date.day).yearly.not_deleted
     
     items.each do |i|
       users = i.users_array
@@ -507,7 +519,7 @@ class Item < ActiveRecord::Base
 
 
   def next_reminder_date
-    if self.reminder_date.nil? || (self.reminder_date < Time.zone.now.to_date && self.once?)
+    if self.reminder_date.nil? || (self.reminder_date < (Time.zone.now - 6.hours).to_date && self.once?)
       return nil
     else
       d = self.reminder_date 
@@ -515,17 +527,17 @@ class Item < ActiveRecord::Base
       when "once"
         #d is already set to reminder_date
       when "daily"
-        d =  Time.zone.now.to_date
+        d =  (Time.zone.now - 6.hours).to_date
       when "weekly"
-        while d < Time.zone.now.to_date
+        while d < (Time.zone.now - 6.hours).to_date
           d = d + 7.days
         end
       when "monthly"
-        while d < Time.zone.now.to_date
+        while d < (Time.zone.now - 6.hours).to_date
           d = d + 1.month
         end
       when "yearly"
-        while d < Time.zone.now.to_date
+        while d < (Time.zone.now - 6.hours).to_date
           d = d + 1.year
         end
       end
