@@ -87,8 +87,8 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
-    i.upload_media(sms.MediaUrls)
     i.media_content_types = sms.MediaContentTypes
+    i.upload_media(sms.MediaUrls)
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
@@ -174,20 +174,27 @@ class Item < ActiveRecord::Base
 
   # -- CLOUDINARY
 
-  def upload_main_asset(file)
+  def upload_main_asset(file, num_uploaded=0)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
     url = ""
-    # if file.content_type == "image/jpeg"
+    if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
-      p "*"*50
-      p file
-      p "*"*50      
-    # else
-      # url = self.upload_video_to_cloudinary(file, public_id)
-    # end
+    elsif self.media_is_video?(num_uploaded)
+      url = self.upload_video_to_cloudinary(file, public_id)
+    end
     if url && url.length > 0
       return self.add_media_url(url)
     end
+  end
+
+  def media_is_image? index
+    image_content_types = ["image/jpeg", "image/png", "image/jpg"]
+    return self.media_content_types[index] && image_content_types.include?(self.media_content_types[index])
+  end
+
+  def media_is_video? index
+    video_content_types = ["video/3gpp", "video/mov", "video/quicktime"]
+    return self.media_content_types[index] && video_content_types.include?(self.media_content_types[index])
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
@@ -210,8 +217,8 @@ class Item < ActiveRecord::Base
 
   def upload_media arr
     if arr && arr.count > 0
-      arr.each do |url|
-        self.upload_main_asset(url)
+      arr.each_with_index do |url, index|
+        self.upload_main_asset(url, index)
       end
     end
   end
