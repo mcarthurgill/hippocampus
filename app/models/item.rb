@@ -176,8 +176,12 @@ class Item < ActiveRecord::Base
 
   def upload_main_asset(file)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
-    format = file.content_type == "image/jpeg" ? "jpg" : "mp4"
-    url = self.upload_image_to_cloudinary(file, public_id, format)
+    url = ""
+    if file.content_type == "image/jpeg" 
+      url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
+    else
+      url = self.upload_video_to_cloudinary(file, public_id)
+    end
     if url && url.length > 0
       return self.add_media_url(url)
     end
@@ -185,6 +189,11 @@ class Item < ActiveRecord::Base
 
   def upload_image_to_cloudinary(file, public_id, format)
     data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format, :angle => :exif)
+    return data['url']
+  end
+
+  def upload_video_to_cloudinary(file, public_id)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => 'raw')
     return data['url']
   end
 
