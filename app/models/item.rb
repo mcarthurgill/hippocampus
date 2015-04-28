@@ -388,10 +388,9 @@ class Item < ActiveRecord::Base
   # -- AUTO-DATE DETECTION
 
   def check_for_and_set_date
-    return if !self.message || self.message.length == 0
+    return if !self.message || self.message.length == 0 || self.message.length > 110
     begin  
-      n = Nickel.parse self.message
-      # Time.zone = 'Central Time (US & Canada)'
+      n = Nickel.parse self.message, DateTime.now.in_time_zone('Central Time (US & Canada)')
       if n.occurrences.count > 0 && n.occurrences.first.type.to_s != 'daily' # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
         self.assign_attributes(reminder_date: n.occurrences.first.start_date.to_date, item_type: self.reminder_frequency_with_nickel_keyword(n.occurrences.first.type.to_s))
       end      
