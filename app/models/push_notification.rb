@@ -21,6 +21,7 @@ class PushNotification < ActiveRecord::Base
     elsif self.device_token.android_device_token && self.device_token.android_device_token.length > 0
       send_android_notification
     end
+    self.save!
   end
 
 
@@ -38,7 +39,7 @@ class PushNotification < ActiveRecord::Base
       n.badge = self.badge_count
     end
     n.content_available = 1
-    n.attributes_for_device = { :item_id => self.item_id, :bucket_id => self.bucket_id }
+    n.data = { :item_id => self.item_id, :bucket_id => self.bucket_id }
     n.save!
   end
 
