@@ -177,6 +177,11 @@ class Item < ActiveRecord::Base
   def upload_main_asset(file, num_uploaded=0)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
     url = ""
+    
+    if file.class != "String" && file.content_type
+      self.media_content_types << file.content_type
+    end
+
     if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)
