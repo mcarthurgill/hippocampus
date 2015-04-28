@@ -37,8 +37,8 @@ class PushNotification < ActiveRecord::Base
     if self.badge_count
       n.badge = self.badge_count
     end
-    # n.content_available = 1
-    # n.attributes_for_device = { :post_id => self.post_id, :user_id => self.device_token.user_id, :bid => self.book_identifier }
+    n.content_available = 1
+    n.attributes_for_device = { :item_id => self.item_id, :bucket_id => self.bucket_id }
     n.save!
   end
 
