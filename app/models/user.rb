@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   include Formatting
   
 
+
+
   # -- RELATIONSHIPS
 
   has_many :bucket_user_pairs, :foreign_key => "phone_number", :primary_key => :phone
@@ -16,12 +18,14 @@ class User < ActiveRecord::Base
 
 
 
+
   # -- VALIDATORS
 
   validates_presence_of :phone
   validates_uniqueness_of :phone, case_sensitive: false
   
   
+
 
   # -- CALLBACKS
   after_create :should_send_introduction_text
@@ -33,6 +37,7 @@ class User < ActiveRecord::Base
     message = "Hippocampus.\nTo be interesting, be interested.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter.\n\nTo get you started, here are three questions. 1) Who was the last person you met and what did you learn about them?\n(reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
+
 
 
 
@@ -58,6 +63,8 @@ class User < ActiveRecord::Base
     return return_buckets.flatten
   end
   
+
+
 
 
   # -- SETTERS
@@ -121,6 +128,9 @@ class User < ActiveRecord::Base
       self.update_attributes(calling_code: country_code_object.calling_code, country_code: country_code_text)
     end
   end
+
+
+
 
 
   # -- HELPERS
@@ -219,6 +229,9 @@ class User < ActiveRecord::Base
   end
 
 
+
+
+
   # --- ACTIONS
 
   def update_items_count
@@ -228,6 +241,29 @@ class User < ActiveRecord::Base
   def update_buckets_count
     self.update_attribute(:number_buckets, self.buckets.count)
   end
+
+
+
+
+  # --- PUSH NOTIFICATIONS
+
+  def unread_badge_count
+    return self.items.outstanding.count + self.bucket_user_pairs.has_unseen_items.count
+  end
+
+  def send_push_notification_with_message msg
+    self.send_push_notification_with_message_and_item_and_bucket(msg, nil, nil)
+  end
+
+  def send_push_notification_with_message_and_item_and_bucket msg, i, b
+    self.device_tokens.each do |device_token|
+      pn = PushNotification.new
+      pn.assign_attributes(device_token_id: device_token.id, message: msg, badge_count: self.unread_badge_count, item_id: (i ? i.id : nil), bucket_id: (b ? b.id : nil))
+      pn.send_notification
+    end
+  end
+
+
 
   
 
