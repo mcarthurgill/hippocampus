@@ -31,7 +31,7 @@ class Item < ActiveRecord::Base
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :not_deleted, -> { where("status != ?", "deleted") }
-  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", ((Time.zone.now - 6.hours).to_date, "once").includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", (Time.zone.now - 6.hours).to_date, "once").includes(:user) } 
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
