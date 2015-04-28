@@ -70,6 +70,8 @@ task :seven_day_tutorial => :environment do
   reasons.each_with_index do |r, i| 
     exclude_phones << OutgoingMessage.completed_with_reason(r)
     exclude_phones = exclude_phones.flatten.uniq
+    p exclude_phones
+    p "*"*50
 
     completed_previous_day = OutgoingMessage.completed_with_reason(reasons[i+1]) unless i+1 == reasons.count
     phones_to_text = (completed_previous_day ? completed_previous_day : []) - exclude_phones
