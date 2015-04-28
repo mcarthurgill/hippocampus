@@ -89,10 +89,10 @@
 
   def alert_if_collaborative invited_by_user
     if invited_by_user
-      message = "#{invited_by_user.name} invited you to collaborate on their #{self.bucket.first_name} thread in Hippocampus. Go to http://hppcmps.com/ and we'll show you how Hippocampus works so you can start remembering the things that matter."
+      message = "#{invited_by_user.name} invited you to collaborate on their #{self.bucket.first_name} collection in Hippocampus. Go to http://hppcmps.com/ and we'll show you how Hippocampus works so you can start remembering the things that matter."
       reason = "invite"
       if self.user
-        message = "#{invited_by_user.name} invited you to collaborate on their #{self.bucket.first_name} thread in Hippocampus."  
+        message = "#{invited_by_user.name} invited you to collaborate on their #{self.bucket.first_name} collection in Hippocampus."  
         reason = "add_collaborator"
       end
       OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone_number, message, reason)
