@@ -379,7 +379,7 @@ class Item < ActiveRecord::Base
   # -- AUTO-DATE DETECTION
 
   def check_for_and_set_date
-    return if !self.message || self.message.length == 0
+    return if !self.message || self.message.length == 0 || self.message.length > 100
     begin  
       n = Nickel.parse self.message
       # Time.zone = 'Central Time (US & Canada)'
