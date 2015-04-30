@@ -182,6 +182,14 @@ class Item < ActiveRecord::Base
       self.media_content_types << file.content_type
     end
 
+    p "*"*50  
+    p file
+    p "*"*50
+    file.each do |f|
+      p f
+    end
+    p "*"*50
+
     if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)

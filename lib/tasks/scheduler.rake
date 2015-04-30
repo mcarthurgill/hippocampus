@@ -61,7 +61,7 @@ task :seven_day_tutorial => :environment do
     "Day 7 of 7: What is your favorite barista's name at your favorite coffee shop?", 
     "Day 6 of 7: What is the best gift you've received lately? Who else would like that gift?", 
     "Day 5 of 7: What is your favorite coworker's Chipotle order?", 
-    "Day 4 of 7: What is your barber's name?", 
+    "Day 4 of 7: Have you met anyone new in the last couple days?", 
     "Day 3 of 7: Do you know anyone going on a trip? If so, when are they leaving?", 
     "Yesterday you completed the first day of our seven day Hippocampus tutorial. Each day we will ask you a question to help you build the habits to make people feel like they matter.\n\nSo, what's the name of your favorite coworker's spouse? Do they have kids? How did they meet?"
   ]
