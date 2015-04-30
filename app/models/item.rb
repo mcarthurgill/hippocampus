@@ -187,7 +187,7 @@ class Item < ActiveRecord::Base
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)
       url = self.upload_video_to_cloudinary(file, public_id)
-      screenshot_url = self.upload_image_to_cloudinary(screenshot, public_id, "jpg")
+      screenshot_url = self.upload_image_to_cloudinary(screenshot, public_id, "jpg") if screenshot
     end
     if url && url.length > 0
       self.add_media_url(url)
