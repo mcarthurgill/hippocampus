@@ -180,7 +180,9 @@ class Item < ActiveRecord::Base
     
     if !file.is_a?(String) && file.content_type
       self.media_content_types << file.content_type
-      self.media_content_types << screenshot.content_type if screenshot
+      if !screenshot.is_a(String) && screenshot.content_type
+        self.media_content_types << screenshot.content_type 
+      end
     end
 
     if self.media_is_image?(num_uploaded)
@@ -227,7 +229,7 @@ class Item < ActiveRecord::Base
   def upload_media arr
     if arr && arr.count > 0
       arr.each_with_index do |url, index|
-        self.upload_main_asset(url, index)
+        self.upload_main_asset(url, nil, index)
       end
     end
   end
