@@ -180,13 +180,8 @@ class Item < ActiveRecord::Base
     
     if !file.is_a?(String) && file.content_type
       self.media_content_types << file.content_type
+      self.media_content_types << screenshot.content_type if screenshot
     end
-
-    p "*"*50  
-    p file
-    p "*"*50
-    p screenshot
-    p "*"*50
 
     if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
