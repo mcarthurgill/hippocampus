@@ -212,7 +212,7 @@ class Item < ActiveRecord::Base
   end
 
   def upload_video_to_cloudinary(file, public_id)
-    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => 'raw')
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => :auto)
     return data['url']
   end
 
