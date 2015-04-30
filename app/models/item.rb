@@ -185,10 +185,6 @@ class Item < ActiveRecord::Base
     p "*"*50  
     p file
     p "*"*50
-    file.each do |f|
-      p f
-    end
-    p "*"*50
 
     if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
