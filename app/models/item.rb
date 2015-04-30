@@ -180,9 +180,7 @@ class Item < ActiveRecord::Base
     
     if !file.is_a?(String) && file.content_type
       self.media_content_types << file.content_type
-      if !screenshot.is_a(String) && screenshot.content_type
-        self.media_content_types << screenshot.content_type 
-      end
+      self.media_content_types << screenshot.content_type if screenshot
     end
 
     if self.media_is_image?(num_uploaded)
