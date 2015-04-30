@@ -40,7 +40,7 @@ class ItemsController < ApplicationController
       if params[:item].has_key?(:file) && params[:item][:file]
         @item.upload_main_asset(params[:item][:file])
       elsif params.has_key?(:file) && params[:file]
-        @item.upload_main_asset(params[:file])
+        @item.upload_main_asset(params[:file], params[:screenshot])
       end
 
     end

@@ -174,7 +174,7 @@ class Item < ActiveRecord::Base
 
   # -- CLOUDINARY
 
-  def upload_main_asset(file, num_uploaded=0)
+  def upload_main_asset(file, screenshot=nil, num_uploaded=0)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
     url = ""
     
@@ -185,14 +185,19 @@ class Item < ActiveRecord::Base
     p "*"*50  
     p file
     p "*"*50
+    p screenshot
+    p "*"*50
 
     if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)
       url = self.upload_video_to_cloudinary(file, public_id)
+      screenshot_url = self.upload_image_to_cloudinary(screenshot, public_id, "jpg")
     end
     if url && url.length > 0
-      return self.add_media_url(url)
+      self.add_media_url(url)
+      self.add_media_url(screenshot_url) if screenshot_url
+      return self.media_urls
     end
   end
 
