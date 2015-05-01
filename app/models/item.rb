@@ -92,7 +92,11 @@ class Item < ActiveRecord::Base
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
-    i.save!
+    if i.media_is_video?(0)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, "Sorry you must upload videos through the app! Here is a link: https://appsto.re/us/_BWZ5.i", "texted_video_error")
+    else
+      i.save!
+    end
     return i
   end
 
