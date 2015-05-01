@@ -10,15 +10,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%= user_path(current_user) %>">Notes</a>
+      <a class="navbar-brand" href="<%= user_path(current_user) %>">Thoughts</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="<%= new_item_path %>">+ New Note</a></li>
-        <li <%= defined?(@active) && @active == 'notes' ? 'class="active"'.html_safe : nil %>><a href="<%= user_path(current_user) %>">Notes</a></li>
-        <li <%= defined?(@active) && @active == 'stacks' ? 'class="active"'.html_safe : nil %>><%= link_to 'Stacks', user_buckets_path(current_user) %></li>
+        <li><a href="<%= new_item_path %>">+ New Thought</a></li>
+        <li <%= defined?(@active) && @active == 'notes' ? 'class="active"'.html_safe : nil %>><a href="<%= user_path(current_user) %>">Thoughts</a></li>
+        <li <%= defined?(@active) && @active == 'stacks' ? 'class="active"'.html_safe : nil %>><%= link_to 'Collections', user_buckets_path(current_user) %></li>
         <li <%= defined?(@active) && @active == 'search' ? 'class="active"'.html_safe : nil %>><%= link_to 'Search', search_path %></li>
 
         <li class="dropdown">
