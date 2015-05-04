@@ -58,7 +58,7 @@ task :seven_day_tutorial => :environment do
   p "texting users going through the tutorial"
 
   messages = [
-    "Day 7 of 7: What is your favorite barista's name at your favorite coffee shop?", 
+    "Day 7 of 7: Who is your next meeting with and what do you know about that person?", 
     "Day 6 of 7: What is the best gift you've received lately? Who else would like that gift?", 
     "Day 5 of 7: What is your favorite coworker's Chipotle order?", 
     "Day 4 of 7: Have you met anyone new in the last couple days?", 
