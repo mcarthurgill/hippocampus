@@ -242,7 +242,7 @@ class Item < ActiveRecord::Base
     extension_index = url.index("." + url.split(".").last)
     rest_of_url = url[(beginning_index + string_to_locate.length)...extension_index]
 
-    thumbnail_url = "/l_playButton/" + rest_of_url + ".png"
+    thumbnail_url = "l_playButton/" + rest_of_url + ".png"
     return thumbnail_url.insert(0, url[0...beginning_index + string_to_locate.length])
   end
 
