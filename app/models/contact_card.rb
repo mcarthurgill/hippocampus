@@ -15,7 +15,7 @@ class ContactCard < ActiveRecord::Base
   # -- CALLBACKS
 
   def create_item_for_note
-    Item.create_from_contact_card(self) if self.note
+    Item.create_from_contact_card(self) if self.note && self.note.length > 0
   end
 
   # -- GETTERS
