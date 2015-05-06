@@ -4,6 +4,10 @@ class ContactCardsController < ApplicationController
   def create
     @contact_card = ContactCard.find_or_initialize_by_bucket_id_and_contact_info(params[:contact_card][:bucket_id], params[:contact_card][:contact_info])
 
+    if params.has_key?(:file) && params[:file]
+      @contact_card.upload_main_asset(params[:file])
+    end
+
     respond_to do |format|
       if @contact_card.save
         format.html { redirect_to @contact_card, notice: 'Contact card was successfully created.' }
