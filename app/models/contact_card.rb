@@ -63,7 +63,7 @@ class ContactCard < ActiveRecord::Base
     url = ""
     
     if !file.is_a?(String) && file.content_type
-      self.media_content_types << file.content_type
+      self.media_content_types << file.content_type.strip
     end
 
     url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
@@ -76,7 +76,7 @@ class ContactCard < ActiveRecord::Base
 
   def upload_image_to_cloudinary(file, public_id, format)
     data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format, :angle => :exif)
-    return data['url']
+    return data['url'].strip
   end
 
   def add_media_url url
