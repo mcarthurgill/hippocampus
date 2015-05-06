@@ -59,7 +59,7 @@ class ContactCard < ActiveRecord::Base
   # -- CLOUDINARY
 
   def upload_main_asset(file, num_uploaded=0)
-    public_id = "contact_#{Time.now.to_f}_#{self.user_id}"
+    public_id = "contact_#{Time.now.to_f}_#{self.bucket_id}"
     url = ""
     
     if !file.is_a?(String) && file.content_type
