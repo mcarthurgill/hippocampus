@@ -190,7 +190,7 @@ class Item < ActiveRecord::Base
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)
       url = self.upload_video_to_cloudinary(file, public_id)
-      screenshot_url = self.video_thumbnail_url(url, public_id)
+      screenshot_url = self.video_thumbnail_url(url)
     end
     if url && url.length > 0
       self.add_media_url(url)
@@ -236,10 +236,14 @@ class Item < ActiveRecord::Base
   end
 
 
-  def video_thumbnail_url url, public_id
-    index = url.index(public_id)
-    thumbnail_url = "/playButton/" + public_id + ".png"
-    return thumbnail_url.insert(0, url[0...index])
+  def video_thumbnail_url url
+    string_to_locate = "/upload/"
+    beginning_index = url.index(string_to_locate)
+    extension_index = url.index("." + url.split(".").last)
+    rest_of_url = url[(beginning_index + string_to_locate.length)...extension_index]
+
+    thumbnail_url = "/l_playButton/" + rest_of_url + ".png"
+    return thumbnail_url.insert(0, url[0...beginning_index])
   end
 
 
