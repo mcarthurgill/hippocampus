@@ -178,20 +178,19 @@ class Item < ActiveRecord::Base
 
   # -- CLOUDINARY
 
-  def upload_main_asset(file, screenshot=nil, num_uploaded=0)
+  def upload_main_asset(file, num_uploaded=0)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
     url = ""
     
     if !file.is_a?(String) && file.content_type
       self.media_content_types << file.content_type
-      self.media_content_types << screenshot.content_type if screenshot
     end
 
     if self.media_is_image?(num_uploaded)
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)
       url = self.upload_video_to_cloudinary(file, public_id)
-      screenshot_url = self.upload_image_to_cloudinary(screenshot, public_id, "jpg") if screenshot
+      screenshot_url = self.video_thumbnail_url(url, public_id)
     end
     if url && url.length > 0
       self.add_media_url(url)
@@ -216,7 +215,7 @@ class Item < ActiveRecord::Base
   end
 
   def upload_video_to_cloudinary(file, public_id)
-    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => :auto)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => :video)
     return data['url']
   end
 
@@ -231,13 +230,17 @@ class Item < ActiveRecord::Base
   def upload_media arr
     if arr && arr.count > 0
       arr.each_with_index do |url, index|
-        self.upload_main_asset(url, nil, index)
+        self.upload_main_asset(url, index)
       end
     end
   end
 
 
-
+  def video_thumbnail_url url, public_id
+    index = url.index(public_id)
+    thumbnail_url = "/playButton/" + public_id + ".png"
+    return thumbnail_url.insert(0, url[0...index])
+  end
 
 
   # -- ATTRIBUTES
