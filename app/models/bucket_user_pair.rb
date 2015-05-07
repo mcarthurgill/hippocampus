@@ -6,7 +6,7 @@
   belongs_to :bucket
   belongs_to :user, :class_name => "User", :foreign_key => :phone_number, :primary_key => :phone
 
-  has_many :all_groups, :class_name => "Group", :foreign_key => "id", :primary_key => "group_id"
+  belongs_to :group
 
   after_save :update_bucket_visibility
   after_destroy :update_bucket_visibility
@@ -105,10 +105,6 @@
 
 
   # -- ATTRIBUTES
-
-  def group
-    self.all_groups.for_user(self.user ? self.user.id : nil).first
-  end
 
 
 end

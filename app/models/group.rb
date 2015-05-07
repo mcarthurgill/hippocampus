@@ -4,13 +4,9 @@ class Group < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :all_bucket_user_pairs, :class_name => "BucketUserPair", :primary_key => "id", :foreign_key => "group_id"
-  has_many :all_buckets, :through => :all_bucket_user_pairs, :source => :bucket #:class_name => "Bucket", :foreign_key => "bucket_id", :primary_key => "id"
+  has_many :bucket_user_pairs
+  has_many :buckets, :through => :bucket_user_pairs
 
   scope :for_user, ->(uid) { where("user_id = ?", uid) }
-
-  def buckets
-    self.all_buckets.where('"bucket_user_pairs"."phone_number" = ?', self.user.phone)
-  end
 
 end

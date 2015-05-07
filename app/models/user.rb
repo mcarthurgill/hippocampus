@@ -15,7 +15,9 @@ class User < ActiveRecord::Base
   has_many :items
   has_many :tokens
   has_many :device_tokens
+  
   has_many :groups
+  has_many :group_buckets, :through => :groups, :class_name => "Bucket", :source => :buckets
 
 
 
@@ -135,6 +137,10 @@ class User < ActiveRecord::Base
 
 
   # -- HELPERS
+
+  def ungrouped_buckets
+    self.buckets.where('"buckets"."id" NOT IN (?)', [])
+  end
 
   def check_for_item
     if self.items.count == 0
