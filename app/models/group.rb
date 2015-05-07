@@ -8,5 +8,6 @@ class Group < ActiveRecord::Base
   has_many :buckets, :through => :bucket_user_pairs
 
   scope :for_user, ->(uid) { where("user_id = ?", uid) }
+  scope :alphabetical, -> { order('group_name ASC') }
 
 end
