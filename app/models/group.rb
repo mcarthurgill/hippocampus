@@ -10,4 +10,8 @@ class Group < ActiveRecord::Base
   scope :for_user, ->(uid) { where("user_id = ?", uid) }
   scope :alphabetical, -> { order('group_name ASC') }
 
+  def sorted_buckets
+    self.buckets.by_first_name
+  end
+
 end

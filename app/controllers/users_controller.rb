@@ -62,7 +62,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       # format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
-      format.json { render json: { 'Recent' => @user.recent_buckets_with_shell, 'groups' => @user.groups.alphabetical.includes(:buckets).as_json(methods: [:buckets]), 'buckets' => @user.ungrouped_buckets } }
+      format.json { render json: { 'Recent' => @user.recent_buckets_with_shell, 'groups' => @user.groups.alphabetical.includes(:buckets).as_json(methods: [:sorted_buckets]), 'buckets' => @user.ungrouped_buckets } }
     end
   end
 
