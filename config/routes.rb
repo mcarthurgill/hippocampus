@@ -1,5 +1,8 @@
 Hippocampus::Application.routes.draw do
 
+  resources :groups
+
+
   root :to => "outside#splash"
 
   get "login", :to => "sessions#new", :as => "login"

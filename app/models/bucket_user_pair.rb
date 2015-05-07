@@ -1,10 +1,14 @@
   class BucketUserPair < ActiveRecord::Base
 
 
-  attr_accessible :bucket_id, :phone_number, :name, :last_viewed, :unseen_items
+  attr_accessible :bucket_id, :phone_number, :name, :last_viewed, :unseen_items, :group_name
 
   belongs_to :bucket
   belongs_to :user, :class_name => "User", :foreign_key => :phone_number, :primary_key => :phone
+
+  has_many :all_groups, :class_name => "Group", :foreign_key => "group_name", :primary_key => "group_name"
+
+  after_save :handle_group_name
 
   after_save :update_bucket_visibility
   after_destroy :update_bucket_visibility
@@ -21,6 +25,10 @@
 
   def update_bucket_visibility
     self.bucket.update_visibility    
+  end
+
+  def handle_group_name
+    self.update_attribute(:group_name, nil) if self.group_name && !self.group
   end
 
 
@@ -98,6 +106,14 @@
       end
       OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone_number, message, reason)
     end
+  end
+
+
+
+  # -- ATTRIBUTES
+
+  def group
+    self.all_groups.for_user(self.user ? self.user.id : nil).first
   end
 
 

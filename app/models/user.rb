@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :items
   has_many :tokens
   has_many :device_tokens
+  has_many :groups
 
 
 

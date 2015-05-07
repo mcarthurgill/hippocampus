@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150420154138) do
+ActiveRecord::Schema.define(:version => 20150507145220) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -37,6 +37,9 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.datetime "updated_at",                      :null => false
     t.string   "phone_number"
     t.string   "name",         :default => "You"
+    t.datetime "last_viewed"
+    t.string   "unseen_items", :default => "no"
+    t.string   "group_name"
   end
 
   create_table "buckets", :force => true do |t|
@@ -115,6 +118,14 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.text     "Attachments"
   end
 
+  create_table "groups", :force => true do |t|
+    t.string   "group_name"
+    t.integer  "user_id"
+    t.integer  "number_buckets", :default => 0
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "introduction_questions", :force => true do |t|
     t.string   "question_text"
     t.datetime "created_at",                        :null => false
@@ -148,6 +159,7 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.float    "latitude"
     t.float    "longitude"
     t.float    "device_request_timestamp"
+    t.text     "links"
   end
 
   add_index "items", ["id"], :name => "index_items_on_id"
