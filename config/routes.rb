@@ -1,8 +1,5 @@
 Hippocampus::Application.routes.draw do
 
-  resources :groups
-
-
   root :to => "outside#splash"
 
   get "login", :to => "sessions#new", :as => "login"
@@ -25,9 +22,13 @@ Hippocampus::Application.routes.draw do
   resources :bucket_item_pairs, :only => [:create, :destroy]
   match 'destroy_with_bucket_and_item', :to => "bucket_item_pairs#destroy_with_bucket_and_item", :as => "destroy_with_bucket_and_item"
 
+  resources :contact_cards, :only => [:create, :destroy]
+
+  resources :device_tokens, :only => [:create]
+
   resources :emails, :only => [:create]
 
-  resources :contact_cards, :only => [:create, :destroy]
+  resources :groups, only: [:create, :destroy]
 
   get 'info', to: 'pages#info', as: 'info'
   
@@ -43,8 +44,6 @@ Hippocampus::Application.routes.draw do
 
   get 'setup_questions', to: 'setup_questions#get_questions', as: 'setup_questions'
   post 'create_from_setup_questions', to: 'setup_questions#create_from_question', as: 'create_from_question'
-
-  resources :device_tokens, :only => [:create]
 
   resources :users, :except => [:index, :new, :create, :destroy]
   get 'users/:id/items', to: 'users#items'
