@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150507145220) do
+ActiveRecord::Schema.define(:version => 20150507154115) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20150507145220) do
     t.string   "name",         :default => "You"
     t.datetime "last_viewed"
     t.string   "unseen_items", :default => "no"
-    t.string   "group_name"
+    t.integer  "group_id"
   end
 
   create_table "buckets", :force => true do |t|
