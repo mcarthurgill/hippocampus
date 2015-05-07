@@ -54,6 +54,18 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1/grouped_buckets
+  # GET /users/1/grouped_buckets.json
+  def grouped_buckets
+    # redirect_if_not_authorized(params[:id]) ? return : nil
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      # format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
+      format.json { render json: { 'Recent' => @user.recent_buckets_with_shell, 'groups' => @user.groups.includes(:buckets).as_json(methods: [:buckets]), 'buckets' => @user.ungrouped_buckets } }
+    end
+  end
+
   # # POST /users
   # # POST /users.json
   # def create

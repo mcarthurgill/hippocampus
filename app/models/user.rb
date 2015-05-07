@@ -139,7 +139,7 @@ class User < ActiveRecord::Base
   # -- HELPERS
 
   def ungrouped_buckets
-    self.buckets.where('"buckets"."id" NOT IN (?)', [])
+    self.buckets.where('"buckets"."id" NOT IN (?)', self.group_buckets.pluck(:id))
   end
 
   def check_for_item
