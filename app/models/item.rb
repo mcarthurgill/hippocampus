@@ -92,7 +92,11 @@ class Item < ActiveRecord::Base
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
-    i.save!
+    if i.media_is_video?(0)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, "Sorry you must upload videos through the app! Here is a link: https://appsto.re/us/_BWZ5.i", "texted_video_error")
+    else
+      i.save!
+    end
     return i
   end
 
@@ -186,9 +190,12 @@ class Item < ActiveRecord::Base
       url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
     elsif self.media_is_video?(num_uploaded)
       url = self.upload_video_to_cloudinary(file, public_id)
+      screenshot_url = self.video_thumbnail_url(url)
     end
     if url && url.length > 0
-      return self.add_media_url(url)
+      self.add_media_url(url)
+      self.add_media_url(screenshot_url) if screenshot_url
+      return self.media_urls
     end
   end
 
@@ -208,7 +215,7 @@ class Item < ActiveRecord::Base
   end
 
   def upload_video_to_cloudinary(file, public_id)
-    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => 'raw')
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => :video)
     return data['url']
   end
 
@@ -229,7 +236,15 @@ class Item < ActiveRecord::Base
   end
 
 
+  def video_thumbnail_url url
+    string_to_locate = "/upload/"
+    beginning_index = url.index(string_to_locate)
+    extension_index = url.index("." + url.split(".").last)
+    rest_of_url = url[(beginning_index + string_to_locate.length)...extension_index]
 
+    thumbnail_url = "l_playButton/" + rest_of_url + ".png"
+    return thumbnail_url.insert(0, url[0...beginning_index + string_to_locate.length])
+  end
 
 
   # -- ATTRIBUTES
