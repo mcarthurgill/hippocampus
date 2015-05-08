@@ -10,10 +10,16 @@ class Bucket < ActiveRecord::Base
   # -- RELATIONSHIPS
 
   has_many :bucket_user_pairs
+  has_many :groups, :through => :bucket_user_pairs
+
   has_many :users, :through => :bucket_user_pairs
+
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
+
   has_many :bucket_item_pairs, dependent: :destroy
+
   has_many :items, :through => :bucket_item_pairs
+
   has_many :contact_cards
 
 
@@ -139,6 +145,10 @@ class Bucket < ActiveRecord::Base
       arr << u.id
     end
     return arr.uniq
+  end
+
+  def group_for_user u
+    return self.groups.where('"bucket_user_pairs"."phone_number" = ?', u.phone).first
   end
 
 

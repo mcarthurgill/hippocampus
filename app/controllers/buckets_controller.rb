@@ -5,6 +5,7 @@ class BucketsController < ApplicationController
   def show
 
     @bucket = Bucket.find(params[:id])
+    @user = User.find_by_id(params[:auth][:uid])
 
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
@@ -15,7 +16,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
         format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
-        format.json { render json: {:items => @bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse, :page => @page } }
+        format.json { render json: {:items => @bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse, :page => @page, :group => bucket.group_for_user(@user) } }
     end
 
   end
@@ -129,7 +130,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if bucket && user && bucket.belongs_to_user?(user)
-        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]) } }
+        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => bucket.group_for_user(user) } }
       else
         format.json { render json: bucket.errors, status: :unprocessable_entity }
       end
