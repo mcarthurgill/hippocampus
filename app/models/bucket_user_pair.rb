@@ -28,6 +28,15 @@
 
 
 
+  # -- GETTERS
+
+  def self.find_by_bucket_id_and_user_id bid, uid
+    return self.find_by_bucket_id_and_phone_number(bid, User.find(uid).phone)
+  end
+
+
+
+
 
   # -- CREATORS
 
