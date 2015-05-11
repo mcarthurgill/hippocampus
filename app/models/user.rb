@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
     all_bucket = Bucket.new(:first_name => "All Thoughts", :items_count => self.items.outstanding.count, :updated_at => self.items.last ? self.items.last.updated_at : DateTime.now)
     all_bucket.id = 0
     return_buckets = [all_bucket]
-    return_buckets << self.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").order('updated_at DESC').limit(8) # self.buckets.recent_for_user_id(self.id).order('updated_at DESC')
+    return_buckets << self.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").order('updated_at DESC').limit(4) # self.buckets.recent_for_user_id(self.id).order('updated_at DESC')
     return return_buckets.flatten
   end
   
