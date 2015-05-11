@@ -148,7 +148,7 @@ class Bucket < ActiveRecord::Base
   end
 
   def group_for_user u
-    return self.groups.where('"bucket_user_pairs"."phone_number" = ?', u.phone).first
+    return self.groups.where('"bucket_user_pairs"."phone_number" = ?', u.phone).first if u
   end
 
 
