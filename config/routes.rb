@@ -13,6 +13,7 @@ Hippocampus::Application.routes.draw do
   match 'fail', :to => "introductions#fail", :as => "fail"
   match 'intro_questions', :to => "introductions#get_questions", :as => "get_intro_questions"
 
+  put 'buckets/change_group_for_user', :to => 'buckets#change_group_for_user', :as => "change_group_for_user"
   resources :buckets, :only => [:show, :new, :edit, :create, :update, :destroy]
   get 'buckets/:id/media_urls', :to => 'buckets#media_urls', :as => "bucket_media_urls"
   get 'buckets/:id/info', :to => 'buckets#info', :as => "bucket_info"

@@ -137,6 +137,14 @@ class BucketsController < ApplicationController
     end
   end
 
+  def change_group_for_user
+    bucket_user_pair = BucketUserPair.find_by_bucket_id_and_user_id(params[:bucket_id], params[:user_id])
+    bucket_user_pair.update_attribute(:group_id, (params[:group_id] && params[:group_id].to_i > 0 ? params[:group_id] : nil))
+    respond_to do |format|
+      format.json { render json: bucket_user_pair }
+    end
+  end
+
   def add_collaborators
     bucket = Bucket.find(params[:id])
     user = User.find(params[:auth][:uid])
