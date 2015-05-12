@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name, :setup_completion
+  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting
@@ -39,6 +39,11 @@ class User < ActiveRecord::Base
   def send_introduction_text
     message = "Hippocampus.\nTo be interesting, be interested.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter.\n\nTo get you started, here are three questions. 1) Who was the last person you met and what did you learn about them?\n(reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
+  end
+
+  after_initialize :default_values
+  def default_values
+    self.time_zone ||= 'America/Chicago'
   end
 
 
