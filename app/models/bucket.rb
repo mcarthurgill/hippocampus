@@ -198,6 +198,13 @@ class Bucket < ActiveRecord::Base
     BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
   end
 
+  def add_to_group_for_user gid, u
+    if gid && u
+      bup = BucketUserPair.find_by_bucket_id_and_user_id(self.id, u.id)
+      bup.update_attribute(:group_id, gid) if bup
+    end
+  end
+
   def update_visibility
     cur_vis = "#{self.visibility}"
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")

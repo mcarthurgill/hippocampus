@@ -58,6 +58,7 @@ class BucketsController < ApplicationController
     respond_to do |format|
       if @bucket.save
         @bucket.add_user(user) if user
+        @bucket.add_to_group_with_id_for_user(params[:group_id], user) if params.has_key?(:group_id) && user
         format.html do 
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
