@@ -466,7 +466,7 @@ class Item < ActiveRecord::Base
     items = Item.notes_for_today.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Reminder (once):\n" + i.message
+      message = "Nudge (once):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once", i.media_urls)
       end
@@ -477,7 +477,7 @@ class Item < ActiveRecord::Base
     items = Item.daily.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Reminder (daily):\n" + i.message
+      message = "Nudge (daily):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily", i.media_urls)
       end
@@ -488,7 +488,7 @@ class Item < ActiveRecord::Base
     items = Item.get_weekly_items_for_today
     items.each do |i|
       users = i.users_array
-      message = "Reminder (weekly):\n" + i.message
+      message = "Nudge (weekly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly", i.media_urls)
       end
@@ -513,7 +513,7 @@ class Item < ActiveRecord::Base
 
     items.each do |i|
       users = i.users_array
-      message = "Reminder (monthly):\n" + i.message
+      message = "Nudge (monthly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly", i.media_urls)
       end
@@ -525,7 +525,7 @@ class Item < ActiveRecord::Base
     
     items.each do |i|
       users = i.users_array
-      message = "Reminder (yearly):\n" + i.message
+      message = "Nudge (yearly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly", i.media_urls)
       end
