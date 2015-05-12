@@ -198,7 +198,7 @@ class Bucket < ActiveRecord::Base
     BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
   end
 
-  def add_to_group_for_user gid, u
+  def add_to_group_with_id_for_user gid, u
     if gid && u
       bup = BucketUserPair.find_by_bucket_id_and_user_id(self.id, u.id)
       bup.update_attribute(:group_id, gid) if bup
