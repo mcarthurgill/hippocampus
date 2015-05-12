@@ -42,6 +42,12 @@ class Bucket < ActiveRecord::Base
 
   # -- VALIDATIONS
 
+  after_initialize :default_values
+  
+  def default_values
+    self.bucket_type ||= 'Other'
+  end
+
   before_validation :strip_whitespace
 
   after_save :index_delayed
