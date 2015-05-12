@@ -29,7 +29,7 @@ Hippocampus::Application.routes.draw do
 
   resources :emails, :only => [:create]
 
-  resources :groups, only: [:create, :destroy]
+  resources :groups, only: [:create, :update, :destroy]
 
   get 'info', to: 'pages#info', as: 'info'
   
