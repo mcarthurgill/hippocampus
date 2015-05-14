@@ -124,9 +124,6 @@ class Item < ActiveRecord::Base
     return i
   end
 
-  url = i.upload_image_to_cloudinary(StringIO.new(e.Attachments.first.decoded_content, 'rb'), public_id, "jpg")
-  url = i.upload_image_to_cloudinary(file, public_id, "jpg")
-
   def self.create_from_api_endpoint(params, user, addon)
     i = Item.new
     i.user = user
