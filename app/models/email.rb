@@ -27,7 +27,7 @@ class Email < ActiveRecord::Base
   end
 
   def self.save_inbound_mail(event_payload)
-    puts event_payload
+    # puts event_payload
     e = Email.new
     e.mandrill_events = event_payload
     e.TextBody = e.mandrill_events["msg"]["text"]
