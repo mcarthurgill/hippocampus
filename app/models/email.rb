@@ -27,8 +27,18 @@ class Email < ActiveRecord::Base
     puts event_payload
     e = Email.new
     e.mandrill_events = event_payload
+    e.TextBody = e.mandrill_events["msg"]["text"]
+    e.HtmlBody = e.mandrill_events["msg"]["html"]
+    e.From = e.mandrill_events["msg"]["from_email"]
+    e.FromName = e.mandrill_events["msg"]["from_name"]
+    e.To = e.mandrill_events["msg"]["email"]
+    e.Subject = e.mandrill_events["msg"]["subject"]
     e.save!
     return e
+  end
+
+  def handle_email
+    puts 'EITHER VERIFY EMAIL ADDRESS, ADD TO USER, OR IGNORE'
   end
 
 

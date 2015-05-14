@@ -4,9 +4,10 @@ class InboxController < ApplicationController
 
   def handle_inbound(event_payload)
     @email = Email.save_inbound_mail(event_payload)
+    @email.Attachments = event_payload.attachments.presence
     respond_to do |format|
       if @email
-        # @email.create_item
+        @email.handle_email
         format.json { render json: @email, status: :created }
       else
         format.json { render json: @email.errors, status: :unprocessable_entity }
