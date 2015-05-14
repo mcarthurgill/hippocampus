@@ -103,7 +103,7 @@ class Item < ActiveRecord::Base
   def self.create_with_email(email)
     i = Item.new
     i.message = email.parsed_text
-    i.user = User.with_email(email.From)
+    i.user = email.user
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'email'

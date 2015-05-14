@@ -7,7 +7,7 @@ class Email < ActiveRecord::Base
 
   belongs_to :item
 
-
+  belongs_to :user, :class_name => "User", :foreign_key => "From", :primary_key => "email"
 
 
   def create_item
@@ -41,10 +41,14 @@ class Email < ActiveRecord::Base
   end
 
   def handle_email
-    puts 'EITHER VERIFY EMAIL ADDRESS, ADD TO USER, OR IGNORE'
+     # EITHER VERIFY EMAIL ADDRESS, ADD TO USER, OR IGNORE
+    if self.user
+      self.create_item
+    end
   end
 
-  def handle_attachments
+  def handle_attachments attaches
+    self.Attachments = attaches
     self.save!
   end
 

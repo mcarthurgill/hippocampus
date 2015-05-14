@@ -4,9 +4,9 @@ class InboxController < ApplicationController
 
   def handle_inbound(event_payload)
     @email = Email.save_inbound_mail(event_payload)
-    @email.Attachments = event_payload.attachments.presence
-    if @email.Attachments
-      @email.handle_attachments
+    attaches = event_payload.attachments.presence
+    if attaches
+      @email.handle_attachments(attaches)
     end
     respond_to do |format|
       if @email

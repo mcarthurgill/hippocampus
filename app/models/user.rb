@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 
   before_save :downcase_email
   def downcase_email
-    self.email = self.email.downcase if self.email
+    self.email = self.email.downcase.strip if self.email
   end
 
 
