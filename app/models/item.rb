@@ -118,6 +118,15 @@ class Item < ActiveRecord::Base
         i.add_media_url(url) if url
         file.close
       elsif ["video/3gpp", "video/mov", "video/quicktime"].include?(a.type)
+        file = Tempfile.new('video_temp')
+        file.binmode
+        file.write a.decoded_content
+        file.rewind
+        url = self.upload_video_to_cloudinary(file, public_id)
+        screenshot_url = self.video_thumbnail_url(url)
+        self.add_media_url(url) if url
+        self.add_media_url(screenshot_url) if url && screenshot_url
+        file.close
       end
     end
     i.save!
