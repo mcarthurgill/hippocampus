@@ -8,6 +8,8 @@ class Email < ActiveRecord::Base
   belongs_to :item
 
 
+
+
   def create_item
     i = Item.create_with_email(self)
     self.update_attribute(:item_id, i.id)
@@ -30,7 +32,7 @@ class Email < ActiveRecord::Base
     e.mandrill_events = event_payload
     e.TextBody = e.mandrill_events["msg"]["text"]
     e.HtmlBody = e.mandrill_events["msg"]["html"]
-    e.From = e.mandrill_events["msg"]["from_email"]
+    e.From = e.mandrill_events["msg"]["from_email"].downcase.strip
     e.FromName = e.mandrill_events["msg"]["from_name"]
     e.To = e.mandrill_events["msg"]["email"]
     e.Subject = e.mandrill_events["msg"]["subject"]

@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
 
 
   # -- CALLBACKS
+
   after_create :should_send_introduction_text
   def should_send_introduction_text
     self.send_introduction_text
@@ -44,6 +45,11 @@ class User < ActiveRecord::Base
   after_initialize :default_values
   def default_values
     self.time_zone ||= 'America/Chicago'
+  end
+
+  before_save :downcase_email
+  def downcase_email
+    self.email = self.email.downcase if self.email
   end
 
 
