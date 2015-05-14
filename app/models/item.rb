@@ -107,6 +107,14 @@ class Item < ActiveRecord::Base
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'email'
+    email.Attachments.each do |a|
+      public_id = "item_#{Time.now.to_f}_#{self.user_id}"
+      if ["image/jpeg", "image/png", "image/jpg"].include?(a.type)
+        url = i.upload_image_to_cloudinary(a.decoded_content, public_id, "jpg")
+        i.add_media_url(url) if url
+      elsif ["video/3gpp", "video/mov", "video/quicktime"].include?(a.type)
+      end
+    end
     i.save!
     return i
   end
