@@ -108,7 +108,7 @@ class Item < ActiveRecord::Base
     i.status = 'outstanding'
     i.input_method = 'email'
     email.Attachments.each do |a|
-      public_id = "item_#{Time.now.to_f}_#{self.user_id}"
+      public_id = "item_#{Time.now.to_f}_#{i.user_id}"
       if ["image/jpeg", "image/png", "image/jpg"].include?(a.type)
         url = i.upload_image_to_cloudinary(a.decoded_content, public_id, "jpg")
         i.add_media_url(url) if url
