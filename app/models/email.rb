@@ -41,6 +41,10 @@ class Email < ActiveRecord::Base
     puts 'EITHER VERIFY EMAIL ADDRESS, ADD TO USER, OR IGNORE'
   end
 
+  def handle_attachments
+    self.save!
+  end
+
 
 
   # sending emails
