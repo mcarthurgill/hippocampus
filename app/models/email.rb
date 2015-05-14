@@ -3,6 +3,7 @@ class Email < ActiveRecord::Base
   attr_accessible :Attachments, :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id, :mandrill_events
 
   serialize :Attachments, Array
+  serialize :mandrill_events, JSON
 
   belongs_to :item
 
@@ -24,7 +25,10 @@ class Email < ActiveRecord::Base
 
   def self.save_inbound_mail(event_payload)
     puts event_payload
-    return Email.new
+    e = Email.new
+    e.mandrill_events = event_payload
+    e.save!
+    return e
   end
 
 
