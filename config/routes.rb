@@ -31,6 +31,8 @@ Hippocampus::Application.routes.draw do
 
   resources :groups, only: [:create, :update, :destroy]
 
+  resource :inbox, :controller => 'inbox', :only => [:show, :create]
+
   get 'info', to: 'pages#info', as: 'info'
   
   get 'items/random', to: 'items#random_items', as: 'random_items'

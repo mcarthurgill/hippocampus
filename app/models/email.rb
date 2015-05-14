@@ -3,7 +3,6 @@ class Email < ActiveRecord::Base
   attr_accessible :Attachments, :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id, :mandrill_events
 
   serialize :Attachments, Array
-  serialize :mandrill_events, Array
 
   belongs_to :item
 
@@ -21,6 +20,10 @@ class Email < ActiveRecord::Base
   def body_text
     i = self.TextBody.index("\n--")
     return i && i > 0 ? self.TextBody[0,i] : self.TextBody
+  end
+
+  def self.save_inbound_mail(event_payload)
+    puts event_payload
   end
 
 
