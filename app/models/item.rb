@@ -110,14 +110,22 @@ class Item < ActiveRecord::Base
     email.Attachments.each do |a|
       public_id = "item_#{Time.now.to_f}_#{i.user_id}"
       if ["image/jpeg", "image/png", "image/jpg"].include?(a.type)
-        url = i.upload_image_to_cloudinary(a.decoded_content, public_id, "jpg")
+        file = Tempfile.new(['test', '.jpg']) 
+        file.binmode
+        file.write e.Attachments.first.decoded_content
+        file.rewind
+        url = i.upload_image_to_cloudinary(file, public_id, "jpg")
         i.add_media_url(url) if url
+        file.close
       elsif ["video/3gpp", "video/mov", "video/quicktime"].include?(a.type)
       end
     end
     i.save!
     return i
   end
+
+  url = i.upload_image_to_cloudinary(StringIO.new(e.Attachments.first.decoded_content, 'rb'), public_id, "jpg")
+  url = i.upload_image_to_cloudinary(file, public_id, "jpg")
 
   def self.create_from_api_endpoint(params, user, addon)
     i = Item.new

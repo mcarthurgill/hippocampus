@@ -10,7 +10,7 @@ class InboxController < ApplicationController
     end
     respond_to do |format|
       if @email
-        @email.handle_email
+        @email.delay.handle_email
         format.json { render json: @email, status: :created }
       else
         format.json { render json: @email.errors, status: :unprocessable_entity }
