@@ -21,7 +21,7 @@ class Email < ActiveRecord::Base
   def body_text
     i = self.TextBody.index("\n--")
     t = i && i > 0 ? self.TextBody[0,i] : self.TextBody
-    return t ? t.gsub /(?<!\n)\n(?!\n)/, ' ' : ''
+    return t.gsub /(?<!\n)\n(?!\n)/, ' '
   end
 
   def self.save_inbound_mail(event_payload)
