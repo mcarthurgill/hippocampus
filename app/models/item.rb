@@ -112,7 +112,7 @@ class Item < ActiveRecord::Base
       if ["image/jpeg", "image/png", "image/jpg"].include?(a.type)
         file = Tempfile.new(['test', '.jpg']) 
         file.binmode
-        file.write e.Attachments.first.decoded_content
+        file.write a.decoded_content
         file.rewind
         url = i.upload_image_to_cloudinary(file, public_id, "jpg")
         i.add_media_url(url) if url
