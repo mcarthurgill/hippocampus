@@ -24,6 +24,7 @@ class Email < ActiveRecord::Base
 
   def self.save_inbound_mail(event_payload)
     puts event_payload
+    return Email.new
   end
 
 
