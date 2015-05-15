@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :phone, case_sensitive: false
 
   def current_token
-    return String.auth_token(salt, self.id%116)
+    return String.auth_token(self.salt, self.id%116)
   end
   
   

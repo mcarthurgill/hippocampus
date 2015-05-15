@@ -8,8 +8,8 @@ class String
 
   def self.auth_token salt, offset
     time_spec = Time.now.to_i / 1000 + offset
-    pre = self.salt[0,8]
-    post = pre = self.salt[8..-1]
+    pre = salt[0,8]
+    post = salt[8..-1]
     return Digest::SHA1.hexdigest(Digest::SHA1.hexdigest("#{pre}#{time_spec}#{post}"))
   end
 
