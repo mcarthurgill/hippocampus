@@ -41,9 +41,18 @@ class Email < ActiveRecord::Base
   end
 
   def handle_email
-     # EITHER VERIFY EMAIL ADDRESS, ADD TO USER, OR IGNORE
     if self.user
+      # create item
       self.create_item
+    elsif self.Subject && self.Subject.length > 40 && self.Subject[0..9] == 'My Token: '
+      # find user based on token and uid
+      token = token_for_verification_text(self.Subject)
+      user_id = user_id_for_verification_text(self.Subject).to_i
+      u = User.find_by_id(user_id)
+      if u && u.validate_with_token(token)
+        # belongs to user
+        u.update_attribute(:email, self.From)
+      end
     end
   end
 
