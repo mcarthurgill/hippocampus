@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :phone
   validates_uniqueness_of :phone, case_sensitive: false
-  validates_uniqueness_of :email, case_sensitive => false, :allow_blank => true, :allow_nil => true
+  validates_uniqueness_of :email, :case_sensitive => false, :allow_blank => true, :allow_nil => true
 
   def validate_with_token token
     return true if token == self.current_token
