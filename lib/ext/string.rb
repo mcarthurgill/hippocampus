@@ -1,6 +1,18 @@
 
 class String
 
+  def self.random i
+    o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+    return (0...i).map { o[rand(o.length)] }.join
+  end
+
+  def self.auth_token salt, offset
+    time_spec = Time.now.to_i / 1000 + offset
+    pre = self.salt[0,8]
+    post = pre = self.salt[8..-1]
+    return Digest::SHA1.hexdigest(Digest::SHA1.hexdigest("#{pre}#{time_spec}#{post}"))
+  end
+
   def parse_for_time
     begin  
       Time.zone = 'Central Time (US & Canada)'

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :number_items, :number_buckets, :name, :phone, :salt, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting
@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
 
   validates_presence_of :phone
   validates_uniqueness_of :phone, case_sensitive: false
+
+  def current_token
+    return String.auth_token(salt, self.id%116)
+  end
   
   
 
@@ -45,6 +49,7 @@ class User < ActiveRecord::Base
   after_initialize :default_values
   def default_values
     self.time_zone ||= 'America/Chicago'
+    self.salt ||= String.random(16)
   end
 
   before_save :downcase_email
