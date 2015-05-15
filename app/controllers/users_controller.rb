@@ -15,9 +15,9 @@ class UsersController < ApplicationController
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json do 
         if @page > 0
-          render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :count => 64, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score }
+          render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :count => 64, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :email => @user.email, :salt => @user.salt, :phone => @user.phone }
         else
-          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :setup_completion => @user.setup_completion }
+          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :setup_completion => @user.setup_completion, :email => @user.email, :salt => @user.salt, :phone => @user.phone }
         end
       end
       format.js
