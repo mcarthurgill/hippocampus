@@ -1,5 +1,8 @@
 class Email < ActiveRecord::Base
 
+  extend Formatting
+  include Formatting
+
   attr_accessible :Attachments, :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id, :mandrill_events
 
   serialize :Attachments, Array
