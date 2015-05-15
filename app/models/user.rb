@@ -28,7 +28,11 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :phone, case_sensitive: false
 
   def current_token
-    return String.auth_token(self.salt, self.id%116)
+    return self.token_with_shift(0)
+  end
+
+  def token_with_shift shift
+    return String.auth_token(self.salt, self.id%116+shift)
   end
   
   
