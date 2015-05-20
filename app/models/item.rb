@@ -588,7 +588,7 @@ class Item < ActiveRecord::Base
 
   include AlgoliaSearch
 
-  algoliasearch do
+  algoliasearch unless: :deleted? do
     # all attributes + extra_attr will be sent
     add_attribute :user_ids_array
   end
@@ -639,6 +639,10 @@ class Item < ActiveRecord::Base
   end
 
   def remove_from_engine
+    # ALGOLIA!
+    self.remove_from_index!
+
+    # swift
     client = Swiftype::Client.new
     # The automatically created engine has a slug of 'engine'
     engine_slug = 'engine'
