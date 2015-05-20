@@ -584,6 +584,15 @@ class Item < ActiveRecord::Base
   
 
 
+  # algolia
+
+  include AlgoliaSearch
+
+  algoliasearch do
+    # all attributes + extra_attr will be sent
+    add_attribute :user_ids_array
+  end
+
 
 
   #  swiftype
