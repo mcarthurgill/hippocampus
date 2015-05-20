@@ -160,3 +160,4 @@ class Email < ActiveRecord::Base
   end
 
 end
+
