@@ -47,6 +47,7 @@ class Email < ActiveRecord::Base
     if self.user
       # create item
       self.create_item
+      self.user.save! if self.user.set_name(self.FromName)
     elsif self.Subject && self.Subject.length > 40 && self.Subject[0..9] == 'My Token: '
       # find user based on token and uid
       token = token_for_verification_text(self.Subject)
