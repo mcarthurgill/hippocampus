@@ -17,7 +17,7 @@ class CreateCalls < ActiveRecord::Migration
       t.string :From
       t.string :CallerZip
       t.string :FromZip
-      t.ringing :CallStatus
+      t.string :CallStatus
       t.string :ToCity
       t.string :ToState
       t.string :To
