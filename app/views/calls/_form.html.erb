@@ -1,0 +1,117 @@
+<%= form_for(@call) do |f| %>
+  <% if @call.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@call.errors.count, "error") %> prohibited this call from being saved:</h2>
+
+      <ul>
+      <% @call.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :AccountSid %><br />
+    <%= f.text_field :AccountSid %>
+  </div>
+  <div class="field">
+    <%= f.label :ToZip %><br />
+    <%= f.text_field :ToZip %>
+  </div>
+  <div class="field">
+    <%= f.label :FromState %><br />
+    <%= f.text_field :FromState %>
+  </div>
+  <div class="field">
+    <%= f.label :Called %><br />
+    <%= f.text_field :Called %>
+  </div>
+  <div class="field">
+    <%= f.label :FromCountry %><br />
+    <%= f.text_field :FromCountry %>
+  </div>
+  <div class="field">
+    <%= f.label :CallerCountry %><br />
+    <%= f.text_field :CallerCountry %>
+  </div>
+  <div class="field">
+    <%= f.label :CalledZip %><br />
+    <%= f.text_field :CalledZip %>
+  </div>
+  <div class="field">
+    <%= f.label :Direction %><br />
+    <%= f.text_field :Direction %>
+  </div>
+  <div class="field">
+    <%= f.label :FromCity %><br />
+    <%= f.text_field :FromCity %>
+  </div>
+  <div class="field">
+    <%= f.label :CalledCountry %><br />
+    <%= f.text_field :CalledCountry %>
+  </div>
+  <div class="field">
+    <%= f.label :CallerState %><br />
+    <%= f.text_field :CallerState %>
+  </div>
+  <div class="field">
+    <%= f.label :CallSid %><br />
+    <%= f.text_field :CallSid %>
+  </div>
+  <div class="field">
+    <%= f.label :CalledState %><br />
+    <%= f.text_field :CalledState %>
+  </div>
+  <div class="field">
+    <%= f.label :From %><br />
+    <%= f.text_field :From %>
+  </div>
+  <div class="field">
+    <%= f.label :CallerZip %><br />
+    <%= f.text_field :CallerZip %>
+  </div>
+  <div class="field">
+    <%= f.label :FromZip %><br />
+    <%= f.text_field :FromZip %>
+  </div>
+  <div class="field">
+    <%= f.label :CallStatus %><br />
+    <%= f.text_field :CallStatus %>
+  </div>
+  <div class="field">
+    <%= f.label :ToCity %><br />
+    <%= f.text_field :ToCity %>
+  </div>
+  <div class="field">
+    <%= f.label :ToState %><br />
+    <%= f.text_field :ToState %>
+  </div>
+  <div class="field">
+    <%= f.label :To %><br />
+    <%= f.text_field :To %>
+  </div>
+  <div class="field">
+    <%= f.label :ToCountry %><br />
+    <%= f.text_field :ToCountry %>
+  </div>
+  <div class="field">
+    <%= f.label :CallerCity %><br />
+    <%= f.text_field :CallerCity %>
+  </div>
+  <div class="field">
+    <%= f.label :ApiVersion %><br />
+    <%= f.text_field :ApiVersion %>
+  </div>
+  <div class="field">
+    <%= f.label :Caller %><br />
+    <%= f.text_field :Caller %>
+  </div>
+  <div class="field">
+    <%= f.label :CalledCity %><br />
+    <%= f.text_field :CalledCity %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
