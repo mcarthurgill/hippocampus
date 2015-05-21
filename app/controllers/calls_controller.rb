@@ -51,7 +51,7 @@ class CallsController < ApplicationController
 
   # POST /transcribe
   def transcribe
-    @call = Call.where('RecordingSid = ?', params["RecordingSid"]).first
+    @call = Call.where('"calls"."RecordingSid" = ?', params["RecordingSid"]).first
     if @call
       @call.update_attributes(TranscriptionSid: params["TranscriptionSid"], TranscriptionText: params["TranscriptionText"], TranscriptionStatus: params["TranscriptionStatus"], TranscriptionUrl: params["TranscriptionUrl"])
       @call.update_item_with_transcription
