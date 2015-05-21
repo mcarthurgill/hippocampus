@@ -426,6 +426,10 @@ class Item < ActiveRecord::Base
     return { lat: self.latitude, lng: self.longitude } if self.latitude && self.longitude
   end
 
+  def date
+    return self.created_at.to_f
+  end
+
 
 
 
@@ -594,7 +598,7 @@ class Item < ActiveRecord::Base
 
   algoliasearch unless: :deleted? do
     # all attributes + extra_attr will be sent
-    add_attribute :user_ids_array, :_geoloc
+    add_attribute :user_ids_array, :_geoloc, :date
   end
 
 
