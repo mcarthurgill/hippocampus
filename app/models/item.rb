@@ -422,6 +422,10 @@ class Item < ActiveRecord::Base
     return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => self.user.as_json(only: [:phone, :name]))
   end
 
+  def _geoloc
+    return { lat: self.latitude, lng: self.longitude }
+  end
+
 
 
 
@@ -590,7 +594,7 @@ class Item < ActiveRecord::Base
 
   algoliasearch unless: :deleted? do
     # all attributes + extra_attr will be sent
-    add_attribute :user_ids_array
+    add_attribute :user_ids_array, :_geoloc
   end
 
 
