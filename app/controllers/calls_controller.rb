@@ -45,7 +45,7 @@ class CallsController < ApplicationController
     if @call.save
       twiml = Twilio::TwiML::Response.new do |r|
         r.Say 'Hey Will, it\'s your Hippocampus.'
-      end.text
+      end
       render xml: twiml.to_xml
     end
   end
