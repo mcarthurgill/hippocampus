@@ -423,7 +423,7 @@ class Item < ActiveRecord::Base
   end
 
   def _geoloc
-    return { lat: self.latitude, lng: self.longitude }
+    return { lat: self.latitude, lng: self.longitude } if self.latitude && self.longitude
   end
 
 
