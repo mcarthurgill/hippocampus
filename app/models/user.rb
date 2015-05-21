@@ -142,6 +142,7 @@ class User < ActiveRecord::Base
   def set_name n, override=false
     if self.no_name? || override
       self.name = n
+      self.save
       return true
     end
     return false
