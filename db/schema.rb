@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150506164610) do
+ActiveRecord::Schema.define(:version => 20150521124528) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -42,6 +42,11 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.integer  "group_id"
   end
 
+  add_index "bucket_user_pairs", ["bucket_id"], :name => "index_bucket_user_pairs_on_bucket_id"
+  add_index "bucket_user_pairs", ["group_id"], :name => "index_bucket_user_pairs_on_group_id"
+  add_index "bucket_user_pairs", ["id"], :name => "index_bucket_user_pairs_on_id"
+  add_index "bucket_user_pairs", ["phone_number"], :name => "index_bucket_user_pairs_on_phone_number"
+
   create_table "buckets", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -66,6 +71,9 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.text     "media_urls"
     t.text     "media_content_types"
   end
+
+  add_index "contact_cards", ["bucket_id"], :name => "index_contact_cards_on_bucket_id"
+  add_index "contact_cards", ["id"], :name => "index_contact_cards_on_id"
 
   create_table "country_codes", :force => true do |t|
     t.string   "calling_code"
@@ -99,6 +107,9 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.datetime "updated_at",           :null => false
   end
 
+  add_index "device_tokens", ["id"], :name => "index_device_tokens_on_id"
+  add_index "device_tokens", ["user_id"], :name => "index_device_tokens_on_user_id"
+
   create_table "emails", :force => true do |t|
     t.string   "From"
     t.string   "FromName"
@@ -118,7 +129,13 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.integer  "item_id"
     t.string   "email"
     t.text     "Attachments"
+    t.text     "mandrill_events"
   end
+
+  add_index "emails", ["From"], :name => "index_emails_on_From"
+  add_index "emails", ["To"], :name => "index_emails_on_To"
+  add_index "emails", ["id"], :name => "index_emails_on_id"
+  add_index "emails", ["item_id"], :name => "index_emails_on_item_id"
 
   create_table "groups", :force => true do |t|
     t.string   "group_name"
@@ -127,6 +144,9 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
+
+  add_index "groups", ["id"], :name => "index_groups_on_id"
+  add_index "groups", ["user_id"], :name => "index_groups_on_user_id"
 
   create_table "introduction_questions", :force => true do |t|
     t.string   "question_text"
@@ -189,6 +209,8 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  add_index "push_notifications", ["id"], :name => "index_push_notifications_on_id"
 
   create_table "rpush_apps", :force => true do |t|
     t.string   "name",                                   :null => false
@@ -298,6 +320,17 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.string   "status",       :default => "live"
   end
 
+  add_index "tokens", ["id"], :name => "index_tokens_on_id"
+  add_index "tokens", ["user_id"], :name => "index_tokens_on_user_id"
+
+  create_table "twilio_messengers", :force => true do |t|
+    t.string   "body"
+    t.string   "to_number"
+    t.string   "from_number"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "use_cases", :force => true do |t|
     t.text     "text"
     t.string   "image_url"
@@ -308,8 +341,8 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
 
   create_table "users", :force => true do |t|
     t.string   "phone"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.string   "country_code"
     t.string   "email"
     t.integer  "number_items",     :default => 0
@@ -317,8 +350,11 @@ ActiveRecord::Schema.define(:version => 20150506164610) do
     t.string   "calling_code"
     t.string   "name"
     t.integer  "setup_completion", :default => 25
+    t.string   "time_zone",        :default => "America/Chicago"
+    t.string   "salt"
   end
 
+  add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["id"], :name => "index_users_on_id"
   add_index "users", ["phone"], :name => "index_users_on_phone"
 
