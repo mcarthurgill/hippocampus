@@ -40,14 +40,22 @@ class CallsController < ApplicationController
   # POST /calls
   # POST /calls.json
   def create
-    @call = Call.new(params[:call])
+    @call = Call.new(params)
 
-    if @call.save
-      twiml = Twilio::TwiML::Response.new do |r|
-        r.Say 'Hey Will, it\'s your Hippocampus.'
+    respond_to do |format|
+      if @call.save
+        format.xml
       end
-      render xml: twiml
     end
+  end
+
+  # POST /transcribe
+  def transcribe
+    @call = Call.where('RecordingSid = ?', params["RecordingSid"]).first
+    if @call
+      @call.update_attributes(TranscriptionSid: params["TranscriptionSid"], TranscriptionText: params["TranscriptionText"], TranscriptionStatus: params["TranscriptionStatus"], TranscriptionUrl: params["TranscriptionUrl"])
+    end
+    render status: 200
   end
 
   # PUT /calls/1
