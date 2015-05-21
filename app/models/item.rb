@@ -606,6 +606,10 @@ class Item < ActiveRecord::Base
   end
 
   def index
+    # ALGOLIA!
+    self.index!
+
+    # swift
     client = Swiftype::Client.new
 
     # The automatically created engine has a slug of 'engine'
