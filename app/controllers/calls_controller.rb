@@ -42,12 +42,11 @@ class CallsController < ApplicationController
   def create
     @call = Call.new(params[:call])
 
-    respond_to do |format|
-      if @call.save
-        Twilio::TwiML::Response.new do |r|
-          r.Say 'Hey Will, it\'s your Hippocampus.'
-        end.text
-      end
+    if @call.save
+      twiml = Twilio::TwiML::Response.new do |r|
+        r.Say 'Hey Will, it\'s your Hippocampus.'
+      end.text
+      render xml: twiml.to_xml
     end
   end
 
