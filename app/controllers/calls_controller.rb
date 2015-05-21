@@ -45,7 +45,7 @@ class CallsController < ApplicationController
     respond_to do |format|
       if @call.save
         Twilio::TwiML::Response.new do |r|
-          r.Say 'Your Hippocampus'
+          r.Say 'Hey Will, it\'s your Hippocampus.'
         end.text
       end
     end
