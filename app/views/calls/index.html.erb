@@ -1,0 +1,71 @@
+<h1>Listing calls</h1>
+
+<table>
+  <tr>
+    <th>Accountsid</th>
+    <th>Tozip</th>
+    <th>Fromstate</th>
+    <th>Called</th>
+    <th>Fromcountry</th>
+    <th>Callercountry</th>
+    <th>Calledzip</th>
+    <th>Direction</th>
+    <th>Fromcity</th>
+    <th>Calledcountry</th>
+    <th>Callerstate</th>
+    <th>Callsid</th>
+    <th>Calledstate</th>
+    <th>From</th>
+    <th>Callerzip</th>
+    <th>Fromzip</th>
+    <th>Callstatus</th>
+    <th>Tocity</th>
+    <th>Tostate</th>
+    <th>To</th>
+    <th>Tocountry</th>
+    <th>Callercity</th>
+    <th>Apiversion</th>
+    <th>Caller</th>
+    <th>Calledcity</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @calls.each do |call| %>
+  <tr>
+    <td><%= call.AccountSid %></td>
+    <td><%= call.ToZip %></td>
+    <td><%= call.FromState %></td>
+    <td><%= call.Called %></td>
+    <td><%= call.FromCountry %></td>
+    <td><%= call.CallerCountry %></td>
+    <td><%= call.CalledZip %></td>
+    <td><%= call.Direction %></td>
+    <td><%= call.FromCity %></td>
+    <td><%= call.CalledCountry %></td>
+    <td><%= call.CallerState %></td>
+    <td><%= call.CallSid %></td>
+    <td><%= call.CalledState %></td>
+    <td><%= call.From %></td>
+    <td><%= call.CallerZip %></td>
+    <td><%= call.FromZip %></td>
+    <td><%= call.CallStatus %></td>
+    <td><%= call.ToCity %></td>
+    <td><%= call.ToState %></td>
+    <td><%= call.To %></td>
+    <td><%= call.ToCountry %></td>
+    <td><%= call.CallerCity %></td>
+    <td><%= call.ApiVersion %></td>
+    <td><%= call.Caller %></td>
+    <td><%= call.CalledCity %></td>
+    <td><%= link_to 'Show', call %></td>
+    <td><%= link_to 'Edit', edit_call_path(call) %></td>
+    <td><%= link_to 'Destroy', call, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Call', new_call_path %>

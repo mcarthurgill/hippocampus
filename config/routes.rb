@@ -1,5 +1,9 @@
 Hippocampus::Application.routes.draw do
 
+  resources :calls
+  post 'transcribe', :to => 'calls#transcribe'
+
+
   root :to => "outside#splash"
 
   get "login", :to => "sessions#new", :as => "login"

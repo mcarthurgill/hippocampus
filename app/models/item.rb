@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
@@ -21,6 +21,7 @@ class Item < ActiveRecord::Base
 
   has_many :sms
   has_many :emails
+  has_many :calls
 
 
 
@@ -97,6 +98,18 @@ class Item < ActiveRecord::Base
     else
       i.save!
     end
+    return i
+  end
+
+  def self.create_with_call(call)
+    i = Item.new
+    i.message = call.TranscriptionText if call.has_transcription?
+    i.user = User.with_phone_number(call.From)
+    i.audio_url = call.RecordingUrl if call.has_recording?
+    i.item_type = 'once'
+    i.status = 'outstanding'
+    i.input_method = 'call'
+    i.save!
     return i
   end
 
@@ -693,3 +706,4 @@ class Item < ActiveRecord::Base
   end
 
 end
+
