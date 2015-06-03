@@ -472,7 +472,7 @@ class Item < ActiveRecord::Base
   end
 
   def reminder_frequency_with_nickel_keyword k
-    return "yearly" if self.guess_yearly_reminder?
+    return "yearly" if self.guess_yearly_reminder? && k == 'single'
     return "once" if k == 'single'
     return "monthly" if k == 'daymonthly'
     return "monthly" if k == 'datemonthly'
@@ -484,7 +484,7 @@ class Item < ActiveRecord::Base
   def guess_yearly_reminder?
     return false if !self.message
     lowercase_str = self.message.downcase
-    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry'].each do |check_for|
+    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry', 'annual', 'annually', 'every', 'each', 'birthdy', 'brthdy', 'birtday'].each do |check_for|
       return true if lowercase_str.include?(check_for)
     end
     return false
