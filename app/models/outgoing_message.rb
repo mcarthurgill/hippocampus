@@ -75,7 +75,7 @@ class OutgoingMessage < ActiveRecord::Base
   # -- TUTORIAL
 
   def self.completed_with_reason r
-    OutgoingMessage.where("reason = ? AND created_at < ?", r, (Time.zone.now - 6.hours).to_date).pluck(:to_number).uniq #exclude users created today
+    OutgoingMessage.where("reason = ? AND created_at < ?", r, Time.zone.now - 12.hours).pluck(:to_number).uniq #exclude users created in the last 12 hours
   end
   
 end
