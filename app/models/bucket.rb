@@ -219,6 +219,8 @@ class Bucket < ActiveRecord::Base
     cur_arr = Array.new(self.authorized_user_ids)
     self.assign_authorized_user_ids
 
+    self.save!
+
     if cur_vis != self.visibility || cur_arr.uniq.sort != self.authorized_user_ids.uniq.sort
       self.index_delayed
       self.delay.update_items_indexes
