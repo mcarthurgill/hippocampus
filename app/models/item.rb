@@ -338,7 +338,7 @@ class Item < ActiveRecord::Base
   end
   
   def update_buckets_string
-    self.update_attributes(:buckets_string => self.description_string)
+    self.update_attributes(buckets_string: self.description_string, buckets_array: self.get_buckets_array)
   end
 
 
