@@ -22,8 +22,7 @@
   # -- CALLBACKS
 
   def update_bucket_visibility
-    self.bucket.update_visibility
-    self.bucket.update_authorized_user_ids
+    self.bucket.update_bucket_caches
   end
 
 

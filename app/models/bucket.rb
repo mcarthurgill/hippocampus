@@ -165,15 +165,6 @@ class Bucket < ActiveRecord::Base
 
   # -- ACTIONS
 
-  def assign_authorized_user_ids
-    self.authorized_user_ids = self.user_ids_array
-  end
-
-  def update_authorized_user_ids
-    self.assign_authorized_user_ids
-    self.save!
-  end
-
   def viewed_by_user_id uid
     u = uid ? User.find_by_id(uid) : nil
     if u
@@ -222,15 +213,34 @@ class Bucket < ActiveRecord::Base
     end
   end
 
-  def update_visibility
+  def update_bucket_caches
     cur_vis = "#{self.visibility}"
-    self.visibility = (self.users.count > 1 ? "collaborative" : "private")
-    self.save!
+    self.assign_visibility
+    cur_arr = Array.new(self.authorized_user_ids)
+    self.assign_authorized_user_ids
 
-    if cur_vis != self.visibility
+    if cur_vis != self.visibility || cur_arr.uniq.sort != self.authorized_user_ids.uniq.sort
       self.index_delayed
       self.delay.update_items_indexes
     end
+  end
+
+  def assign_visibility
+    self.visibility = (self.users.count > 1 ? "collaborative" : "private")
+  end
+
+  def update_visibility
+    self.assign_visibility
+    self.save!
+  end
+
+  def assign_authorized_user_ids
+    self.authorized_user_ids = self.user_ids_array
+  end
+
+  def update_authorized_user_ids
+    self.assign_authorized_user_ids
+    self.save!
   end
 
   def update_items_indexes
