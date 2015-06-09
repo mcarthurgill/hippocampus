@@ -64,7 +64,7 @@ class Item < ActiveRecord::Base
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
     self.buckets_string = self.description_string
-    self.buckets_array = self.get_buckets_array
+    # self.buckets_array = self.get_buckets_array
   end
 
   after_create :update_user_items_count
@@ -338,7 +338,8 @@ class Item < ActiveRecord::Base
   end
   
   def update_buckets_string
-    self.update_attributes(buckets_string: self.description_string, buckets_array: self.get_buckets_array)
+    # self.update_attributes(buckets_string: self.description_string, buckets_array: self.get_buckets_array)
+    self.update_attributes(buckets_string: self.description_string)
   end
 
 
