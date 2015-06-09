@@ -1,10 +1,11 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :audio_url, :buckets_string, :buckets_array, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
   serialize :links, Array
+  serialize :buckets_array, Array
 
   # types: once, yearly, monthly, weekly, daily
 
@@ -63,6 +64,7 @@ class Item < ActiveRecord::Base
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
     self.buckets_string = self.description_string
+    # self.buckets_array = self.get_buckets_array
   end
 
   after_create :update_user_items_count
@@ -282,6 +284,9 @@ class Item < ActiveRecord::Base
   end
 
 
+
+
+
   # -- ATTRIBUTES
 
   def deleted?
@@ -353,6 +358,10 @@ class Item < ActiveRecord::Base
     end
     s = nil if s == ''
     return s
+  end
+
+  def get_buckets_array
+    return self.buckets.as_json
   end
 
   def has_buckets?
