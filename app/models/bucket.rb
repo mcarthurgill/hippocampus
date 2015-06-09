@@ -2,9 +2,11 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :authorized_user_ids, :bucket_type, :updated_at, :visibility, :creation_reason
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
+
+  serialize :authorized_user_ids, Array
 
 
   # -- RELATIONSHIPS
@@ -162,6 +164,15 @@ class Bucket < ActiveRecord::Base
 
 
   # -- ACTIONS
+
+  def assign_authorized_user_ids
+    self.authorized_user_ids = self.user_ids_array
+  end
+
+  def update_authorized_user_ids
+    self.assign_authorized_user_ids
+    self.save!
+  end
 
   def viewed_by_user_id uid
     u = uid ? User.find_by_id(uid) : nil
