@@ -2,11 +2,9 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :authorized_user_ids, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
-
-  serialize :authorized_user_ids, Array
 
 
   # -- RELATIONSHIPS
@@ -216,12 +214,10 @@ class Bucket < ActiveRecord::Base
   def update_bucket_caches
     cur_vis = "#{self.visibility}"
     self.assign_visibility
-    cur_arr = Array.new(self.authorized_user_ids)
-    self.assign_authorized_user_ids
 
     self.save!
 
-    if cur_vis != self.visibility || cur_arr.uniq.sort != self.authorized_user_ids.uniq.sort
+    if cur_vis != self.visibility
       self.index_delayed
       self.delay.update_items_indexes
     end
@@ -233,15 +229,6 @@ class Bucket < ActiveRecord::Base
 
   def update_visibility
     self.assign_visibility
-    self.save!
-  end
-
-  def assign_authorized_user_ids
-    self.authorized_user_ids = self.user_ids_array
-  end
-
-  def update_authorized_user_ids
-    self.assign_authorized_user_ids
     self.save!
   end
 
