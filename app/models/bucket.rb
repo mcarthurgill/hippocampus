@@ -1,4 +1,4 @@
-class Bucket < ActiveRecord::Base
+class Bucket < ActiveRecord::Base 
 
   include Formatting
 
