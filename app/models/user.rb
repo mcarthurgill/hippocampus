@@ -1,12 +1,17 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :phone, :calling_code, :country_code, :number_items, :number_buckets, :name, :setup_completion
+  attr_accessible :email, :calling_code, :country_code, :number_items, :number_buckets, :name, :phone, :salt, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting
   
 
+
+
   # -- RELATIONSHIPS
+
+  has_many :groups
+  has_many :group_buckets, :through => :groups, :class_name => "Bucket", :source => :buckets
 
   has_many :bucket_user_pairs, :foreign_key => "phone_number", :primary_key => :phone
   has_many :buckets, :through => :bucket_user_pairs, :foreign_key => "phone_number", :primary_key => :phone
@@ -16,23 +21,53 @@ class User < ActiveRecord::Base
 
 
 
+
   # -- VALIDATORS
 
   validates_presence_of :phone
   validates_uniqueness_of :phone, case_sensitive: false
+  validates_uniqueness_of :email, :case_sensitive => false, :allow_blank => true, :allow_nil => true
+
+  def validate_with_token token
+    return true if token == self.current_token
+    return true if token == self.token_with_shift(-1)
+    return token == self.token_with_shift(1)
+  end
+
+  def current_token
+    return self.token_with_shift(0)
+  end
+
+  def token_with_shift shift
+    return String.auth_token(self.salt, self.id%116+shift)
+  end
   
   
 
+
   # -- CALLBACKS
+
   after_create :should_send_introduction_text
   def should_send_introduction_text
     self.send_introduction_text
   end
 
   def send_introduction_text
-    message = "Hippocampus.\nYour thoughts, forever.\n\nWelcome! Most people use Hippocampus to remember a friend's birthday or the name of someone they met at a party. Hippocampus is also a great way to remember the name of your coworker's daughter or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter.\n\nTo get you started, here are three questions. Who was the last person you met and what did you learn about them?\n(reply to this text)"
+    message = "Hippocampus. \nTo be interesting, be interested. \n\nWelcome! Most people use Hippocampus to remember a friend's birthday, the name of someone they met at a party, or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter. \n\nHere are two questions to get you started: \n\n1) Who was the last person you met and what did you learn about them? (reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
+
+  after_initialize :default_values
+  def default_values
+    self.time_zone ||= 'America/Chicago'
+    self.salt ||= String.random(16)
+  end
+
+  before_save :downcase_email
+  def downcase_email
+    self.email = self.email.downcase.strip if self.email
+  end
+
 
 
 
@@ -51,13 +86,15 @@ class User < ActiveRecord::Base
   end
 
   def recent_buckets_with_shell
-    all_bucket = Bucket.new(:first_name => "All Notes", :items_count => self.items.outstanding.count, :updated_at => self.items.last ? self.items.last.updated_at : DateTime.now)
+    all_bucket = Bucket.new(:first_name => "All Thoughts", :items_count => self.items.outstanding.count, :updated_at => self.items.last ? self.items.last.updated_at : DateTime.now)
     all_bucket.id = 0
     return_buckets = [all_bucket]
-    return_buckets << self.buckets.recent_for_user_id(self.id).order('updated_at DESC')
+    return_buckets << self.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").order('updated_at DESC').limit(4) # self.buckets.recent_for_user_id(self.id).order('updated_at DESC')
     return return_buckets.flatten
   end
   
+
+
 
 
   # -- SETTERS
@@ -105,6 +142,7 @@ class User < ActiveRecord::Base
   def set_name n, override=false
     if self.no_name? || override
       self.name = n
+      self.save
       return true
     end
     return false
@@ -123,12 +161,21 @@ class User < ActiveRecord::Base
   end
 
 
+
+
+
   # -- HELPERS
+
+  def ungrouped_buckets
+    return self.buckets.where('"buckets"."id" NOT IN (?)', self.group_buckets.pluck(:id)).by_first_name if self.group_buckets.pluck(:id).count > 0
+    return self.buckets.by_first_name
+  end
 
   def check_for_item
     if self.items.count == 0
       i = Item.new
-      i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
+      # i.message = 'This is an example note. Assign it to a thread! (notes belong to threads)'
+      i.message = 'This is an example thought. Assign it to a collection! (thoughts belong to collections)'
       i.user_id = self.id
       i.item_type = 'once'
       i.status = 'outstanding'
@@ -146,7 +193,7 @@ class User < ActiveRecord::Base
   end
 
   def sorted_reminders(limit=100000, page=0)
-    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < Time.zone.now.to_date }.sort_by(&:next_reminder_date)
+    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < (Time.zone.now - 6.hours).to_date }.sort_by(&:next_reminder_date)
   end
 
   def no_name?
@@ -218,6 +265,9 @@ class User < ActiveRecord::Base
   end
 
 
+
+
+
   # --- ACTIONS
 
   def update_items_count
@@ -227,6 +277,29 @@ class User < ActiveRecord::Base
   def update_buckets_count
     self.update_attribute(:number_buckets, self.buckets.count)
   end
+
+
+
+
+  # --- PUSH NOTIFICATIONS
+
+  def unread_badge_count
+    return self.items.outstanding.count + self.bucket_user_pairs.has_unseen_items.count
+  end
+
+  def send_push_notification_with_message msg
+    self.send_push_notification_with_message_and_item_and_bucket(msg, nil, nil)
+  end
+
+  def send_push_notification_with_message_and_item_and_bucket msg, i, b
+    self.device_tokens.each do |device_token|
+      pn = PushNotification.new
+      pn.assign_attributes(device_token_id: device_token.id, message: msg, badge_count: self.unread_badge_count, item_id: (i ? i.id : nil), bucket_id: (b ? b.id : nil))
+      pn.send_notification
+    end
+  end
+
+
 
   
 

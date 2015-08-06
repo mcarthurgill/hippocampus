@@ -1,4 +1,4 @@
-class Bucket < ActiveRecord::Base
+class Bucket < ActiveRecord::Base 
 
   include Formatting
 
@@ -10,10 +10,16 @@ class Bucket < ActiveRecord::Base
   # -- RELATIONSHIPS
 
   has_many :bucket_user_pairs
+  has_many :groups, :through => :bucket_user_pairs
+
   has_many :users, :through => :bucket_user_pairs
+
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
+
   has_many :bucket_item_pairs, dependent: :destroy
+
   has_many :items, :through => :bucket_item_pairs
+
   has_many :contact_cards
 
 
@@ -35,6 +41,12 @@ class Bucket < ActiveRecord::Base
 
 
   # -- VALIDATIONS
+
+  after_initialize :default_values
+  
+  def default_values
+    self.bucket_type ||= 'Other'
+  end
 
   before_validation :strip_whitespace
 
@@ -141,8 +153,30 @@ class Bucket < ActiveRecord::Base
     return arr.uniq
   end
 
+  def group_for_user u
+    return self.groups.where('"bucket_user_pairs"."phone_number" = ?', u.phone).first if u
+  end
+
+
+
+
 
   # -- ACTIONS
+
+  def viewed_by_user_id uid
+    u = uid ? User.find_by_id(uid) : nil
+    if u
+      u.bucket_user_pairs.where('bucket_id = ?', self.id).each do |bucket_user_pair|
+        bucket_user_pair.touch_as_viewed
+      end
+    end
+  end
+
+  def mark_collaborators_as_unseen bucket_item_pair
+    self.bucket_user_pairs.where('phone_number != ? AND (last_viewed IS NULL OR last_viewed < ?)', bucket_item_pair.item.user.phone, bucket_item_pair.created_at).each do |bucket_user_pair|
+      bucket_user_pair.mark_as_new_unseen if bucket_user_pair.user.id != bucket_item_pair.item.user.id
+    end
+  end
 
   def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code, invited_by_user)
     contacts_array.each do |contact|
@@ -170,12 +204,32 @@ class Bucket < ActiveRecord::Base
     BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
   end
 
-  def update_visibility
-    self.visibility = (self.users.count > 1 ? "collaborative" : "private")
+  def add_to_group_with_id_for_user gid, u
+    if gid && u
+      bup = BucketUserPair.find_by_bucket_id_and_user_id(self.id, u.id)
+      bup.update_attribute(:group_id, gid) if bup
+    end
+  end
+
+  def update_bucket_caches
+    cur_vis = "#{self.visibility}"
+    self.assign_visibility
+
     self.save!
 
-    self.index_delayed
-    self.delay.update_items_indexes
+    if cur_vis != self.visibility
+      self.index_delayed
+      self.delay.update_items_indexes
+    end
+  end
+
+  def assign_visibility
+    self.visibility = (self.users.count > 1 ? "collaborative" : "private")
+  end
+
+  def update_visibility
+    self.assign_visibility
+    self.save!
   end
 
   def update_items_indexes

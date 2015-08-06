@@ -58,4 +58,9 @@ module Formatting
     return token[i+1, length]
   end
 
+  def user_id_for_verification_text token
+    j = token.index('==')
+    return token[j+2..-1]
+  end
+
 end

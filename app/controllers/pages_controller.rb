@@ -19,7 +19,11 @@ class PagesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: { :buckets => @results.records['buckets'], :items => @results.records['items'], :term => params[:t] } }
+      if @results
+        format.json { render json: { :buckets => @results.records['buckets'], :items => @results.records['items'], :term => params[:t] } }
+      else
+        format.json { render json: { :buckets => [], :items => [], :term => params[:t] } }
+      end
     end
 
   end

@@ -1,0 +1,55 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  AccountSid: MyString
+  ToZip: MyString
+  FromState: MyString
+  Called: MyString
+  FromCountry: MyString
+  CallerCountry: MyString
+  CalledZip: MyString
+  Direction: MyString
+  FromCity: MyString
+  CalledCountry: MyString
+  CallerState: MyString
+  CallSid: MyString
+  CalledState: MyString
+  From: MyString
+  CallerZip: MyString
+  FromZip: MyString
+  CallStatus: 
+  ToCity: MyString
+  ToState: MyString
+  To: MyString
+  ToCountry: MyString
+  CallerCity: MyString
+  ApiVersion: MyString
+  Caller: MyString
+  CalledCity: MyString
+
+two:
+  AccountSid: MyString
+  ToZip: MyString
+  FromState: MyString
+  Called: MyString
+  FromCountry: MyString
+  CallerCountry: MyString
+  CalledZip: MyString
+  Direction: MyString
+  FromCity: MyString
+  CalledCountry: MyString
+  CallerState: MyString
+  CallSid: MyString
+  CalledState: MyString
+  From: MyString
+  CallerZip: MyString
+  FromZip: MyString
+  CallStatus: 
+  ToCity: MyString
+  ToState: MyString
+  To: MyString
+  ToCountry: MyString
+  CallerCity: MyString
+  ApiVersion: MyString
+  Caller: MyString
+  CalledCity: MyString

@@ -1,11 +1,15 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
+  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
+  serialize :links, Array
 
   # types: once, yearly, monthly, weekly, daily
+
+
+
 
 
   # -- RELATIONSHIPS
@@ -17,6 +21,10 @@ class Item < ActiveRecord::Base
 
   has_many :sms
   has_many :emails
+  has_many :calls
+
+
+
 
 
   # -- SCOPES
@@ -24,7 +32,7 @@ class Item < ActiveRecord::Base
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :not_deleted, -> { where("status != ?", "deleted") }
-  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", Time.zone.now.to_date, "once").includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", (Time.zone.now - 6.hours).to_date, "once").includes(:user) } 
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
@@ -37,6 +45,10 @@ class Item < ActiveRecord::Base
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
+
+
+
+
   # -- CALLBACKS
 
   before_validation :strip_whitespace
@@ -55,10 +67,12 @@ class Item < ActiveRecord::Base
 
   after_create :update_user_items_count
   def update_user_items_count
-    self.user.update_items_count
+    self.user.delay.update_items_count
   end
 
   before_create :check_for_and_set_date
+
+  before_save :extract_links
 
   after_save :index_delayed
 
@@ -74,11 +88,27 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
-    i.upload_media(sms.MediaUrls)
     i.media_content_types = sms.MediaContentTypes
+    i.upload_media(sms.MediaUrls)
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
+    if i.media_is_video?(0)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, "Sorry you must upload videos through the app! Here is a link: https://appsto.re/us/_BWZ5.i", "texted_video_error")
+    else
+      i.save!
+    end
+    return i
+  end
+
+  def self.create_with_call(call)
+    i = Item.new
+    i.message = call.TranscriptionText if call.has_transcription?
+    i.user = User.with_phone_number(call.From)
+    i.audio_url = call.RecordingUrl if call.has_recording?
+    i.item_type = 'once'
+    i.status = 'outstanding'
+    i.input_method = 'call'
     i.save!
     return i
   end
@@ -86,10 +116,32 @@ class Item < ActiveRecord::Base
   def self.create_with_email(email)
     i = Item.new
     i.message = email.parsed_text
-    i.user = User.with_email(email.From)
+    i.user = email.user
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'email'
+    email.Attachments.each do |a|
+      public_id = "item_#{Time.now.to_f}_#{i.user_id}"
+      if ["image/jpeg", "image/png", "image/jpg"].include?(a.type)
+        file = Tempfile.new(['test', '.jpg']) 
+        file.binmode
+        file.write a.decoded_content
+        file.rewind
+        url = i.upload_image_to_cloudinary(file, public_id, "jpg")
+        i.add_media_url(url) if url
+        file.close
+      elsif ["video/3gpp", "video/mov", "video/quicktime"].include?(a.type)
+        file = Tempfile.new('video_temp')
+        file.binmode
+        file.write a.decoded_content
+        file.rewind
+        url = self.upload_video_to_cloudinary(file, public_id)
+        screenshot_url = self.video_thumbnail_url(url)
+        self.add_media_url(url) if url
+        self.add_media_url(screenshot_url) if url && screenshot_url
+        file.close
+      end
+    end
     i.save!
     return i
   end
@@ -146,6 +198,8 @@ class Item < ActiveRecord::Base
 
 
 
+
+
   # -- DESTROY
 
   def delete
@@ -159,16 +213,44 @@ class Item < ActiveRecord::Base
 
   # -- CLOUDINARY
 
-  def upload_main_asset(file)
+  def upload_main_asset(file, num_uploaded=0)
     public_id = "item_#{Time.now.to_f}_#{self.user_id}"
-    url = self.upload_image_to_cloudinary(file, public_id, 'jpg')
-    if url && url.length > 0
-      return self.add_media_url(url)
+    url = ""
+    
+    if !file.is_a?(String) && file.content_type
+      self.media_content_types << file.content_type
     end
+
+    if self.media_is_image?(num_uploaded)
+      url = self.upload_image_to_cloudinary(file, public_id, "jpg") 
+    elsif self.media_is_video?(num_uploaded)
+      url = self.upload_video_to_cloudinary(file, public_id)
+      screenshot_url = self.video_thumbnail_url(url)
+    end
+    if url && url.length > 0
+      self.add_media_url(url)
+      self.add_media_url(screenshot_url) if screenshot_url
+      return self.media_urls
+    end
+  end
+
+  def media_is_image? index
+    image_content_types = ["image/jpeg", "image/png", "image/jpg"]
+    return self.media_content_types[index] && image_content_types.include?(self.media_content_types[index])
+  end
+
+  def media_is_video? index
+    video_content_types = ["video/3gpp", "video/mov", "video/quicktime"]
+    return self.media_content_types[index] && video_content_types.include?(self.media_content_types[index])
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
     data = Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format, :angle => :exif)
+    return data['url']
+  end
+
+  def upload_video_to_cloudinary(file, public_id)
+    data = Cloudinary::Uploader.upload(file, :public_id => public_id, :resource_type => :video)
     return data['url']
   end
 
@@ -182,10 +264,21 @@ class Item < ActiveRecord::Base
 
   def upload_media arr
     if arr && arr.count > 0
-      arr.each do |url|
-        self.upload_main_asset(url)
+      arr.each_with_index do |url, index|
+        self.upload_main_asset(url, index)
       end
     end
+  end
+
+
+  def video_thumbnail_url url
+    string_to_locate = "/upload/"
+    beginning_index = url.index(string_to_locate)
+    extension_index = url.index("." + url.split(".").last)
+    rest_of_url = url[(beginning_index + string_to_locate.length)...extension_index]
+
+    thumbnail_url = "l_playButton/" + rest_of_url + ".png"
+    return thumbnail_url.insert(0, url[0...beginning_index + string_to_locate.length])
   end
 
 
@@ -243,7 +336,7 @@ class Item < ActiveRecord::Base
   end
   
   def update_buckets_string
-    self.update_attributes(:buckets_string => self.description_string)
+    self.update_attributes(buckets_string: self.description_string)
   end
 
 
@@ -342,8 +435,27 @@ class Item < ActiveRecord::Base
   end
 
   def json_representation(u)
-    return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => u)
+    return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => self.user.as_json(only: [:phone, :name]))
   end
+
+  def _geoloc
+    return { lat: self.latitude, lng: self.longitude } if self.latitude && self.longitude
+  end
+
+  def date
+    return self.created_at.to_f
+  end
+
+
+
+
+
+  # -- LINK HANDLING
+
+  def extract_links
+    self.assign_attributes(links: (self.message ? URI.extract(self.message, ['http', 'https']) : []))
+  end
+
 
 
 
@@ -352,22 +464,30 @@ class Item < ActiveRecord::Base
   # -- AUTO-DATE DETECTION
 
   def check_for_and_set_date
-    time = self.time_from_message
-    # Time.zone = 'Central Time (US & Canada)'
-    if time # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
-      self.assign_attributes(reminder_date: time.to_date, item_type: (self.guess_yearly_reminder? ? 'yearly' : 'once'))
-    end
+    return if !self.message || self.message.length == 0 || self.message.length > 110
+    begin  
+      n = Nickel.parse self.message, DateTime.now.in_time_zone('Central Time (US & Canada)')
+      if n.occurrences.count > 0 && n.occurrences.first.type.to_s != 'daily' # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
+        self.assign_attributes(reminder_date: n.occurrences.first.start_date.to_date, item_type: self.reminder_frequency_with_nickel_keyword(n.occurrences.first.type.to_s))
+      end      
+    rescue
+    end 
   end
 
-  def time_from_message
-    return nil if !self.message
-    return self.message.parse_for_time
+  def reminder_frequency_with_nickel_keyword k
+    return "yearly" if self.guess_yearly_reminder? && k == 'single'
+    return "once" if k == 'single'
+    return "monthly" if k == 'daymonthly'
+    return "monthly" if k == 'datemonthly'
+    return "daily" if k == 'daily'
+    return "weekly" if k == 'weekly'
+    return "once"
   end
 
   def guess_yearly_reminder?
     return false if !self.message
     lowercase_str = self.message.downcase
-    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry', 'die'].each do |check_for|
+    ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry', 'annual', 'annually', 'every', 'each', 'birthdy', 'brthdy', 'birtday'].each do |check_for|
       return true if lowercase_str.include?(check_for)
     end
     return false
@@ -392,7 +512,7 @@ class Item < ActiveRecord::Base
     items = Item.notes_for_today.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Reminder (once):\n" + i.message
+      message = "Nudge (once):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once", i.media_urls)
       end
@@ -403,7 +523,7 @@ class Item < ActiveRecord::Base
     items = Item.daily.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Reminder (daily):\n" + i.message
+      message = "Nudge (daily):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily", i.media_urls)
       end
@@ -414,7 +534,7 @@ class Item < ActiveRecord::Base
     items = Item.get_weekly_items_for_today
     items.each do |i|
       users = i.users_array
-      message = "Reminder (weekly):\n" + i.message
+      message = "Nudge (weekly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly", i.media_urls)
       end
@@ -423,7 +543,7 @@ class Item < ActiveRecord::Base
 
   def self.get_weekly_items_for_today
     epoch = Date.parse("1/1/1970")
-    days_mod = (Time.zone.now.to_date - epoch).to_i%7
+    days_mod = ((Time.zone.now - 6.hours).to_date - epoch).to_i%7
     items = []
 
     Item.weekly.not_deleted.each do |i|
@@ -435,11 +555,11 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_monthly_items
-    items = Item.where('extract(day from reminder_date) = ?', Time.zone.now.to_date.day).monthly.not_deleted
+    items = Item.where('extract(day from reminder_date) = ?', (Time.zone.now - 6.hours).to_date.day).monthly.not_deleted
 
     items.each do |i|
       users = i.users_array
-      message = "Reminder (monthly):\n" + i.message
+      message = "Nudge (monthly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly", i.media_urls)
       end
@@ -447,11 +567,11 @@ class Item < ActiveRecord::Base
   end
 
   def self.remind_about_yearly_items
-    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', Time.zone.now.to_date.month, Time.zone.now.to_date.day).yearly.not_deleted
+    items = Item.where('extract(month from reminder_date) = ? AND extract(day from reminder_date) = ?', (Time.zone.now - 6.hours).to_date.month, (Time.zone.now - 6.hours).to_date.day).yearly.not_deleted
     
     items.each do |i|
       users = i.users_array
-      message = "Reminder (yearly):\n" + i.message
+      message = "Nudge (yearly):\n" + i.message
       users.each do |u|
         OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly", i.media_urls)
       end
@@ -460,7 +580,7 @@ class Item < ActiveRecord::Base
 
 
   def next_reminder_date
-    if self.reminder_date.nil? || (self.reminder_date < Time.zone.now.to_date && self.once?)
+    if self.reminder_date.nil? || (self.reminder_date < (Time.zone.now - 6.hours).to_date && self.once?)
       return nil
     else
       d = self.reminder_date 
@@ -468,17 +588,17 @@ class Item < ActiveRecord::Base
       when "once"
         #d is already set to reminder_date
       when "daily"
-        d =  Time.zone.now.to_date
+        d =  (Time.zone.now - 6.hours).to_date
       when "weekly"
-        while d < Time.zone.now.to_date
+        while d < (Time.zone.now - 6.hours).to_date
           d = d + 7.days
         end
       when "monthly"
-        while d < Time.zone.now.to_date
+        while d < (Time.zone.now - 6.hours).to_date
           d = d + 1.month
         end
       when "yearly"
-        while d < Time.zone.now.to_date
+        while d < (Time.zone.now - 6.hours).to_date
           d = d + 1.year
         end
       end
@@ -487,6 +607,15 @@ class Item < ActiveRecord::Base
   end
   
 
+
+  # algolia
+
+  include AlgoliaSearch
+
+  algoliasearch unless: :deleted? do
+    # all attributes + extra_attr will be sent
+    add_attribute :user_ids_array, :_geoloc, :date
+  end
 
 
 
@@ -497,6 +626,10 @@ class Item < ActiveRecord::Base
   end
 
   def index
+    # ALGOLIA!
+    self.index!
+
+    # swift
     client = Swiftype::Client.new
 
     # The automatically created engine has a slug of 'engine'
@@ -534,6 +667,10 @@ class Item < ActiveRecord::Base
   end
 
   def remove_from_engine
+    # ALGOLIA!
+    self.remove_from_index!
+
+    # swift
     client = Swiftype::Client.new
     # The automatically created engine has a slug of 'engine'
     engine_slug = 'engine'
@@ -572,3 +709,4 @@ class Item < ActiveRecord::Base
   end
 
 end
+

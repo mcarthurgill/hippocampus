@@ -15,9 +15,9 @@ class UsersController < ApplicationController
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json do 
         if @page > 0
-          render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :count => 64, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score }
+          render json: { :bottom_items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :count => 64, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :email => @user.email, :salt => @user.salt, :phone => @user.phone }
         else
-          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :setup_completion => @user.setup_completion }
+          render json: { :outstanding_items => @user.items.by_date.outstanding.reverse, :items => @user.items.by_date.assigned.limit(64).offset(64*@page).reverse, :page => @page, :number_items => @user.number_items, :number_buckets => @user.number_buckets, :score => @user.score, :setup_completion => @user.setup_completion, :email => @user.email, :salt => @user.salt, :phone => @user.phone }
         end
       end
       format.js
@@ -50,7 +50,19 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
-      format.json { render json: { 'Other' => @user.buckets.other_type.by_first_name,  'Person' => @user.buckets.person_type.by_first_name,  'Event' => @user.buckets.event_type.order('id DESC'),  'Place' => @user.buckets.place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell } }
+      format.json { render json: { 'Other' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").other_type.by_first_name,  'Person' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").person_type.by_first_name,  'Event' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").event_type.order('id DESC'),  'Place' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell } }
+    end
+  end
+
+  # GET /users/1/grouped_buckets
+  # GET /users/1/grouped_buckets.json
+  def grouped_buckets
+    # redirect_if_not_authorized(params[:id]) ? return : nil
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      # format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
+      format.json { render json: { 'Recent' => @user.recent_buckets_with_shell, 'groups' => @user.groups.alphabetical.includes(:buckets).as_json(methods: [:sorted_buckets]), 'buckets' => @user.ungrouped_buckets } }
     end
   end
 

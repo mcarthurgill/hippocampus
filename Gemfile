@@ -28,6 +28,7 @@ end
 
 gem 'jquery-rails'
 gem 'twilio-ruby'
+gem 'twiml_template', '~> 1.0'
 gem 'delayed_job_active_record'
 
 gem "therubyracer"
@@ -42,3 +43,6 @@ gem 'cloudinary'
 gem 'rpush'
 gem 'mandrill-api'
 gem 'chronic'
+gem 'nickel'
+gem 'mandrill-rails'
+gem 'algoliasearch-rails'

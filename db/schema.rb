@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150420154138) do
+ActiveRecord::Schema.define(:version => 20150521162200) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -37,7 +37,15 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.datetime "updated_at",                      :null => false
     t.string   "phone_number"
     t.string   "name",         :default => "You"
+    t.datetime "last_viewed"
+    t.string   "unseen_items", :default => "no"
+    t.integer  "group_id"
   end
+
+  add_index "bucket_user_pairs", ["bucket_id"], :name => "index_bucket_user_pairs_on_bucket_id"
+  add_index "bucket_user_pairs", ["group_id"], :name => "index_bucket_user_pairs_on_group_id"
+  add_index "bucket_user_pairs", ["id"], :name => "index_bucket_user_pairs_on_id"
+  add_index "bucket_user_pairs", ["phone_number"], :name => "index_bucket_user_pairs_on_phone_number"
 
   create_table "buckets", :force => true do |t|
     t.string   "first_name"
@@ -55,12 +63,59 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
   add_index "buckets", ["id"], :name => "index_buckets_on_id"
   add_index "buckets", ["user_id"], :name => "index_buckets_on_user_id"
 
+  create_table "calls", :force => true do |t|
+    t.string   "AccountSid"
+    t.string   "ToZip"
+    t.string   "FromState"
+    t.string   "Called"
+    t.string   "FromCountry"
+    t.string   "CallerCountry"
+    t.string   "CalledZip"
+    t.string   "Direction"
+    t.string   "FromCity"
+    t.string   "CalledCountry"
+    t.string   "CallerState"
+    t.string   "CallSid"
+    t.string   "CalledState"
+    t.string   "From"
+    t.string   "CallerZip"
+    t.string   "FromZip"
+    t.string   "CallStatus"
+    t.string   "ToCity"
+    t.string   "ToState"
+    t.string   "To"
+    t.string   "ToCountry"
+    t.string   "CallerCity"
+    t.string   "ApiVersion"
+    t.string   "Caller"
+    t.string   "CalledCity"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "RecordingUrl"
+    t.string   "action"
+    t.string   "controller"
+    t.string   "format"
+    t.string   "Digits"
+    t.string   "RecordingDuration"
+    t.string   "RecordingSid"
+    t.string   "TranscriptionSid"
+    t.string   "TranscriptionText"
+    t.string   "TranscriptionStatus"
+    t.string   "TranscriptionUrl"
+    t.integer  "item_id"
+  end
+
   create_table "contact_cards", :force => true do |t|
     t.integer  "bucket_id"
     t.text     "contact_info"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.text     "media_urls"
+    t.text     "media_content_types"
   end
+
+  add_index "contact_cards", ["bucket_id"], :name => "index_contact_cards_on_bucket_id"
+  add_index "contact_cards", ["id"], :name => "index_contact_cards_on_id"
 
   create_table "country_codes", :force => true do |t|
     t.string   "calling_code"
@@ -94,6 +149,9 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.datetime "updated_at",           :null => false
   end
 
+  add_index "device_tokens", ["id"], :name => "index_device_tokens_on_id"
+  add_index "device_tokens", ["user_id"], :name => "index_device_tokens_on_user_id"
+
   create_table "emails", :force => true do |t|
     t.string   "From"
     t.string   "FromName"
@@ -113,7 +171,24 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.integer  "item_id"
     t.string   "email"
     t.text     "Attachments"
+    t.text     "mandrill_events"
   end
+
+  add_index "emails", ["From"], :name => "index_emails_on_From"
+  add_index "emails", ["To"], :name => "index_emails_on_To"
+  add_index "emails", ["id"], :name => "index_emails_on_id"
+  add_index "emails", ["item_id"], :name => "index_emails_on_item_id"
+
+  create_table "groups", :force => true do |t|
+    t.string   "group_name"
+    t.integer  "user_id"
+    t.integer  "number_buckets", :default => 0
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "groups", ["id"], :name => "index_groups_on_id"
+  add_index "groups", ["user_id"], :name => "index_groups_on_user_id"
 
   create_table "introduction_questions", :force => true do |t|
     t.string   "question_text"
@@ -148,6 +223,8 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.float    "latitude"
     t.float    "longitude"
     t.float    "device_request_timestamp"
+    t.text     "links"
+    t.string   "audio_url"
   end
 
   add_index "items", ["id"], :name => "index_items_on_id"
@@ -175,6 +252,8 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  add_index "push_notifications", ["id"], :name => "index_push_notifications_on_id"
 
   create_table "rpush_apps", :force => true do |t|
     t.string   "name",                                   :null => false
@@ -284,6 +363,9 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.string   "status",       :default => "live"
   end
 
+  add_index "tokens", ["id"], :name => "index_tokens_on_id"
+  add_index "tokens", ["user_id"], :name => "index_tokens_on_user_id"
+
   create_table "twilio_messengers", :force => true do |t|
     t.string   "body"
     t.string   "to_number"
@@ -302,8 +384,8 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
 
   create_table "users", :force => true do |t|
     t.string   "phone"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.string   "country_code"
     t.string   "email"
     t.integer  "number_items",     :default => 0
@@ -311,8 +393,11 @@ ActiveRecord::Schema.define(:version => 20150420154138) do
     t.string   "calling_code"
     t.string   "name"
     t.integer  "setup_completion", :default => 25
+    t.string   "time_zone",        :default => "America/Chicago"
+    t.string   "salt"
   end
 
+  add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["id"], :name => "index_users_on_id"
   add_index "users", ["phone"], :name => "index_users_on_phone"
 

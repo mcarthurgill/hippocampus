@@ -14,7 +14,7 @@ class Sm < ActiveRecord::Base
 
   def create_item
     i = Item.create_with_sms(self)
-    self.update_attribute(:item_id, i.id)
+    self.update_attribute(:item_id, i.id) if i.id
     self.delay(run_at: 1.5.seconds.from_now).concat_if_necessary
     return i
   end
@@ -56,17 +56,18 @@ class Sm < ActiveRecord::Base
     msgs = OutgoingMessage.for_phone_with_reason(self.From, "day_1")
 
     if msgs.count == 1
-      self.send_follow_up_text_with_message("Very cool. Where did you meet them?")
+      self.send_follow_up_text_with_message("Very cool. 2) What is your best friend's name and birthday?")
     elsif msgs.count == 2
-      self.send_follow_up_text_with_message("Awesome. Last question, what is your best friend's birthday?")
+      self.send_follow_up_text_with_message("Nice. Text Hippocampus your thoughts. Remember things about people. To be interesting, be interested. \n\nDownload the app to search and organize your Hippocampus: https://appsto.re/us/_BWZ5.i \n\nAlso, store this number in your phone and text it any time you want to remember a thought.")
+      # self.send_follow_up_text_with_message("Awesome. Last question, what is your best friend's birthday?")
     elsif msgs.count == 3
-      self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remembering details makes all the difference in the world and will make people feel like they matter.\n\nDownload the app to see and organize your notes: http://hppcmps.com/\n\nAlso, you can store this number in your phone book and text it any time you don't want to forget something.")
+      # self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remember things about people. Show people they matter. To be interesting, be interested.\n\nDownload the app to see and organize your thoughts: https://appsto.re/us/_BWZ5.i\n\nAlso, store this number in your phone and text it any time you don't want to forget a thought.")
     end
   end
 
   def send_follow_up_text_with_message message
     user = User.find_by_phone(self.From)
-    if user && (user.created_at > Time.zone.now.to_date - 48.hours)
+    if user && (user.created_at > (Time.zone.now - 6.hours).to_date - 48.hours)
       OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, message, "day_1")
     end
   end

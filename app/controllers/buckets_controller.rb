@@ -5,15 +5,18 @@ class BucketsController < ApplicationController
   def show
 
     @bucket = Bucket.find(params[:id])
+    @user = User.find_by_id(params[:auth][:uid])
 
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
     @active = 'stacks'
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
+    @bucket.delay.viewed_by_user_id(params[:auth][:uid]) if params.has_key?(:auth)
+
     respond_to do |format|
         format.html { redirect_if_not_authorized(@bucket.user_id) ? return : nil }
-        format.json { render json: {:items => @bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse, :page => @page } }
+        format.json { render json: {:items => @bucket.items.not_deleted.by_date.limit(64).offset(64*@page).reverse, :page => @page, :group => @bucket.group_for_user(@user) } }
     end
 
   end
@@ -55,6 +58,7 @@ class BucketsController < ApplicationController
     respond_to do |format|
       if @bucket.save
         @bucket.add_user(user) if user
+        @bucket.add_to_group_with_id_for_user(params[:group_id], user) if params.has_key?(:group_id) && user
         format.html do 
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
@@ -127,10 +131,18 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if bucket && user && bucket.belongs_to_user?(user)
-        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator]) } }
+        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => bucket.group_for_user(user) } }
       else
         format.json { render json: bucket.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def change_group_for_user
+    bucket_user_pair = BucketUserPair.find_by_bucket_id_and_user_id(params[:bucket_id], params[:user_id])
+    bucket_user_pair.update_attribute(:group_id, (params[:group_id] && params[:group_id].to_i > 0 ? params[:group_id] : nil))
+    respond_to do |format|
+      format.json { render json: bucket_user_pair }
     end
   end
 

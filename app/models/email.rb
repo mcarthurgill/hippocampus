@@ -1,10 +1,16 @@
 class Email < ActiveRecord::Base
 
-  attr_accessible :Attachments, :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id
+  extend Formatting
+  include Formatting
+
+  attr_accessible :Attachments, :Bcc, :Cc, :Date, :From, :FromName, :HtmlBody, :MailboxHash, :MessageID, :ReplyTo, :StrippedTextReply, :Subject, :TextBody, :To, :item_id, :mandrill_events
 
   serialize :Attachments, Array
+  serialize :mandrill_events, JSON
 
   belongs_to :item
+
+  belongs_to :user, :class_name => "User", :foreign_key => "From", :primary_key => "email"
 
 
   def create_item
@@ -19,7 +25,44 @@ class Email < ActiveRecord::Base
 
   def body_text
     i = self.TextBody.index("\n--")
-    return i && i > 0 ? self.TextBody[0,i] : self.TextBody
+    t = i && i > 0 ? self.TextBody[0,i] : self.TextBody
+    return t.gsub /(?<!\n)\n(?!\n)/, ' '
+  end
+
+  def self.save_inbound_mail(event_payload)
+    # puts event_payload
+    e = Email.new
+    e.mandrill_events = event_payload
+    e.TextBody = e.mandrill_events["msg"]["text"]
+    e.HtmlBody = e.mandrill_events["msg"]["html"]
+    e.From = e.mandrill_events["msg"]["from_email"].downcase.strip
+    e.FromName = e.mandrill_events["msg"]["from_name"]
+    e.To = e.mandrill_events["msg"]["email"]
+    e.Subject = e.mandrill_events["msg"]["subject"]
+    e.save!
+    return e
+  end
+
+  def handle_email
+    if self.user
+      # create item
+      self.create_item
+      self.user.save! if self.user.set_name(self.FromName)
+    elsif self.Subject && self.Subject.length > 40 && self.Subject[0..9] == 'My Token: '
+      # find user based on token and uid
+      token = token_for_verification_text(self.Subject)
+      user_id = user_id_for_verification_text(self.Subject).to_i
+      u = User.find_by_id(user_id)
+      if u && u.validate_with_token(token)
+        # belongs to user
+        u.update_attribute(:email, self.From)
+      end
+    end
+  end
+
+  def handle_attachments attaches
+    self.Attachments = attaches
+    self.save!
   end
 
 
@@ -37,7 +80,7 @@ class Email < ActiveRecord::Base
     users.each do |u|
       arr << self.to_hash_for_user(u) if u
     end
-    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippocampus', 'html' => html, 'to' => arr, 'bcc_address' => 'w@lxv.io' }
+    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippocampus', 'html' => html, 'to' => arr }
     result = m.messages.send message, true, 'Main Pool'
   end
 
@@ -117,3 +160,4 @@ class Email < ActiveRecord::Base
   end
 
 end
+

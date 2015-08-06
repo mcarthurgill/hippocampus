@@ -1,5 +1,9 @@
 Hippocampus::Application.routes.draw do
 
+  resources :calls
+  post 'transcribe', :to => 'calls#transcribe'
+
+
   root :to => "outside#splash"
 
   get "login", :to => "sessions#new", :as => "login"
@@ -13,6 +17,7 @@ Hippocampus::Application.routes.draw do
   match 'fail', :to => "introductions#fail", :as => "fail"
   match 'intro_questions', :to => "introductions#get_questions", :as => "get_intro_questions"
 
+  put 'buckets/change_group_for_user', :to => 'buckets#change_group_for_user', :as => "change_group_for_user"
   resources :buckets, :only => [:show, :new, :edit, :create, :update, :destroy]
   get 'buckets/:id/media_urls', :to => 'buckets#media_urls', :as => "bucket_media_urls"
   get 'buckets/:id/info', :to => 'buckets#info', :as => "bucket_info"
@@ -22,9 +27,15 @@ Hippocampus::Application.routes.draw do
   resources :bucket_item_pairs, :only => [:create, :destroy]
   match 'destroy_with_bucket_and_item', :to => "bucket_item_pairs#destroy_with_bucket_and_item", :as => "destroy_with_bucket_and_item"
 
+  resources :contact_cards, :only => [:create, :destroy]
+
+  resources :device_tokens, :only => [:create]
+
   resources :emails, :only => [:create]
 
-  resources :contact_cards, :only => [:create]
+  resources :groups, only: [:create, :update, :destroy]
+
+  resource :inbox, :controller => 'inbox', :only => [:show, :create]
 
   get 'info', to: 'pages#info', as: 'info'
   
@@ -41,11 +52,10 @@ Hippocampus::Application.routes.draw do
   get 'setup_questions', to: 'setup_questions#get_questions', as: 'setup_questions'
   post 'create_from_setup_questions', to: 'setup_questions#create_from_question', as: 'create_from_question'
 
-  resources :device_tokens, :only => [:create]
-
   resources :users, :except => [:index, :new, :create, :destroy]
   get 'users/:id/items', to: 'users#items'
   get 'users/:id/buckets', to: 'users#buckets', as: 'user_buckets'
+  get 'users/:id/grouped_buckets', to: 'users#grouped_buckets', as: 'user_grouped_buckets'
   get 'users/:id/reminders', to: 'users#reminders', as: 'user_reminders'
 
   post 'users/:id/add_to_addon/:addon_id', to: 'users#add_to_addon', as: 'user_add_to_addon'  
