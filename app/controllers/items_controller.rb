@@ -3,7 +3,7 @@ class ItemsController < ApplicationController
   include Formatting
   
   def index
-    @items = Item.where("user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18).order('id DESC').limit(512).not_deleted
+    @items = Item.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15).order('id DESC').limit(512).not_deleted
     render layout: false
   end
 
