@@ -1,4 +1,5 @@
 class IntroductionResponse < ActiveRecord::Base
+  
   attr_accessible :introduction_question_id, :response_text, :flagged
 
   # --- ASSOCIATIONS

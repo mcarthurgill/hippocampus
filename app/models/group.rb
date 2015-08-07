@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
 
-  attr_accessible :group_name, :number_buckets, :user_id
+  attr_accessible :group_name, :number_buckets, :user_id, :object_type
 
   belongs_to :user
 

@@ -1,7 +1,7 @@
   class BucketUserPair < ActiveRecord::Base
 
 
-  attr_accessible :bucket_id, :phone_number, :name, :last_viewed, :unseen_items, :group_id
+  attr_accessible :bucket_id, :phone_number, :name, :last_viewed, :unseen_items, :group_id, :object_type
 
   belongs_to :bucket
   belongs_to :user, :class_name => "User", :foreign_key => :phone_number, :primary_key => :phone

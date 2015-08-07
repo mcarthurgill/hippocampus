@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :calling_code, :country_code, :number_items, :number_buckets, :name, :phone, :salt, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :number_items, :number_buckets, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting

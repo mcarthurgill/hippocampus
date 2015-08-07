@@ -1,6 +1,6 @@
 class BucketItemPair < ActiveRecord::Base
 
-  attr_accessible :bucket_id, :item_id
+  attr_accessible :bucket_id, :item_id, :object_type
 
 
   # -- RELATIONSHIPS

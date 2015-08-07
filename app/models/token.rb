@@ -1,7 +1,7 @@
 class Token < ActiveRecord::Base
 
   # --- ATTRIBUTES
-  attr_accessible :token_string, :user_id, :addon_id, :status
+  attr_accessible :token_string, :user_id, :addon_id, :status, :object_type
 
   # --- ASSOCIATIONS
   belongs_to :user

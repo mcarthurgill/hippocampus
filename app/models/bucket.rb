@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :description, :first_name, :items_count, :last_name, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 

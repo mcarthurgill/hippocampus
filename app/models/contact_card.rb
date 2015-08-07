@@ -1,5 +1,6 @@
 class ContactCard < ActiveRecord::Base
-  attr_accessible :bucket_id, :contact_info, :media_urls, :media_content_types
+  
+  attr_accessible :bucket_id, :contact_info, :media_urls, :media_content_types, :object_type
 
   belongs_to :bucket
 
