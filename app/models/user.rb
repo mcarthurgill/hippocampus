@@ -125,6 +125,9 @@ class User < ActiveRecord::Base
     if params[:percentage] && params[:percentage].length > 0
       self.update_setup_completion(params[:percentage])
     end
+    if params[:time_zone] && params[:time_zone].length > 0
+      self.assign_attributes(time_zone: params[:time_zone])
+    end
     self.save
     return true
   end
