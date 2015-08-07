@@ -435,7 +435,7 @@ class Item < ActiveRecord::Base
   end
 
   def json_representation(u)
-    return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => self.user.as_json(only: [:phone, :name]))
+    return self.as_json.merge(:buckets => self.visible_buckets_for_user(u), :user => self.user.as_json(only: [:phone, :name, :object_type]))
   end
 
   def _geoloc
