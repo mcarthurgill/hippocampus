@@ -176,4 +176,43 @@ class BucketsController < ApplicationController
       end
     end
   end
+
+
+
+
+  # SEARHORSE VERSION
+
+  def detail
+    # below_created_at = params.has_key?(:below_created_at) && params[:below_created_at].to_i > 0 ? Time.at(params[:below_created_at].to_i+1).to_datetime : Time.now+1.second
+
+    user = User.find_by_id(params[:auth][:uid])
+
+    if params[:id].to_i == 0
+      bucket = { id: 0, first_name: 'All Thoughts' }
+      items = user.items.by_date.not_deleted.limit(128).reverse
+
+      respond_to do |format|
+        if bucket && user
+          format.json { render json: {:items => items, :bucket => bucket } }
+        else
+          format.json { render status: :unprocessable_entity }
+        end
+      end
+
+    else
+      bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
+      items = bucket.items.not_deleted.by_date.limit(64).reverse if bucket # bucket.items.not_deleted.by_date.limit(64).before_created_at(below_created_at).reverse if bucket
+
+      respond_to do |format|
+        if bucket && user && bucket.belongs_to_user?(user)
+          format.json { render json: {:items => items, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :creator]) } }
+        else
+          format.json { render status: :unprocessable_entity }
+        end
+      end
+
+    end
+
+  end
+
 end
