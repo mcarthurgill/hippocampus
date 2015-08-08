@@ -188,7 +188,7 @@ class BucketsController < ApplicationController
     user = User.find_by_id(params[:auth][:uid])
 
     if params[:id].to_i == 0
-      bucket = { id: 0, first_name: 'All Thoughts' }
+      bucket = { id: 0, first_name: 'All Thoughts', object_type: 'all-thoughts' }
       items = user.items.by_date.not_deleted.limit(128).reverse
 
       respond_to do |format|
