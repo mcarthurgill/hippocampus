@@ -21,6 +21,7 @@ Hippocampus::Application.routes.draw do
   resources :buckets, :only => [:show, :new, :edit, :create, :update, :destroy]
   get 'buckets/:id/media_urls', :to => 'buckets#media_urls', :as => "bucket_media_urls"
   get 'buckets/:id/info', :to => 'buckets#info', :as => "bucket_info"
+  get 'buckets/:id/detail', :to => 'buckets#detail', :as => "bucket_detail"
   post 'buckets/:id/add_collaborators', :to => 'buckets#add_collaborators', :as => "bucket_add_collaborators"
   post 'buckets/:id/remove_collaborators', :to => 'buckets#remove_collaborators', :as => "bucket_remove_collaborators"
   
