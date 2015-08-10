@@ -189,7 +189,7 @@ class BucketsController < ApplicationController
 
     if params[:id].to_i == 0
       bucket = { id: 0, first_name: 'All Thoughts', object_type: 'all-thoughts' }
-      items = user.items.by_date.not_deleted.limit(128).reverse
+      items = user.items.by_date.not_deleted.limit(128)
 
       respond_to do |format|
         if bucket && user
@@ -201,7 +201,7 @@ class BucketsController < ApplicationController
 
     else
       bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
-      items = bucket.items.not_deleted.by_date.limit(64).reverse if bucket # bucket.items.not_deleted.by_date.limit(64).before_created_at(below_created_at).reverse if bucket
+      items = bucket.items.not_deleted.by_date.limit(64) if bucket # bucket.items.not_deleted.by_date.limit(64).before_created_at(below_created_at).reverse if bucket
 
       respond_to do |format|
         if bucket && user && bucket.belongs_to_user?(user)
