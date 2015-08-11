@@ -43,7 +43,7 @@ Hippocampus::Application.routes.draw do
   get 'items/random', to: 'items#random_items', as: 'random_items'
   get 'items/near_location', to: 'items#near_location', as: 'items_near_location'
   get 'items/within_bounds', to: 'items#within_bounds', as: 'items_within_bounds'
-  resources :items, :only => [:create, :update, :destroy, :show, :edit, :new]
+  resources :items, :only => [:create, :update, :destroy, :show, :edit, :new, :index]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
 
   get 'search', to: 'pages#search', as: 'search'
