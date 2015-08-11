@@ -4,7 +4,11 @@ class ItemsController < ApplicationController
   
   def index
     @items = Item.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15).order('id DESC').limit(512).not_deleted
-    render layout: false
+    if params.has_key?(:admin) && params[:admin] == 'snickers'
+      render layout: 'outside'
+    else
+      render layout: false
+    end
   end
 
   def show

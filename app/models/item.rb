@@ -66,6 +66,11 @@ class Item < ActiveRecord::Base
     self.buckets_string = self.description_string
   end
 
+  before_create :set_device_timestamp
+  def set_device_timestamp
+    self.device_timestamp = self.device_timestamp ? self.device_timestamp : Time.now.to_f
+  end
+
   after_create :update_user_items_count
   def update_user_items_count
     self.user.delay.update_items_count
