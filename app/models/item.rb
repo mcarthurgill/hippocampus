@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type
+  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
@@ -66,9 +66,10 @@ class Item < ActiveRecord::Base
     self.buckets_string = self.description_string
   end
 
-  before_create :set_device_timestamp
-  def set_device_timestamp
-    self.device_timestamp = self.device_timestamp ? self.device_timestamp : Time.now.to_f
+  before_save :set_defaults
+  def set_defaults
+    self.device_timestamp ||= Time.now.to_f
+    self.local_key ||= "item-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
   end
 
   after_create :update_user_items_count

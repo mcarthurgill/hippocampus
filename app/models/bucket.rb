@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -43,7 +43,6 @@ class Bucket < ActiveRecord::Base
   # -- VALIDATIONS
 
   after_initialize :default_values
-  
   def default_values
     self.bucket_type ||= 'Other'
   end
@@ -58,6 +57,12 @@ class Bucket < ActiveRecord::Base
     self.items_count = self.items.count
     self.first_name = (self.first_name && self.first_name.length > 0) ? self.first_name.strip : self.first_name
     self.last_name = (self.last_name && self.last_name.length > 0) ? self.last_name.strip : self.last_name
+  end
+
+  before_save :set_defaults
+  def set_defaults
+    self.device_timestamp ||= Time.now.to_f
+    self.local_key ||= "item-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
   end
 
   def update_count

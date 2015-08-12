@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :calling_code, :country_code, :number_items, :number_buckets, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :local_key, :number_items, :number_buckets, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting
@@ -66,6 +66,11 @@ class User < ActiveRecord::Base
   before_save :downcase_email
   def downcase_email
     self.email = self.email.downcase.strip if self.email
+  end
+
+  after_save :set_defaults
+  def set_defaults
+    self.local_key ||= "item--#{self.id}"
   end
 
 
