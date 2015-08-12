@@ -25,7 +25,7 @@ class Bucket < ActiveRecord::Base
 
   # -- SCOPES
 
-  scope :above, ->(time) { where("'buckets'.'updated_at' > ?", Time.at(time.to_i).to_datetime).order('id ASC') }
+  scope :above, ->(time) { where('"buckets"."updated_at" > ?', Time.at(time.to_i).to_datetime).order('id ASC') }
   scope :by_first_name, -> { order("first_name ASC") }
   scope :recent_first, -> { order("id DESC") }
   scope :excluding_pairs_for_item_id, ->(iid) { where( (BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id).count > 0 ? '"buckets"."id" NOT IN (?)' : ''), BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id)) }
