@@ -215,4 +215,21 @@ class BucketsController < ApplicationController
 
   end
 
+
+
+  def changes
+    user = User.find_by_id(params[:auth][:uid])
+
+    buckets = params.has_key?(:updated_at_timestamp) && params[:updated_at_timestamp].length > 0 ? user.buckets.above(params[:updated_at_timestamp]) : user.buckets
+
+    respond_to do |format|
+      if user
+        format.json { render json: {:buckets => buckets } }
+      else
+        format.json { render status: :unprocessable_entity }
+      end
+    end
+
+  end
+
 end
