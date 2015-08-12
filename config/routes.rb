@@ -41,6 +41,7 @@ Hippocampus::Application.routes.draw do
 
   get 'info', to: 'pages#info', as: 'info'
   
+  get 'items/changes', :to => 'items#changes', :as => "items_changes"
   get 'items/random', to: 'items#random_items', as: 'random_items'
   get 'items/near_location', to: 'items#near_location', as: 'items_near_location'
   get 'items/within_bounds', to: 'items#within_bounds', as: 'items_within_bounds'

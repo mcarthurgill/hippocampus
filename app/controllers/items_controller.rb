@@ -193,4 +193,23 @@ class ItemsController < ApplicationController
     end
   end
 
+
+
+  # SEAHORSE VERSION
+
+  def changes
+    user = User.find_by_id(params[:auth][:uid])
+
+    items = params.has_key?(:updated_at_timestamp) && params[:updated_at_timestamp].length > 0 ? user.items.not_deleted.above(params[:updated_at_timestamp]) : user.items.not_deleted
+
+    respond_to do |format|
+      if user
+        format.json { render json: items }
+      else
+        format.json { render status: :unprocessable_entity }
+      end
+    end
+
+  end
+
 end
