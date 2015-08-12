@@ -224,7 +224,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if user
-        format.json { render json: {:buckets => buckets } }
+        format.json { render json: buckets }
       else
         format.json { render status: :unprocessable_entity }
       end
