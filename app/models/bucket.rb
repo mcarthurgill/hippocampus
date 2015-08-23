@@ -124,6 +124,10 @@ class Bucket < ActiveRecord::Base
 
   # -- HELPERS
 
+  def self.all_items_bucket
+    return { id: 0, first_name: 'All Thoughts', object_type: 'all-thoughts' }
+  end
+
   def display_name
     return self.first_name   # ( (self.first_name ? self.first_name : '') + (self.last_name ? (" " + self.last_name) : '') ).strip
   end

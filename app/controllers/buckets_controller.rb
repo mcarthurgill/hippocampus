@@ -182,13 +182,31 @@ class BucketsController < ApplicationController
 
   # SEARHORSE VERSION
 
+  def all
+  
+    user = User.find_by_id(params[:auth][:uid])
+
+    buckets = [Bucket.all_items_bucket]+user.buckets.by_first_name
+
+    respond_to do |format|
+      if user
+        format.json { render json: buckets }
+      else
+        format.json { render status: :unprocessable_entity }
+      end
+    end
+
+  end
+
+
+
   def detail
     # below_created_at = params.has_key?(:below_created_at) && params[:below_created_at].to_i > 0 ? Time.at(params[:below_created_at].to_i+1).to_datetime : Time.now+1.second
 
     user = User.find_by_id(params[:auth][:uid])
 
     if params[:id].to_i == 0
-      bucket = { id: 0, first_name: 'All Thoughts', object_type: 'all-thoughts' }
+      bucket = Bucket.all_items_bucket
       item_keys = user.items.by_date.not_deleted.pluck(:local_key)
 
       respond_to do |format|
