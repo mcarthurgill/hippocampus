@@ -189,11 +189,11 @@ class BucketsController < ApplicationController
 
     if params[:id].to_i == 0
       bucket = { id: 0, first_name: 'All Thoughts', object_type: 'all-thoughts' }
-      items = user.items.by_date.not_deleted.limit(128)
+      item_keys = user.items.by_date.not_deleted.pluck(:local_key)
 
       respond_to do |format|
         if bucket && user
-          format.json { render json: {:items => items, :bucket => bucket } }
+          format.json { render json: {:item_keys => item_keys, :bucket => bucket } }
         else
           format.json { render status: :unprocessable_entity }
         end
