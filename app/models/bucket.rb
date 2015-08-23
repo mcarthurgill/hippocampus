@@ -62,7 +62,7 @@ class Bucket < ActiveRecord::Base
   before_save :set_defaults
   def set_defaults
     self.device_timestamp ||= Time.now.to_f
-    self.local_key ||= "item-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
+    self.local_key ||= "bucket-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
   end
 
   def update_count
