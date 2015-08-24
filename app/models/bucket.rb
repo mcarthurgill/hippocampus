@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -65,8 +65,18 @@ class Bucket < ActiveRecord::Base
     self.local_key ||= "bucket-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
   end
 
+  def update_caches
+    self.update_count
+    self.update_cached_item_message
+  end
+
   def update_count
     self.items_count = self.items.not_deleted.count
+    self.save!
+  end
+
+  def update_cached_item_message
+    self.cached_item_message = self.items.not_deleted.by_date.pluck(:message).first
     self.save!
   end
 
