@@ -220,11 +220,13 @@ class BucketsController < ApplicationController
 
     else
       bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
-      items = bucket.items.not_deleted.by_date.limit(64) if bucket # bucket.items.not_deleted.by_date.limit(64).before_created_at(below_created_at).reverse if bucket
+      # items = bucket.items.not_deleted.by_date.limit(64) if bucket # bucket.items.not_deleted.by_date.limit(64).before_created_at(below_created_at).reverse if bucket
+      item_keys = bucket.items.not_deleted.by_date.pluck(:local_key)
 
       respond_to do |format|
         if bucket && user && bucket.belongs_to_user?(user)
-          format.json { render json: {:items => items, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :creator]) } }
+          format.json { render json: {:item_keys => item_keys, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :creator]) } }
+          # format.json { render json: {:items => items, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :creator]) } }
         else
           format.json { render status: :unprocessable_entity }
         end
