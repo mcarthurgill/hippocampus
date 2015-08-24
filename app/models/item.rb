@@ -39,8 +39,8 @@ class Item < ActiveRecord::Base
   scope :yearly, -> { where("item_type = ?", "yearly").includes(:user) } 
   scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
   scope :before_created_at, ->(time) { where("created_at < ?", Time.at(time.to_i).to_datetime) }
-  scope :by_date, -> { order("created_at DESC") }
-  scope :newest_last, -> { order("created_at ASC") }
+  scope :by_date, -> { order('"items"."created_at" DESC') }
+  scope :newest_last, -> { order('"items"."created_at" ASC') }
   scope :with_reminder, -> { where("reminder_date IS NOT NULL") }
   scope :last_24_hours, -> { where("created_at > ? AND created_at < ?", 24.hours.ago, Time.now) }
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
