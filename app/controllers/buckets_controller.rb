@@ -186,7 +186,8 @@ class BucketsController < ApplicationController
   
     user = User.find_by_id(params[:auth][:uid])
 
-    buckets = ["all-thoughts--#{user.id}"]+user.buckets.by_first_name.pluck(:local_key)
+    #buckets = ["all-thoughts--#{user.id}"]+user.buckets.by_first_name.pluck(:local_key)
+    buckets = user.buckets.by_first_name.pluck(:local_key)
 
     respond_to do |format|
       if user
