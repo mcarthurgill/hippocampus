@@ -182,11 +182,11 @@ class BucketsController < ApplicationController
 
   # SEARHORSE VERSION
 
-  def all
+  def keys
   
     user = User.find_by_id(params[:auth][:uid])
 
-    buckets = [Bucket.all_items_bucket]+user.buckets.by_first_name
+    buckets = ["all-thoughts--#{user.id}"]+user.buckets.by_first_name.pluck(:local_key)
 
     respond_to do |format|
       if user
