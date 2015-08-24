@@ -76,7 +76,9 @@ class Bucket < ActiveRecord::Base
   end
 
   def update_cached_item_message
-    self.cached_item_message = self.items.not_deleted.by_date.pluck(:message).first
+    string = self.items.not_deleted.by_date.pluck(:message).first
+    string = string[0...200] if string
+    self.cached_item_message = string
     self.save!
   end
 
