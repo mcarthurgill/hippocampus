@@ -49,6 +49,8 @@ Hippocampus::Application.routes.draw do
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new, :index]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
 
+  get 'key', to: 'key#detail', as: 'key_detail'
+
   get 'search', to: 'pages#search', as: 'search'
   
   resources :sms, :only => [:create]
