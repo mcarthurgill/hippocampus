@@ -624,10 +624,6 @@ class Item < ActiveRecord::Base
     add_attribute :user_ids_array, :_geoloc, :date
   end
 
-
-
-  #  swiftype
-
   def index_delayed
     self.delay.index
   end
@@ -635,85 +631,13 @@ class Item < ActiveRecord::Base
   def index
     # ALGOLIA!
     self.index!
-
-    # swift
-    client = Swiftype::Client.new
-
-    # The automatically created engine has a slug of 'engine'
-    engine_slug = 'engine'
-    document_slug = 'items'
-
-    if self.deleted?
-      self.remove_from_engine
-    else
-      # create Documents within the DocumentType
-      begin
-        client.create_or_update_document(engine_slug, document_slug, self.index_representation)
-      rescue Exception => e
-        puts 'rescued a swiftype exception!'
-      end
-    end
-  end
-
-  def index_representation
-    return {:external_id => self.id, :fields => [
-      {:name => 'message', :value => self.message, :type => 'string'},
-      {:name => 'text', :value => self.message, :type => 'text'},
-      {:name => 'user_id', :value => self.user_id, :type => 'integer'},
-      {:name => 'available_to', :value => self.user_ids_array, :type => 'integer'},
-      {:name => 'item_type', :value => self.item_type, :type => 'string'},
-      {:name => 'buckets_string', :value => self.description_string, :type => 'string'},
-      {:name => 'media_urls', :value => self.media_urls, :type => 'string'},
-      {:name => 'item_id', :value => self.id, :type => 'integer'},
-      {:name => 'latitude', :value => self.latitude, :type => 'float'},
-      {:name => 'longitude', :value => self.longitude, :type => 'float'},
-      {:name => 'reminder_date', :value => self.reminder_date, :type => 'string'},
-      {:name => 'created_at_server', :value => self.created_at, :type => 'string'},
-      {:name => 'updated_at_server', :value => self.updated_at, :type => 'string'},
-    ]}
   end
 
   def remove_from_engine
     # ALGOLIA!
     self.remove_from_index!
-
-    # swift
-    client = Swiftype::Client.new
-    # The automatically created engine has a slug of 'engine'
-    engine_slug = 'engine'
-    document_slug = 'items'
-    begin
-      client.destroy_document(engine_slug, document_slug, self.id)
-    rescue Exception => e
-      puts 'rescued a swiftype exception!'
-    end
   end
 
-
-  def self.index_bulk_wrapper
-    cur = []
-    Item.all.each_with_index do |item, i|
-      cur << item.index_representation
-      if i%100 == 0
-        Item.index_bulk(cur)
-        cur = []
-      end
-    end
-    Item.index_bulk(cur)
-  end
-
-  def self.index_bulk items
-    client = Swiftype::Client.new
-    # The automatically created engine has a slug of 'engine'
-    engine_slug = 'engine'
-    document_slug = 'items'
-    # create Documents within the DocumentType
-    begin
-      client.create_or_update_documents(engine_slug, document_slug, items)
-    rescue Exception => e
-      puts 'rescued a swiftype exception!'
-    end
-  end
 
 end
 

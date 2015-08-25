@@ -38,7 +38,6 @@ gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootst
 # added by LXV
 gem 'httparty'
 gem 'rails_autolink'
-gem 'swiftype'
 gem 'cloudinary'
 gem 'rpush'
 gem 'mandrill-api'
