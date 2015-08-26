@@ -111,10 +111,11 @@ class Item < ActiveRecord::Base
     sms.MediaUrls.each_with_index do |url, index|
       Medium.create_with_file_user_id_and_item_id(url, i.user_id, i.id)          
     end
-    
+
     return i
   end
 
+  # NEEDS TO BE UPDATED TO NEW MEDIA TYPE
   def self.create_with_call(call)
     i = Item.new
     i.message = call.TranscriptionText if call.has_transcription?
@@ -127,6 +128,7 @@ class Item < ActiveRecord::Base
     return i
   end
 
+  # NEEDS TO BE UPDATED TO NEW MEDIA TYPE
   def self.create_with_email(email)
     i = Item.new
     i.message = email.parsed_text
@@ -158,26 +160,6 @@ class Item < ActiveRecord::Base
     end
     i.save!
     return i
-  end
-
-  def self.create_from_api_endpoint(params, user, addon)
-    i = Item.new
-    i.user = user
-    return nil if !i.user || !addon
-
-    i.message = params["message"]
-    i.input_method = params["addon"]
-    i.item_type = 'once'
-    i.status = 'assigned'
-    bucket = Bucket.find(params["user"]["bucket_id"])
-    i.bucket_id = bucket.id
-
-    if i.user && i.message && i.message.length > 0
-      i.save!
-      i.add_to_bucket(bucket)
-      return i
-    end
-    return nil
   end
 
   def self.create_from_contact_card(contact_card)
