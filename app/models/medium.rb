@@ -54,7 +54,7 @@ class Medium < ActiveRecord::Base
     public_id = "medium_#{Time.now.to_f}_#{self.user_id}"
 
     self.media_extension = file.content_type
-    self.media_type = self.determine_media_type
+    self.determine_media_type
 
     puts '---UPLOAD METHOD'
     puts self.as_json().to_s
