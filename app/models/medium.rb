@@ -53,7 +53,7 @@ class Medium < ActiveRecord::Base
   def upload_main_asset file
     public_id = "medium_#{Time.now.to_f}_#{self.user_id}"
 
-    self.media_extension = file.content_type
+    self.media_extension = !file.is_a?(String) ? file.content_type : "image/jpeg"
     self.determine_media_type
 
     puts '---UPLOAD METHOD'
@@ -173,7 +173,7 @@ class Medium < ActiveRecord::Base
 
           rescue
             puts "exception rescued for item: #{i.id}"
-            
+
           end
 
         end
