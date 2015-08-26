@@ -39,7 +39,7 @@ class Medium < ActiveRecord::Base
     medium.upload_main_asset(file)
     medium.save!
     puts '---CREATE METHOD'
-    puts medium
+    puts medium.to_s
     return medium
   end
 
@@ -57,7 +57,7 @@ class Medium < ActiveRecord::Base
     self.media_type = self.determine_media_type
 
     puts '---UPLOAD METHOD'
-    puts self
+    puts self.to_s
 
     if self.is_image?
       data = self.upload_image_to_cloudinary(file, public_id, "jpg")
