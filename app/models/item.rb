@@ -96,16 +96,22 @@ class Item < ActiveRecord::Base
     i = Item.new
     i.message = sms.Body
     i.user = User.with_phone_number(sms.From)
+
     i.media_content_types = sms.MediaContentTypes
-    i.upload_media(sms.MediaUrls)
+    if i.media_is_video?(0)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, "Sorry you must upload videos through the app! Here is a link: https://appsto.re/us/_BWZ5.i", "texted_video_error")
+      return
+    end
+
     i.item_type = 'once'
     i.status = 'outstanding'
     i.input_method = 'sms'
-    if i.media_is_video?(0)
-      OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, "Sorry you must upload videos through the app! Here is a link: https://appsto.re/us/_BWZ5.i", "texted_video_error")
-    else
-      i.save!
+    i.save!
+
+    sms.MediaUrls.each_with_index do |url, index|
+      Medium.create_with_file_user_id_and_item_id(url, i.user_id, i.id)          
     end
+    
     return i
   end
 
