@@ -19,7 +19,7 @@ class Medium < ActiveRecord::Base
 
   after_create :legacy_support
   def legacy_support
-    if self.item
+    if self.item && self.media_url
       self.item.add_media_url(self.media_url)
       self.item.add_media_url(self.thumbnail_url) if self.is_video?
       self.item.save!
