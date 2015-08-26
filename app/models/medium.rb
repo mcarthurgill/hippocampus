@@ -121,4 +121,65 @@ class Medium < ActiveRecord::Base
 
 
 
+
+
+  def self.convert_all_to_objects
+    Item.all.each do |i|
+      if i.media_urls.count > 0
+        skip = false
+        i.media_urls.each_with_index do |media_url, index|
+
+          begin
+
+            if !skip && i.media_is_image?(index)
+              data = Cloudinary::Api.resource(File.basename(URI.parse(media_url).path, ".*"))
+
+              if data
+                m = Medium.new
+                m.user_id = i.user_id
+                m.item_id = i.id
+                m.media_extension = "image/jpeg"
+                m.determine_media_type
+
+                m.media_url = data["secure_url"]
+                m.width = data["width"]
+                m.height = data["height"]
+                m.media_name = data["public_id"]
+
+                m.save!
+              end
+
+            elsif !skip && i.media_is_video?(index)
+              data = Cloudinary::Api.resource(File.basename(URI.parse(media_url).path, ".*"), :resource_type => :video)
+
+              if data
+                m = Medium.new
+                m.user_id = i.user_id
+                m.item_id = i.id
+                m.media_extension = "image/jpeg"
+                m.determine_media_type
+
+                m.media_url = data["secure_url"]
+                m.width = data["width"]
+                m.height = data["height"]
+                m.media_name = data["public_id"]
+                m.duration = data["duration"]
+
+                m.thumbnail_url = m.video_thumbnail_url(m.media_url)
+              end
+
+              skip = true
+            end
+
+          rescue
+            puts "exception rescued for item: #{i.id}"
+            
+          end
+
+        end
+      end
+    end
+  end
+
+
 end
