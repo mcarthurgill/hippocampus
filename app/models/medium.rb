@@ -123,8 +123,8 @@ class Medium < ActiveRecord::Base
 
 
 
-  def self.convert_all_to_objects
-    Item.all.each do |i|
+  def self.convert_all_to_objects limit
+    Item.all.limit(limit).each do |i|
       if i.media_urls.count > 0
         skip = false
         i.media_urls.each_with_index do |media_url, index|
@@ -170,6 +170,8 @@ class Medium < ActiveRecord::Base
 
               skip = true
             end
+
+            puts "completed for: #{i.id}"
 
           rescue
             puts "exception rescued for item: #{i.id}"
