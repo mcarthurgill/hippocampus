@@ -124,7 +124,7 @@ class Medium < ActiveRecord::Base
 
 
   def self.convert_all_to_objects limit
-    Item.all.limit(limit).each do |i|
+    Item.limit(limit).each do |i|
       if i.media_urls.count > 0
         skip = false
         i.media_urls.each_with_index do |media_url, index|
