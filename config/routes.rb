@@ -1,5 +1,8 @@
 Hippocampus::Application.routes.draw do
 
+  resources :media
+
+
   resources :calls
   post 'transcribe', :to => 'calls#transcribe'
 

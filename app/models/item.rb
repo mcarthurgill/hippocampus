@@ -1,7 +1,8 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type
+  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
 
+  serialize :media_cache, JSON
   serialize :media_content_types, Array
   serialize :media_urls, Array
   serialize :links, Array
@@ -22,7 +23,7 @@ class Item < ActiveRecord::Base
   has_many :sms
   has_many :emails
   has_many :calls
-
+  has_many :media
 
 
 
@@ -344,6 +345,15 @@ class Item < ActiveRecord::Base
   
   def update_buckets_string
     self.update_attributes(buckets_string: self.description_string)
+  end
+
+  def update_media_cache
+    self.assign_media_cache
+    self.save!
+  end
+
+  def assign_media_cache
+    self.media_cache = self.media.as_json
   end
 
 

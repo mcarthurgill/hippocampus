@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Media url:</b>
+  <%= @medium.media_url %>
+</p>
+
+<p>
+  <b>Width:</b>
+  <%= @medium.width %>
+</p>
+
+<p>
+  <b>Height:</b>
+  <%= @medium.height %>
+</p>
+
+<p>
+  <b>Media type:</b>
+  <%= @medium.media_type %>
+</p>
+
+<p>
+  <b>Media extension:</b>
+  <%= @medium.media_extension %>
+</p>
+
+<p>
+  <b>Media name:</b>
+  <%= @medium.media_name %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @medium.user_id %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @medium.item_id %>
+</p>
+
+<p>
+  <b>Thumbnail url:</b>
+  <%= @medium.thumbnail_url %>
+</p>
+
+
+<%= link_to 'Edit', edit_medium_path(@medium) %> |
+<%= link_to 'Back', media_path %>

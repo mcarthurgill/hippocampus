@@ -1,0 +1,39 @@
+<h1>Listing media</h1>
+
+<table>
+  <tr>
+    <th>Media url</th>
+    <th>Width</th>
+    <th>Height</th>
+    <th>Media type</th>
+    <th>Media extension</th>
+    <th>Media name</th>
+    <th>User</th>
+    <th>Item</th>
+    <th>Thumbnail url</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @media.each do |medium| %>
+  <tr>
+    <td><%= medium.media_url %></td>
+    <td><%= medium.width %></td>
+    <td><%= medium.height %></td>
+    <td><%= medium.media_type %></td>
+    <td><%= medium.media_extension %></td>
+    <td><%= medium.media_name %></td>
+    <td><%= medium.user_id %></td>
+    <td><%= medium.item_id %></td>
+    <td><%= medium.thumbnail_url %></td>
+    <td><%= link_to 'Show', medium %></td>
+    <td><%= link_to 'Edit', edit_medium_path(medium) %></td>
+    <td><%= link_to 'Destroy', medium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Medium', new_medium_path %>

@@ -38,19 +38,24 @@ class ItemsController < ApplicationController
       @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp], params[:item][:user_id])
     end
 
+    upload_files = false
+
     if !@item
 
       @item = Item.new(params[:item])
-      if params[:item].has_key?(:file) && params[:item][:file]
-        @item.upload_main_asset(params[:item][:file])
-      elsif params.has_key?(:file) && params[:file]
-        @item.upload_main_asset(params[:file])
-      end
+      upload_files = true
 
     end
 
     respond_to do |format|
       if @item.save
+
+        if upload_files && params[:item].has_key?(:file) && params[:item][:file]
+          Medium.create_with_file_user_id_and_item_id(params[:item][:file], @item.user_id, @item.id)
+        elsif upload_files && params.has_key?(:file) && params[:file]
+          Medium.create_with_file_user_id_and_item_id(params[:file], @item.user_id, @item.id)          
+        end
+
         @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0 && params[:item][:bucket_id].to_i > 0
 
         format.html { redirect_to item_path(@item) }
