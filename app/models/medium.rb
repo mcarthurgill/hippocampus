@@ -37,6 +37,9 @@ class Medium < ActiveRecord::Base
     medium.user_id = uid
     medium.item_id = iid
     medium.upload_main_asset(file)
+    medium.save!
+    puts '---CREATE METHOD'
+    puts medium
     return medium
   end
 
@@ -53,8 +56,13 @@ class Medium < ActiveRecord::Base
     self.media_extension = file.content_type
     self.media_type = self.determine_media_type
 
+    puts '---UPLOAD METHOD'
+    puts self
+
     if self.is_image?
       data = self.upload_image_to_cloudinary(file, public_id, "jpg")
+      puts '---IS IMAGE METHOD'
+      puts data
       if data
         self.media_url = data["secure_url"]
         self.width = data["width"]
