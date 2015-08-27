@@ -278,6 +278,10 @@ class User < ActiveRecord::Base
     return self.number_items+self.number_buckets
   end
 
+  def avatar_path
+    gravatar_id = self.email ? Digest::MD5.hexdigest(self.email.downcase) : "feoaihfoiwejafouwehfaoi@peoihafoweihga.com"
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=96&d=#{CGI.escape(default_url)}"
+  end
 
 
 

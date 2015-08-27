@@ -1,6 +1,7 @@
 Hippocampus::Application.routes.draw do
 
   resources :media
+  get 'avatar/:id', :to => 'users#avatar'
 
 
   resources :calls

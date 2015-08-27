@@ -136,4 +136,18 @@ class UsersController < ApplicationController
       format.js
     end
   end
+
+
+
+
+  # SEAHORSE
+
+  def avatar
+    user = User.find_by_id(params[:id])
+    if user
+      redirect_to user.avatar_path
+      return
+    end
+  end
+
 end
