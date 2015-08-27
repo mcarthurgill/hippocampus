@@ -208,9 +208,9 @@ class BucketsController < ApplicationController
 
     if params[:id].to_i == 0
       bucket = Bucket.all_items_bucket
-      # item_keys = user.items.by_date.not_deleted.pluck(:local_key)
+      item_keys = user.items.outstanding.by_date.pluck(:local_key)+user.bucket_items.by_date.not_deleted.pluck(:local_key)
       # item_keys = user.bucket_items.not_deleted.order('"items"."id" DESC').merge(user.items.not_deleted.order('"items"."id" DESC')).pluck(:local_key)
-      item_keys = Item.find_by_sql(['SELECT "items"."local_key" FROM "items" INNER JOIN "bucket_item_pairs" ON "items"."id" = "bucket_item_pairs"."item_id" INNER JOIN "buckets" ON "bucket_item_pairs"."bucket_id" = "buckets"."id" INNER JOIN "bucket_user_pairs" ON "buckets"."id" = "bucket_user_pairs"."bucket_id" WHERE ("bucket_user_pairs"."phone_number" = ? OR "items"."user_id" = ?) AND (status != \'deleted\') ORDER BY "items"."id" DESC', user.phone, user.id]).map(&:local_key)
+      # item_keys = Item.find_by_sql(['SELECT "items"."local_key" FROM "items" INNER JOIN "bucket_item_pairs" ON "items"."id" = "bucket_item_pairs"."item_id" INNER JOIN "buckets" ON "bucket_item_pairs"."bucket_id" = "buckets"."id" INNER JOIN "bucket_user_pairs" ON "buckets"."id" = "bucket_user_pairs"."bucket_id" WHERE ("bucket_user_pairs"."phone_number" = ? OR "items"."user_id" = ?) AND (status != \'deleted\') ORDER BY "items"."id" DESC', user.phone, user.id]).map(&:local_key)
 
       respond_to do |format|
         if bucket && user
@@ -256,3 +256,5 @@ class BucketsController < ApplicationController
   end
 
 end
+
+

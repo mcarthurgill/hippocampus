@@ -27,6 +27,7 @@ class BucketItemPair < ActiveRecord::Base
 
   def handle_counts
     self.bucket.update_caches if self.bucket
+    # self.item.update_outstanding if self.item    // NOTE: I don't think this is necessary. If it's being added to something, it'll already update the item. If it's being removed, the item either still belongs to buckets or is deleted.
     self.item.index_delayed if self.item
   end
 
