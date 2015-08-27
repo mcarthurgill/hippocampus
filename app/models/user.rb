@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   
   has_many :items
 
+  has_many :bucket_items, :through => :buckets, :class_name => "Item", :source => :items
+
   has_many :tokens
   has_many :device_tokens
 
