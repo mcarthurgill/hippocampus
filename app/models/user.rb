@@ -280,7 +280,7 @@ class User < ActiveRecord::Base
 
   def avatar_path
     gravatar_id = self.email ? Digest::MD5.hexdigest(self.email.downcase) : "feoaihfoiwejafouwehfaoi@peoihafoweihga.com"
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=96&d=#{CGI.escape(default_url)}"
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=96" # "http://gravatar.com/avatar/#{gravatar_id}.png?s=96&d=#{CGI.escape(default_url)}"
   end
 
 
