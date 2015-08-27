@@ -208,7 +208,8 @@ class BucketsController < ApplicationController
 
     if params[:id].to_i == 0
       bucket = Bucket.all_items_bucket
-      item_keys = user.items.by_date.not_deleted.pluck(:local_key)
+      # item_keys = user.items.by_date.not_deleted.pluck(:local_key)
+      item_keys = user.bucket_items.not_deleted.order('"items"."id" DESC').merge(u.items.not_deleted.order('"items"."id" DESC')).pluck(:local_key)
 
       respond_to do |format|
         if bucket && user
