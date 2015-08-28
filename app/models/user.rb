@@ -279,8 +279,15 @@ class User < ActiveRecord::Base
   end
 
   def avatar_path
+    default_url = "http://res.cloudinary.com/hbztmvh3r/image/upload/l_text:arial_55:#{self.representative_letter},co_white/v1440726309/avatar_#{self.id%3}.jpg"
     gravatar_id = self.email ? Digest::MD5.hexdigest(self.email.downcase) : "feoaihfoiwejafouwehfaoi@peoihafoweihga.com"
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=96" # "http://gravatar.com/avatar/#{gravatar_id}.png?s=96&d=#{CGI.escape(default_url)}"
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=96&d=#{CGI.escape(default_url)}"
+  end
+
+  def representative_letter
+    return self.name[0].upcase if self.name && self.name.length > 0
+    return self.email[0].upcase if self.email && self.email.length > 0
+    return "?"
   end
 
 
