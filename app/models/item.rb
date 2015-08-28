@@ -56,6 +56,7 @@ class Item < ActiveRecord::Base
   before_validation :strip_whitespace
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
+    self.message = self.message[2..-1] if self.message && self.message.length > 2 && self.message[0...2] == "￼\r"
     self.item_type = self.item_type ? self.item_type.strip : nil
     self.status = self.status ? self.status.strip : nil
     self.input_method = self.input_method ? self.input_method.strip : nil
