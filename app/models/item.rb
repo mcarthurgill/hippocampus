@@ -67,7 +67,6 @@ class Item < ActiveRecord::Base
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
     self.buckets_string = self.description_string
-    self.assign_bucket_information
   end
 
   before_save :set_defaults
