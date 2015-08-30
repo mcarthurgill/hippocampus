@@ -67,6 +67,7 @@ class Item < ActiveRecord::Base
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
     self.buckets_string = self.description_string
+    self.assign_bucket_information
   end
 
   before_save :set_defaults
@@ -357,7 +358,7 @@ class Item < ActiveRecord::Base
   end
 
   def assign_bucket_information
-    self.buckets_array = self.buckets.select('"buckets"."local_key"', '"buckets"."id"', '"buckets"."authorized_user_ids"', '"buckets"."first_name"').as_json
+    self.buckets_array = self.buckets.select(['"buckets"."local_key"', '"buckets"."id"', '"buckets"."authorized_user_ids"', '"buckets"."first_name"', '"buckets"."bucket_type"']).as_json
   end
 
   def description_string

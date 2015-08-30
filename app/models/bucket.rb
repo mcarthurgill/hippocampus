@@ -73,12 +73,11 @@ class Bucket < ActiveRecord::Base
 
   def update_bucket_caches
     cur_vis = "#{self.visibility}"
+
     self.assign_visibility
-
     self.assign_authorized_user_ids
-
     self.save!
-
+    
     if cur_vis != self.visibility
       self.delay.update_items_indexes
     end
