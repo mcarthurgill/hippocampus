@@ -2,7 +2,9 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :authorized_user_ids, :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+
+  serialize :authorized_user_ids, Array
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -64,20 +66,46 @@ class Bucket < ActiveRecord::Base
   end
 
   def update_caches
-    self.update_count
-    self.update_cached_item_message
+    self.assign_count
+    self.assign_cached_item_message
+    self.save!
+  end
+
+  def update_bucket_caches
+    cur_vis = "#{self.visibility}"
+    self.assign_visibility
+
+    self.assign_authorized_user_ids
+
+    self.save!
+
+    if cur_vis != self.visibility
+      self.delay.update_items_indexes
+    end
+  end
+
+  def assign_authorized_user_ids
+    self.authorized_user_ids = self.users.pluck(:id)
   end
 
   def update_count
-    self.items_count = self.items.not_deleted.count
+    self.assign_count
     self.save!
   end
 
+  def assign_count
+    self.items_count = self.items.not_deleted.count
+  end
+
   def update_cached_item_message
+    self.assign_cached_item_message
+    self.save!
+  end
+
+  def assign_cached_item_message
     string = self.items.not_deleted.by_date.pluck(:message).first
     string = string[0...200] if string
     self.cached_item_message = string
-    self.save!
   end
 
   def strip_whitespace
@@ -89,24 +117,6 @@ class Bucket < ActiveRecord::Base
 
 
   # -- CREATORS
-
-  def self.create_for_addon_and_user(addon, user)  
-    attrs_hash = addon.params_to_create_bucket_for_user(user)
-    return Bucket.create(attrs_hash)
-  end
-
-  def self.create_from_setup_question params
-    u = User.find(params[:auth][:uid])
-    b = Bucket.new
-    b.first_name = params[:setup_question][:response]
-    b.creation_reason = params[:setup_question][:question][:id]
-    b.bucket_type = "Person"
-    b.visibility = "private"
-    b.user_id = u.id
-    b.save
-    b.add_user(u)
-    return b
-  end
 
   def update_items_before_destroy
     self.delay.remove_from_items
@@ -227,17 +237,6 @@ class Bucket < ActiveRecord::Base
     if gid && u
       bup = BucketUserPair.find_by_bucket_id_and_user_id(self.id, u.id)
       bup.update_attribute(:group_id, gid) if bup
-    end
-  end
-
-  def update_bucket_caches
-    cur_vis = "#{self.visibility}"
-    self.assign_visibility
-
-    self.save!
-
-    if cur_vis != self.visibility
-      self.delay.update_items_indexes
     end
   end
 

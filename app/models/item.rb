@@ -1,11 +1,12 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :audio_url, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
+  attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
 
   serialize :media_cache, JSON
   serialize :media_content_types, Array
   serialize :media_urls, Array
   serialize :links, Array
+  serialize :buckets_array, Array
 
   # types: once, yearly, monthly, weekly, daily
 
@@ -66,6 +67,7 @@ class Item < ActiveRecord::Base
   def check_status
     self.status = "outstanding" if ( !self.deleted? && !self.has_buckets? )
     self.buckets_string = self.description_string
+    self.assign_bucket_information
   end
 
   before_save :set_defaults
@@ -353,6 +355,10 @@ class Item < ActiveRecord::Base
 
   def has_media?
     return (self.media_urls && self.media_urls.count > 0)
+  end
+
+  def assign_bucket_information
+    self.buckets_array = self.buckets.select('"buckets"."local_key", "buckets"."id", "buckets"."authorized_user_ids", "buckets"."first_name"')
   end
 
   def description_string
