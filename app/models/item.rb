@@ -358,7 +358,7 @@ class Item < ActiveRecord::Base
   end
 
   def assign_bucket_information
-    self.buckets_array = self.buckets.select(['"buckets"."local_key"', '"buckets"."id"', '"buckets"."authorized_user_ids"', '"buckets"."first_name"', '"buckets"."bucket_type"']).as_json
+    self.buckets_array = self.id ? self.buckets.select(['"buckets"."local_key"', '"buckets"."id"', '"buckets"."authorized_user_ids"', '"buckets"."first_name"', '"buckets"."bucket_type"']).as_json : []
   end
 
   def description_string
