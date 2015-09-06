@@ -39,12 +39,12 @@ class Item < ActiveRecord::Base
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
   scope :yearly, -> { where("item_type = ?", "yearly").includes(:user) } 
-  scope :above, ->(time) { where("updated_at > ?", Time.at(time.to_i).to_datetime) }
-  scope :before_created_at, ->(time) { where("created_at < ?", Time.at(time.to_i).to_datetime) }
+  scope :above, ->(time) { where('"items"."updated_at" > ?', Time.at(time.to_i).to_datetime) }
+  scope :before_created_at, ->(time) { where('"items"."created_at" < ?', Time.at(time.to_i).to_datetime) }
   scope :by_date, -> { order('"items"."id" DESC') }
   scope :newest_last, -> { order('"items"."id" ASC') }
   scope :with_reminder, -> { where("reminder_date IS NOT NULL") }
-  scope :last_24_hours, -> { where("created_at > ? AND created_at < ?", 24.hours.ago, Time.now) }
+  scope :last_24_hours, -> { where('"items"."created_at" > ? AND "items"."created_at" < ?', 24.hours.ago, Time.now) }
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
