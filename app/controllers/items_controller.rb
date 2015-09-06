@@ -205,7 +205,7 @@ class ItemsController < ApplicationController
   def changes
     user = User.find_by_id(params[:auth][:uid])
 
-    items = params.has_key?(:updated_at_timestamp) && params[:updated_at_timestamp].length > 0 ? user.items.not_deleted.above(params[:updated_at_timestamp]).by_date.limit(256)+user.bucket_items.not_deleted.above(params[:updated_at_timestamp]).by_date.limit(256) : user.items.not_deleted.by_date.limit(256)
+    items = params.has_key?(:updated_at_timestamp) && params[:updated_at_timestamp].length > 0 ? user.items.outstanding.above(params[:updated_at_timestamp]).by_date.limit(256)+user.bucket_items.not_deleted.above(params[:updated_at_timestamp]).by_date.limit(256) : user.items.not_deleted.by_date.limit(256)
 
     respond_to do |format|
       if user
