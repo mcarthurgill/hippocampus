@@ -166,6 +166,8 @@ class Medium < ActiveRecord::Base
                 m.duration = data["duration"]
 
                 m.thumbnail_url = m.video_thumbnail_url(m.media_url)
+
+                m.save!
               end
 
               skip = true
