@@ -52,7 +52,7 @@ Hippocampus::Application.routes.draw do
   get 'items/within_bounds', to: 'items#within_bounds', as: 'items_within_bounds'
   resources :items, :only => [:create, :update, :destroy, :show, :edit, :new, :index]
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
-  put 'items/:id/update_buckets', to: 'items#update_buckets'
+  put 'items/:local_key/update_buckets', to: 'items#update_buckets'
 
   get 'key', to: 'key#detail', as: 'key_detail'
 

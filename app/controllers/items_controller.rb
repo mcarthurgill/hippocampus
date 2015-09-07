@@ -221,7 +221,7 @@ class ItemsController < ApplicationController
   def update_buckets
     user = User.find_by_id(params[:auth][:uid])
 
-    item = Item.find(params[:id])
+    item = Item.find_by_local_key(params[:local_key])
 
     respond_to do |format|
       if item.update_buckets_with_local_keys(params[:local_keys])
