@@ -217,4 +217,19 @@ class ItemsController < ApplicationController
 
   end
 
+
+  def update_buckets
+    user = User.find_by_id(params[:auth][:uid])
+
+    item = Item.find(params[:id])
+
+    respond_to do |format|
+      if item.update_buckets_with_local_keys(params[:local_keys])
+        format.json { render json: item }
+      else
+        format.json { render json: item.errors, status: :unprocessable_entity }
+      end
+    end    
+  end
+
 end

@@ -347,6 +347,17 @@ class Item < ActiveRecord::Base
     self.media_cache = self.media.as_json
   end
 
+  def update_buckets_with_local_keys local_keys
+    if local_keys && local_keys.count > 0
+      self.buckets = Bucket.find_all_by_local_key(local_keys)
+      self.save!
+    else
+      self.buckets = []
+      self.save!
+    end
+    return true
+  end
+
 
 
 
@@ -358,7 +369,7 @@ class Item < ActiveRecord::Base
   end
 
   def assign_bucket_information
-    self.buckets_array = self.id ? self.buckets.select(['"buckets"."local_key"', '"buckets"."id"', '"buckets"."authorized_user_ids"', '"buckets"."first_name"', '"buckets"."bucket_type"']).as_json : []
+    self.buckets_array = self.id ? self.buckets.by_first_name.select(['"buckets"."local_key"', '"buckets"."id"', '"buckets"."authorized_user_ids"', '"buckets"."first_name"', '"buckets"."bucket_type"']).as_json : []
   end
 
   def description_string
