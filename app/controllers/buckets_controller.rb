@@ -60,7 +60,7 @@ class BucketsController < ApplicationController
       if @bucket.save
         @bucket.add_user(user) if user
         @bucket.add_to_group_with_id_for_user(params[:group_id], user) if params.has_key?(:group_id) && user
-        @bucket.add_contact_card(params[:contact_card]) if params.has_key?(:contact_card)
+        @bucket.add_contact_card(params[:bucket][:contact_card]) if params[:bucket].has_key?(:contact_card)
         format.html do 
           if params.has_key?(:with_item) && params[:with_item].to_i > 0
             item = Item.find(params[:with_item])
