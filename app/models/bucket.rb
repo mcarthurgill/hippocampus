@@ -230,6 +230,15 @@ class Bucket < ActiveRecord::Base
     end
   end
 
+  def add_contact_card params
+    contact_card = ContactCard.find_or_initialize_by_bucket_id_and_contact_info(self.id, params)
+    if params.has_key?(:file) && params[:file]
+      contact_card.upload_main_asset(params[:file])
+    end
+    contact_card.save!
+    return contact_card
+  end
+
   def remove_user u
     BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
   end
@@ -240,6 +249,7 @@ class Bucket < ActiveRecord::Base
       bup.update_attribute(:group_id, gid) if bup
     end
   end
+
 
   def assign_visibility
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")

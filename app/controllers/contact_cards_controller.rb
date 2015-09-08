@@ -1,4 +1,5 @@
 class ContactCardsController < ApplicationController
+
   # POST /contact_cards
   # POST /contact_cards.json
   def create
@@ -30,4 +31,5 @@ class ContactCardsController < ApplicationController
       end
     end
   end
+
 end
