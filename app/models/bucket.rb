@@ -44,6 +44,8 @@ class Bucket < ActiveRecord::Base
 
   # -- VALIDATIONS
 
+  validates :local_key, :uniqueness => true
+
   after_initialize :default_values
   def default_values
     self.bucket_type ||= 'Other'

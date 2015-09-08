@@ -52,7 +52,8 @@ class BucketsController < ApplicationController
   # POST /buckets
   # POST /buckets.json
   def create
-    @bucket = Bucket.new(params[:bucket])
+    @bucket = params[:bucket].has_key?(:local_key) ? Bucket.find_or_initialize_by_local_key(params[:bucket][:local_key]) : Bucket.new(params[:bucket])
+    @bucket.assign_attributes(params[:bucket])
     user = User.find(params[:bucket][:user_id])
 
     respond_to do |format|

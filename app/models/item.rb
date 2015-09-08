@@ -54,6 +54,8 @@ class Item < ActiveRecord::Base
 
   # -- CALLBACKS
 
+  validates :local_key, :uniqueness => true
+
   before_validation :strip_whitespace
   def strip_whitespace
     self.message = self.message ? self.message.strip : nil
