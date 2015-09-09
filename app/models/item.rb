@@ -525,6 +525,19 @@ class Item < ActiveRecord::Base
 
   # -- REMINDERS
 
+  def nudge_buckets_string for_user
+    string = ""
+    bucks = self.visible_buckets_for_user(for_user)
+    return "" if !bucks || bucks.count == 0
+    string = " ("
+    bucks.each_with_index do |b, i|
+      string = string+b.first_name
+      string = string+", " if (i+1) < bucks.count
+    end
+    string = string+")"
+    return string
+  end
+
   def self.remind_about_events
     self.remind_about_notes_for_today
     self.remind_about_daily_items
@@ -537,9 +550,8 @@ class Item < ActiveRecord::Base
     items = Item.notes_for_today.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Nudge (once):\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_once", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (once)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_once", i.media_urls)
       end
     end
   end
@@ -548,9 +560,8 @@ class Item < ActiveRecord::Base
     items = Item.daily.not_deleted
     items.each do |i|
       users = i.users_array
-      message = "Nudge (daily):\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_daily", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (daily)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_daily", i.media_urls)
       end
     end
   end
@@ -559,9 +570,8 @@ class Item < ActiveRecord::Base
     items = Item.get_weekly_items_for_today
     items.each do |i|
       users = i.users_array
-      message = "Nudge (weekly):\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_weekly", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (weekly)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_weekly", i.media_urls)
       end
     end
   end
@@ -584,9 +594,8 @@ class Item < ActiveRecord::Base
 
     items.each do |i|
       users = i.users_array
-      message = "Nudge (monthly):\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_monthly", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (weekly)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_monthly", i.media_urls)
       end
     end
   end
@@ -596,9 +605,8 @@ class Item < ActiveRecord::Base
     
     items.each do |i|
       users = i.users_array
-      message = "Nudge (yearly):\n" + i.message
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, message, "remind_yearly", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (yearly)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_yearly", i.media_urls)
       end
     end
   end
