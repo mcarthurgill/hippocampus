@@ -25,39 +25,57 @@ class ContactCard < ActiveRecord::Base
   # CONTACT_INFO IS DEPRECATED
   # use contact_details in SH
   def first_name
-    JSON.parse(self.contact_info)["first_name"]
+    return self.contact_details["first_name"] if self.contact_details
+    return JSON.parse(self.contact_info)["first_name"] if self.contact_info
+    return nil
   end
 
   def last_name
-    JSON.parse(self.contact_info)["last_name"]
+    return self.contact_details["last_name"] if self.contact_details
+    return JSON.parse(self.contact_info)["last_name"] if self.contact_info
+    return nil
   end
 
   def name
-    JSON.parse(self.contact_info)["name"]
+    return self.contact_details["name"] if self.contact_details
+    return JSON.parse(self.contact_info)["name"] if self.contact_info
+    return nil
   end
 
   def record_id
-    JSON.parse(self.contact_info)["record_id"]
+    return self.contact_details["record_id"] if self.contact_details
+    return JSON.parse(self.contact_info)["record_id"] if self.contact_info
+    return nil
   end
 
   def phones
-    JSON.parse(self.contact_info)["phones"]
+    return self.contact_details["phones"] if self.contact_details
+    return JSON.parse(self.contact_info)["phones"] if self.contact_info
+    return nil
   end
 
   def emails
-    JSON.parse(self.contact_info)["emails"]
+    return self.contact_details["emails"] if self.contact_details
+    return JSON.parse(self.contact_info)["emails"] if self.contact_info
+    return nil
   end
 
   def note
-    JSON.parse(self.contact_info)["note"]
+    return self.contact_details["note"] if self.contact_details
+    return JSON.parse(self.contact_info)["note"] if self.contact_info
+    return nil
   end
 
   def birthday
-    JSON.parse(self.contact_info)["birthday"]
+    return self.contact_details["birthday"] if self.contact_details
+    return JSON.parse(self.contact_info)["birthday"] if self.contact_info
+    return nil
   end
 
   def company
-    JSON.parse(self.contact_info)["company"]
+    return self.contact_details["company"] if self.contact_details
+    return JSON.parse(self.contact_info)["company"] if self.contact_info
+    return nil
   end
 
 
