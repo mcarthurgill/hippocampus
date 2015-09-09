@@ -9,12 +9,15 @@ class KeyController < ApplicationController
     if params[:object_type] == 'bucket'
       object = Bucket.find_by_local_key(params[:local_key])
     elsif params[:object_type] == 'item'
-      object = Item.find_by_local_key(params[:local_key])
+      object = Item.find_by_local_key(params[:local_key]).includes(:user)
     end
 
     respond_to do |format|
       if user
-        format.json { render json: object }
+        format.json do
+          render json: object.as_json(methods: [:user]) if object.object_type == 'item'
+          render json: object if object.object_type == 'bucket'
+        end
       else
         format.json { render status: :unprocessable_entity }
       end
