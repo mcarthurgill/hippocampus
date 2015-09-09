@@ -9,7 +9,7 @@ class KeyController < ApplicationController
     if params[:object_type] == 'bucket'
       object = Bucket.find_by_local_key(params[:local_key])
     elsif params[:object_type] == 'item'
-      object = Item.find_by_local_key(params[:local_key]).includes(:user)
+      object = Item.includes(:user).find_by_local_key(params[:local_key])
     end
 
     respond_to do |format|
