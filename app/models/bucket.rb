@@ -231,7 +231,9 @@ class Bucket < ActiveRecord::Base
   end
 
   def add_contact_card params
-    contact_card = ContactCard.find_or_initialize_by_bucket_id_and_contact_info(self.id, params)
+    contact_card = ContactCard.new
+    contact_card.assign_attributes(params)
+    contact_card.bucket_id = self.id
     if params.has_key?(:file) && params[:file]
       contact_card.upload_main_asset(params[:file])
     end
