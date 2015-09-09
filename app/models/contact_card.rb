@@ -1,6 +1,6 @@
 class ContactCard < ActiveRecord::Base
   
-  attr_accessible :bucket_id, :contact_info, :media_urls, :media_content_types, :object_type
+  attr_accessible :bucket_id, :contact_info, :contact_details, :media_urls, :media_content_types, :object_type
 
   belongs_to :bucket
 
@@ -8,6 +8,8 @@ class ContactCard < ActiveRecord::Base
 
   serialize :media_content_types, Array
   serialize :media_urls, Array
+
+  serialize :contact_details, Hash
 
   def as_json(options={})
     super(:methods => [:phones, :first_name, :last_name, :name, :record_id, :emails, :note, :birthday, :company])
@@ -20,6 +22,8 @@ class ContactCard < ActiveRecord::Base
   end
 
   # -- GETTERS
+  # CONTACT_INFO IS DEPRECATED
+  # use contact_details in SH
   def first_name
     JSON.parse(self.contact_info)["first_name"]
   end
