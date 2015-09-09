@@ -551,7 +551,7 @@ class Item < ActiveRecord::Base
     items.each do |i|
       users = i.users_array
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (once)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_once", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (once)#{i.nudge_buckets_string(u)}:\n" + i.message, "remind_once", i.media_urls)
       end
     end
   end
@@ -561,7 +561,7 @@ class Item < ActiveRecord::Base
     items.each do |i|
       users = i.users_array
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (daily)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_daily", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (daily)#{i.nudge_buckets_string(u)}:\n" + i.message, "remind_daily", i.media_urls)
       end
     end
   end
@@ -571,7 +571,7 @@ class Item < ActiveRecord::Base
     items.each do |i|
       users = i.users_array
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (weekly)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_weekly", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (weekly)#{i.nudge_buckets_string(u)}:\n" + i.message, "remind_weekly", i.media_urls)
       end
     end
   end
@@ -595,7 +595,7 @@ class Item < ActiveRecord::Base
     items.each do |i|
       users = i.users_array
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (weekly)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_monthly", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (weekly)#{i.nudge_buckets_string(u)}:\n" + i.message, "remind_monthly", i.media_urls)
       end
     end
   end
@@ -606,7 +606,7 @@ class Item < ActiveRecord::Base
     items.each do |i|
       users = i.users_array
       users.each do |u|
-        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (yearly)#{self.nudge_buckets_string(u)}:\n" + i.message, "remind_yearly", i.media_urls)
+        OutgoingMessage.send_text_to_number_with_message_and_reason(u.phone, "Nudge (yearly)#{i.nudge_buckets_string(u)}:\n" + i.message, "remind_yearly", i.media_urls)
       end
     end
   end
