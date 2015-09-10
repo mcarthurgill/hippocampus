@@ -507,7 +507,7 @@ class Item < ActiveRecord::Base
 
   def reminder_frequency_with_nickel_keyword k
     return "yearly" if self.guess_yearly_reminder? && k == 'single'
-    return "yearly" if self.reminder_date < 1.year.ago.to_date && k == 'single'
+    return "yearly" if self.reminder_date < 1.week.ago.to_date && k == 'single'
     return "once" if k == 'single'
     return "monthly" if k == 'daymonthly'
     return "monthly" if k == 'datemonthly'
