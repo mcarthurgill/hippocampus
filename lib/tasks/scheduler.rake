@@ -39,6 +39,17 @@ end
 
 
 
+desc "This removes old reminders"
+task :remove_old_reminders => :environment do
+  p "*"*50
+  p "removing old reminders"
+  Item.remove_old_reminders
+  p "done"
+  p "*"*50
+end
+
+
+
 
 desc "This texts all users about their events today"
 task :send_reminders_about_events => :environment do

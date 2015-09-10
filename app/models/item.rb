@@ -45,6 +45,7 @@ class Item < ActiveRecord::Base
   scope :newest_last, -> { order('"items"."id" ASC') }
   scope :with_reminder, -> { where("reminder_date IS NOT NULL") }
   scope :last_24_hours, -> { where('"items"."created_at" > ? AND "items"."created_at" < ?', 24.hours.ago, Time.now) }
+  scope :since_time_ago, ->(time_ago) { where('"items"."created_at" > ?', time_ago) }
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
@@ -88,6 +89,9 @@ class Item < ActiveRecord::Base
   before_save :extract_links
 
   after_save :index_delayed
+
+  after_save :alter_buckets_delayed
+  before_destroy :alter_buckets
 
   before_destroy :remove_from_engine
 
@@ -639,6 +643,21 @@ class Item < ActiveRecord::Base
     end
   end
   
+  def alter_buckets_delayed
+    self.delay.alter_buckets
+  end
+
+  def alter_buckets
+    self.buckets.each do |b|
+      b.delay.set_relation_level
+    end
+  end
+
+  def self.remove_old_reminders
+    Item.where('item_type = ? AND reminder_date IS NOT NULL AND reminder_date < ?', 'once', (Time.zone.now - 6.hours).to_date).each do |i|
+      i.update_attribute(:reminder_date, nil)
+    end
+  end
 
 
   # algolia

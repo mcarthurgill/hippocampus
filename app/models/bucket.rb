@@ -2,7 +2,7 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :authorized_user_ids, :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :authorized_user_ids, :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :relation_level, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   serialize :authorized_user_ids, Array
 
@@ -266,6 +266,16 @@ class Bucket < ActiveRecord::Base
     self.items.each do |i|
       i.index_delayed
     end
+  end
+
+  def set_relation_level
+    new_level = 'past'
+    if self.items.where('reminder_date IS NOT NULL').count > 0
+      new_level = 'future'
+    elsif self.items.since_time_ago(3.weeks.ago).count > 0
+      new_level = 'recent'
+    end
+    self.update_attribute(:relation_level, new_level) if new_level != self.relation_level
   end
 
 
