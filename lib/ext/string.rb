@@ -30,4 +30,21 @@ class String
     end 
   end
 
+  def cut_off_signatures_and_replies
+    string = "#{self}"
+    index = string.index("\n\n")
+    if index
+      string = string[0...index]
+    end
+    index = string.index("----")
+    if index
+      string = string[0...index]
+    end
+    index = string.index("> > >")
+    if index
+      string = string[0...index]
+    end
+    return string
+  end
+
 end

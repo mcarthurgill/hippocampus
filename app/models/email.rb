@@ -20,7 +20,7 @@ class Email < ActiveRecord::Base
   end
 
   def parsed_text
-    return self.Subject && self.Subject.length > 0 ? "#{self.Subject}\n#{self.body_text}" : self.body_text
+    return self.Subject && self.Subject.length > 0 ? "#{self.Subject}\n#{self.body_text.cut_off_signatures_and_replies}" : self.body_text.cut_off_signatures_and_replies
   end
 
   def body_text
