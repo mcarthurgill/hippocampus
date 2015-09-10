@@ -32,7 +32,11 @@ class String
 
   def cut_off_signatures_and_replies
     string = "#{self}"
-    index = string.index("\n\n")
+    index = string.index("\n\n\n")
+    if index
+      string = string[0...index]
+    end
+    index = string.index("\n--")
     if index
       string = string[0...index]
     end
