@@ -354,6 +354,7 @@ class Item < ActiveRecord::Base
   end
 
   def update_buckets_with_local_keys local_keys
+    self.alter_buckets
     if local_keys && local_keys.count > 0
       self.buckets = Bucket.find_all_by_local_key(local_keys)
       self.update_outstanding
