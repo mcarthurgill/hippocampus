@@ -40,12 +40,12 @@ class MediaController < ApplicationController
   # POST /media
   # POST /media.json
   def create
-    @medium = Medium.new(params[:medium])
+    @medium = Medium.create_with_file_user_id_and_item_id(params[:file], params[:medium][:user_id], params[:medium][:item_id])
 
     respond_to do |format|
-      if @medium.save
+      if @medium
         format.html { redirect_to @medium, notice: 'Medium was successfully created.' }
-        format.json { render json: @medium, status: :created, location: @medium }
+        format.json { render json: @medium.item, status: :created, location: @medium }
       else
         format.html { render action: "new" }
         format.json { render json: @medium.errors, status: :unprocessable_entity }
