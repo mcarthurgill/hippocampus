@@ -270,7 +270,7 @@ class Bucket < ActiveRecord::Base
 
   def set_relation_level
     new_level = 'past'
-    if self.items.where('reminder_date IS NOT NULL').count > 0
+    if self.items.where('(item_type = ? OR item_type = ? OR item_type = ?) OR (reminder_date IS NOT NULL AND reminder_date < ?)', 'daily', 'weekly', 'monthly', 1.month.from_now.to_date).count > 0
       new_level = 'future'
     elsif self.items.since_time_ago(3.weeks.ago).count > 0
       new_level = 'recent'
