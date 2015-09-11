@@ -40,6 +40,9 @@ class MediaController < ApplicationController
   # POST /media
   # POST /media.json
   def create
+    puts 'FILE PARAMETERS ----'
+    puts params[:file]
+    puts 'END PARAMS ---- '
     @medium = Medium.create_with_file_user_id_and_item_id(params[:file], params[:medium][:user_id], params[:medium][:item_id])
 
     respond_to do |format|
