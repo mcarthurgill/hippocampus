@@ -13,6 +13,7 @@ class Medium < ActiveRecord::Base
   # -- CALLBACKS
 
   after_save :update_item_cache
+  after_destroy :update_item_cache
   def update_item_cache
     self.item.update_media_cache if self.item
   end
