@@ -75,7 +75,7 @@ class MediaController < ApplicationController
   # DELETE /media/1
   # DELETE /media/1.json
   def destroy
-    @medium = Medium.find(params[:id])
+    @medium = Medium.find(params[:local_key])
     @medium.destroy
 
     respond_to do |format|
