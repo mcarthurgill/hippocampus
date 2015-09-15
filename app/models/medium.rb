@@ -1,8 +1,8 @@
 class Medium < ActiveRecord::Base
 
-  attr_accessible :duration, :height, :item_id, :media_extension, :media_name, :media_type, :media_url, :thumbnail_url, :user_id, :width
+  attr_accessible :duration, :height, :item_local_key, :local_key, :media_extension, :media_name, :media_type, :media_url, :object_type, :thumbnail_url, :user_id, :width
 
-  belongs_to :item
+  belongs_to :item, class_name: 'Item', foreign_key: 'item_local_key', primary_key: 'local_key'
   belongs_to :user
 
 
@@ -26,6 +26,11 @@ class Medium < ActiveRecord::Base
     end
   end
 
+  after_initialize :set_defaults
+  def set_defaults
+    self.local_key ||= "medium-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
+    self.object_type ||= "medium"
+  end
 
 
 
@@ -38,7 +43,17 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.upload_main_asset(file)
     medium.save!
-    puts '---CREATE METHOD'
+    puts medium.as_json().to_s
+    return medium
+  end
+
+  def self.create_with_file_user_id_item_key_and_local_key file, uid, ik, lk
+    medium = Medium.new
+    medium.user_id = uid
+    medium.item_local_key = ik
+    medium.local_key = lk
+    medium.upload_main_asset(file)
+    medium.save!
     puts medium.as_json().to_s
     return medium
   end
@@ -53,7 +68,7 @@ class Medium < ActiveRecord::Base
   def upload_main_asset file
     public_id = "medium_#{Time.now.to_f}_#{self.user_id}"
 
-    self.media_extension = !file.is_a?(String) ? file.content_type : "image/jpeg"
+    self.media_extension = !file.is_a?(String) && file ? file.content_type : "image/jpeg"
     self.determine_media_type
 
     puts '---UPLOAD METHOD'

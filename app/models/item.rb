@@ -24,7 +24,7 @@ class Item < ActiveRecord::Base
   has_many :sms
   has_many :emails
   has_many :calls
-  has_many :media
+  has_many :media, class_name: 'Medium', foreign_key: 'item_local_key', primary_key: 'local_key'
 
 
 
