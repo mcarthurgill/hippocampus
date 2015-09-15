@@ -28,7 +28,7 @@ class Medium < ActiveRecord::Base
 
   after_initialize :set_defaults
   def set_defaults
-    self.local_key ||= "medium-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
+    self.local_key ||= "medium-#{Time.now.to_f}-#{self.user_id}" if self.user_id
     self.object_type ||= "medium"
   end
 
