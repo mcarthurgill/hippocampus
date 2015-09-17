@@ -148,7 +148,7 @@ class Medium < ActiveRecord::Base
 
           begin
 
-            if !skip && i.media_is_image?(index)
+            if !skip #&& i.media_is_image?(index)
               data = Cloudinary::Api.resource(File.basename(URI.parse(media_url).path, ".*"))
 
               if data
