@@ -18,7 +18,7 @@ class Medium < ActiveRecord::Base
     self.item.update_media_cache if self.item
   end
 
-  after_create :legacy_support
+  # after_create :legacy_support
   def legacy_support
     if self.item && self.media_url
       self.item.add_media_url(self.media_url)
@@ -140,9 +140,9 @@ class Medium < ActiveRecord::Base
 
 
 
-  def self.convert_all_to_objects limit
-    Item.limit(limit).each do |i|
-      if i.media_urls.count > 0
+  def self.convert_all_to_objects
+    Item.all.each do |i|
+      if i.media_urls.count > 0 && (!i.media || i.media.count == 0)
         skip = false
         i.media_urls.each_with_index do |media_url, index|
 
