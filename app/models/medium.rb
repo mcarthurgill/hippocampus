@@ -18,7 +18,7 @@ class Medium < ActiveRecord::Base
     self.item.update_media_cache if self.item
   end
 
-  # after_create :legacy_support
+  after_create :legacy_support
   def legacy_support
     if self.item && self.media_url
       self.item.add_media_url(self.media_url)
@@ -155,6 +155,7 @@ class Medium < ActiveRecord::Base
                 m = Medium.new
                 m.user_id = i.user_id
                 m.item_id = i.id
+                m.item_local_key = i.local_key
                 m.media_extension = "image/jpeg"
                 m.determine_media_type
 
@@ -173,6 +174,7 @@ class Medium < ActiveRecord::Base
                 m = Medium.new
                 m.user_id = i.user_id
                 m.item_id = i.id
+                m.item_local_key = i.local_key
                 m.media_extension = "image/jpeg"
                 m.determine_media_type
 
