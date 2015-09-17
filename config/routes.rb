@@ -2,6 +2,7 @@ Hippocampus::Application.routes.draw do
 
   resources :media
   get 'avatar/:id', :to => 'users#avatar'
+  get 'avatar/:phone/phone', :to => 'users#phone_avatar'
 
 
   resources :calls

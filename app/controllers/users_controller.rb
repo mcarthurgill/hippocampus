@@ -147,6 +147,20 @@ class UsersController < ApplicationController
     if user
       redirect_to user.avatar_path
       return
+    else
+      redirect_to "http://res.cloudinary.com/hbztmvh3r/image/upload/v1440726309/avatar_#{Time.now.to_i%3}.jpg"
+      return
+    end
+  end
+
+  def phone_avatar
+    user = User.find_by_phone(params[:phone])
+    if user
+      redirect_to user.avatar_path
+      return
+    else
+      redirect_to "http://res.cloudinary.com/hbztmvh3r/image/upload/v1440726309/avatar_#{Time.now.to_i%3}.jpg"
+      return
     end
   end
 
