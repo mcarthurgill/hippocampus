@@ -54,6 +54,10 @@ class ItemsController < ApplicationController
           Medium.create_with_file_user_id_and_item_id(params[:item][:file], @item.user_id, @item.id)
         elsif upload_files && params.has_key?(:file) && params[:file]
           Medium.create_with_file_user_id_and_item_id(params[:file], @item.user_id, @item.id)          
+        elsif upload_files && params.has_key?(:media) && params[:media]
+          params[:media].each do |medium|
+            Medium.create_with_file_user_id_and_item_id(medium, @item.user_id, @item.id)
+          end
         end
 
         @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0 && params[:item][:bucket_id].to_i > 0
