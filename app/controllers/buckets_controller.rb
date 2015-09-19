@@ -172,7 +172,7 @@ class BucketsController < ApplicationController
 
     respond_to do |format|
       if user
-        format.json { render json: { :user => user } }
+        format.json { render json: { :user => user, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :creator]) } }
       else
         format.json { render json: bucket.errors, status: :unprocessable_entity }
       end
