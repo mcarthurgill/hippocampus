@@ -35,6 +35,8 @@ Hippocampus::Application.routes.draw do
   resources :bucket_item_pairs, :only => [:create, :destroy]
   match 'destroy_with_bucket_and_item', :to => "bucket_item_pairs#destroy_with_bucket_and_item", :as => "destroy_with_bucket_and_item"
 
+  resources :bucket_user_pairs, :only => [:update]
+
   resources :contact_cards, :only => [:create, :destroy]
 
   resources :device_tokens, :only => [:create]
