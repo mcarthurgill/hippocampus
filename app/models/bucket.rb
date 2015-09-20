@@ -208,7 +208,7 @@ class Bucket < ActiveRecord::Base
     end
   end
 
-  def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code, invited_by_user)
+  def add_collaborators_from_contacts_with_calling_code(contacts_array, calling_code="1", invited_by_user)
     contacts_array.each do |contact|
       if contact[:phones] && contact[:phones].count > 0
         contact[:phones].each do |p|
