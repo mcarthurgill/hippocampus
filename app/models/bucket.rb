@@ -104,7 +104,7 @@ class Bucket < ActiveRecord::Base
   end
 
   def assign_cached_item_message
-    string = self.items.not_deleted.by_date.pluck(:message).first
+    string = self.items.not_deleted.by_date.where("message IS NOT NULL AND message <> ''").pluck(:message).first
     string = string[0...200] if string
     self.cached_item_message = string
   end
