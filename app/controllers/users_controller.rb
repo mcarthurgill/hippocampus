@@ -148,7 +148,7 @@ class UsersController < ApplicationController
       redirect_to user.avatar_path
       return
     else
-      redirect_to "http://res.cloudinary.com/hbztmvh3r/image/upload/v1440726309/avatar_#{Time.now.to_i%3}.jpg"
+      redirect_to "https://res.cloudinary.com/hbztmvh3r/image/upload/v1440726309/avatar_#{Time.now.to_i%3}.jpg"
       return
     end
   end
@@ -159,7 +159,7 @@ class UsersController < ApplicationController
       redirect_to user.avatar_path
       return
     else
-      redirect_to "http://res.cloudinary.com/hbztmvh3r/image/upload/v1440726309/avatar_#{Time.now.to_i%3}.jpg"
+      redirect_to "https://res.cloudinary.com/hbztmvh3r/image/upload/v1440726309/avatar_#{Time.now.to_i%3}.jpg"
       return
     end
   end
