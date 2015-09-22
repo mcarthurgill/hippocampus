@@ -23,6 +23,7 @@
 
   def update_bucket_visibility
     self.bucket.update_bucket_caches
+    self.bucket.delay.update_items_with_new_collaborators
   end
 
 
