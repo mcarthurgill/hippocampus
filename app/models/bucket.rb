@@ -242,7 +242,11 @@ class Bucket < ActiveRecord::Base
   end
 
   def remove_user u
-    BucketUserPair.destroy_for_phone_number_and_bucket(u.phone, self)
+    self.remove_user_with_phone_number(u.phone)
+  end
+
+  def remove_user_with_phone_number phone
+    BucketUserPair.destroy_for_phone_number_and_bucket(phone, self)
   end
 
   def add_to_group_with_id_for_user gid, u
