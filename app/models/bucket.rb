@@ -161,6 +161,12 @@ class Bucket < ActiveRecord::Base
     self.users.include?(u)
   end
 
+  def update_items_with_new_collaborators
+    self.items.each do |i|
+      i.delay.save!
+    end
+  end
+
   def update_items_with_new_bucket_name
     self.items.each do |i|
       i.delay.update_buckets_string
