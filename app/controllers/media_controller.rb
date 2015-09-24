@@ -71,7 +71,7 @@ class MediaController < ApplicationController
     respond_to do |format|
       if @medium
         format.html { redirect_to @medium, notice: 'Medium was successfully created.' }
-        format.json { render json: @medium.item }
+        format.json { render json: @medium }
       else
         format.html { render action: "new" }
         format.json { render json: @medium.errors, status: :unprocessable_entity }
