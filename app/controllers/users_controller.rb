@@ -80,7 +80,7 @@ class UsersController < ApplicationController
         format.html { redirect_to user, notice: 'User updated.' }
         format.json do 
           if params.has_key?(:v) && params[:v].to_f >= 2.0
-            render json: { user } 
+            render json: user
           else
             render json: { user: user }
           end
