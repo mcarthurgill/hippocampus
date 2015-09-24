@@ -78,7 +78,13 @@ class UsersController < ApplicationController
     respond_to do |format|
       if user.update_with_params(params[:user])
         format.html { redirect_to user, notice: 'User updated.' }
-        format.json { render json: { user } }
+        format.json do 
+          if params.has_key?(:v) && params[:v].to_f >= 2.0
+            render json: { user } 
+          else
+            render json: { user: user }
+          end
+        end
       else
         format.html { render action: "edit" }
         format.json { render json: user.errors, status: :unprocessable_entity }
