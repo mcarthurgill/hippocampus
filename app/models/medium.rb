@@ -60,6 +60,15 @@ class Medium < ActiveRecord::Base
     return medium
   end
 
+  def self.create_with_file_and_user_id file, uid
+    medium = Medium.new
+    medium.user_id = uid
+    medium.upload_main_asset(file)
+    medium.save!
+    puts medium.as_json().to_s
+    return medium
+  end
+
 
 
 

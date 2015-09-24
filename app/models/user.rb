@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :calling_code, :country_code, :local_key, :number_items, :number_buckets, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :number_items, :number_buckets, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting
@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   has_many :device_tokens
 
   has_many :media
+
+  belongs_to :medium
 
 
 
@@ -138,6 +140,10 @@ class User < ActiveRecord::Base
     end
     if params[:time_zone] && params[:time_zone].length > 0
       self.assign_attributes(time_zone: params[:time_zone])
+    end
+    if params.has_key?(:file) && params[:file]
+      m = Medium.create_with_file_and_user_id(params[:file], self.id)
+      self.assign_attributes(medium_id: m.id)
     end
     self.save
     return true
