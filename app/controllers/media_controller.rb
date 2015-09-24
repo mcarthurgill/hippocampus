@@ -62,8 +62,8 @@ class MediaController < ApplicationController
     puts 'FILE PARAMETERS ----'
     puts params[:file]
     puts 'END PARAMS ---- '
-    @medium = Medium.create_with_file_and_user_id(params[:file], params[:user_id])
-    user = User.find_by_id(params[:user_id])
+    @medium = Medium.create_with_file_and_user_id(params[:file], params[:medium][:user_id])
+    user = User.find_by_id(params[:medium][:user_id])
     if user
       user.update_attribute(:medium_id, @medium.id)
     end
