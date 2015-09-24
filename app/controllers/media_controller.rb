@@ -56,6 +56,29 @@ class MediaController < ApplicationController
     end
   end
 
+  # POST /media/avatar
+  # POST /media/avatar.json
+  def create_avatar
+    puts 'FILE PARAMETERS ----'
+    puts params[:file]
+    puts 'END PARAMS ---- '
+    @medium = Medium.create_with_file_and_user_id(params[:file], params[:user_id])
+    user = User.find_by_id(params[:user_id])
+    if user
+      user.update_attribute(:medium_id, @medium.id)
+    end
+
+    respond_to do |format|
+      if @medium
+        format.html { redirect_to @medium, notice: 'Medium was successfully created.' }
+        format.json { render json: @medium.item }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @medium.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PUT /media/1
   # PUT /media/1.json
   def update
