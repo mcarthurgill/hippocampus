@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
 
   after_save :set_defaults
   def set_defaults
-    self.local_key ||= "item--#{self.id}"
+    self.local_key ||= "user--#{self.id}"
   end
 
 
