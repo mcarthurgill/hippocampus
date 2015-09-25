@@ -9,6 +9,9 @@ class PushNotification < ActiveRecord::Base
 
   belongs_to :device_token
 
+  belongs_to :item
+  belongs_to :bucket
+
 
 
 
