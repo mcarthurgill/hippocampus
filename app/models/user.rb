@@ -131,6 +131,7 @@ class User < ActiveRecord::Base
   def update_with_params params
     if params[:name] && params[:name].length > 0
       self.update_name(params[:name], true)
+      self.assign_attributes(name: params[:name])
     end
     if params[:setup_completion] && params[:setup_completion].length > 0
       self.update_setup_completion(params[:setup_completion])
