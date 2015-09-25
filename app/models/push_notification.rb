@@ -39,7 +39,11 @@ class PushNotification < ActiveRecord::Base
       n.badge = self.badge_count
     end
     n.content_available = 1
-    n.data = { :item_id => self.item_id, :bucket_id => self.bucket_id }
+    if self.item
+      n.data = { :object_type => self.item.object_type, :local_key => self.item.local_key }
+    elsif self.bucket
+      n.data = { :object_type => self.bucket.object_type, :local_key => self.bucket.local_key }
+    end
     n.save!
   end
 
