@@ -47,3 +47,5 @@ gem 'mandrill-rails'
 gem 'algoliasearch-rails'
 
 gem 'rails_12factor'
+
+gem 'pusher'
