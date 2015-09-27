@@ -116,6 +116,21 @@ class Bucket < ActiveRecord::Base
     self.bucket_type = self.bucket_type ? self.bucket_type.strip : nil
   end
 
+  after_save :push
+  def push
+    Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json())
+  end
+
+  def users_array_for_push
+    arr = []
+    self.authorized_user_ids.each do |uid|
+      arr << "user-#{uid}"
+    end
+    return arr
+  end
+
+
+
 
   # -- CREATORS
 

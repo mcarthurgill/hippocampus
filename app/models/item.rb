@@ -95,6 +95,18 @@ class Item < ActiveRecord::Base
 
   before_destroy :remove_from_engine
 
+  after_save :push
+  def push
+    Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json())
+  end
+
+  def users_array_for_push
+    arr = []
+    self.users_array.each do |u|
+      arr << "user-#{u.id}"
+    end
+    return arr
+  end
 
 
 
