@@ -97,7 +97,7 @@ class Item < ActiveRecord::Base
 
   after_save :push
   def push
-    Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json())
+    Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json()) if self.users_array_for_push.count > 0
   end
 
   def users_array_for_push
