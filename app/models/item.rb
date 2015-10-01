@@ -370,7 +370,7 @@ class Item < ActiveRecord::Base
     local_keys.each do |lk|
       all_local_keys << lk
     end
-    return all_local_keys.uniq
+    return self.update_buckets_with_local_keys(all_local_keys.uniq)
   end
 
   def update_buckets_with_local_keys local_keys
@@ -390,6 +390,8 @@ class Item < ActiveRecord::Base
     self.buckets.each do |b|
       temp << b.local_key if !b.user_has_access?(u)
     end
+    puts "TEMP: "
+    puts temp
     return temp
   end
 
