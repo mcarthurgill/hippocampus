@@ -229,7 +229,7 @@ class ItemsController < ApplicationController
     item = Item.find_by_local_key(params[:local_key])
 
     respond_to do |format|
-      if item.update_buckets_with_local_keys(params[:local_keys])
+      if item.update_buckets_with_local_keys_and_user(params[:local_keys], user)
         format.json { render json: item }
       else
         format.json { render json: item.errors, status: :unprocessable_entity }

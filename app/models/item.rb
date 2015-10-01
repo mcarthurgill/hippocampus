@@ -365,6 +365,14 @@ class Item < ActiveRecord::Base
     self.media_cache = self.media.as_json
   end
 
+  def update_buckets_with_local_keys_and_user local_keys, u
+    all_local_keys = self.bucket_local_keys_without_user_permission(u)
+    local_keys.each do |lk|
+      all_local_keys << lk
+    end
+    return all_local_keys.uniq
+  end
+
   def update_buckets_with_local_keys local_keys
     self.alter_buckets
     if local_keys && local_keys.count > 0
@@ -375,6 +383,14 @@ class Item < ActiveRecord::Base
       self.update_outstanding
     end
     return true
+  end
+
+  def bucket_local_keys_without_user_permission u
+    temp = []
+    self.buckets.each do |b|
+      temp << b.local_key if !b.user_has_access?(u)
+    end
+    return temp
   end
 
 

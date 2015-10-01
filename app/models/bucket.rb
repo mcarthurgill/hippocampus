@@ -196,6 +196,10 @@ class Bucket < ActiveRecord::Base
     return self.users.count > 1
   end
 
+  def user_has_access? u
+    return self.authorized_user_ids.include?(u.id)
+  end
+
   def user_ids_array
     arr = [self.user_id]
     self.users.each do |u|
