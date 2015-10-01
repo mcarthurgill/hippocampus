@@ -367,8 +367,10 @@ class Item < ActiveRecord::Base
 
   def update_buckets_with_local_keys_and_user local_keys, u
     all_local_keys = self.bucket_local_keys_without_user_permission(u)
-    local_keys.each do |lk|
-      all_local_keys << lk
+    if local_keys && local_keys.count > 0
+      local_keys.each do |lk|
+        all_local_keys << lk
+      end
     end
     return self.update_buckets_with_local_keys(all_local_keys.uniq)
   end
