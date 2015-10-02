@@ -5,7 +5,7 @@ class BucketsController < ApplicationController
   def show
 
     @bucket = Bucket.find(params[:id])
-    @user = User.find_by_id(params[:auth][:uid])
+    @user = User.find_by_id(params[:auth][:uid]) if params.has_key?(:auth)
 
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
