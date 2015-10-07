@@ -1,6 +1,6 @@
 class Medium < ActiveRecord::Base
 
-  attr_accessible :duration, :height, :item_local_key, :local_key, :media_extension, :media_name, :media_type, :media_url, :object_type, :thumbnail_url, :user_id, :width
+  attr_accessible :duration, :height, :item_local_key, :local_key, :media_extension, :media_name, :media_type, :media_url, :object_type, :thumbnail_url, :transcription_text, :user_id, :width
 
   belongs_to :item, class_name: 'Item', foreign_key: 'item_local_key', primary_key: 'local_key'
   belongs_to :user
@@ -66,6 +66,18 @@ class Medium < ActiveRecord::Base
     medium.upload_main_asset(file)
     medium.save!
     puts medium.as_json().to_s
+    return medium
+  end
+
+  def self.create_with_call_user_id_and_item_id call, uid, iid
+    medium = Medium.new
+    medium.user_id = uid
+    medium.item_id = iid
+    medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
+    medium.media_type = 'audio'
+    medium.transcription_text = call.TranscriptionText if call.has_transcription?
+    medium.media_url = call.RecordingUrl if call.has_recording?
+    medium.save!
     return medium
   end
 

@@ -94,6 +94,10 @@ class User < ActiveRecord::Base
     return User.find_by_phone(format_phone(phone_number, calling_code))
   end
 
+  def self.with_phone phone_number
+    return User.find_by_phone(format_phone(phone_number))
+  end
+
   def self.with_email e
     return User.find_by_email(e.strip.downcase)
   end
@@ -224,6 +228,13 @@ class User < ActiveRecord::Base
 
   def no_name?
     return self.name.nil? || self.name == "You"
+  end
+
+  def first_name
+    if self.name && self.name.length > 0
+      return self.name.split(' ').first
+    end
+    return nil
   end
 
   #with 1519 Ashwood Ave as current location

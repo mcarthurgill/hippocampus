@@ -130,7 +130,7 @@ class Item < ActiveRecord::Base
     i.save!
 
     sms.MediaUrls.each_with_index do |url, index|
-      Medium.create_with_file_user_id_and_item_id(url, i.user_id, i.id)          
+      Medium.create_with_file_user_id_and_item_id(url, i.user_id, i.id)
     end
 
     return i
@@ -146,6 +146,15 @@ class Item < ActiveRecord::Base
     i.status = 'outstanding'
     i.input_method = 'call'
     i.save!
+    call.assign_attributes(item_id: i.id)
+
+    if call.has_recording?
+      m = Medium.create_with_call_user_id_and_item_id(call, i.user_id, i.id)
+      call.assign_attributes(medium_id: m.id) if m
+    end
+
+    call.save!
+
     return i
   end
 

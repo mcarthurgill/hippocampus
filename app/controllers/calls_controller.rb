@@ -43,7 +43,7 @@ class CallsController < ApplicationController
     @call = Call.new(params)
 
     respond_to do |format|
-      if @call.save
+      if @call.user && @call.save
         format.xml
       end
     end
