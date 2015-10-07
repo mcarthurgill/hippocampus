@@ -129,27 +129,29 @@ class User < ActiveRecord::Base
   end
 
   def update_with_params params
-    if params[:name] && params[:name].length > 0
-      self.update_name(params[:name], true)
-      self.assign_attributes(name: params[:name])
+    if !params.has_key?(:updated_at) || params[:updated_at].to_s.length == 0 || params[:updated_at] >= self.updated_at
+      if params[:name] && params[:name].length > 0
+        self.update_name(params[:name], true)
+        self.assign_attributes(name: params[:name])
+      end
+      if params[:membership] && params[:membership].length > 0
+        self.assign_attributes(membership: params[:membership])
+      end
+      if params[:setup_completion] && params[:setup_completion].length > 0
+        self.update_setup_completion(params[:setup_completion])
+      end
+      if params[:percentage] && params[:percentage].length > 0
+        self.update_setup_completion(params[:percentage])
+      end
+      if params[:time_zone] && params[:time_zone].length > 0
+        self.assign_attributes(time_zone: params[:time_zone])
+      end
+      if params.has_key?(:file) && params[:file]
+        m = Medium.create_with_file_and_user_id(params[:file], self.id)
+        self.assign_attributes(medium_id: m.id)
+      end
+      self.save
     end
-    if params[:membership] && params[:membership].length > 0
-      self.assign_attributes(membership: params[:membership])
-    end
-    if params[:setup_completion] && params[:setup_completion].length > 0
-      self.update_setup_completion(params[:setup_completion])
-    end
-    if params[:percentage] && params[:percentage].length > 0
-      self.update_setup_completion(params[:percentage])
-    end
-    if params[:time_zone] && params[:time_zone].length > 0
-      self.assign_attributes(time_zone: params[:time_zone])
-    end
-    if params.has_key?(:file) && params[:file]
-      m = Medium.create_with_file_and_user_id(params[:file], self.id)
-      self.assign_attributes(medium_id: m.id)
-    end
-    self.save
     return true
   end
 
