@@ -133,6 +133,9 @@ class User < ActiveRecord::Base
       self.update_name(params[:name], true)
       self.assign_attributes(name: params[:name])
     end
+    if params[:membership] && params[:membership].length > 0
+      self.assign_attributes(membership: params[:membership])
+    end
     if params[:setup_completion] && params[:setup_completion].length > 0
       self.update_setup_completion(params[:setup_completion])
     end
