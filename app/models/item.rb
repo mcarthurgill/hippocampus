@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :message_html_cache, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
+  attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message_html_cache, :message_html_cache, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
 
   serialize :media_cache, JSON
   serialize :media_content_types, Array
@@ -730,4 +730,3 @@ class Item < ActiveRecord::Base
 
 
 end
-
