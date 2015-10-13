@@ -170,4 +170,8 @@ class UsersController < ApplicationController
     end
   end
 
+  def upcoming_nudges
+    user = User.find_by_id(params[:id])
+  end
+
 end

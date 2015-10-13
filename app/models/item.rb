@@ -34,7 +34,7 @@ class Item < ActiveRecord::Base
   scope :outstanding, -> { where("status = ?", "outstanding").includes(:user) } 
   scope :assigned, -> { where("status = ?", "assigned").includes(:user) } 
   scope :not_deleted, -> { where("status != ?", "deleted") }
-  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", (Time.zone.now - 6.hours).to_date, "once").includes(:user) } 
+  scope :notes_for_today, -> { where("reminder_date = ? AND item_type = ?", (Time.zone.now - 6.hours).to_date, "once").includes(:user) }
   scope :daily, -> { where("item_type = ?", "daily").includes(:user) } 
   scope :weekly, -> { where("item_type = ?", "weekly").includes(:user) } 
   scope :monthly, -> { where("item_type = ?", "monthly").includes(:user) } 
@@ -49,6 +49,7 @@ class Item < ActiveRecord::Base
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
+  scope :with_monthly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('extract(day from reminder_date) >= ? '+(today.day <= (today+timeframe).day ? 'AND' : 'OR')+' extract(day from reminder_date) <= ?', today.day, (today+timeframe).day).monthly.not_deleted }
 
 
 
