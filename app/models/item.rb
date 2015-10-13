@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
 
-  attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
+  attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :message_html_cache, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
 
   serialize :media_cache, JSON
   serialize :media_content_types, Array
@@ -162,6 +162,7 @@ class Item < ActiveRecord::Base
   def self.create_with_email(email)
     i = Item.new
     i.message = email.parsed_text
+    i.message_html_cache = email.HtmlBody
     i.user = email.user
     i.item_type = 'once'
     i.status = 'outstanding'

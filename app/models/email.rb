@@ -37,7 +37,7 @@ class Email < ActiveRecord::Base
     e.HtmlBody = e.mandrill_events["msg"]["html"]
     e.From = e.mandrill_events["msg"]["from_email"].downcase.strip
     if e.From == 'elizabeth.kirby@bain.com'.downcase.strip
-      e.From == 'ewk4cx@virginia.edu'.downcase.strip
+      e.From = 'ewk4cx@virginia.edu'.downcase.strip
     end
     e.FromName = e.mandrill_events["msg"]["from_name"]
     e.To = e.mandrill_events["msg"]["email"]
