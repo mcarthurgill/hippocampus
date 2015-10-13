@@ -118,7 +118,10 @@ class Bucket < ActiveRecord::Base
 
   after_save :push
   def push
-    Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json()) if self.users_array_for_push.count > 0
+    begin
+      Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json()) if self.users_array_for_push.count > 0
+    rescue Pusher::Error => e
+    end
   end
 
   def users_array_for_push
