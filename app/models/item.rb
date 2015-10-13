@@ -49,7 +49,8 @@ class Item < ActiveRecord::Base
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   
-  scope :with_monthly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('extract(day from reminder_date) >= ? '+(today.day <= (today+timeframe).day ? 'AND' : 'OR')+' extract(day from reminder_date) <= ?', today.day, (today+timeframe).day).monthly.not_deleted }
+  # scope :with_monthly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('extract(day from reminder_date) >= ? '+(today.day <= (today+timeframe).day && (timeframe < 2.days || today.day != (today+timeframe).day) ? 'AND' : 'OR')+' extract(day from reminder_date) <= ?', today.day, (today+timeframe).day).monthly.not_deleted }
+  # scope :with_yearly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('((extract(month from reminder_date) >= ? AND extract(day from reminder_date) >= ?) OR extract(month from reminder_date) > ?) '+(today.month <= (today+timeframe).month && (timeframe < 2.months || today.month != (today+timeframe).month) ? 'AND' : 'OR')+' ((extract(month from reminder_date) <= ? AND extract(day from reminder_date)) <= ? OR extract(month from reminder_date) < ?)', today.month, today.day, today.month, (today+timeframe).month, (today+timeframe).day, (today+timeframe).month).yearly.not_deleted }
 
 
 
@@ -645,6 +646,7 @@ class Item < ActiveRecord::Base
 
   def self.remind_about_monthly_items
     items = Item.where('extract(day from reminder_date) = ?', (Time.zone.now - 6.hours).to_date.day).monthly.not_deleted
+    # items = Item.with_monthly_nudge_within_timeframe(0.days)
 
     items.each do |i|
       users = i.users_array
