@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150521162200) do
+ActiveRecord::Schema.define(:version => 20151013192805) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -23,8 +23,9 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
   create_table "bucket_item_pairs", :force => true do |t|
     t.integer  "bucket_id"
     t.integer  "item_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.string   "object_type", :default => "bucket_item_pair"
   end
 
   add_index "bucket_item_pairs", ["bucket_id"], :name => "index_bucket_item_pairs_on_bucket_id"
@@ -33,13 +34,14 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
 
   create_table "bucket_user_pairs", :force => true do |t|
     t.integer  "bucket_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.string   "phone_number"
     t.string   "name",         :default => "You"
     t.datetime "last_viewed"
     t.string   "unseen_items", :default => "no"
     t.integer  "group_id"
+    t.string   "object_type",  :default => "bucket_user_pair"
   end
 
   add_index "bucket_user_pairs", ["bucket_id"], :name => "index_bucket_user_pairs_on_bucket_id"
@@ -52,12 +54,18 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
     t.string   "last_name"
     t.text     "description"
     t.integer  "user_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.string   "bucket_type"
-    t.integer  "items_count",     :default => 0
-    t.string   "visibility",      :default => "private"
+    t.integer  "items_count",         :default => 0
+    t.string   "visibility",          :default => "private"
     t.integer  "creation_reason"
+    t.text     "authorized_user_ids"
+    t.string   "object_type",         :default => "bucket"
+    t.string   "local_key"
+    t.float    "device_timestamp"
+    t.string   "cached_item_message"
+    t.string   "relation_level",      :default => "recent"
   end
 
   add_index "buckets", ["id"], :name => "index_buckets_on_id"
@@ -103,15 +111,18 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
     t.string   "TranscriptionStatus"
     t.string   "TranscriptionUrl"
     t.integer  "item_id"
+    t.integer  "medium_id"
   end
 
   create_table "contact_cards", :force => true do |t|
     t.integer  "bucket_id"
     t.text     "contact_info"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.text     "media_urls"
     t.text     "media_content_types"
+    t.string   "object_type",         :default => "contact_card"
+    t.text     "contact_details"
   end
 
   add_index "contact_cards", ["bucket_id"], :name => "index_contact_cards_on_bucket_id"
@@ -145,8 +156,9 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
     t.string   "ios_device_token"
     t.integer  "user_id"
     t.string   "environment"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.string   "object_type",          :default => "device_token"
   end
 
   add_index "device_tokens", ["id"], :name => "index_device_tokens_on_id"
@@ -183,8 +195,9 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
     t.string   "group_name"
     t.integer  "user_id"
     t.integer  "number_buckets", :default => 0
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.string   "object_type",    :default => "group"
   end
 
   add_index "groups", ["id"], :name => "index_groups_on_id"
@@ -225,12 +238,37 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
     t.float    "device_request_timestamp"
     t.text     "links"
     t.string   "audio_url"
+    t.text     "buckets_array"
+    t.string   "object_type",              :default => "item"
+    t.string   "local_key"
+    t.text     "media_cache"
+    t.text     "message_html_cache"
+    t.text     "message_full_cache"
   end
 
   add_index "items", ["id"], :name => "index_items_on_id"
   add_index "items", ["latitude"], :name => "index_items_on_latitude"
   add_index "items", ["longitude"], :name => "index_items_on_longitude"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
+
+  create_table "media", :force => true do |t|
+    t.string   "media_url"
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "media_type"
+    t.string   "media_extension"
+    t.string   "media_name"
+    t.integer  "user_id"
+    t.integer  "item_id"
+    t.string   "thumbnail_url"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.float    "duration"
+    t.string   "item_local_key"
+    t.string   "local_key"
+    t.string   "object_type",        :default => "medium"
+    t.text     "transcription_text"
+  end
 
   create_table "outgoing_messages", :force => true do |t|
     t.string   "to_number"
@@ -357,22 +395,15 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
   create_table "tokens", :force => true do |t|
     t.string   "token_string"
     t.integer  "user_id"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "addon_id"
     t.string   "status",       :default => "live"
+    t.string   "object_type",  :default => "token"
   end
 
   add_index "tokens", ["id"], :name => "index_tokens_on_id"
   add_index "tokens", ["user_id"], :name => "index_tokens_on_user_id"
-
-  create_table "twilio_messengers", :force => true do |t|
-    t.string   "body"
-    t.string   "to_number"
-    t.string   "from_number"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
 
   create_table "use_cases", :force => true do |t|
     t.text     "text"
@@ -395,6 +426,10 @@ ActiveRecord::Schema.define(:version => 20150521162200) do
     t.integer  "setup_completion", :default => 25
     t.string   "time_zone",        :default => "America/Chicago"
     t.string   "salt"
+    t.string   "object_type",      :default => "user"
+    t.string   "local_key"
+    t.integer  "medium_id"
+    t.string   "membership",       :default => "none"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

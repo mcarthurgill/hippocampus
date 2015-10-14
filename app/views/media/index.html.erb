@@ -2,38 +2,30 @@
 
 <table>
   <tr>
-    <th>Media url</th>
-    <th>Width</th>
-    <th>Height</th>
-    <th>Media type</th>
-    <th>Media extension</th>
-    <th>Media name</th>
-    <th>User</th>
-    <th>Item</th>
-    <th>Thumbnail url</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th style="text-align:center">User</th>
+    <th style="text-align:center">Medium</th>
+    <th style="text-align:center">Transcription Text</th>
+    <th style="text-align:center">Created</th>
   </tr>
 
 <% @media.each do |medium| %>
-  <tr>
-    <td><%= medium.media_url %></td>
-    <td><%= medium.width %></td>
-    <td><%= medium.height %></td>
-    <td><%= medium.media_type %></td>
-    <td><%= medium.media_extension %></td>
-    <td><%= medium.media_name %></td>
-    <td><%= medium.user_id %></td>
-    <td><%= medium.item_id %></td>
-    <td><%= medium.thumbnail_url %></td>
-    <td><%= link_to 'Show', medium %></td>
-    <td><%= link_to 'Edit', edit_medium_path(medium) %></td>
-    <td><%= link_to 'Destroy', medium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+    <% if medium.user %>
+      <tr>
+        <td><%= medium.user.name ? link_to(medium.user.name, edit_medium_path(medium)) : link_to(medium.user.phone, edit_medium_path(medium)) %></td>
+        <td style="width:300px; height:200px; text-align:center;">
+            <% if medium.media_type == "video" %>
+                <video width="200" controls>
+                  <source src=<%= medium.media_url %> type="video/mp4">
+                </video>
+            <% else %>
+                <%= cl_image_tag(medium.media_url, :width=>200, :height=>200, :crop=>:fill) %>
+            <% end %>
+        </td>
+        <td style="text-align:center"><%= medium.transcription_text %></td>
+        <td style="text-align:center"><%= time_ago_in_words(medium.created_at) %> ago</td>
+      </tr>
+    <% end %> 
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New Medium', new_medium_path %>

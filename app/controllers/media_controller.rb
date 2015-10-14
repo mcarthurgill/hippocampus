@@ -2,11 +2,12 @@ class MediaController < ApplicationController
   # GET /media
   # GET /media.json
   def index
-    @media = Medium.all
+    @media = Medium.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15, 81).order('id DESC').limit(512)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @media }
+    if params.has_key?(:admin) && params[:admin] == 'snickers'
+      render layout: false
+    else
+      render nothing: true
     end
   end
 
@@ -86,7 +87,7 @@ class MediaController < ApplicationController
 
     respond_to do |format|
       if @medium.update_attributes(params[:medium])
-        format.html { redirect_to @medium, notice: 'Medium was successfully updated.' }
+        format.html { redirect_to media_path(:admin => "snickers"), notice: 'Medium was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
