@@ -87,7 +87,7 @@ class MediaController < ApplicationController
 
     respond_to do |format|
       if @medium.update_attributes(params[:medium])
-        format.html { redirect_to media_path, notice: 'Medium was successfully updated.' }
+        format.html { redirect_to media_path(:admin => "snickers"), notice: 'Medium was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
