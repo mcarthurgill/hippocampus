@@ -1,3 +1,11 @@
+<% if @medium.media_type == "video" %>
+    <video width="200" controls>
+      <source src=<%= @medium.media_url %> type="video/mp4">
+    </video>
+<% else %>
+    <%= cl_image_tag(@medium.media_url, :width=>200, :height=>200, :crop=>:fill) %>
+<% end %>
+
 <%= form_for(@medium) do |f| %>
   <% if @medium.errors.any? %>
     <div id="error_explanation">
@@ -10,43 +18,11 @@
       </ul>
     </div>
   <% end %>
-
   <div class="field">
-    <%= f.label :media_url %><br />
-    <%= f.text_field :media_url %>
+    <%= f.label :transcription_text %><br />
+    <%= f.text_field :transcription_text, :style => "width:500px;" %>
   </div>
-  <div class="field">
-    <%= f.label :width %><br />
-    <%= f.number_field :width %>
-  </div>
-  <div class="field">
-    <%= f.label :height %><br />
-    <%= f.number_field :height %>
-  </div>
-  <div class="field">
-    <%= f.label :media_type %><br />
-    <%= f.text_field :media_type %>
-  </div>
-  <div class="field">
-    <%= f.label :media_extension %><br />
-    <%= f.text_field :media_extension %>
-  </div>
-  <div class="field">
-    <%= f.label :media_name %><br />
-    <%= f.text_field :media_name %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :item_id %><br />
-    <%= f.number_field :item_id %>
-  </div>
-  <div class="field">
-    <%= f.label :thumbnail_url %><br />
-    <%= f.text_field :thumbnail_url %>
-  </div>
+  <br>
   <div class="actions">
     <%= f.submit %>
   </div>
