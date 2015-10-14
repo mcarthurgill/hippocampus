@@ -3,7 +3,7 @@
       <source src=<%= @medium.media_url %> type="video/mp4">
     </video>
 <% else %>
-    <%= cl_image_tag(@medium.media_url) %>
+    <%= cl_image_tag(@medium.media_url, :height=>400) %>
 <% end %>
 
 <%= form_for(@medium) do |f| %>
