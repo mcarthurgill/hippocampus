@@ -4,9 +4,10 @@ class MediaController < ApplicationController
   def index
     @media = Medium.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15, 81).order('id DESC').limit(512)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @media }
+    if params.has_key?(:admin) && params[:admin] == 'snickers'
+      render layout: false
+    else
+      render nothing: true
     end
   end
 
