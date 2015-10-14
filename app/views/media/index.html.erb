@@ -8,9 +8,9 @@
   </tr>
 
 <% @media.each do |medium| %>
-    <% if User.find(medium.user_id) %>
+    <% if medium.user %>
       <tr>
-        <td><%= User.find(medium.user_id).name ? link_to(User.find(medium.user_id).name, edit_medium_path(medium)) : link_to(User.find(medium.user_id).phone, edit_medium_path(medium)) %></td>
+        <td><%= medium.user.name ? link_to(medium.user.name, edit_medium_path(medium)) : link_to(medium.user.phone, edit_medium_path(medium)) %></td>
         <td style="width:300px; height:200px; text-align:center;">
             <% if medium.media_type == "video" %>
                 <video width="200" controls>
