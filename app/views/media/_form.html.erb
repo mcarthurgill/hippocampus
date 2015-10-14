@@ -1,9 +1,9 @@
 <% if @medium.media_type == "video" %>
-    <video width="200" controls>
+    <video width="400" controls>
       <source src=<%= @medium.media_url %> type="video/mp4">
     </video>
 <% else %>
-    <%= cl_image_tag(@medium.media_url, :width=>200, :height=>200, :crop=>:fill) %>
+    <%= cl_image_tag(@medium.media_url) %>
 <% end %>
 
 <%= form_for(@medium) do |f| %>
