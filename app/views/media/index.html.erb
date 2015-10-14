@@ -5,6 +5,7 @@
     <th style="text-align:center">User</th>
     <th style="text-align:center">Medium</th>
     <th style="text-align:center">Transcription Text</th>
+    <th style="text-align:center">Created</th>
   </tr>
 
 <% @media.each do |medium| %>
@@ -21,6 +22,7 @@
             <% end %>
         </td>
         <td style="text-align:center"><%= medium.transcription_text %></td>
+        <td style="text-align:center"><%= time_ago_in_words(medium.created_at) %> ago</td>
       </tr>
     <% end %> 
 <% end %>
