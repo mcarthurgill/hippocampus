@@ -71,12 +71,12 @@ task :seven_day_tutorial => :environment do
 
   messages = [
     "Day 9 of 9: Curious about the bucket color coding system?\n\nGreen = you have a nudge set within the next 3 weeks.\nBlue = you've added a thought within the last 3 weeks.\nOrange = neither of those are true.\n\nThis is how Katie can see her network at a glance.",
-    "Day 8 of 9: Buckets can be collaborative. This is how Katie and Will collaborate on their investors bucket: https://youtu.be/VJ4O-nS1Tho (13 second video)",
-    "Day 7 of 9: You can assign a thought to multiple buckets. This is how Katie organizes her potential investors: https://youtu.be/-KY0Jbz99HA (12 second video)",
-    "Day 6 of 9: Hippo lets you search your brain! This is how Katie recalls the name of someone when she only remembers where they met: https://youtu.be/_vvwDH09BbE (6 second video)",
-    "Day 5 of 9: Include a date in your thought to automatically create a nudge. This is how Katie remembers when her friends are leaving for vacation: https://youtu.be/ocHnA2Mnnik (6 second video)",
-    "Day 4 of 9: You can text this number at any time to save a thought. This is how Katie jots down names of people she just met: https://youtu.be/u6gJsJR9egM (8 second video)",
-    "Day 3 of 9: Add a thought to a bucket by swiping to the left. This is how Katie remembers details about her clients: https://youtu.be/wTlNAQ3kQ7s (10 second video)",
+    "Day 8 of 9: Buckets can be collaborative.\n\nThis is how Katie and Will collaborate on their investors bucket: https://youtu.be/VJ4O-nS1Tho (13 second video)",
+    "Day 7 of 9: You can assign a thought to multiple buckets.\n\nThis is how Katie organizes her potential investors: https://youtu.be/-KY0Jbz99HA (12 second video)",
+    "Day 6 of 9: Hippo lets you search your brain!\n\nThis is how Katie recalls the name of someone when she only remembers where they met: https://youtu.be/_vvwDH09BbE (6 second video)",
+    "Day 5 of 9: Include a date in your thought to automatically create a nudge.\n\nThis is how Katie remembers when her friends are leaving for vacation: https://youtu.be/ocHnA2Mnnik (6 second video)",
+    "Day 4 of 9: You can text this number at any time to save a thought.\n\nThis is how Katie jots down names of people she just met: https://youtu.be/u6gJsJR9egM (8 second video)",
+    "Day 3 of 9: Add a thought to a bucket by swiping to the left.\n\nThis is how Katie remembers details about her clients: https://youtu.be/wTlNAQ3kQ7s (10 second video)",
     "Day 2 of 9: Yesterday was the first day of your nine day tutorial.\n\nDid you know you can swipe right on a thought to set a nudge? This is how Katie remembers great gift ideas: https://youtu.be/ql6kYfOvBAg (9 second video)"
   ]
   media_urls = [
