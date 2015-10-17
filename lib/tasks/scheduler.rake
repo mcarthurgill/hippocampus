@@ -70,14 +70,26 @@ task :seven_day_tutorial => :environment do
   p "texting users going through the tutorial"
 
   messages = [
-    "Day 7 of 7: \"About 15% of one's financial success is due to one's technical knowledge and about 85% is due to skill in human engineering - to personality and the ability to lead people.\" \n\nSuccessful people write things down. Today, ask a coworker about their ambitions and put it into your Hippocampus.",
-    "Day 6 of 7: \"Talk to someone about themselves and they'll listen for hours.\" \n\nThis afternoon, text a friend how their job is going and store their answer in your Hippocampus.",
-    "Day 5 of 7: \"Information not found in notes has just a 5% chance of being remembered.\" \n\nStore a thought that surprises or interests you today in your Hippocampus.",
-    "Day 4 of 7: \"We are interested in others when they are interested in us.\" \n\nAsk a friend what their favorite restaurant is and text it to your Hippocampus.",
-    "Day 3 of 7: \"A person's name is to that person the sweetest and most important sound in any language.\" \n\nToday, store in your Hippocampus the name of the first new person you meet.",
-    "Day 2 of 7: Yesterday you completed the first day of your seven day tutorial. Build a habit of storing thoughts in your Hippocampus to show people they matter. \n\nToday, text your Hippocampus something you learn about a friend or a coworker."
+    "Day 9 of 9: Curious about the bucket color coding system?\n\nGreen = you have a nudge set within the next 3 weeks.\nBlue = you've added a thought within the last 3 weeks.\nOrange = neither of those are true.\n\nThis is how Katie can see her network at a glance.",
+    "Day 8 of 9: Buckets can be collaborative. This is how Katie and Will collaborate on their investors bucket: https://youtu.be/VJ4O-nS1Tho (13 second video)",
+    "Day 7 of 9: You can assign a thought to multiple buckets. This is how Katie organizes her potential investors: https://youtu.be/-KY0Jbz99HA (12 second video)",
+    "Day 6 of 9: Hippo lets you search your brain! This is how Katie recalls the name of someone when she only remembers where they met: https://youtu.be/_vvwDH09BbE (6 second video)",
+    "Day 5 of 9: Include a date in your thought to automatically create a nudge. This is how Katie remembers when her friends are leaving for vacation: https://youtu.be/ocHnA2Mnnik (6 second video)",
+    "Day 4 of 9: You can text this number at any time to save a thought. This is how Katie jots down names of people she just met: https://youtu.be/u6gJsJR9egM (8 second video)",
+    "Day 3 of 9: Add a thought to a bucket by swiping to the left. This is how Katie remembers details about her clients: https://youtu.be/wTlNAQ3kQ7s (10 second video)",
+    "Day 2 of 9: Yesterday was the first day of your nine day tutorial.\n\nDid you know you can swipe right on a thought to set a nudge? This is how Katie remembers great gift ideas: https://youtu.be/ql6kYfOvBAg (9 second video)"
   ]
-  reasons = ["day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
+  media_urls = [
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042361/color_coding_rtmx9j.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042362/add_collaborator_arfyt3.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042361/multiple_buckets_zfqgob.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042361/search_word_networking_gzhogr.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042362/auto_nudge_eaaaf4.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042362/text_hippo_cnmgqk.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042362/add_to_bucket_a3s1jd.png",
+    "http://res.cloudinary.com/hbztmvh3r/image/upload/v1445042362/set_nudge_btuuir.png"
+  ]
+  reasons = ["day_9", "day_8", "day_7", "day_6", "day_5", "day_4", "day_3", "day_2", "day_1"]
   exclude_phones = []
   reasons.each_with_index do |r, i| 
     exclude_phones << OutgoingMessage.completed_with_reason(r)
@@ -90,7 +102,7 @@ task :seven_day_tutorial => :environment do
 
     phones_to_text.each do |p|
       p "texting #{p} - #{messages[i]}"
-      OutgoingMessage.send_text_to_number_with_message_and_reason(p, messages[i], r)
+      OutgoingMessage.send_text_to_number_with_message_and_reason(p, messages[i], r, media_urls[i])
     end
   end
 
