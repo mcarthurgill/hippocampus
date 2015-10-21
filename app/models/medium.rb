@@ -147,7 +147,7 @@ class Medium < ActiveRecord::Base
     p "$"*50 
     p path
     p "$"*50
-    img_to_transcribe = RTesseract.new(path)
+    img_to_transcribe = RTesseract.new(Rails.root.join(path))
     self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     p self.transcription_text
     p "$"*50
