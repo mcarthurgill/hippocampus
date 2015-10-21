@@ -96,7 +96,7 @@ class Medium < ActiveRecord::Base
 
     puts '---UPLOAD METHOD'
     puts self.as_json().to_s
-    
+
     if self.is_image?
       data = self.upload_image_to_cloudinary(file, public_id, "jpg")
       puts '---IS IMAGE METHOD'
@@ -107,7 +107,10 @@ class Medium < ActiveRecord::Base
         self.width = data["width"]
         self.height = data["height"]
         self.media_name = data["public_id"]
-        # self.set_transcription_text(file.tempfile.path)
+        p "*"*50 
+        p file.tempfile.path
+        p "*"*50
+        self.set_transcription_text(file.tempfile.path)
       end
     elsif self.is_video?
       data = self.upload_video_to_cloudinary(file, public_id)
@@ -142,6 +145,11 @@ class Medium < ActiveRecord::Base
   def set_transcription_text path
     img_to_transcribe = RTesseract.new(path)
     self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    p "$"*50 
+    p path
+    p "$"*50
+    p self.transcription_text
+    p "$"*50
   end
 
   def upload_image_to_cloudinary(file, public_id, format)

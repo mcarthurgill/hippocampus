@@ -51,7 +51,7 @@ class ItemsController < ApplicationController
       if @item.save
 
         if upload_files && params[:item].has_key?(:file) && params[:item][:file]
-          Medium.create_with_file_user_id_and_item_id(params[:item][:file], @item.user_id, @item.id)
+          Medium.create_with_file_user_id_and_item_id(f, @item.user_id, @item.id)
         elsif upload_files && params.has_key?(:file) && params[:file]
           Medium.create_with_file_user_id_and_item_id(params[:file], @item.user_id, @item.id)          
         elsif upload_files && params.has_key?(:media) && params[:media]
