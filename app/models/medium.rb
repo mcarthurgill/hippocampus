@@ -96,7 +96,7 @@ class Medium < ActiveRecord::Base
 
     puts '---UPLOAD METHOD'
     puts self.as_json().to_s
-
+    
     if self.is_image?
       data = self.upload_image_to_cloudinary(file, public_id, "jpg")
       puts '---IS IMAGE METHOD'
@@ -107,7 +107,7 @@ class Medium < ActiveRecord::Base
         self.width = data["width"]
         self.height = data["height"]
         self.media_name = data["public_id"]
-        self.set_transcription_text(file.tempfile.path)
+        # self.set_transcription_text(file.tempfile.path)
       end
     elsif self.is_video?
       data = self.upload_video_to_cloudinary(file, public_id)
