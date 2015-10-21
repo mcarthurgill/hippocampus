@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def send_introduction_text
-    message = "Hippocampus. \nTo be interesting, be interested. \n\nWelcome! Most people use Hippocampus to remember a friend's birthday, the name of someone they met at a party, or a profound quote. Text Hippocampus anything you don't want to forget and start making people feel like they matter. \n\nHere are two questions to get you started: \n\n1) Who was the last person you met and what did you learn about them? (reply to this text)"
+    message = "Hippo.\nInvest in your network.\n\nPeople use Hippo to invest in their networks. They use it to remember a friend's birthday, the name of someone they met at a party, or a profound quote. Text Hippo anything you don't want to forget and start showing people they matter. \n\nHere are two questions to get you started: \n\n1) Who was the last person you met and what did you learn about them? (reply to this text)"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
 
