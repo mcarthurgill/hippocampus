@@ -51,4 +51,4 @@ gem 'rails_12factor'
 
 gem 'pusher'
 gem 'rmagick'
-gem 'rtesseract', '~> 1.3', '>= 1.3.1'
+gem 'rtesseract'
