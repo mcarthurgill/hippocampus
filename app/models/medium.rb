@@ -43,8 +43,10 @@ class Medium < ActiveRecord::Base
     medium.user_id = uid
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
+    tmp_filepath = file.tempfile.path
     medium.upload_main_asset(file)
     medium.save!
+    medium.delay.set_transcription_text(tmp_filepath)
     puts medium.as_json().to_s
     return medium
   end
@@ -54,8 +56,10 @@ class Medium < ActiveRecord::Base
     medium.user_id = uid
     medium.item_local_key = ik
     medium.local_key = lk
+    tmp_filepath = file.tempfile.path
     medium.upload_main_asset(file)
     medium.save!
+    medium.delay.set_transcription_text(tmp_filepath)
     puts medium.as_json().to_s
     return medium
   end
@@ -63,8 +67,10 @@ class Medium < ActiveRecord::Base
   def self.create_with_file_and_user_id file, uid
     medium = Medium.new
     medium.user_id = uid
+    tmp_filepath = file.tempfile.path
     medium.upload_main_asset(file)
     medium.save!
+    medium.delay.set_transcription_text(tmp_filepath)
     puts medium.as_json().to_s
     return medium
   end
@@ -107,7 +113,6 @@ class Medium < ActiveRecord::Base
         self.width = data["width"]
         self.height = data["height"]
         self.media_name = data["public_id"]
-        self.delay.set_transcription_text(file.tempfile.path)
       end
     elsif self.is_video?
       data = self.upload_video_to_cloudinary(file, public_id)
