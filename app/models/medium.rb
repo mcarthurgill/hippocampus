@@ -45,12 +45,7 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
-    p "*"*50
-    p file.path.to_s
-    p "*"*50
-    t = medium.delay.set_transcription_text(file)
-    p t
-    p "*"*50
+    medium.delay.set_transcription_text(file)
     puts medium.as_json().to_s
     return medium
   end
@@ -146,7 +141,7 @@ class Medium < ActiveRecord::Base
   end
 
   def set_transcription_text file
-    img_to_transcribe = RTesseract.new(file.tempfile.path.to_s)
+    img_to_transcribe = RTesseract.new(file.tempfile.path.to_s, :processor => "mini_magick")
     transcription = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     self.transcription_text = transcription
     self.save
