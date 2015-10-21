@@ -90,7 +90,7 @@ class Medium < ActiveRecord::Base
 
   def upload_main_asset file
     public_id = "medium_#{Time.now.to_f}_#{self.user_id}"
-
+    tmp_path = file.tempfile.path
     self.media_extension = !file.is_a?(String) && file ? file.content_type : "image/jpeg"
     self.determine_media_type
 
@@ -109,8 +109,9 @@ class Medium < ActiveRecord::Base
         self.media_name = data["public_id"]
         p "*"*50 
         p file.tempfile.path
+        p tmp_path
         p "*"*50
-        self.set_transcription_text(file.tempfile.path)
+        self.set_transcription_text(tmp_path)
       end
     elsif self.is_video?
       data = self.upload_video_to_cloudinary(file, public_id)
@@ -143,11 +144,11 @@ class Medium < ActiveRecord::Base
   end
 
   def set_transcription_text path
-    img_to_transcribe = RTesseract.new(path)
-    self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     p "$"*50 
     p path
     p "$"*50
+    img_to_transcribe = RTesseract.new(path)
+    self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     p self.transcription_text
     p "$"*50
   end
