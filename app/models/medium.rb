@@ -142,7 +142,10 @@ class Medium < ActiveRecord::Base
 
   def set_transcription_text file
     img_to_transcribe = RTesseract.new(file.path.to_s)
+    p "*"*50
+    p file.path.to_s
     self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    self.save
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
