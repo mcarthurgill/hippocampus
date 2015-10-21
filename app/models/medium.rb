@@ -48,7 +48,9 @@ class Medium < ActiveRecord::Base
     p "*"*50
     p file.path.to_s
     p "*"*50
-    medium.delay.set_transcription_text(file)
+    t = medium.delay.set_transcription_text(file)
+    p t
+    p "*"*50
     puts medium.as_json().to_s
     return medium
   end
@@ -144,9 +146,11 @@ class Medium < ActiveRecord::Base
   end
 
   def set_transcription_text file
-    img_to_transcribe = RTesseract.new(file.path.to_s)
-    self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    img_to_transcribe = RTesseract.new(file.tempfile.path.to_s)
+    transcription = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    self.transcription_text = transcription
     self.save
+    return transcription
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
