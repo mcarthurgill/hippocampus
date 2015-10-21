@@ -106,10 +106,7 @@ class Medium < ActiveRecord::Base
         self.width = data["width"]
         self.height = data["height"]
         self.media_name = data["public_id"]
-        p "*"*50 
-        p file.tempfile.path
-        p "*"*50
-        self.set_transcription_text(file)
+        # self.set_transcription_text(file)
       end
     elsif self.is_video?
       data = self.upload_video_to_cloudinary(file, public_id)
@@ -142,13 +139,8 @@ class Medium < ActiveRecord::Base
   end
 
   def set_transcription_text file
-    p "$"*50 
-    p file.tempfile.path
-    p "$"*50
     img_to_transcribe = RTesseract.new(file.tempfile.path)
     self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    p self.transcription_text
-    p "$"*50
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
