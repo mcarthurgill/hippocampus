@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   def show
 
     # redirect_if_not_authorized(params[:id]) ? return : nil
-
     @user = User.find(params[:id])
     @active = 'notes'
     
