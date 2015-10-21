@@ -106,7 +106,7 @@ class Medium < ActiveRecord::Base
         self.width = data["width"]
         self.height = data["height"]
         self.media_name = data["public_id"]
-        self.set_transcription_text(file)
+        # self.set_transcription_text(file)
       end
     elsif self.is_video?
       data = self.upload_video_to_cloudinary(file, public_id)
