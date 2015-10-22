@@ -146,7 +146,7 @@ class Medium < ActiveRecord::Base
     open(m.media_name, 'wb') do |file|
       file << open(m.media_url).read
     end
-    img_to_transcribe = RTesseract.new(m.media_url)
+    img_to_transcribe = RTesseract.new(m.media_name)
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     m.save!
   end
