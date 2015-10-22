@@ -51,13 +51,12 @@ class Medium < ActiveRecord::Base
 
     tmp = File.open("tessdir/sample.jpg",'wb')
     tmp.write file
-    out = File.open("tessdir/out.txt",'r+')
 
     puts "Starting tesseract"
-    %x(tesseract tessdir/sample.jpg tessdir/out.txt)
+    %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
         
         puts "Reading result"
-        t = File.open("tessdir/out.txt", "r")
+        t = File.open("tessdir/out.txt", "rb")
         contents = t.read
         p "*"*50
         p contents
