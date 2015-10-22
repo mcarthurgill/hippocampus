@@ -85,22 +85,6 @@ class Medium < ActiveRecord::Base
   end
 
 
-
-  def transcribe file
-    if self && self.is_image? && file
-      %x(mkdir tessdir)
-      %x(touch tessdir/out.txt)
-      FileUtils.mv file.tempfile, "tessdir/sample.jpg"
-      %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
-      t = File.open("tessdir/out.txt", "rb")
-      t.rewind
-      contents = t.read.split("\n").select{|w| w.strip.size > 0}.join(" ")
-      self.transcription_text = contents if contents && contents.length > 0
-      %x(rm -Rf tessdir)
-    end
-  end
-
-
   # -- CLOUDINARY
 
   def upload_main_asset file
@@ -172,7 +156,19 @@ class Medium < ActiveRecord::Base
   end
 
 
-
+  def transcribe file
+    if self && self.is_image? && file
+      %x(mkdir tessdir)
+      %x(touch tessdir/out.txt)
+      FileUtils.mv file.tempfile, "tessdir/sample.jpg"
+      %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
+      t = File.open("tessdir/out.txt", "rb")
+      t.rewind
+      contents = t.read.split("\n").select{|w| w.strip.size > 0}.join(" ")
+      self.transcription_text = contents if contents && contents.length > 0
+      %x(rm -Rf tessdir)
+    end
+  end
 
 
   def self.convert_all_to_objects
