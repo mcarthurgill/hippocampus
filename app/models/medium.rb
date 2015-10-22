@@ -44,7 +44,11 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
-    medium.binary_data = file.tempfile.binmode
+    p "*"*50
+    p file.tempfile.class
+    p file.tempfile
+    p "*"*50
+    medium.binary_data = file.tempfile
     medium.save!
     Medium.delay.set_transcription_text(medium.id)
     puts medium.as_json().to_s
@@ -141,11 +145,11 @@ class Medium < ActiveRecord::Base
     return self.media_type == 'video'
   end
 
-  def self.set_transcription_text medium_id, file_path_string
-    img_to_transcribe = RTesseract.new(file_path_string)
-    m = Medium.find(medium_id)
-    m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    m.save!
+  def self.set_transcription_text medium_id
+    # img_to_transcribe = RTesseract.new(file_path_string)
+    # m = Medium.find(medium_id)
+    # m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    # m.save!
   end
 
   def set_duration_test
