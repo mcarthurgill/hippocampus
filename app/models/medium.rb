@@ -48,6 +48,7 @@ class Medium < ActiveRecord::Base
     p "*"*50
     puts "Creating directory"
     %x(mkdir tessdir)
+    %x(touch tessdir/out.txt)
 
     tmp = File.open("tessdir/sample.jpg",'wb')
     tmp.write file
