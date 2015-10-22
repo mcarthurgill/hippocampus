@@ -49,9 +49,7 @@ class Medium < ActiveRecord::Base
     puts "Creating directory"
     %x(mkdir tessdir)
     %x(touch tessdir/out.txt)
-
-    tmp = File.open("tessdir/sample.jpg",'wb')
-    tmp.write file.tempfile
+    FileUtils.mv file.tempfile, "tessdir/sample.jpg"
     tmp.rewind
 
     puts "Starting tesseract"
