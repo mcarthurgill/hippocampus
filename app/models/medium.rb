@@ -44,28 +44,8 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
-    p "*"*50
-    puts "Creating directory"
-    %x(mkdir tessdir)
-    %x(touch tessdir/out.txt)
-    FileUtils.mv file.tempfile, "tessdir/sample.jpg"
-
-    puts "Starting tesseract"
-    %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
-        
-    puts "Reading result"
-    t = File.open("tessdir/out.txt", "rb")
-    t.rewind
-    contents = t.read
-    p "*"*50
-    medium.transcription_text = contents.split("\n").select{|w| w.strip.size > 0}.join(" ")
-    p medium.transcription_text
-    p "*"*50
-    puts "removing tessdir"
-    %x(rm -Rf tessdir)
-    p "*"*50
+    medium.transcribe(file)
     medium.save!
-    # Medium.delay.set_transcription_text(medium.id, file)
     puts medium.as_json().to_s
     return medium
   end
@@ -76,8 +56,8 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = ik
     medium.local_key = lk
     medium.upload_main_asset(file)
+    medium.transcribe(file)
     medium.save!
-    # medium.delay.set_transcription_text(file)
     puts medium.as_json().to_s
     return medium
   end
@@ -86,8 +66,8 @@ class Medium < ActiveRecord::Base
     medium = Medium.new
     medium.user_id = uid
     medium.upload_main_asset(file)
+    medium.transcribe(file)
     medium.save!
-    # medium.delay.set_transcription_text(file)
     puts medium.as_json().to_s
     return medium
   end
@@ -106,7 +86,19 @@ class Medium < ActiveRecord::Base
 
 
 
-
+  def transcribe file
+    if self && self.is_image? && file
+      %x(mkdir tessdir)
+      %x(touch tessdir/out.txt)
+      FileUtils.mv file.tempfile, "tessdir/sample.jpg"
+      %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
+      t = File.open("tessdir/out.txt", "rb")
+      t.rewind
+      contents = t.read.split("\n").select{|w| w.strip.size > 0}.join(" ")
+      self.transcription_text = contents if contents && contents.length > 0
+      %x(rm -Rf tessdir)
+    end
+  end
 
 
   # -- CLOUDINARY
@@ -158,13 +150,6 @@ class Medium < ActiveRecord::Base
 
   def is_video?
     return self.media_type == 'video'
-  end
-
-  def self.set_transcription_text medium_id, file
-    # m = Medium.find(medium_id)
-    # img_to_transcribe = RTesseract.new(m.media_name)
-    # m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    # m.save!
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
