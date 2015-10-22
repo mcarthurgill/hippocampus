@@ -44,23 +44,9 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
+    medium.binary_data = file.tempfile.binmode
     medium.save!
-
-    tmp = file.tempfile
-    destiny_file_path = Rails.root.join('tmp', file.original_filename)
-    FileUtils.move tmp.path, destiny_file_path
-
-    p "*"*50
-    p tmp
-    p "*"*50 
-    p destiny_file_path
-    p "*"*50
-    p destiny_file_path.to_s
-    p "*"*50
-    p File.open(destiny_file_path.to_s)
-    p "*"*50
-    Medium.delay.set_transcription_text(medium.id, destiny_file_path.to_s)
-    medium.delay.set_duration_test
+    Medium.delay.set_transcription_text(medium.id)
     puts medium.as_json().to_s
     return medium
   end
