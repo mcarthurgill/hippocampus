@@ -45,7 +45,7 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
-    medium.delay.set_transcription_text(file)
+    Medium.delay.set_transcription_text(medium.id, file)
     puts medium.as_json().to_s
     return medium
   end
@@ -140,11 +140,12 @@ class Medium < ActiveRecord::Base
     return self.media_type == 'video'
   end
 
-  def set_transcription_text file
+  def self.set_transcription_text medium_id, file
     # img_to_transcribe = RTesseract.new(file.path.to_s)
     # self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    self.transcription_text = "DAMN"
-    self.save
+    m - Medium.find(medium_id)
+    m.transcription_text = "DAMN"
+    m.save
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
