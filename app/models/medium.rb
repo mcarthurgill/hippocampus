@@ -44,7 +44,6 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
-    medium.save!
     p "*"*50
     puts "Creating directory"
     %x(mkdir tessdir)
@@ -59,10 +58,11 @@ class Medium < ActiveRecord::Base
     t.rewind
     contents = t.read
     p "*"*50
-    p contents
+    self.transcription_text = contents.split("\n").select{|w| w.strip.size > 0}
     puts "removing tessdir"
     %x(rm -Rf tessdir)
     p "*"*50
+    medium.save!
     # Medium.delay.set_transcription_text(medium.id, file)
     puts medium.as_json().to_s
     return medium
