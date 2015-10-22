@@ -45,6 +45,7 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
+    tmp = Tempfile.new(['test', '.jpg']) 
     content = file.read
     tmp.write content
     tmp.rewind
