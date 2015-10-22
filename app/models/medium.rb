@@ -45,16 +45,12 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
-    tmp = Tempfile.new(['test', '.jpg']) 
-    content = file.read
-    tmp.write content
-    tmp.rewind
-    p "*"*50
-    p tmp
-    p "*"*50
-    p tmp.path
-    p "*"*50
-    Medium.delay.set_transcription_text(medium.id, tmp.path)
+
+    tmp = file.tempfile
+    destiny_file_path = Rails.root.join('tmp', file.original_filename)
+    FileUtils.move tmp.path, destiny_file_path
+    
+    Medium.delay.set_transcription_text(medium.id, destiny_file_path)
     puts medium.as_json().to_s
     return medium
   end
@@ -152,9 +148,6 @@ class Medium < ActiveRecord::Base
   def self.set_transcription_text medium_id, file_path
     img_to_transcribe = RTesseract.new(file_path.to_s)
     m = Medium.find(medium_id)
-    p "*"*50
-    p img_to_transcribe.to_s
-    p "*"*50
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     m.save
   end
