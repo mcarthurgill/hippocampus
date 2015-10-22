@@ -49,7 +49,16 @@ class Medium < ActiveRecord::Base
     tmp = file.tempfile
     destiny_file_path = Rails.root.join('tmp', file.original_filename)
     FileUtils.move tmp.path, destiny_file_path
-    
+
+    p "*"*50
+    p tmp
+    p "*"*50 
+    p destiny_file_path
+    p "*"*50
+    p destiny_file_path.to_s
+    p "*"*50
+    p File.open(destiny_file_path)
+    p "*"*50
     Medium.delay.set_transcription_text(medium.id, destiny_file_path)
     puts medium.as_json().to_s
     return medium
