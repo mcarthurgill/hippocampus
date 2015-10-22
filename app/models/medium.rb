@@ -52,6 +52,7 @@ class Medium < ActiveRecord::Base
 
     tmp = File.open("tessdir/sample.jpg",'wb')
     tmp.write file.tempfile
+    tmp.rewind
 
     puts "Starting tesseract"
     %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
