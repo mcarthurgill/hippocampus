@@ -58,7 +58,7 @@ class Medium < ActiveRecord::Base
     t.rewind
     contents = t.read
     p "*"*50
-    self.transcription_text = contents.split("\n").select{|w| w.strip.size > 0}
+    medium.transcription_text = contents.split("\n").select{|w| w.strip.size > 0}
     puts "removing tessdir"
     %x(rm -Rf tessdir)
     p "*"*50
