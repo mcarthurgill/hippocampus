@@ -57,14 +57,20 @@ class Medium < ActiveRecord::Base
     puts "Starting tesseract"
     %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
         
-        puts "Reading result"
-        t = File.open("tessdir/out.txt", "rb")
-        contents = t.read
-        p "*"*50
-        p contents
-        puts "removing tessdir"
-        %x(rm -Rf tessdir)
-        p "*"*50
+    puts "Reading result"
+    t = File.open("tessdir/out.txt", "rb")
+    p "*"*50
+    p t
+    p "*"*50
+    t.rewind
+    p t.read
+    t.rewind
+    contents = t.read
+    p "*"*50
+    p contents
+    puts "removing tessdir"
+    %x(rm -Rf tessdir)
+    p "*"*50
     # Medium.delay.set_transcription_text(medium.id, file)
     puts medium.as_json().to_s
     return medium
