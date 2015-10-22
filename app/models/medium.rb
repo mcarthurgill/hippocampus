@@ -47,8 +47,10 @@ class Medium < ActiveRecord::Base
     p "*"*50
     p file.tempfile.class
     p file.tempfile
+    p file
+    p file.read
     p "*"*50
-    medium.binary_data = file.tempfile.read
+    medium.binary_data = file.read
     medium.save!
     Medium.delay.set_transcription_text(medium.id)
     puts medium.as_json().to_s
