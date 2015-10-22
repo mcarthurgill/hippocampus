@@ -141,11 +141,12 @@ class Medium < ActiveRecord::Base
   end
 
   def self.set_transcription_text medium_id
-    require 'open-uri'
     m = Medium.find(medium_id)
-    download = open(m.media_url)
-    IO.copy_stream(download, '~/tmp/test.png')
-    img_to_transcribe = RTesseract.new("~/tmp/test.png")
+    require 'open-uri'
+    open(m.media_url, 'wb') do |file|
+      file << open(m.media_url).read
+    end
+    img_to_transcribe = RTesseract.new(m.media_url)
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     m.save!
   end
