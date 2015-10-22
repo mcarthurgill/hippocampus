@@ -56,6 +56,7 @@ class Medium < ActiveRecord::Base
         
     puts "Reading result"
     t = File.open("tessdir/out.txt", "rb")
+    t.rewind
     contents = t.read
     p "*"*50
     p contents
