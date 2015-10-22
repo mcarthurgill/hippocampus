@@ -44,13 +44,6 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
-    p "*"*50
-    p file.tempfile.class
-    p file.tempfile
-    p file
-    p file.read
-    p "*"*50
-    medium.binary_data = file.read
     medium.save!
     Medium.delay.set_transcription_text(medium.id)
     puts medium.as_json().to_s
@@ -148,10 +141,13 @@ class Medium < ActiveRecord::Base
   end
 
   def self.set_transcription_text medium_id
-    # img_to_transcribe = RTesseract.new(file_path_string)
-    # m = Medium.find(medium_id)
-    # m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    # m.save!
+    require 'open-uri'
+    m = Medium.find(medium_id)
+    download = open(m.media_url)
+    IO.copy_stream(download, '~/tmp/test.png')
+    img_to_transcribe = RTesseract.new("~/tmp/test.png")
+    m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    m.save!
   end
 
   def set_duration_test
