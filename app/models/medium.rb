@@ -50,19 +50,12 @@ class Medium < ActiveRecord::Base
     %x(mkdir tessdir)
     %x(touch tessdir/out.txt)
     FileUtils.mv file.tempfile, "tessdir/sample.jpg"
-    tmp.rewind
 
     puts "Starting tesseract"
     %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
         
     puts "Reading result"
     t = File.open("tessdir/out.txt", "rb")
-    p "*"*50
-    p t
-    p "*"*50
-    t.rewind
-    p t.read
-    t.rewind
     contents = t.read
     p "*"*50
     p contents
