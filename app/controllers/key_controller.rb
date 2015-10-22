@@ -15,7 +15,7 @@ class KeyController < ApplicationController
     respond_to do |format|
       if user
         format.json do
-          render json: object.as_json(methods: [:user]) if object.object_type == 'item'
+          render json: object.as_json(methods: [:user, :user_ids_array]) if object.object_type == 'item'
           render json: object if object.object_type == 'bucket'
         end
       else
