@@ -143,8 +143,8 @@ class Medium < ActiveRecord::Base
   def self.set_transcription_text medium_id
     m = Medium.find(medium_id)
     require 'open-uri'
-    open(m.media_url, 'wb') do |file|
-      file << open(m.media_url, m.width).read
+    open(m.media_name, 'wb') do |file|
+      file << open(m.media_url).read
     end
     img_to_transcribe = RTesseract.new(m.media_url)
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
