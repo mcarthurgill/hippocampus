@@ -46,26 +46,23 @@ class Medium < ActiveRecord::Base
     medium.upload_main_asset(file)
     medium.save!
     p "*"*50
-    jpg = file.read
-    p jpg
-    p "*"*50
     puts "Creating directory"
     %x(mkdir tessdir)
 
     tmp = File.open("tessdir/sample.jpg",'wb')
-        tmp.write jpg
+    tmp.write file
 
-        puts "Starting tesseract"
-            %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
-            
-            puts "Reading result"
-            tmp = File.open("tessdir/out.txt", "rb")
-            contents = tmp.read
-            p "*"*50
-            p contents
-            puts "removing tessdir"
-            %x(rm -Rf tessdir)
-            p "*"*50
+    puts "Starting tesseract"
+        %x(tesseract tessdir/sample.jpg tessdir/out.txt -l eng)
+        
+        puts "Reading result"
+        tmp = File.open("tessdir/out.txt", "rb")
+        contents = tmp.read
+        p "*"*50
+        p contents
+        puts "removing tessdir"
+        %x(rm -Rf tessdir)
+        p "*"*50
     # Medium.delay.set_transcription_text(medium.id, file)
     puts medium.as_json().to_s
     return medium
