@@ -45,7 +45,27 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
-    Medium.delay.set_transcription_text(medium.id)
+    p "*"*50
+    jpg = Base64.decode64(file);
+    p jpg
+    p "*"*50
+    puts "Creating directory"
+    %x(mkdir tessdir)
+
+    tmp = File.open("tessdir/sample.jpg",'wb')
+        tmp.write jpg
+
+        puts "Starting tesseract"
+            %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
+            
+            puts "Reading result"
+            tmp = File.open("tessdir/out.txt", "rb")
+            contents = tmp.read
+            
+            puts "removing tessdir"
+            %x(rm -Rf tessdir)
+            p "*"*50
+    # Medium.delay.set_transcription_text(medium.id, file)
     puts medium.as_json().to_s
     return medium
   end
@@ -140,20 +160,11 @@ class Medium < ActiveRecord::Base
     return self.media_type == 'video'
   end
 
-  def self.set_transcription_text medium_id
-    m = Medium.find(medium_id)
-    require 'open-uri'
-    open(m.media_name, 'wb') do |file|
-      file << open(m.media_url).read
-    end
-    img_to_transcribe = RTesseract.new(m.media_name)
-    m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    m.save!
-  end
-
-  def set_duration_test
-    self.duration = 1.0
-    self.save!
+  def self.set_transcription_text medium_id, file
+    # m = Medium.find(medium_id)
+    # img_to_transcribe = RTesseract.new(m.media_name)
+    # m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    # m.save!
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
