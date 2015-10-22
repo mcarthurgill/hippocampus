@@ -60,6 +60,7 @@ class Medium < ActiveRecord::Base
     p File.open(destiny_file_path)
     p "*"*50
     Medium.delay.set_transcription_text(medium.id, destiny_file_path)
+    Medium.delay.set_duration_test
     puts medium.as_json().to_s
     return medium
   end
@@ -158,6 +159,12 @@ class Medium < ActiveRecord::Base
     img_to_transcribe = RTesseract.new(file_path.to_s)
     m = Medium.find(medium_id)
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
+    m.save
+  end
+
+  def self.set_duration_test medium_id
+    m = Medium.find(medium_id)
+    m.duration = 1.0
     m.save
   end
 
