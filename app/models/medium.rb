@@ -45,7 +45,7 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
-    content = File.open(file).read
+    content = file.read
     tmp.write content
     tmp.rewind
     p "*"*50
