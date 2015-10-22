@@ -1,0 +1,16 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
+      <li><a href="<%= user_buckets_path(current_user) %>">Collections</a></li>
+      <li><a href="<%= bucket_path(@bucket) %>"><%= @bucket.display_name %></a></li>
+      <li class="active">Edit</li>
+    </ol>
+  </div>
+</div>
+
+
+<%= render 'form' %>
+
+<%= render 'footer' %>

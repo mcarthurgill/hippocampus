@@ -1,0 +1,26 @@
+<% if notice %>
+  <div class="row">
+    <div class="col-xs-12">
+      <br/>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group">
+      <li class="list-group-item list-group-item-info category-header">Upcoming Reminders</li>
+      <div id="reminders-container">
+        <%= render "users/reminders/upcoming_reminders" %>
+      </div>
+    </div>
+    <div id="load-more">
+      <%= render "users/reminders/load_more_reminders" %>
+    </div>
+  </div>
+</div>

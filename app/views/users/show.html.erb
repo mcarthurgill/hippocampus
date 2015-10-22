@@ -1,0 +1,57 @@
+<% if notice %>
+  <div class="row">
+    <div class="col-xs-12">
+      <br/>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to "+ New Thought", new_item_path, :class => "btn btn-default btn-md btn-block" %>
+  </div>
+</div>
+<br/>
+
+<% if @user.items.outstanding.count > 0 %>
+
+  <div class="row">
+    <div class="col-xs-12">
+
+
+
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Pending Thoughts
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <% @user.items.by_date.outstanding.includes(:buckets).each do |i| %>
+              <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="list-group" id="items-container">
+      <%= render 'items' %>
+    </div>
+    <div id="load-more">
+      <%= render 'load_more' %>
+    </div>
+  </div>
+</div>

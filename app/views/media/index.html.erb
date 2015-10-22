@@ -1,0 +1,31 @@
+<h1>Listing media</h1>
+
+<table>
+  <tr>
+    <th style="text-align:center">User</th>
+    <th style="text-align:center">Medium</th>
+    <th style="text-align:center">Transcription Text</th>
+    <th style="text-align:center">Created</th>
+  </tr>
+
+<% @media.each do |medium| %>
+    <% if medium.user %>
+      <tr>
+        <td><%= medium.user.name ? link_to(medium.user.name, edit_medium_path(medium)) : link_to(medium.user.phone, edit_medium_path(medium)) %></td>
+        <td style="width:300px; height:200px; text-align:center;">
+            <% if medium.media_type == "video" %>
+                <video width="200" controls>
+                  <source src=<%= medium.media_url %> type="video/mp4">
+                </video>
+            <% else %>
+                <%= cl_image_tag(medium.media_url, :width=>200, :height=>200, :crop=>:fill) %>
+            <% end %>
+        </td>
+        <td style="text-align:center"><%= medium.transcription_text %></td>
+        <td style="text-align:center"><%= time_ago_in_words(medium.created_at) %> ago</td>
+      </tr>
+    <% end %> 
+<% end %>
+</table>
+
+<br />

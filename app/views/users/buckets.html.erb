@@ -1,0 +1,26 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <ol class="breadcrumb">
+      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
+      <li class="active">Collections</li>
+    </ol>
+  </div>
+</div>
+
+
+<% if notice %>
+  <div class="row">
+    <div class="col-xs-12">
+      <br/>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render 'shared/buckets/frontend_search' %>
+
+<%= render 'shared/buckets/sorted_type' %>

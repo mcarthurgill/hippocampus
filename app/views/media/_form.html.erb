@@ -1,0 +1,29 @@
+<% if @medium.media_type == "video" %>
+    <video width="400" controls>
+      <source src=<%= @medium.media_url %> type="video/mp4">
+    </video>
+<% else %>
+    <%= cl_image_tag(@medium.media_url, :height=>400) %>
+<% end %>
+
+<%= form_for(@medium) do |f| %>
+  <% if @medium.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@medium.errors.count, "error") %> prohibited this medium from being saved:</h2>
+
+      <ul>
+      <% @medium.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :transcription_text %><br />
+    <%= f.text_field :transcription_text, :style => "width:500px;" %>
+  </div>
+  <br>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

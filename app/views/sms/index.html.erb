@@ -1,0 +1,57 @@
+<h1>Listing sms</h1>
+
+<table>
+  <tr>
+    <th>Tocountry</th>
+    <th>Tostate</th>
+    <th>Smsmessagesid</th>
+    <th>Nummedia</th>
+    <th>Tocity</th>
+    <th>Fromzip</th>
+    <th>Smssid</th>
+    <th>Fromstate</th>
+    <th>Smsstatus</th>
+    <th>Fromcity</th>
+    <th>Body</th>
+    <th>Fromcountry</th>
+    <th>To</th>
+    <th>Tozip</th>
+    <th>Messagesid</th>
+    <th>Accountsid</th>
+    <th>From</th>
+    <th>Apiversion</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @sms.each do |sm| %>
+  <tr>
+    <td><%= sm.ToCountry %></td>
+    <td><%= sm.ToState %></td>
+    <td><%= sm.SmsMessageSid %></td>
+    <td><%= sm.NumMedia %></td>
+    <td><%= sm.ToCity %></td>
+    <td><%= sm.FromZip %></td>
+    <td><%= sm.SmsSid %></td>
+    <td><%= sm.FromState %></td>
+    <td><%= sm.SmsStatus %></td>
+    <td><%= sm.FromCity %></td>
+    <td><%= sm.Body %></td>
+    <td><%= sm.FromCountry %></td>
+    <td><%= sm.To %></td>
+    <td><%= sm.ToZip %></td>
+    <td><%= sm.MessageSid %></td>
+    <td><%= sm.AccountSid %></td>
+    <td><%= sm.From %></td>
+    <td><%= sm.ApiVersion %></td>
+    <td><%= link_to 'Show', sm %></td>
+    <td><%= link_to 'Edit', edit_sm_path(sm) %></td>
+    <td><%= link_to 'Destroy', sm, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Sm', new_sm_path %>

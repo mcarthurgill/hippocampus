@@ -1,0 +1,4 @@
+$('.intro-question').fadeOut('slow', function() {
+    $(".intro-question").html("<%= j render('introduction_question', :question => @question, :qids => @qids, :flagged => @flagged) %>");
+    $('.intro-question').fadeIn('slow');
+});

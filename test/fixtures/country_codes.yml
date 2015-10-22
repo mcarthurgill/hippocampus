@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  calling_code: MyString
+  country_code: MyString
+
+two:
+  calling_code: MyString
+  country_code: MyString
