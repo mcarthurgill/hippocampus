@@ -61,7 +61,8 @@ class Medium < ActiveRecord::Base
             puts "Reading result"
             tmp = File.open("tessdir/out.txt", "rb")
             contents = tmp.read
-            
+            p "*"*50
+            p contents
             puts "removing tessdir"
             %x(rm -Rf tessdir)
             p "*"*50
