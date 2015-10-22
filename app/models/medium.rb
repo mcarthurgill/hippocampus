@@ -57,10 +57,10 @@ class Medium < ActiveRecord::Base
     p "*"*50
     p destiny_file_path.to_s
     p "*"*50
-    p File.open(destiny_file_path)
+    p File.open(destiny_file_path.to_s)
     p "*"*50
-    Medium.delay.set_transcription_text(medium.id, destiny_file_path)
-    Medium.delay.set_duration_test
+    Medium.delay.set_transcription_text(medium.id, destiny_file_path.to_s)
+    Medium.delay.set_duration_test(medium.id)
     puts medium.as_json().to_s
     return medium
   end
@@ -155,8 +155,8 @@ class Medium < ActiveRecord::Base
     return self.media_type == 'video'
   end
 
-  def self.set_transcription_text medium_id, file_path
-    img_to_transcribe = RTesseract.new(file_path.to_s)
+  def self.set_transcription_text medium_id, file_path_string
+    img_to_transcribe = RTesseract.new(file_path_string)
     m = Medium.find(medium_id)
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     m.save
