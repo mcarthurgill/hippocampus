@@ -46,7 +46,7 @@ class Medium < ActiveRecord::Base
     medium.upload_main_asset(file)
     medium.save!
     p "*"*50
-    jpg = Base64.decode64(file);
+    jpg = Base64.decode64(file.tempfile);
     p jpg
     p "*"*50
     puts "Creating directory"
