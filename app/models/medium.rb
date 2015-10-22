@@ -159,12 +159,12 @@ class Medium < ActiveRecord::Base
     img_to_transcribe = RTesseract.new(file_path_string)
     m = Medium.find(medium_id)
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    m.save
+    m.save!
   end
 
   def set_duration_test
     self.duration = 1.0
-    self.save
+    self.save!
   end
 
   def upload_image_to_cloudinary(file, public_id, format)
