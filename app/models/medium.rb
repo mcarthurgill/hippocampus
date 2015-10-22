@@ -143,6 +143,9 @@ class Medium < ActiveRecord::Base
   def self.set_transcription_text medium_id, file_path
     img_to_transcribe = RTesseract.new(file_path.to_s)
     m = Medium.find(medium_id)
+    p "*"*50
+    p img_to_transcribe.to_s
+    p "*"*50
     m.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
     m.save
   end
