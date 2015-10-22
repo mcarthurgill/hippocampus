@@ -56,7 +56,7 @@ class Medium < ActiveRecord::Base
     %x(tesseract tessdir/sample.jpg tessdir/out)
         
         puts "Reading result"
-        t = File.open("tessdir/out.txt", "rb")
+        t = File.open("tessdir/out", "rb")
         contents = t.read
         p "*"*50
         p contents
