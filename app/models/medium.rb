@@ -45,7 +45,15 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
     medium.save!
-    Medium.delay.set_transcription_text(medium.id, file.path)
+    content = File.open(file).read
+    tmp.write content
+    tmp.rewind
+    p "*"*50
+    p tmp
+    p "*"*50
+    p tmp.path
+    p "*"*50
+    Medium.delay.set_transcription_text(medium.id, tmp.path)
     puts medium.as_json().to_s
     return medium
   end
