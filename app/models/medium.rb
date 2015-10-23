@@ -157,6 +157,10 @@ class Medium < ActiveRecord::Base
 
 
   def transcribe file
+    p "*"*50
+    p file.class
+    
+    p "*"*50
     if self && self.is_image? && file
       %x(mkdir tessdir)
       %x(touch tessdir/out.txt)
