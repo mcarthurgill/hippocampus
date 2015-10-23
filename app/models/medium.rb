@@ -157,10 +157,7 @@ class Medium < ActiveRecord::Base
 
 
   def transcribe file
-    p "*"*50
-    p file.is_a?(ActionDispatch)
-    p "*"*50
-    if self && self.is_image? && file && file.is_a?(ActionDispatch)
+    if self && self.is_image? && file && !file.is_a?(String) #file is a string on sms media
       %x(mkdir tessdir)
       %x(touch tessdir/out.txt)
       FileUtils.mv file.tempfile, "tessdir/sample.jpg"
