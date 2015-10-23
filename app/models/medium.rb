@@ -158,10 +158,9 @@ class Medium < ActiveRecord::Base
 
   def transcribe file
     p "*"*50
-    p file.class
-    
+    p file.is_a?(ActionDispatch)
     p "*"*50
-    if self && self.is_image? && file
+    if self && self.is_image? && file && file.is_a?(ActionDispatch)
       %x(mkdir tessdir)
       %x(touch tessdir/out.txt)
       FileUtils.mv file.tempfile, "tessdir/sample.jpg"
