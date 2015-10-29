@@ -44,8 +44,8 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
+    medium.transcribe(file)
     medium.save!
-    # medium.delay.set_transcription_text(file)
     puts medium.as_json().to_s
     return medium
   end
@@ -56,8 +56,8 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = ik
     medium.local_key = lk
     medium.upload_main_asset(file)
+    medium.transcribe(file)
     medium.save!
-    # medium.delay.set_transcription_text(file)
     puts medium.as_json().to_s
     return medium
   end
@@ -66,8 +66,8 @@ class Medium < ActiveRecord::Base
     medium = Medium.new
     medium.user_id = uid
     medium.upload_main_asset(file)
+    medium.transcribe(file)
     medium.save!
-    # medium.delay.set_transcription_text(file)
     puts medium.as_json().to_s
     return medium
   end
@@ -83,10 +83,6 @@ class Medium < ActiveRecord::Base
     medium.save!
     return medium
   end
-
-
-
-
 
 
   # -- CLOUDINARY
@@ -140,12 +136,6 @@ class Medium < ActiveRecord::Base
     return self.media_type == 'video'
   end
 
-  def set_transcription_text file
-    img_to_transcribe = RTesseract.new(file.path.to_s)
-    self.transcription_text = img_to_transcribe.to_s.split("\n").select{|v| v.strip.size > 0}.join(" ")
-    self.save
-  end
-
   def upload_image_to_cloudinary(file, public_id, format)
     return Cloudinary::Uploader.upload(file, :public_id => public_id, :format => format, :angle => :exif)
   end
@@ -166,7 +156,22 @@ class Medium < ActiveRecord::Base
   end
 
 
-
+  def transcribe file
+    p "*"*50
+    p file.is_a?(ActionDispatch)
+    p "*"*50
+    if self && self.is_image? && file && file.is_a?(ActionDispatch)
+      %x(mkdir tessdir)
+      %x(touch tessdir/out.txt)
+      FileUtils.mv file.tempfile, "tessdir/sample.jpg"
+      %x(tesseract tessdir/sample.jpg tessdir/out -l eng)
+      t = File.open("tessdir/out.txt", "rb")
+      t.rewind
+      contents = t.read.split("\n").select{|w| w.strip.size > 0}.join(" ")
+      self.transcription_text = contents if contents && contents.length > 0
+      %x(rm -Rf tessdir)
+    end
+  end
 
 
   def self.convert_all_to_objects

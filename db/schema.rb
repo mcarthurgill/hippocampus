@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151013192805) do
+ActiveRecord::Schema.define(:version => 20151022203209) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
