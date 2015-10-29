@@ -24,6 +24,9 @@ class Bucket < ActiveRecord::Base
 
   has_many :contact_cards
 
+  has_many :bucket_tag_pairs
+  has_many :tags, through: :bucket_tag_pairs
+
 
   # -- SCOPES
 

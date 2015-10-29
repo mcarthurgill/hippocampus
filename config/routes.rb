@@ -1,5 +1,8 @@
 Hippocampus::Application.routes.draw do
 
+  resources :tags
+
+
   resources :media
   post 'media/avatar', :to => 'media#create_avatar'
   get 'avatar/:id', :to => 'users#avatar'

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  tag_name: MyString
+  user_id: 1
+  number_buckets: 1
+  object_type: MyString
+
+two:
+  tag_name: MyString
+  user_id: 1
+  number_buckets: 1
+  object_type: MyString

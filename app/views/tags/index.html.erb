@@ -1,0 +1,29 @@
+<h1>Listing tags</h1>
+
+<table>
+  <tr>
+    <th>Tag name</th>
+    <th>User</th>
+    <th>Number buckets</th>
+    <th>Object type</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @tags.each do |tag| %>
+  <tr>
+    <td><%= tag.tag_name %></td>
+    <td><%= tag.user_id %></td>
+    <td><%= tag.number_buckets %></td>
+    <td><%= tag.object_type %></td>
+    <td><%= link_to 'Show', tag %></td>
+    <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
+    <td><%= link_to 'Destroy', tag, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Tag', new_tag_path %>
