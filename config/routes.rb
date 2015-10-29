@@ -26,6 +26,7 @@ Hippocampus::Application.routes.draw do
   match 'fail', :to => "introductions#fail", :as => "fail"
   match 'intro_questions', :to => "introductions#get_questions", :as => "get_intro_questions"
 
+  put 'buckets/update_buckets', to: 'buckets#update_tags'
   get 'buckets/keys', :to => 'buckets#keys', :as => "bucket_keys"
   get 'buckets/changes', :to => 'buckets#changes', :as => "buckets_changes"
   put 'buckets/change_group_for_user', :to => 'buckets#change_group_for_user', :as => "change_group_for_user"

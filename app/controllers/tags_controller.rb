@@ -42,6 +42,10 @@ class TagsController < ApplicationController
   def create
     @tag = Tag.new(params[:tag])
 
+    @tag = params[:tag].has_key?(:local_key) ? Tag.find_or_initialize_by_local_key(params[:tag][:local_key]) : Tag.new(params[:tag])
+    @tag.assign_attributes(params[:tag])
+    user = User.find(params[:tag][:user_id])
+
     respond_to do |format|
       if @tag.save
         format.html { redirect_to @tag, notice: 'Tag was successfully created.' }
@@ -80,4 +84,6 @@ class TagsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
 end
