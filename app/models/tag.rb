@@ -13,6 +13,12 @@ class Tag < ActiveRecord::Base
 
 
   # CALLBACKS
+
+  before_save :set_defaults
+  
+  def set_defaults
+    self.local_key ||= "tag-#{Time.now.to_f}-#{self.user_id}" if self.user_id
+  end
   
   after_save :update_underlying_objects
 
@@ -29,6 +35,15 @@ class Tag < ActiveRecord::Base
 
   def user_has_access? u
     return u.id == self.user_id
+  end
+
+  def assign_number_buckets
+    self.assign_attributes(number_buckets: self.buckets.count)
+  end
+
+  def update_number_buckets
+    self.assign_attributes
+    self.save!
   end
 
 end

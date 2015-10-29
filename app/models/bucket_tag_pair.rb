@@ -9,6 +9,7 @@ class BucketTagPair < ActiveRecord::Base
 
   def update_underlying_objects
     self.bucket.delay.update_tags_array if self.bucket
+    self.tag.update_number_buckets if self.tag
   end
 
 end
