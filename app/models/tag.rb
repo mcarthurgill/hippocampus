@@ -42,7 +42,7 @@ class Tag < ActiveRecord::Base
   end
 
   def update_number_buckets
-    self.assign_attributes
+    self.assign_number_buckets
     self.save!
   end
 
