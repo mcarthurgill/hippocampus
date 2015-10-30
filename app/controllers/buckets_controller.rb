@@ -256,6 +256,22 @@ class BucketsController < ApplicationController
 
   end
 
+
+  def update_tags
+    user = User.find_by_id(params[:auth][:uid])
+
+    bucket = Bucket.find_by_local_key(params[:local_key])
+
+    respond_to do |format|
+      if bucket.update_tags_with_local_keys_and_user(params[:local_keys], user)
+        format.json { render json: bucket }
+      else
+        format.json { render json: bucket.errors, status: :unprocessable_entity }
+      end
+    end    
+  end
+
+
 end
 
 

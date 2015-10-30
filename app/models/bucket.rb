@@ -2,9 +2,10 @@ class Bucket < ActiveRecord::Base
 
   include Formatting
 
-  attr_accessible :authorized_user_ids, :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :relation_level, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
+  attr_accessible :authorized_user_ids, :cached_item_message, :description, :first_name, :items_count, :last_name, :device_timestamp, :local_key, :object_type, :relation_level, :tags_array, :user_id, :bucket_type, :updated_at, :visibility, :creation_reason
 
   serialize :authorized_user_ids, Array
+  serialize :tags_array, Array
 
   # possible bucket_type: "Other", "Person", "Event", "Place"
 
@@ -23,6 +24,9 @@ class Bucket < ActiveRecord::Base
   has_many :items, :through => :bucket_item_pairs
 
   has_many :contact_cards
+
+  has_many :bucket_tag_pairs
+  has_many :tags, through: :bucket_tag_pairs
 
 
   # -- SCOPES
@@ -87,6 +91,15 @@ class Bucket < ActiveRecord::Base
 
   def assign_authorized_user_ids
     self.authorized_user_ids = self.users.pluck(:id)
+  end
+
+  def update_tags_array
+    self.assign_tags_array
+    self.save!
+  end
+
+  def assign_tags_array
+    self.tags_array = self.id ? self.tags.as_json : []
   end
 
   def update_count
@@ -284,6 +297,37 @@ class Bucket < ActiveRecord::Base
     end
   end
 
+  def update_tags_with_local_keys_and_user local_keys, u
+    all_local_keys = self.tag_local_keys_without_user_permission(u)
+    if local_keys && local_keys.count > 0
+      local_keys.each do |lk|
+        all_local_keys << lk
+      end
+    end
+    return self.update_tags_with_local_keys(all_local_keys.uniq)
+  end
+
+  def update_tags_with_local_keys local_keys
+    if local_keys && local_keys.count > 0
+      self.tags = Tag.find_all_by_local_key(local_keys)
+    else
+      self.tags = []
+    end
+    self.save!
+    self.update_tags_array if self
+    self.tags.each do |tag|
+      tag.delay.update_number_buckets if tag
+    end
+    return true
+  end
+
+  def tag_local_keys_without_user_permission u
+    temp = []
+    self.tags.each do |t|
+      temp << t.local_key if !t.user_has_access?(u)
+    end
+    return temp
+  end
 
   def assign_visibility
     self.visibility = (self.users.count > 1 ? "collaborative" : "private")

@@ -1,5 +1,7 @@
 Hippocampus::Application.routes.draw do
 
+  get 'privacy', :to => 'outside#privacy'
+
   resources :media
   post 'media/avatar', :to => 'media#create_avatar'
   get 'avatar/:id', :to => 'users#avatar'
@@ -23,6 +25,7 @@ Hippocampus::Application.routes.draw do
   match 'fail', :to => "introductions#fail", :as => "fail"
   match 'intro_questions', :to => "introductions#get_questions", :as => "get_intro_questions"
 
+  put 'buckets/update_tags', to: 'buckets#update_tags'
   get 'buckets/keys', :to => 'buckets#keys', :as => "bucket_keys"
   get 'buckets/changes', :to => 'buckets#changes', :as => "buckets_changes"
   put 'buckets/change_group_for_user', :to => 'buckets#change_group_for_user', :as => "change_group_for_user"
@@ -66,6 +69,9 @@ Hippocampus::Application.routes.draw do
 
   get 'setup_questions', to: 'setup_questions#get_questions', as: 'setup_questions'
   post 'create_from_setup_questions', to: 'setup_questions#create_from_question', as: 'create_from_question'
+
+  put 'tags/update_buckets', to: 'tags#update_buckets'
+  resources :tags
 
   resources :users, :except => [:index, :new, :create, :destroy]
   get 'users/:id/items', to: 'users#items'

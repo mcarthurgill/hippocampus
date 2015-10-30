@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
 
   belongs_to :medium
 
+  has_many :tags
 
 
 
