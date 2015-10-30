@@ -19,7 +19,7 @@ class KeyController < ApplicationController
         format.json do
           render json: object.as_json(methods: [:user, :user_ids_array]) if object.object_type == 'item'
           render json: object if object.object_type == 'bucket'
-          render json: object if object.object_type == 'tag'
+          render json: object.as_json(methods: [:bucket_keys])if object.object_type == 'tag'
         end
       else
         format.json { render status: :unprocessable_entity }

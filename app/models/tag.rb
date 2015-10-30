@@ -33,6 +33,10 @@ class Tag < ActiveRecord::Base
 
   # HELPERS
 
+  def bucket_keys
+    return self.buckets.pluck(:local_key)
+  end
+
   def user_has_access? u
     return u.id == self.user_id
   end
