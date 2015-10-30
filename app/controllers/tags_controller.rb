@@ -89,6 +89,22 @@ class TagsController < ApplicationController
 
   # SEAHORSE
 
+  def keys
+  
+    user = User.find_by_id(params[:auth][:uid])
+
+    tags = user.tags.order('tag_name ASC').pluck(:local_key)
+
+    respond_to do |format|
+      if user
+        format.json { render json: tags }
+      else
+        format.json { render status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   def update_buckets
     user = User.find_by_id(params[:auth][:uid])
 

@@ -71,6 +71,7 @@ Hippocampus::Application.routes.draw do
   post 'create_from_setup_questions', to: 'setup_questions#create_from_question', as: 'create_from_question'
 
   put 'tags/update_buckets', to: 'tags#update_buckets'
+  get 'tags/keys', :to => 'tags#keys', :as => "tag_keys"
   resources :tags
 
   resources :users, :except => [:index, :new, :create, :destroy]
