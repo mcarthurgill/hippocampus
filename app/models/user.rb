@@ -237,6 +237,10 @@ class User < ActiveRecord::Base
     return nil
   end
 
+  def hippo_admin?
+    self.phone == "+1111111111"
+  end
+
   #with 1519 Ashwood Ave as current location
   #0.000025 - edleys/jenis are not included
   #0.00006 - edleys/jenis in, natchez + charlotte + bridgestone out
