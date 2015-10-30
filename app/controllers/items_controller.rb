@@ -3,7 +3,7 @@ class ItemsController < ApplicationController
   include Formatting
   
   def index
-    @items = Item.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15, 81).order('id DESC').limit(512).not_deleted
+    @items = Item.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15, 81, 189).order('id DESC').limit(512).not_deleted
     if params.has_key?(:admin) && params[:admin] == 'snickers'
       render layout: false
     else
