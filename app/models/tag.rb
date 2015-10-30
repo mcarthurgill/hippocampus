@@ -46,4 +46,13 @@ class Tag < ActiveRecord::Base
     self.save!
   end
 
+  def update_buckets_with_local_keys local_keys
+    if local_keys && local_keys.count > 0
+      self.buckets = Bucket.find_all_by_local_key(local_keys)
+    else
+      self.buckets = []
+    end
+    return self.save!
+  end
+
 end
