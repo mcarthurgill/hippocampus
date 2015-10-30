@@ -52,7 +52,12 @@ class Tag < ActiveRecord::Base
     else
       self.buckets = []
     end
-    return self.save!
+    self.save!
+    self.buckets.each do |bucket|
+      bucket.delay.update_tags_array if bucket
+    end
+    self.update_number_buckets if self
+    return true
   end
 
 end

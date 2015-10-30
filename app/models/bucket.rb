@@ -313,7 +313,12 @@ class Bucket < ActiveRecord::Base
     else
       self.tags = []
     end
-    return self.save!
+    self.save!
+    self.update_tags_array if self
+    self.tags.each do |tag|
+      tag.delay.update_number_buckets if tag
+    end
+    return true
   end
 
   def tag_local_keys_without_user_permission u
