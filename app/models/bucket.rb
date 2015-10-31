@@ -145,6 +145,9 @@ class Bucket < ActiveRecord::Base
     return arr
   end
 
+  after_save :index_delayed
+  before_destroy :remove_from_engine
+
 
 
 
@@ -352,6 +355,33 @@ class Bucket < ActiveRecord::Base
       new_level = 'recent'
     end
     self.update_attribute(:relation_level, new_level) if new_level != self.relation_level
+  end
+
+
+
+
+
+  # algolia
+
+  include AlgoliaSearch
+
+  algoliasearch unless: :deleted? do
+    # all attributes + extra_attr will be sent
+    # add_attribute :user_ids_array, :_geoloc, :date
+  end
+
+  def index_delayed
+    self.delay.index
+  end
+
+  def index
+    # ALGOLIA!
+    self.index!
+  end
+
+  def remove_from_engine
+    # ALGOLIA!
+    self.remove_from_index!
   end
 
 
