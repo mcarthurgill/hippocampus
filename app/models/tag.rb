@@ -29,6 +29,19 @@ class Tag < ActiveRecord::Base
     end
   end
 
+  after_save :push
+  def push
+    begin
+      Pusher.trigger(self.users_array_for_push, 'tag-save', self.as_json()) if self.users_array_for_push.count > 0
+    rescue Pusher::Error => e
+    end
+  end
+
+  def users_array_for_push
+    arr = []
+    arr << "user-#{self.user_id}"
+    return arr
+  end
 
 
 
