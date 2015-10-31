@@ -179,6 +179,10 @@ class Bucket < ActiveRecord::Base
 
   # -- HELPERS
 
+  def deleted?
+    return false
+  end
+
   def self.all_items_bucket
     return { id: 0, first_name: 'All Thoughts', object_type: 'all-thoughts' }
   end
