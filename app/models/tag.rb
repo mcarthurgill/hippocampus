@@ -2,6 +2,7 @@ class Tag < ActiveRecord::Base
 
   attr_accessible :local_key, :number_buckets, :object_type, :tag_name, :user_id
 
+  scope :above, ->(time) { where('"tags"."updated_at" > ?', Time.at(time.to_i).to_datetime).order('id ASC') }
 
   # ASSOCIATIONS
 

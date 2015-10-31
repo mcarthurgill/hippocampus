@@ -119,5 +119,20 @@ class TagsController < ApplicationController
     end    
   end
 
+  def changes
+    user = User.find_by_id(params[:auth][:uid])
+
+    tags = params.has_key?(:updated_at_timestamp) && params[:updated_at_timestamp].length > 0 ? user.tags.above(params[:updated_at_timestamp]) : user.tags
+
+    respond_to do |format|
+      if user
+        format.json { render json: tags }
+      else
+        format.json { render status: :unprocessable_entity }
+      end
+    end
+
+  end
+
 
 end

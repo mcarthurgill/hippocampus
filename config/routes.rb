@@ -72,6 +72,7 @@ Hippocampus::Application.routes.draw do
 
   put 'tags/update_buckets', to: 'tags#update_buckets'
   get 'tags/keys', :to => 'tags#keys', :as => "tag_keys"
+  get 'tags/changes', :to => 'tags#changes', :as => "tags_changes"
   resources :tags
 
   resources :users, :except => [:index, :new, :create, :destroy]
