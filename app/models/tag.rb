@@ -25,7 +25,13 @@ class Tag < ActiveRecord::Base
 
   def update_underlying_objects
     self.buckets.each do |bucket|
-      bucket.delay.update_tags_array if bucket
+      if bucket && bucket.tags_array
+        bucket.tags_array.each do |tag|
+          if tag["id"] == self.id && tag["tag_name"] != self.tag_name
+            bucket.delay.update_tags_array
+          end
+        end
+      end
     end
   end
 
