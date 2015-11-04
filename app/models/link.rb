@@ -25,7 +25,7 @@ class Link < ActiveRecord::Base
       link.scheme = page.scheme
       link.root_url = page.root_url
       link.response_status = page.response.status
-      link.images = page.images.to_json if page.images.count > 0
+      link.images = JSON.parse(page.images.to_json) if page.images.count > 0
       link.images_with_size = page.images.with_size if page.images.count > 0
       link.host = page.host
       link.favicon = page.images.favicon
