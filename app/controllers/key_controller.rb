@@ -31,4 +31,20 @@ class KeyController < ApplicationController
 
   end
 
+
+  def link
+    user = User.find_by_id(params[:auth][:uid])
+    object = Link.find_by_raw_url(params[:raw_url])
+
+    respond_to do |format|
+      if user && object
+        format.json do
+          render json: object
+        end
+      else
+        format.json { render status: :unprocessable_entity }
+      end
+    end
+  end
+
 end

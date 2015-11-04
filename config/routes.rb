@@ -62,6 +62,7 @@ Hippocampus::Application.routes.draw do
   get 'items/:id/assign', to: 'items#assign', as: 'assign_item'
 
   get 'key', to: 'key#detail', as: 'key_detail'
+  get 'key/link', to: 'key#link', as: 'key_link'
 
   get 'search', to: 'pages#search', as: 'search'
   
