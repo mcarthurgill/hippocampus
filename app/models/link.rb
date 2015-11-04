@@ -23,21 +23,24 @@ class Link < ActiveRecord::Base
 
   def self.create_with_page page, rurl = nil
     if page && page.response.status == 200 && page.best_title
-      rurl = page.url if !rurl
-      link = Link.find_or_initialize_by_raw_url(rurl)
-      link.url = page.url
-      link.title = page.title
-      link.scheme = page.scheme
-      link.root_url = page.root_url
-      link.response_status = page.response.status
-      link.images = JSON.parse(page.images.to_json) if page.images.count > 0
-      # link.images_with_size = page.images.with_size if page.images.count > 0
-      link.host = page.host
-      link.favicon = page.images.favicon
-      link.description = page.description
-      link.best_title = page.best_title
-      link.best_image = page.images.best if page.images.count > 0
-      link.save!
+      begin
+        rurl = page.url if !rurl
+        link = Link.find_or_initialize_by_raw_url(rurl)
+        link.url = page.url
+        link.title = page.title
+        link.scheme = page.scheme
+        link.root_url = page.root_url
+        link.response_status = page.response.status
+        link.images = JSON.parse(page.images.to_json) if page.images.count > 0
+        link.images_with_size = page.images.with_size if page.images.count > 0
+        link.host = page.host
+        link.favicon = page.images.favicon
+        link.description = page.description
+        link.best_title = page.best_title
+        link.best_image = page.images.best if page.images.count > 0
+        link.save!
+      rescue
+      end
       return link
     end
   end
