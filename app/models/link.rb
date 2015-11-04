@@ -1,9 +1,15 @@
 class Link < ActiveRecord::Base
 
-  attr_accessible :best_image, :best_title, :description, :favicon, :host, :images, :images_with_size, :response_status, :root_url, :scheme, :title, :url
+  attr_accessible :best_image, :best_title, :description, :favicon, :host, :images, :images_with_size, :local_key, :object_type, :response_status, :root_url, :scheme, :title, :url
 
   serialize :images, Array
   serialize :images_with_size, Array
+
+
+  before_save :default_values
+  def default_values
+    self.local_key ||= "link-#{self.url}" if self.url
+  end
 
   
 
