@@ -23,6 +23,7 @@ class Link < ActiveRecord::Base
 
   def self.create_with_page page, rurl = nil
     if page && page.response.status == 200 && page.best_title
+      link = nil
       begin
         rurl = page.url if !rurl
         link = Link.find_or_initialize_by_raw_url(rurl)
