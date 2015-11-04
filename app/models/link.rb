@@ -25,7 +25,7 @@ class Link < ActiveRecord::Base
       link.favicon = page.images.favicon
       link.description = page.description
       link.best_title = page.best_title
-      link.best_image = page.best_image
+      link.best_image = page.images.best if page.images.count > 0
       link.save!
       return link
     end
