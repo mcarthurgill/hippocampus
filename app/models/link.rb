@@ -14,8 +14,11 @@ class Link < ActiveRecord::Base
   
 
   def self.refresh_cache_for_url url_string
-    page = MetaInspector.new(url_string)
-    self.create_with_page(page)
+    begin
+      page = MetaInspector.new(url_string)
+      self.create_with_page(page)
+    rescue Faraday::Error => e
+    end
   end
 
   def self.create_with_page page
