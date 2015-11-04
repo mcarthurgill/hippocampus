@@ -38,6 +38,7 @@ GEM
     activesupport (3.2.13)
       i18n (= 0.6.1)
       multi_json (~> 1.0)
+    addressable (2.3.8)
     algoliasearch (1.4.2)
       httpclient (~> 2.4)
       json (>= 1.5.1)
@@ -65,10 +66,25 @@ GEM
     delayed_job_active_record (4.0.0)
       activerecord (>= 3.0, < 4.1)
       delayed_job (>= 3.0, < 4.1)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     excon (0.45.1)
     execjs (2.2.0)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
+    faraday-cookie_jar (0.0.6)
+      faraday (>= 0.7.4)
+      http-cookie (~> 1.0.0)
+    faraday-http-cache (1.2.2)
+      faraday (~> 0.8)
+    faraday_middleware (0.10.0)
+      faraday (>= 0.7.4, < 0.10)
+    fastimage (1.7.0)
+      addressable (~> 2.3, >= 2.3.5)
     hike (1.2.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     httparty (0.13.1)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -95,10 +111,19 @@ GEM
       json (>= 1.7.7, < 2.0)
     mandrill-rails (1.1.1)
       activesupport (>= 3.0.3)
+    metainspector (4.7.2)
+      addressable (~> 2.3.5)
+      faraday (~> 0.9.0)
+      faraday-cookie_jar (~> 0.0.6)
+      faraday-http-cache (~> 1.2.2)
+      faraday_middleware (~> 0.10)
+      fastimage
+      nokogiri (~> 1.6)
     mime-types (1.25.1)
     mini_portile (0.6.2)
     multi_json (1.10.1)
     multi_xml (0.5.5)
+    multipart-post (2.0.0)
     net-http-persistent (2.9.4)
     nickel (0.1.6)
     nokogiri (1.6.6.2)
@@ -188,6 +213,9 @@ GEM
     uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
 
 PLATFORMS
   ruby
@@ -203,6 +231,7 @@ DEPENDENCIES
   less-rails
   mandrill-api
   mandrill-rails
+  metainspector
   nickel
   pg
   pusher

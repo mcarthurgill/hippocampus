@@ -52,3 +52,5 @@ gem 'rails_12factor'
 gem 'pusher'
 gem 'rmagick'
 gem 'rtesseract'
+
+gem 'metainspector'

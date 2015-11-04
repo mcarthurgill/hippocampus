@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  response_status: 1
+  url: MyString
+  scheme: MyString
+  host: MyString
+  root_url: MyString
+  title: MyText
+  best_title: MyText
+  description: MyText
+  images: MyText
+  images_with_size: MyText
+  best_image: MyString
+  favicon: MyString
+
+two:
+  response_status: 1
+  url: MyString
+  scheme: MyString
+  host: MyString
+  root_url: MyString
+  title: MyText
+  best_title: MyText
+  description: MyText
+  images: MyText
+  images_with_size: MyText
+  best_image: MyString
+  favicon: MyString
