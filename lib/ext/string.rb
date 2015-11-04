@@ -13,6 +13,10 @@ class String
     return Digest::SHA1.hexdigest(Digest::SHA1.hexdigest("#{pre}#{time_spec}#{post}"))
   end
 
+  def sha_encrypted
+    return Digest::SHA1.hexdigest(Digest::SHA1.hexdigest(self))
+  end
+
   def parse_for_time
     begin  
       Time.zone = 'Central Time (US & Canada)'
