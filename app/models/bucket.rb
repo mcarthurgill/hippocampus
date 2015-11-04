@@ -71,6 +71,17 @@ class Bucket < ActiveRecord::Base
     self.local_key ||= "bucket-#{self.device_timestamp}-#{self.user_id}" if self.device_timestamp && self.user_id
   end
 
+  before_save :make_array_ids_integers
+  def make_array_ids_integers
+    if self.authorized_user_ids
+      temp_arr = []
+      self.authorized_user_ids.each do |auid|
+        temp_arr << auid.to_i
+      end
+      self.authorized_user_ids = temp_arr
+    end
+  end
+
   def update_caches
     self.assign_count
     self.assign_cached_item_message
