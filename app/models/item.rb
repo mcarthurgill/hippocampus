@@ -89,6 +89,7 @@ class Item < ActiveRecord::Base
   before_create :check_for_and_set_date
 
   before_save :extract_links
+  after_save :cache_links
 
   after_save :index_delayed
 
@@ -532,12 +533,13 @@ class Item < ActiveRecord::Base
 
   def extract_links
     self.assign_attributes(links: (self.message ? URI.extract(self.message, ['http', 'https']) : []))
-    self.delay.cache_links if self.links && self.links.count > 0
   end
 
   def cache_links
-    self.links.each do |url|
-      Link.refresh_cache_for_url(url)
+    if self.links && self.links.count > 0
+      self.links.each do |url|
+        Link.refresh_cache_for_url(url)
+      end
     end
   end
 
