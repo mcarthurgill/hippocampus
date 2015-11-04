@@ -14,7 +14,7 @@ class String
   end
 
   def sha_encrypted
-    return Digest::SHA1.hexdigest(Digest::SHA1.hexdigest(self))
+    return Digest::SHA1.hexdigest(self)
   end
 
   def parse_for_time
