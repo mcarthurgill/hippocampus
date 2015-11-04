@@ -1,6 +1,6 @@
 class Link < ActiveRecord::Base
 
-  attr_accessible :best_image, :best_title, :description, :favicon, :host, :images, :images_with_size, :local_key, :object_type, :response_status, :root_url, :scheme, :title, :url
+  attr_accessible :best_image, :best_title, :description, :favicon, :host, :images, :images_with_size, :local_key, :object_type, :raw_url, :response_status, :root_url, :scheme, :title, :url
 
   serialize :images, Array
   serialize :images_with_size, Array
@@ -8,7 +8,7 @@ class Link < ActiveRecord::Base
 
   before_save :default_values
   def default_values
-    self.local_key ||= "link-#{self.url}" if self.url
+    self.local_key ||= "link-#{self.raw_url}" if self.raw_url
   end
 
   
@@ -16,14 +16,16 @@ class Link < ActiveRecord::Base
   def self.refresh_cache_for_url url_string
     begin
       page = MetaInspector.new(url_string)
-      self.create_with_page(page)
+      self.create_with_page(page, url_string)
     rescue Faraday::Error => e
     end
   end
 
-  def self.create_with_page page
+  def self.create_with_page page, rurl = nil
     if page && page.response.status == 200 && page.best_title
-      link = Link.find_or_initialize_by_url(page.url)
+      rurl = page.url if !rurl
+      link = Link.find_or_initialize_by_raw_url(rurl)
+      link.url = page.url
       link.title = page.title
       link.scheme = page.scheme
       link.root_url = page.root_url
