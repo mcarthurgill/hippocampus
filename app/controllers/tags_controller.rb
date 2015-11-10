@@ -40,7 +40,7 @@ class TagsController < ApplicationController
   # POST /tags
   # POST /tags.json
   def create
-    @tag = (params[:tag].has_key?(:local_key) && Tag.find_by_local_key(params[:tag][:local_key]) ? Tag.find_or_initialize_by_local_key(params[:tag][:local_key]) : Tag.find_or_initialize_by_user_id_and_tag_name(params[:tag][:user_id], params[:tag][:tag_name])
+    @tag = (params[:tag].has_key?(:local_key) && Tag.find_by_local_key(params[:tag][:local_key])) ? Tag.find_or_initialize_by_local_key(params[:tag][:local_key]) : Tag.find_or_initialize_by_user_id_and_tag_name(params[:tag][:user_id], params[:tag][:tag_name])
     @tag.assign_attributes(params[:tag])
     user = User.find(params[:tag][:user_id])
 
