@@ -42,7 +42,7 @@ class TagsController < ApplicationController
   def create
     @tag = Tag.new(params[:tag])
 
-    @tag = params[:tag].has_key?(:local_key) ? Tag.find_or_initialize_by_local_key(params[:tag][:local_key]) : Tag.find_or_initialize_by_user_id_and_tag_name(params[:tag][:user_id], params[:tag][:tag_name])
+    @tag = params[:tag].has_key?(:local_key) ? Tag.find_or_initialize_by_local_key_and_user_id_and_tag_name(params[:tag][:local_key], params[:tag][:user_id], params[:tag][:tag_name]) : Tag.find_or_initialize_by_user_id_and_tag_name(params[:tag][:user_id], params[:tag][:tag_name])
     @tag.assign_attributes(params[:tag])
     user = User.find(params[:tag][:user_id])
 
