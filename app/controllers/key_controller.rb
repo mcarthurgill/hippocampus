@@ -4,7 +4,7 @@ class KeyController < ApplicationController
     
     user = User.find_by_id(params[:auth][:uid])
 
-    object = {}
+    object = nil
 
     if params[:object_type] == 'bucket'
       object = Bucket.find_by_local_key(params[:local_key])
@@ -17,7 +17,7 @@ class KeyController < ApplicationController
     end
 
     respond_to do |format|
-      if user
+      if user && object
         format.json do
           render json: object.as_json(methods: [:user, :user_ids_array]) if object.object_type == 'item'
           render json: object if object.object_type == 'bucket'
