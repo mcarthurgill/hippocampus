@@ -348,6 +348,14 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def remove_nudge_if_needed
+    if self.once? && self.reminder_date == Date.parse("1/1/1970")
+      self.reminder_date = nil 
+      self.item_type = nil
+      self.save
+    end
+  end
+
   def update_deleted
     if self.has_buckets?
       self.update_status('assigned')

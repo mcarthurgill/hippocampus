@@ -135,6 +135,7 @@ class ItemsController < ApplicationController
     respond_to do |format|
       if @item.is_most_recent_request?(params[:item][:device_request_timestamp]) && @item.update_attributes(params[:item])
         @item.update_outstanding
+        @item.remove_nudge_if_needed
         format.html { redirect_to item_path(@item), :notice => "Note updated." }
         format.json { head :no_content }
       else
