@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :membership, :number_items, :number_buckets, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :membership, :number_items, :number_buckets, :number_buckets_allowed, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
   
   extend Formatting
   include Formatting
@@ -70,6 +70,7 @@ class User < ActiveRecord::Base
   def default_values
     self.time_zone ||= 'America/Chicago'
     self.salt ||= String.random(16)
+    self.number_buckets_allowed ||= 3
   end
 
   before_save :downcase_email
