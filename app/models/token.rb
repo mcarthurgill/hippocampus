@@ -30,7 +30,7 @@ class Token < ActiveRecord::Base
   
   # --- ACTIONS
   def text_login_token code
-    message = "Your Hippocampus code: #{code}"
+    message = "Your Hippo code: #{code}"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.user.phone, message, "token")
   end
 

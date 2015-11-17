@@ -27,7 +27,7 @@ task :send_reminders_about_outstanding_items => :environment do
 
   items.each do |i|
     if !users_already_texted.include?(i.user)
-      message = "You have pending thoughts on Hippocampus. Open the app to handle them."
+      message = "You have pending thoughts on Hippo. Open the app to handle them."
       OutgoingMessage.send_text_to_number_with_message_and_reason(i.user.phone, message, "outstanding")
     end
   end

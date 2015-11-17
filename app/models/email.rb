@@ -83,7 +83,7 @@ class Email < ActiveRecord::Base
     users.each do |u|
       arr << self.to_hash_for_user(u) if u
     end
-    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippocampus', 'html' => html, 'to' => arr }
+    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippo', 'html' => html, 'to' => arr }
     result = m.messages.send message, true, 'Main Pool'
   end
 
@@ -111,7 +111,7 @@ class Email < ActiveRecord::Base
   end
 
   def self.sunday_email_html_for_user u
-    text = "Your weekly Hippocampus notes summary. Enjoy!<br><br>"
+    text = "Your weekly Hippo notes summary. Enjoy!<br><br>"
     hash = u.items_since_date_sorted_days(6.days.ago)
     hash.each_key do |key|
       text = text+"<p>"
@@ -137,7 +137,7 @@ class Email < ActiveRecord::Base
   end
 
   def self.daily_email_html_for_user u
-    text = "Yesterday's Hippocampus notes summary. Enjoy!<br><br>"
+    text = "Yesterday's Hippo notes summary. Enjoy!<br><br>"
     hash = u.yesterdays_items_sorted_days
     hash.each_key do |key|
       text = text+"<p>"
