@@ -225,7 +225,9 @@ class User < ActiveRecord::Base
   end
 
   def sorted_reminders(limit=100000, page=0)
-    self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < (Time.zone.now - 6.hours).to_date }.sort_by(&:next_reminder_date)
+    # self.items.not_deleted.with_reminder.limit(limit).offset(limit*page).delete_if{ |i| i.once? && i.reminder_date < (Time.zone.now - 6.hours).to_date }.sort_by(&:next_reminder_date)
+    items = self.items.not_deleted.with_reminder.where("item_type != ? OR (item_type = ? AND reminder_date > ?)", "once", "once", (Time.zone.now + 6.hours).to_date) + self.bucket_items.not_deleted.with_reminder.where("item_type != ? OR (item_type = ? AND reminder_date > ?)", "once", "once", (Time.zone.now + 6.hours).to_date)
+    return items.sort_by(&:next_reminder_date)
   end
 
   def no_name?
