@@ -43,7 +43,7 @@ class Item < ActiveRecord::Base
   scope :before_created_at, ->(time) { where('"items"."created_at" < ?', Time.at(time.to_i).to_datetime) }
   scope :by_date, -> { order('"items"."id" DESC') }
   scope :newest_last, -> { order('"items"."id" ASC') }
-  scope :with_future_reminder, -> (timezone){ where("items.reminder_date IS NOT NULL").where("items.item_type != ? OR (items.item_type = ? AND items.reminder_date >= ?)", "once", "once", Time.now.in_time_zone(timezone).to_date)) }
+  scope :with_future_reminder, ->(timezone) { where("items.reminder_date IS NOT NULL").where("items.item_type != ? OR (items.item_type = ? AND items.reminder_date >= ?)", "once", "once", Time.now.in_time_zone(timezone).to_date) }
   scope :excluding, ->(ids) { where("items.id NOT IN (?)", ids) }
   scope :last_24_hours, -> { where('"items"."created_at" > ? AND "items"."created_at" < ?', 24.hours.ago, Time.now) }
   scope :since_time_ago, ->(time_ago) { where('"items"."created_at" > ?', time_ago) }
