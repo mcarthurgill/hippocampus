@@ -53,16 +53,16 @@ class Sm < ActiveRecord::Base
   end
 
   def should_send_follow_up_texts
-    msgs = OutgoingMessage.for_phone_with_reason(self.From, "day_1")
+    # msgs = OutgoingMessage.for_phone_with_reason(self.From, "day_1")
 
-    if msgs.count == 1
-      self.send_follow_up_text_with_message("Very cool. 2) What is your best friend's name and birthday?")
-    elsif msgs.count == 2
-      self.send_follow_up_text_with_message("Nice. Text Hippo your thoughts. Invest in your network.\n\nDownload the app to search and organize your Hippo: https://appsto.re/us/_BWZ5.i \n\nAlso, store this number in your phone and text it any time you want to remember a thought.")
+    # if msgs.count == 1
+      # self.send_follow_up_text_with_message("Very cool. 2) What is your best friend's name and birthday?")
+    # elsif msgs.count == 2
+      # self.send_follow_up_text_with_message("Nice. Text Hippo your thoughts. Invest in your network.\n\nDownload the app to search and organize your Hippo: https://appsto.re/us/_BWZ5.i \n\nAlso, store this number in your phone and text it any time you want to remember a thought.")
       # self.send_follow_up_text_with_message("Awesome. Last question, what is your best friend's birthday?")
-    elsif msgs.count == 3
+    # elsif msgs.count == 3
       # self.send_follow_up_text_with_message("Whenever you have a thought that you don't want to forget, remember to text Hippocampus. Remember things about people. Show people they matter. To be interesting, be interested.\n\nDownload the app to see and organize your thoughts: https://appsto.re/us/_BWZ5.i\n\nAlso, store this number in your phone and text it any time you don't want to forget a thought.")
-    end
+    # end
   end
 
   def send_follow_up_text_with_message message

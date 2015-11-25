@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   end
 
   def send_introduction_text
-    message = "Hippo.\nInvest in your network.\n\nPeople use Hippo to invest in their networks. They use it to remember a friend's birthday, the name of someone they met at a party, or a profound quote. Text Hippo anything you don't want to forget and start showing people they matter. \n\nHere are two questions to get you started: \n\n1) Who was the last person you met and what did you learn about them? (reply to this text)"
+    message = "Hey there! People use Hippo to invest in their networks. Download the Hippo app here: https://appsto.re/us/_BWZ5.i \n\nAlso, store this number in your phone and text it any time you want to remember a thought. Try it out now!"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
 
@@ -344,7 +344,7 @@ class User < ActiveRecord::Base
   # --- PUSH NOTIFICATIONS
 
   def unread_badge_count
-    return self.items.outstanding.count + self.bucket_user_pairs.has_unseen_items.count
+    return self.items.outstanding.count #+ self.bucket_user_pairs.has_unseen_items.count
   end
 
   def send_push_notification_with_message msg
