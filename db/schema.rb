@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151022203209) do
+ActiveRecord::Schema.define(:version => 20151116231525) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(:version => 20151022203209) do
   add_index "bucket_item_pairs", ["bucket_id"], :name => "index_bucket_item_pairs_on_bucket_id"
   add_index "bucket_item_pairs", ["id"], :name => "index_bucket_item_pairs_on_id"
   add_index "bucket_item_pairs", ["item_id"], :name => "index_bucket_item_pairs_on_item_id"
+
+  create_table "bucket_tag_pairs", :force => true do |t|
+    t.integer  "bucket_id"
+    t.integer  "tag_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "bucket_user_pairs", :force => true do |t|
     t.integer  "bucket_id"
@@ -66,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20151022203209) do
     t.float    "device_timestamp"
     t.string   "cached_item_message"
     t.string   "relation_level",      :default => "recent"
+    t.text     "tags_array"
   end
 
   add_index "buckets", ["id"], :name => "index_buckets_on_id"
@@ -251,6 +259,26 @@ ActiveRecord::Schema.define(:version => 20151022203209) do
   add_index "items", ["longitude"], :name => "index_items_on_longitude"
   add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
+  create_table "links", :force => true do |t|
+    t.integer  "response_status"
+    t.string   "url"
+    t.string   "scheme"
+    t.string   "host"
+    t.string   "root_url"
+    t.text     "title"
+    t.text     "best_title"
+    t.text     "description"
+    t.text     "images"
+    t.text     "images_with_size"
+    t.text     "best_image",       :limit => 255
+    t.text     "favicon",          :limit => 255
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.string   "object_type",                     :default => "link"
+    t.string   "local_key"
+    t.string   "raw_url"
+  end
+
   create_table "media", :force => true do |t|
     t.string   "media_url"
     t.integer  "width"
@@ -392,6 +420,16 @@ ActiveRecord::Schema.define(:version => 20151022203209) do
   add_index "sms", ["id"], :name => "index_sms_on_id"
   add_index "sms", ["item_id"], :name => "index_sms_on_item_id"
 
+  create_table "tags", :force => true do |t|
+    t.string   "tag_name"
+    t.integer  "user_id"
+    t.string   "local_key"
+    t.integer  "number_buckets", :default => 0
+    t.string   "object_type",    :default => "tag"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
   create_table "tokens", :force => true do |t|
     t.string   "token_string"
     t.integer  "user_id"
@@ -415,21 +453,22 @@ ActiveRecord::Schema.define(:version => 20151022203209) do
 
   create_table "users", :force => true do |t|
     t.string   "phone"
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
     t.string   "country_code"
     t.string   "email"
-    t.integer  "number_items",     :default => 0
-    t.integer  "number_buckets",   :default => 0
+    t.integer  "number_items",           :default => 0
+    t.integer  "number_buckets",         :default => 0
     t.string   "calling_code"
     t.string   "name"
-    t.integer  "setup_completion", :default => 25
-    t.string   "time_zone",        :default => "America/Chicago"
+    t.integer  "setup_completion",       :default => 25
+    t.string   "time_zone",              :default => "America/Chicago"
     t.string   "salt"
-    t.string   "object_type",      :default => "user"
+    t.string   "object_type",            :default => "user"
     t.string   "local_key"
     t.integer  "medium_id"
-    t.string   "membership",       :default => "none"
+    t.string   "membership",             :default => "none"
+    t.integer  "number_buckets_allowed"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

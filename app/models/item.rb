@@ -686,8 +686,9 @@ class Item < ActiveRecord::Base
   end
 
 
-  def next_reminder_date
-    if self.reminder_date.nil? || (self.reminder_date < (Time.zone.now - 6.hours).to_date && self.once?)
+  def next_reminder_date tz=nil
+    current_date_in_correct_time_zone = tz ? Time.now.in_time_zone(tz).to_date : (Time.zone.now - 6.hours).to_date
+    if self.reminder_date.nil? || ((self.reminder_date < current_date_in_correct_time_zone) && self.once?)
       return nil
     else
       d = self.reminder_date 
@@ -695,17 +696,17 @@ class Item < ActiveRecord::Base
       when "once"
         #d is already set to reminder_date
       when "daily"
-        d =  (Time.zone.now - 6.hours).to_date
+        d =  current_date_in_correct_time_zone
       when "weekly"
-        while d < (Time.zone.now - 6.hours).to_date
+        while d < current_date_in_correct_time_zone
           d = d + 7.days
         end
       when "monthly"
-        while d < (Time.zone.now - 6.hours).to_date
+        while d < current_date_in_correct_time_zone
           d = d + 1.month
         end
       when "yearly"
-        while d < (Time.zone.now - 6.hours).to_date
+        while d < current_date_in_correct_time_zone
           d = d + 1.year
         end
       end
