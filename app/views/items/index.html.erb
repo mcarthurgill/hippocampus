@@ -14,7 +14,7 @@
 <% @items.each do |item| %>
   <tr>
     <td><%= item.message %></td>
-    <td><%= item.user.name ? item.user.name : item.user.phone %></td>
+    <td><%= item.user.name ? item.user.name : (item.user.email ? item.user.email : item.user.phone) %></td>
     <td><%= item.created_at_central_time.strftime("%D") %></td>
     <td><%= item.input_method %></td>
   </tr>
