@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   end
 
   def send_introduction_text
-    message = "Hey there! People use Hippo to invest in their networks. Download the Hippo app here: https://appsto.re/us/_BWZ5.i \n\nAlso, store this number in your phone and text it any time you want to remember a thought. Try it out now!"
+    message = "Hey there! People use Hippo to invest in their networks.\n\nAlso, store this number in your phone and text it any time you want to remember a thought. Try it out now!"
     OutgoingMessage.send_text_to_number_with_message_and_reason(self.phone, message, "day_1")
   end
 
