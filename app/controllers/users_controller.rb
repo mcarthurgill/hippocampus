@@ -130,19 +130,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def reminders
-    @user = User.find(params[:id])
-
-    @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
-
-    respond_to do |format|
-      format.html
-      format.json { render json: {:reminders => @user.sorted_reminders(100000, @page).as_json(:methods => :next_reminder_date)} }
-      format.js
-    end
-  end
-
-
 
 
   # SEAHORSE
@@ -169,8 +156,9 @@ class UsersController < ApplicationController
     end
   end
 
-  def upcoming_nudges
-    user = User.find_by_id(params[:id])
+  def reminders
+    user = User.find(params[:id])
+
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     respond_to do |format|
@@ -179,5 +167,4 @@ class UsersController < ApplicationController
       format.js
     end
   end
-
 end

@@ -230,8 +230,12 @@ class User < ActiveRecord::Base
     ids_to_exclude = items.pluck(:id)
     items += self.bucket_items.not_deleted.with_future_reminder(tz).excluding(ids_to_exclude)
     items_hash = items.group_by{|i| i.next_reminder_date(tz) }
-    items_hash.each {|k, v| items_hash[k] = v.map(&:local_key) }
-    return items_hash #hash where dates point to array of item local_keys
+    sorted_by_date = []
+    items_hash.each do |k, v| 
+      items_hash[k] = v.map(&:local_key)
+      sorted_by_date << Hash[k, items_hash[k]]
+    end
+    return sorted_by_date.sort_by{|h| h.keys.first} #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
   end
 
   def no_name?
