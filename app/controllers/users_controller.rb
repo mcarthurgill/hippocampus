@@ -162,9 +162,7 @@ class UsersController < ApplicationController
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     respond_to do |format|
-      format.html
-      format.json { render json: {:reminders => user.sorted_reminders(100000, page)} }
-      format.js
+      format.json { render json: {:reminders => user.sorted_reminders(1000, page)} }
     end
   end
 end
