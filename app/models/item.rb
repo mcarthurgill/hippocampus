@@ -493,7 +493,7 @@ class Item < ActiveRecord::Base
   end
 
   def is_most_recent_request?(timestamp)
-    return !self.device_request_timestamp || timestamp.to_f > self.device_request_timestamp
+    return !self.device_request_timestamp || !timestamp || timestamp.to_f > self.device_request_timestamp
   end
 
   def user_ids_array
