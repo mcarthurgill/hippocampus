@@ -566,7 +566,7 @@ class Item < ActiveRecord::Base
       if n.occurrences.count > 0 && n.occurrences.first.type.to_s != 'daily' # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
         self.assign_attributes(reminder_date: n.occurrences.first.start_date.to_date)
         self.assign_attributes(item_type: self.reminder_frequency_with_nickel_keyword(n.occurrences.first.type.to_s))
-      elsif n.occurrences.count == 0
+      elsif n.occurrences.count == 0 || (n.occurrences.count == 1 && n.occurrences.first.type.to_s == 'daily')
         custom_trigger_date = self.scan_for_alternative_dates
         self.assign_attributes(reminder_date: custom_trigger_date, item_type: 'once') if custom_trigger_date
       end      
@@ -598,7 +598,7 @@ class Item < ActiveRecord::Base
     return false if !self.message
     lowercase_str = self.message.downcase
     if lowercase_str.include?('next quarter')
-      return Time.now.next_quarter.beginning_of_quarter
+      return Time.now.months_since(3).beginning_of_quarter
     elsif lowercase_str.include?('q1') || lowercase_str.include?('quarter 1')
       t = Time.parse('January 1')
       return t.future? ? t : t+1.year
