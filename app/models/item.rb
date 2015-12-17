@@ -623,6 +623,12 @@ class Item < ActiveRecord::Base
     elsif lowercase_str.include?('fall')
       t = Time.parse('September 1')
       return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('next week')
+      return Time.now.next_week
+    elsif lowercase_str.include?('next month')
+      return Time.now.next_month
+    elsif lowercase_str.include?('next year')
+      return Time.now.next_year
     end
     return false
   end
