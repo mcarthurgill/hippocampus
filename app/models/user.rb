@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   def default_values
     self.time_zone ||= 'America/Chicago'
     self.salt ||= String.random(16)
-    self.number_buckets_allowed ||= 0
+    self.number_buckets_allowed ||= 3
   end
 
   before_save :downcase_email
