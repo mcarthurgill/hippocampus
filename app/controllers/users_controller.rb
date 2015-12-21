@@ -162,10 +162,10 @@ class UsersController < ApplicationController
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     reminders = user.sorted_reminders(1000, page)
-    list = reminders.shift(1)[:nudges_list]
+    list = reminders.shift(1).first
 
     respond_to do |format|
-      format.json { render json: {:reminders => reminders, :nudge_list => list} }
+      format.json { render json: {:reminders => reminders, :nudge_list => list[:nudges_list]} }
     end
   end
 end
