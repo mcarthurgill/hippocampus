@@ -235,7 +235,7 @@ class User < ActiveRecord::Base
       items_hash[k] = v.map(&:local_key)
       sorted_by_date << Hash[k, items_hash[k]]
     end
-    return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.pluck(:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
+    return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
   end
 
   def no_name?
