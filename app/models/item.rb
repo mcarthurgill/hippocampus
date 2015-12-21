@@ -560,12 +560,15 @@ class Item < ActiveRecord::Base
   # -- AUTO-DATE DETECTION
 
   def check_for_and_set_date
-    return if !self.message || self.message.length == 0 || self.message.length > 110
+    return if !self.message || self.message.length == 0 || self.message.length > 140
     begin  
       n = Nickel.parse self.message, DateTime.now.in_time_zone('Central Time (US & Canada)')
       if n.occurrences.count > 0 && n.occurrences.first.type.to_s != 'daily' # ----THIS WOULD BE IF YOU WANT TO EXCLUDE DATES LIKE TODAY----   && time > (Time.now+1.day).beginning_of_day
         self.assign_attributes(reminder_date: n.occurrences.first.start_date.to_date)
         self.assign_attributes(item_type: self.reminder_frequency_with_nickel_keyword(n.occurrences.first.type.to_s))
+      elsif n.occurrences.count == 0 || (n.occurrences.count == 1 && n.occurrences.first.type.to_s == 'daily')
+        custom_trigger_date = self.scan_for_alternative_dates
+        self.assign_attributes(reminder_date: custom_trigger_date, item_type: 'once') if custom_trigger_date
       end      
     rescue
     end 
@@ -587,6 +590,45 @@ class Item < ActiveRecord::Base
     lowercase_str = self.message.downcase
     ['bday', 'birthday', 'married', 'anniversary', 'annvsray', 'born', 'died', 'funeral', 'wedding', 'passed away', 'marry', 'annual', 'annually', 'every', 'each', 'birthdy', 'brthdy', 'birtday'].each do |check_for|
       return true if lowercase_str.include?(check_for)
+    end
+    return false
+  end
+
+  def scan_for_alternative_dates
+    return false if !self.message
+    lowercase_str = self.message.downcase
+    if lowercase_str.include?('next quarter')
+      return Time.now.months_since(3).beginning_of_quarter
+    elsif lowercase_str.include?('q1') || lowercase_str.include?('quarter 1')
+      t = Time.parse('January 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('q2') || lowercase_str.include?('quarter 2')
+      t = Time.parse('April 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('q3') || lowercase_str.include?('quarter 3')
+      t = Time.parse('July 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('q4') || lowercase_str.include?('quarter 4')
+      t = Time.parse('October 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('winter')
+      t = Time.parse('December 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('spring')
+      t = Time.parse('March 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('summer')
+      t = Time.parse('June 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('fall')
+      t = Time.parse('September 1')
+      return t.future? ? t : t+1.year
+    elsif lowercase_str.include?('next week')
+      return Time.now.next_week
+    elsif lowercase_str.include?('next month')
+      return Time.now.next_month
+    elsif lowercase_str.include?('next year')
+      return Time.now.next_year
     end
     return false
   end
@@ -756,4 +798,3 @@ class Item < ActiveRecord::Base
 
 
 end
-
