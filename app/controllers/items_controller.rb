@@ -5,8 +5,8 @@ class ItemsController < ApplicationController
   def index
     @new_users_last_24_hours = User.where("created_at > ?", 1.day.ago).count
     @new_users_last_week = User.where("created_at > ?", 7.days.ago).count
-    @users_added_item_last_24_hours = Item.where("created_at > ? AND user_id NOT IN (?)", 1.day.ago, [23, 2, 18, 15, 81, 189, 190, 191]).pluck(:user_id).uniq.count
-    @users_added_item_last_week = Item.where("created_at > ? AND user_id NOT IN (?)", 7.days.ago, [23, 2, 18, 15, 81, 189, 190, 191]).pluck(:user_id).uniq.count
+    @users_added_item_last_24_hours = Item.where("created_at > ? AND user_id NOT IN (?)", 1.day.ago, [23, 2, 18, 15, 81, 189, 190, 191, 30]).pluck(:user_id).uniq.count
+    @users_added_item_last_week = Item.where("created_at > ? AND user_id NOT IN (?)", 7.days.ago, [23, 2, 18, 15, 81, 189, 190, 191, 30]).pluck(:user_id).uniq.count
 
     @items = Item.where("user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ? AND user_id != ?", 23, 2, 18, 15, 81, 189, 190, 191).order('id DESC').limit(512).not_deleted
     if params.has_key?(:admin) && params[:admin] == 'snickers'
