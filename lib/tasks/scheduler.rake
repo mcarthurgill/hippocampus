@@ -120,10 +120,7 @@ task :text_users_about_gift => :environment do
   phones_to_text = signed_up_last_48_hours - sent_address_text_last_48_hours
 
   send_to_users = User.where("phone IN (?)", phones_to_text)
-  p "*"*50 
-  p "would send to #{send_to_users.pluck(:phone)}"
-  p "*"*50
-  # send_to_users.each do |phone_number|
+  
   send_to_users.each do |user|
     OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, "We really appreciate you trying out Hippo and so we want to give you something that will make you better at remembering people. It's free. No gimmicks. We just need to know where to send it. If you're interested, go here: http://hppcmps.com/gifts?code=#{user.salt}\n\nWill + McArthur", "address")
   end

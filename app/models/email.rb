@@ -97,14 +97,14 @@ class Email < ActiveRecord::Base
   # SUNDAY EMAIL
 
   def self.send_sunday_summaries
-    users = [User.find(2), User.find(23)]
+    users = [User.find(2)]
     users.each do |u|
       self.send_to_user_with_html_and_subject(u, self.sunday_email_html_for_user(u), "Weekly Notes Summary - #{Time.now.strftime('%B %d, %Y')}")
     end
   end
 
   def self.send_daily_summaries
-    users = [User.find(2), User.find(23)]
+    users = [User.find(2)]
     users.each do |u|
       self.send_to_user_with_html_and_subject(u, self.daily_email_html_for_user(u), "#{1.day.ago.strftime('%A')}'s Notes Summary (#{1.day.ago.strftime('%B %d')})")
     end
