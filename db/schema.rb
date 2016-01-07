@@ -11,13 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151116231525) do
+ActiveRecord::Schema.define(:version => 20160107164802) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
     t.string   "addon_name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "addresses", :force => true do |t|
+    t.string   "phone"
+    t.string   "street"
+    t.string   "street_two"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "object_type"
+    t.string   "local_key"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "country"
   end
 
   create_table "bucket_item_pairs", :force => true do |t|

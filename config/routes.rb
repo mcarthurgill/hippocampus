@@ -1,6 +1,9 @@
 Hippocampus::Application.routes.draw do
 
   get 'privacy', :to => 'outside#privacy'
+  get 'gifts', :to => 'outside#gifts', :as => 'gifts'
+
+  resources :addresses, :only => [:create]
 
   resources :media
   post 'media/avatar', :to => 'media#create_avatar'

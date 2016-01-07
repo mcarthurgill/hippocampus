@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <br>
+    <div class="row vcenter">
+      <div class="col-md-3 col-md-offset-1 col-xs-4 col-xs-offset-1 hidden-xs">
+        <div class="row">
+          <%= link_to image_tag('/images/slim.png', class: 'img-responsive', border: '0').html_safe, 'https://appsto.re/us/_BWZ5.i', target: '_blank' %>
+        </div>
+      </div>
+      <div class="col-md-6 col-md-offset-1 col-xs-10 col-xs-offset-1">
+        <div class="row">
+          <p class="lead">
+            <b>Hippo</b>
+            <br>
+            Because people matter.
+          </p>
+          <% if @u %>
+            <p class="lead" style="font-size:18px;">
+              We want to send you a small notebook.
+            </p>
+            <p class="lead" style="font-size:14px;">
+              It's better to use one of these in a meeting than taking Hippo notes on your phone. After the meeting though, transfer everything into Hippo so you'll always have it :)
+            </p>
+            <div class="col-md-12 col-xs-12">
+              <%= form_for @address, :html => {:class => "form-horizontal"} do |f| %>
+                <!-- Select Basic -->
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">Phone</label>
+                  <div class="col-sm-9">
+                    <%= f.text_field(:phone, value: @u.phone, :class => "form-control", :readonly => true) %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">Line 1</label>
+                  <div class="col-sm-9">
+                    <%= f.text_field(:street, :placeholder => "Address Line 1", :class => "form-control") %>
+                  </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">Line 2</label>
+                  <div class="col-sm-9">
+                    <%= f.text_field(:street_two, :placeholder => "Address Line 2", :class => "form-control") %>
+                  </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">City</label>
+                  <div class="col-sm-9">
+                    <%= f.text_field(:city, :placeholder => "City", :class => "form-control") %>
+                  </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">State</label>
+                  <div class="col-sm-3">
+                    <%= f.text_field(:state, :placeholder => "State", :class => "form-control") %>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">Zip</label>
+                  <div class="col-sm-4">
+                    <%= f.text_field(:zip, :placeholder => "Zip Code", :class => "form-control") %>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="textinput">Country</label>
+                  <div class="col-sm-4">
+                    <%= f.text_field(:country, :placeholder => "Country", :class => "form-control") %>
+                  </div>
+                </div>
+
+                <!-- Text input-->
+
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <div class="pull-right">
+                      <%= f.submit "Send it", :class => "btn btn-primary" %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+          <% else %>
+            <p class="lead" style="font-size:18px;">
+              We'll get your notebook in the mail as soon as possible! We hope Hippo changes your life just as it's changed ours.<br><br>Will + McArthur
+            </p>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
