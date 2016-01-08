@@ -115,14 +115,16 @@ desc "This text new users about sending them a notebook"
 task :text_users_about_gift => :environment do
   p "*"*50
   p "texting users about their addresses to send them notebooks"
-  signed_up_last_48_hours = OutgoingMessage.where("created_at > ? AND reason = ?", 48.hours.ago, "day_1").pluck('DISTINCT to_number')
-  sent_address_text_last_48_hours = OutgoingMessage.where("created_at > ? AND reason = ?", 48.hours.ago, "address").pluck('DISTINCT to_number')
-  phones_to_text = signed_up_last_48_hours - sent_address_text_last_48_hours
+  signed_up_between_48_and_72_hours_ago = User.where("created_at > ? AND created_at < ?", 72.hours.ago, 48.hours.ago).pluck(:phone).uniq
+  sent_address_text_last_96_hours = OutgoingMessage.where("created_at > ? AND reason = ?", 96.hours.ago, "address").pluck('DISTINCT to_number')
+  phones_to_text = signed_up_between_48_and_72_hours_ago - sent_address_text_last_96_hours
 
   send_to_users = User.where("phone IN (?)", phones_to_text)
-  
+
   send_to_users.each do |user|
-    OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, "We really appreciate you trying out Hippo and so we want to give you something that will make you better at remembering people. It's free. No gimmicks. We just need to know where to send it. If you're interested, go here: http://hppcmps.com/gifts?code=#{user.salt}\n\nWill + McArthur", "address")
+    if user && user.phone && user.salt
+      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, "We really appreciate you trying out Hippo and so we want to give you something that will make you better at remembering people. It's free. No gimmicks. We just need to know where to send it. If you're interested, go here: http://hppcmps.com/gifts?code=#{user.salt}\n\nWill + McArthur", "address")
+    end
   end
   p "done"
   p "*"*50
