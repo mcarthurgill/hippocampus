@@ -1,0 +1,8 @@
+<li><a href="thought.html">
+<% if item.outstanding? %>
+  <%= render 'shared/items/item_outstanding' %>
+<% end %>
+<% if item.next_reminder_date %>
+  <%= render 'shared/items/item_reminder' %>
+<% end %>
+<%= item.message %></a></li>

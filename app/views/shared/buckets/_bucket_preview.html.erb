@@ -1,0 +1,27 @@
+<li>
+  <header>
+    <%= link_to bucket_info_path(bucket) do %>
+      <div class="meta">
+        <h4 class="title"><%= bucket.first_name %></h4>
+        <span>(22)</span>
+      </div>
+    <% end %>
+    <span class="star-wrap">
+      <a href="#" class="star">
+        <div class="star-outer">
+          <svg class="star-icon">
+            <use xlink:href="#hippoStar" class="star-icon" />
+          </svg>
+        </div>
+      </a>
+    </span>
+    <span class="collab-count">
+      <svg class="icon icon-profile-outline"><use xlink:href="images/svg/icons.svg#icon-profile-outline"></use></svg>
+      <span class="count">13</span>
+    </span>
+  </header>
+  <%= link_to bucket_info_path(bucket) do %>
+    <p><%= bucket.cached_item_message %></p>
+  <% end %>
+</li>
+

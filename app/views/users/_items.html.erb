@@ -1,3 +1,0 @@
-<% @user.items.by_date.assigned.limit(64).offset(64*@page).includes(:buckets).each do |i| %>
-  <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
-<% end %>

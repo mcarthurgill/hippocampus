@@ -1,26 +1,52 @@
+<!-- Main Menu -->
+<%= render "shared/menus/desktop/main-menu" %>
 
-<div class="row">
-  <div class="col-xs-12">
-    <ol class="breadcrumb">
-      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
-      <li class="active">Collections</li>
-    </ol>
-  </div>
-</div>
+<!-- Side Menu -->
+<%= render "shared/menus/desktop/side-menu" %>
 
+<!-- Menus_mbl -->
+<%= render "shared/menus/mobile/all-mobile" %>
 
-<% if notice %>
-  <div class="row">
-    <div class="col-xs-12">
-      <br/>
-      <div class="alert alert-info alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <%= notice %>
+<!-- Main Content -->
+<main class="main-content" role="main" aria-label="Main Content">
+
+  <!-- Buckets Search Tools -->
+  <div class="buckets-search-wrap">
+    <div class="options-wrap">
+      <div class="currently" >
+        <h5>All Buckets</h5>
+        <span id="current-selection">A-Z</span>
+      </div>
+      <div class="sort-and-add">
+        <div class="sort-buckets">
+          <select class="nice" dir="rtl" id="sort-by-select">
+            <option data-selection="Favorites" value="_by_fav">Sort by favorite</option>
+            <option data-selection="by date" value="_by_date">Sort by date</option>
+            <option data-selection="A-Z" value="_by_alph">Sort A-Z</option>
+          </select>
+        </div>
+        <!-- <a href="#" class="button">Add Bucket</a> -->
       </div>
     </div>
+    <div class="search-input-wrap">
+      <svg class="icon icon-find"><use xlink:href="images/svg/icons.svg#icon-find"></use></svg>
+      <input id="search-buckets-input" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Find a bucket…"/>
+    </div>
   </div>
-<% end %>
 
-<%= render 'shared/buckets/frontend_search' %>
+  <!-- Buckets -->
+  <div class="buckets-list-wrap">
+    <!-- List -->
+    <ul class="list buckets-list scene_element--fadeinup scene_element scene_delay">
+      <li class="section"><h5>A</h5></li>
+      <% @buckets.each do |bucket| %>
+        <%= render 'shared/buckets/bucket_preview', :bucket => bucket %>
+      <% end %>
+    </ul>
+  </div>
+</main>
 
-<%= render 'shared/buckets/sorted_type' %>
+<!-- SVGs -->
+<%= render "shared/buckets/hippo_star" %>
+
+</div>

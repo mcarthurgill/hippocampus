@@ -30,10 +30,13 @@ class UsersController < ApplicationController
     # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
-    @active = 'notes'
+    @active = 'thoughts'
+    time = params.has_key?(:above) ? params[:above] : 3.months.ago
+    @items = @user.items.above(time)
 
     respond_to do |format|
-      format.json { render json: @user.items.above(params[:above]) }
+      format.html
+      format.json { render json: @items}
     end
   end
 
@@ -44,8 +47,9 @@ class UsersController < ApplicationController
     # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
-    @active = 'stacks'
+    @active = 'buckets'
     @sort = params[:s]
+    @buckets = @user.buckets.by_first_name
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
@@ -161,10 +165,11 @@ class UsersController < ApplicationController
 
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
-    reminders = user.sorted_reminders(1000, page)
+    @reminders = user.sorted_reminders(1000, page)
     list = reminders.shift(1).first
 
     respond_to do |format|
+      format.html
       format.json { render json: {:reminders => reminders, :nudge_list => list[:nudges_list]} }
     end
   end

@@ -9,7 +9,7 @@ class BucketsController < ApplicationController
 
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
-    @active = 'stacks'
+    @active = 'buckets'
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     @bucket.delay.viewed_by_user_id(params[:auth][:uid]) if params.has_key?(:auth)
@@ -126,16 +126,21 @@ class BucketsController < ApplicationController
 
   def info
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
+    user = current_user
+    if params[:auth] && params[:auth][:uid] && !user
+      user = User.find(params[:auth][:uid])
+    end
 
-    bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
-    user = User.find_by_id(params[:auth][:uid])
-    items = bucket.items.not_deleted.by_date.limit(64).offset(64*page).reverse if bucket
-
+    @bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
+    @items = @bucket.items.not_deleted.by_date.limit(64).offset(64*page).reverse if @bucket
+    @active = "buckets"
+    
     respond_to do |format|
-      if bucket && user && bucket.belongs_to_user?(user)
-        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => bucket.group_for_user(user) } }
+      if @bucket && user && @bucket.belongs_to_user?(user)
+        format.html
+        format.json { render json: {:items => @items, :page => page, :bucket => @bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => @bucket.group_for_user(user) } }
       else
-        format.json { render json: bucket.errors, status: :unprocessable_entity }
+        format.json { render json: @bucket.errors, status: :unprocessable_entity }
       end
     end
   end
