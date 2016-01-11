@@ -1,6 +1,6 @@
 <div class="bucket-labels">
   <% item.visible_buckets_for_user(current_user).each do |b| %>
-    <% if !bucket || b != bucket %>
+    <% if !@bucket || b != @bucket %>
       <a class="label" href="<%= bucket_info_path(b) %>"><%= b.first_name %> <span class="remove"></span></a>
     <% end %>
   <% end %>

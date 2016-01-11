@@ -14,10 +14,6 @@
     <%= render 'shared/items/item_media', :item => item %>
   <% end %>
   <% if item.visible_buckets_for_user(current_user).count > 1 %>
-    <% if bucket %>
-      <%= render 'shared/items/item_buckets_stickers', :item => item, :bucket => bucket %>
-    <% else %>
-      <%= render 'shared/items/item_buckets_stickers', :item => item %>
-    <% end %>
+    <%= render 'shared/items/item_buckets_stickers', :item => item %>
   <% end %>
 </li>
