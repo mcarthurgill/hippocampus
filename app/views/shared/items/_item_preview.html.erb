@@ -6,7 +6,7 @@
       <%= render 'shared/items/item_outstanding' %>
     <% end %>
     <%= link_to item.message, item_path(item) %>
-    <% if item.media_urls.count > 0 %>
+    <% if item.has_media? %>
       <%= render 'shared/items/item_media', :item => item %>
     <% end %>
     <% if item.visible_buckets_for_user(current_user).count > 0 %>

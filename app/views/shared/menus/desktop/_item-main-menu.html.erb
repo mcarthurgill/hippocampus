@@ -3,7 +3,7 @@
   <!-- Profile -->
   <div class="profile-overview">
     <a href="#" data-jq-dropdown="#profile-menu-1" data-vertical-offset="3" class="avatar dropdown">
-      <img class="avatar med" src="images/content/user-profile-01.jpg" alt="">
+      <img class="avatar med" src="<%= current_user.avatar_path %>" alt="">
     </a>
     <div id="profile-menu-1" class="jq-dropdown jq-dropdown-tip">
       <ul class="jq-dropdown-menu">
@@ -26,7 +26,7 @@
         <a href="#" id="upload-assets"><svg class="icon icon-camera"><use xlink:href="images/svg/icons.svg#icon-camera"></use></svg></a>
       </div>
       <div class="nudges">
-        <a href="#" data-jq-dropdown="#nudge-menu-1" id="toggle-calendar"><svg class="icon icon-alarm"><use xlink:href="images/svg/icons.svg#icon-alarm"></use></svg><time><span id="outputDate">12/01/15</span><span id="outputFrequency">(Weekly)</span></time></a>
+        <a href="#" data-jq-dropdown="#nudge-menu-1" id="toggle-calendar"><svg class="icon icon-alarm"><use xlink:href="images/svg/icons.svg#icon-alarm"></use></svg><time><span id="outputDate"><%= item.next_reminder_date ? formatted_date(item.next_reminder_date) : "Set Nudge" %></span><span id="outputFrequency"><%= item.item_type ? item.item_type : "" %></span></time></a>
         <div id="nudge-menu-1" class="center-dropdown jq-dropdown jq-dropdown-tip">
           <div class="jq-dropdown-panel">
             <div id="calendar-menu">

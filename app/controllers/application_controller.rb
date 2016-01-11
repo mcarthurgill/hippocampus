@@ -49,5 +49,9 @@ class ApplicationController < ActionController::Base
       return
     end
   end
+
+  def formatted_date date
+    return date.strftime("%m/%d/%y")
+  end
 end
 
