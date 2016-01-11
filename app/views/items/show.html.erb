@@ -5,7 +5,7 @@
 <!-- Main Content -->
 <main class="main-content thought-content" role="main" aria-label="Main Content">
   <div class="add-thought-wrap scene_element--fadeinup scene_element scene_delay">
-    <textarea id="default-editor" class="add-thought-area"><%= @item.message %></textarea>
+    <textarea id="default-editor" class="add-thought-area" value="<%= @item.message %>" onfocus="this.value = this.value"><%= @item.message %></textarea>
     <div class="assets-mgmt">
       <!-- New Files previewed here: -->
       <div id="previews" class="dropzone"></div>
