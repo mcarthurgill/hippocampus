@@ -166,8 +166,10 @@ class UsersController < ApplicationController
 
     page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
-    @reminders = user.sorted_reminders(1000, page)
-    list = @reminders.shift(1).first
+    mobile = params[:auth][:uid]
+    
+    @reminders = user.sorted_reminders(1000, page, mobile)
+    list = @reminders.shift(1).first if mobile
 
     respond_to do |format|
       format.html

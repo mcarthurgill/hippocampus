@@ -224,18 +224,22 @@ class User < ActiveRecord::Base
     return buckets
   end
 
-  def sorted_reminders(limit=100000, page=0)
+  def sorted_reminders(limit=100000, page=0, return_local_keys=true)
     tz = self.time_zone ? self.time_zone : "America/Chicago"
     items = self.items.not_deleted.with_future_reminder(tz)
     ids_to_exclude = items.pluck(:id)
     items += self.bucket_items.not_deleted.with_future_reminder(tz).excluding(ids_to_exclude)
     items_hash = items.group_by{|i| i.next_reminder_date(tz) }
     sorted_by_date = []
-    items_hash.each do |k, v| 
-      items_hash[k] = v.map(&:local_key)
-      sorted_by_date << Hash[k, items_hash[k]]
+    if return_local_keys
+      items_hash.each do |k, v| 
+        items_hash[k] = v.map(&:local_key)
+        sorted_by_date << Hash[k, items_hash[k]]
+      end
+      return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
+    else
+      return sorted_by_date.sort_by{|h| h.keys.first} #returns [{date => [item, item, item]}, {date => [item, item, item]}] sorted by date
     end
-    return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
   end
 
   def no_name?
