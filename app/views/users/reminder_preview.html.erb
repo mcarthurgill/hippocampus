@@ -1,7 +1,7 @@
 <li>
   <%= link_to item_path(item) do %>
     <header>
-      <time><%= formatted_date(item.next_reminder) %></time>
+      <time><%= formatted_date(item.next_reminder_date) %></time>
       <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="images/svg/icons.svg#icon-repeat"></use></svg> Annually</span>
     </header>
     <p><%= item.message %></p>

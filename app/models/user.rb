@@ -229,16 +229,16 @@ class User < ActiveRecord::Base
     items = self.items.not_deleted.with_future_reminder(tz)
     ids_to_exclude = items.pluck(:id)
     items += self.bucket_items.not_deleted.with_future_reminder(tz).excluding(ids_to_exclude)
-    items_hash = items.group_by{|i| i.next_reminder_date(tz) }
     sorted_by_date = []
     if return_local_keys
+      items_hash = items.group_by{|i| i.next_reminder_date(tz) }
       items_hash.each do |k, v| 
         items_hash[k] = v.map(&:local_key)
         sorted_by_date << Hash[k, items_hash[k]]
       end
       return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
     else
-      return sorted_by_date.sort_by{|h| h.keys.first} #returns [{date => [item, item, item]}, {date => [item, item, item]}] sorted by date
+      return items.sort_by{|i| i.next_reminder_date} #returns [item, item, item] sorted by next reminder date
     end
   end
 
