@@ -17,10 +17,10 @@
       <% alreadyDisplayedUpcoming = false %>
       <% @reminders.each do |i| %>
         <% if (formatted_date(i.next_reminder_date) == formatted_date(Date.today)) && !alreadyDisplayedToday %>
-          <%= alreadyDisplayedToday = true %>
+          <% alreadyDisplayedToday = true %>
           <li class="section"><h5>today's nudges</h5></li>
         <% elsif !alreadyDisplayedUpcoming %>
-          <%= alreadyDisplayedUpcoming = true %>
+          <% alreadyDisplayedUpcoming = true %>
           <li class="section"><h5>upcoming nudges</h5></li>
         <% end %>
         <%= render 'reminder_preview', :item => i %>
