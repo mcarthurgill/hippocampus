@@ -32,8 +32,7 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'thoughts'
-    time = params.has_key?(:above) ? params[:above] : 3.months.ago
-    @items = @user.items.above(time)
+    @items = @user.items.outstanding.by_date+@user.bucket_items.by_date.not_deleted.limit(200).uniq
 
     respond_to do |format|
       format.html
