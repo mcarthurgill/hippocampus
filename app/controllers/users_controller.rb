@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'thoughts'
-    @items = @user.items.outstanding.by_date+@user.bucket_items.by_date.not_deleted.limit(200).uniq
+    @items = (@user.items.outstanding.by_date+@user.bucket_items.by_date.not_deleted.limit(200).uniq).reverse
 
     respond_to do |format|
       format.html
