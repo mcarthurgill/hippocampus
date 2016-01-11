@@ -10,10 +10,9 @@
     <% if item.media_urls.count > 0 %>
       <%= render 'shared/items/item_media', :item => item %>
     <% end %>
-    <div class="bucket-labels">
-      <a class="label" href="bucket.html">music <span class="remove"></span></a>
-      <a class="label neglected" href="bucket.html">Vinyl <span class="remove"></span></a>
-    </div>
+    <% item.visible_buckets_for_user(current_user).each do |b| %>
+      <%= render 'shared/items/bucket_sticker', :bucket => b %>
+    <% end %>
   </a>
 
 
