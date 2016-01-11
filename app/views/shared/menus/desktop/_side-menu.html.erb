@@ -1,9 +1,9 @@
 <nav class="side-menu" role="navigation" aria-label="Side Menu">
   <div class="profile-overview">
     <a href="profile.html">
-      <%= image_tag '/images/content/user-profile-01.jpg', :class => "avatar" %>
+      <%= image_tag current_user.avatar_path, :class => "avatar" %>
     </a>
-    <a class="name" href="#" id="profile-menu-trigger" data-jq-dropdown="#profile-menu-1">Courtney Bradford</a>
+    <a class="name" href="#" id="profile-menu-trigger" data-jq-dropdown="#profile-menu-1"><%= current_user.name ? current_user.name : "Profile" %></a>
     <div id="profile-menu-1" class="jq-dropdown jq-dropdown-tip">
       <ul class="jq-dropdown-menu">
         <li><a href="#">Settings</a></li>

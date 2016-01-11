@@ -1,15 +1,19 @@
 <li>
-    <% if item.next_reminder_date %>
-      <%= render 'shared/items/item_reminder' %>
-    <% end %>
-    <% if item.outstanding? %>
-      <%= render 'shared/items/item_outstanding' %>
-    <% end %>
-    <%= link_to item.message, item_path(item) %>
-    <% if item.has_media? %>
-      <%= render 'shared/items/item_media', :item => item %>
-    <% end %>
-    <% if item.visible_buckets_for_user(current_user).count > 0 %>
-      <%= render 'shared/items/item_buckets_stickers', :item => item %>
-    <% end %>
+  <% if item.next_reminder_date || item.outstanding? %>
+    <div class="status-info">
+      <% if item.next_reminder_date %>
+        <%= render 'shared/items/item_reminder' %>
+      <% end %>
+      <% if item.outstanding? %>
+        <%= render 'shared/items/item_outstanding' %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= link_to item.message, item_path(item) %>
+  <% if item.has_media? %>
+    <%= render 'shared/items/item_media', :item => item %>
+  <% end %>
+  <% if item.visible_buckets_for_user(current_user).count > 1 %>
+    <%= render 'shared/items/item_buckets_stickers', :item => item, :bucket => bucket %>
+  <% end %>
 </li>

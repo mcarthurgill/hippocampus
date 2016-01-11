@@ -11,7 +11,7 @@
   <div class="bucket-list-wrap">
     <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay">
       <% @items.each do |item| %>
-        <%= render 'shared/items/item_preview', :item => item %>
+        <%= render 'shared/items/item_preview', :item => item, :bucket => @bucket %>
       <% end %>
     </ul>
     <div id="sBtm"></div>

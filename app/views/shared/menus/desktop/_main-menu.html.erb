@@ -12,9 +12,9 @@
         <svg class="icon icon-find"><use xlink:href="images/svg/icons.svg#icon-find"></use></svg>
         <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>
       </div>
-      <a href="thought_blank.html" class="add-thought">
+      <%= link_to new_item_path, :class => "add-thought" do %>
         <span class="tipso add-thought-tooltip" data-tipso="New Bucket"><span class="icon">+</span></span>
-      </a>
+      <% end %>      
     </div>
   </div>
   <% if @bucket %>

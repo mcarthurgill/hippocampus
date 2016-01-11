@@ -81,8 +81,7 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
-    @active = 'notes'
-    @options_for_buckets = current_user.formatted_buckets_options
+    # @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
       format.html 
@@ -98,7 +97,7 @@ class ItemsController < ApplicationController
 
     @active = 'notes'
 
-    @options_for_buckets = current_user.formatted_buckets_options
+    # @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }

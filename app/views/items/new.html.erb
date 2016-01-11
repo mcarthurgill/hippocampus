@@ -1,22 +1,54 @@
+<!-- Main Content -->
+<main class="main-content thought-content" role="main" aria-label="Main Content">
+  <div class="add-thought-wrap scene_element--fadeinup scene_element scene_delay">
+    <textarea id="default-editor" class="add-thought-area"></textarea>
+    <!-- Shortcuts -->
+    <div class="shortcuts-guide">
+      <a href="#" class="triggerHide"><span class="close"></span></a>
+      <header><h4>Keyboard Shortcuts</h4></header>
+      <ul class="shortcut-list">
 
-<div class="row">
-  <div class="col-xs-12">
-    <ol class="breadcrumb">
-      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
-      <li class="active">+ New Thought</li>
-    </ol>
+        <li>
+          <span class="name">Link:</span>
+          <span class="key">cmd + k</span>
+          <span class="detail">[link](http://)</span>
+        </li>
+        
+        <li>
+          <span class="name">Bold:</span>
+          <span class="key">cmd + b</span>
+          <span class="detail">**bold**</span>
+        </li>
+
+        <li>
+          <span class="name">Italic:</span>
+          <span class="key">cmd + i</span>
+          <span class="detail">*italic*</span>
+        </li>
+
+        <li>
+          <span class="name">Unordered List:</span>
+          <span class="key">-</span>
+          <span class="detail">- Item</span>
+        </li>
+
+        <li>
+          <span class="name">Ordered List:</span>
+          <span class="key">1. </span>
+          <span class="detail">1. Item</span>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- Assets -->
+    <div class="assets-mgmt">
+      <!-- New Files previewed here: -->
+      <div id="previews" class="dropzone"></div>
+      <!-- Existing images previewed here: -->
+      <ul class="image-previews-list">
+      </ul>
+      
+    </div>
   </div>
-</div>
-
-<%= render 'form' %>
-
-<div class="row">
-  <div class="col-xs-12">
-    <br/>
-    <%= link_to "All Thoughts", user_path(current_user), :class => "btn btn-default btn-md btn-block" %>
-  </div>
-</div>
-
-<br/>
-<br/>
-<br/>
+</main>
