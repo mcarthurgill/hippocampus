@@ -53,5 +53,7 @@ class ApplicationController < ActionController::Base
   def formatted_date date
     return date.strftime("%m/%d/%y")
   end
+  helper_method :formatted_date
+
 end
 
