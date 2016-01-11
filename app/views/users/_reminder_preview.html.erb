@@ -2,7 +2,9 @@
   <%= link_to item_path(item) do %>
     <header>
       <time><%= formatted_date(item.next_reminder_date) %></time>
-      <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="images/svg/icons.svg#icon-repeat"></use></svg> Annually</span>
+      <% if item.recurring? %>
+        <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="images/svg/icons.svg#icon-repeat"></use></svg> <%= item.item_type %></span>
+      <% end %>
     </header>
     <p><%= item.message %></p>
   <% end %>

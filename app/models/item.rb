@@ -472,6 +472,10 @@ class Item < ActiveRecord::Base
     return ['once', 'yearly', 'monthly', 'weekly', 'daily']
   end
 
+  def recurring?
+    return !self.once?
+  end
+
   def once?
     self.item_type == "once"
   end
