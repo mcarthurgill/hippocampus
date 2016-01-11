@@ -1,5 +1,5 @@
 <li>
-  <a href="thought.html">
+  <a href=<%= item_path(item) %>>
     <% if item.next_reminder_date %>
       <%= render 'shared/items/item_reminder' %>
     <% end %>
@@ -10,8 +10,8 @@
     <% if item.media_urls.count > 0 %>
       <%= render 'shared/items/item_media', :item => item %>
     <% end %>
-    <% item.visible_buckets_for_user(current_user).each do |b| %>
-      <%= render 'shared/items/bucket_sticker', :bucket => b %>
+    <% if item.visible_buckets_for_user(current_user).count > 0 %>
+      <%= render 'shared/items/item_buckets_sticker', :item => item %>
     <% end %>
   </a>
 
