@@ -38,7 +38,9 @@ class ItemsController < ApplicationController
   def create
     
     @item = nil
-    
+    p "*"*50
+    p params
+    p "*"*50
     if params[:item].has_key?(:device_timestamp) && params[:item][:device_timestamp].to_f > 0
       @item = Item.find_by_device_timestamp_and_user_id(params[:item][:device_timestamp], params[:item][:user_id])
     end
@@ -50,6 +52,11 @@ class ItemsController < ApplicationController
       @item = Item.new(params[:item])
       upload_files = true
 
+    end
+
+ 
+    if params.has_key?(:origin) && params[:origin] && params[:origin] == "web" #request came from web
+      @item.user_id = current_user.id if current_user
     end
 
     respond_to do |format|

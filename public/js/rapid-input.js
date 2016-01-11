@@ -20,9 +20,9 @@ rapidInput.keydown(function(e){
       if (rapidInput.val()) {
 
         var userThought = rapidInput.val();
- 
-          $(".thoughts-list").append("<li>"+userThought+"</li>");
-
+      
+        $(".thoughts-list").append("<li>"+userThought+"</li>"); 
+        CallMethod('/items', {item: {'message': userThought}, origin:'web'}, fetchItems); 
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");
@@ -41,3 +41,25 @@ rapidInput.keydown(function(e){
 
     }
 });
+
+
+function CallMethod(url, parameters, successCallback) {
+  console.log("$$$");
+  console.log(parameters);
+  console.log("$$$");
+  $.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(parameters),
+      contentType: 'application/json;',
+      dataType: 'json',
+      success: successCallback,
+      error: function(xhr, textStatus, errorThrown) {
+          console.log('error');
+      }
+  });
+}
+
+function fetchItems() {
+  console.log("****BOOOOOM*****");
+}
