@@ -27,7 +27,7 @@
   <ul class="nav-list">
     <li><h5>Most Recent</h5></li>
     <% @recent_buckets.each do |b| %>
-      <li class="<%= (@bucket && @bucket == b) ? 'active' : '' %>"><a href="<%= bucket_path(b) %>"><%= b.first_name %></a></li>
+      <li class="<%= (@bucket && @bucket == b) ? 'active' : '' %>"><a href="<%= bucket_info_path(b) %>"><%= b.first_name %></a></li>
     <% end %>
   </ul>
 </nav>
