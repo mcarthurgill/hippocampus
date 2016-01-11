@@ -13,8 +13,16 @@
   <div class="nudges-list-wrap">
     <!-- List -->
     <ul class="list nudges-list scene_element--fadeinup scene_element scene_delay">
-      <li class="section"><h5>upcoming nudges</h5></li>
+      <% alreadyDisplayedToday = false %>
+      <% alreadyDisplayedUpcoming = false %>
       <% @reminders.each do |i| %>
+        <% if (formatted_date(i.next_reminder_date) == formatted_date(Date.today)) && !alreadyDisplayedToday %>
+          <%= alreadyDisplayedToday = true %>
+          <li class="section"><h5>today's nudges</h5></li>
+        <% elsif !alreadyDisplayedUpcoming %>
+          <%= alreadyDisplayedUpcoming = true %>
+          <li class="section"><h5>upcoming nudges</h5></li>
+        <% end %>
         <%= render 'reminder_preview', :item => i %>
       <% end %>
     </ul>
