@@ -11,7 +11,7 @@
       <%= render 'shared/items/item_media', :item => item %>
     <% end %>
     <% if item.visible_buckets_for_user(current_user).count > 0 %>
-      <%= render 'shared/items/item_buckets_sticker', :item => item %>
+      <%= render 'shared/items/item_buckets_stickers', :item => item %>
     <% end %>
   </a>
 
