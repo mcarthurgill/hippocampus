@@ -1,0 +1,76 @@
+<!-- Main Menu -->
+<nav class="thought-menu" role="navigation" aria-label="Thought Menu">
+  <!-- Profile -->
+  <div class="profile-overview">
+    <a href="#" data-jq-dropdown="#profile-menu-1" data-vertical-offset="3" class="avatar dropdown">
+      <img class="avatar med" src="images/content/user-profile-01.jpg" alt="">
+    </a>
+    <div id="profile-menu-1" class="jq-dropdown jq-dropdown-tip">
+      <ul class="jq-dropdown-menu">
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Logout</a></li>
+        <li class="jq-dropdown-divider"></li>
+        <li><a href="#5">Keyboard Shortcuts</a></li>
+      </ul>
+    </div>
+  </div>
+  <!-- Options -->
+  <div class="thought-options">
+    <div class="utilities">
+      <div class="buckets">
+        <a href="#" id="toggle-bucket-select"><svg class="icon icon-bucket"><use xlink:href="images/svg/icons.svg#icon-bucket"></use></svg></a>
+        <select name="" multiple="multiple" id="bucket-select">
+        </select>
+      </div>
+      <div class="upload">
+        <a href="#" id="upload-assets"><svg class="icon icon-camera"><use xlink:href="images/svg/icons.svg#icon-camera"></use></svg></a>
+      </div>
+      <div class="nudges">
+        <a href="#" data-jq-dropdown="#nudge-menu-1" id="toggle-calendar"><svg class="icon icon-alarm"><use xlink:href="images/svg/icons.svg#icon-alarm"></use></svg><time><span id="outputDate">12/01/15</span><span id="outputFrequency">(Weekly)</span></time></a>
+        <div id="nudge-menu-1" class="center-dropdown jq-dropdown jq-dropdown-tip">
+          <div class="jq-dropdown-panel">
+            <div id="calendar-menu">
+              <div class="frequency-settings">
+                <div class="select-wrap">
+                  <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="images/svg/icons.svg#icon-repeat"></use></svg></span>
+                  <select name="" id="calendar-frequency-option" class="nice">
+                    <option value="Don't Repeat">Don't Repeat</option>
+                    <option value="Annually">Annually</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div id="calendar"></div> 
+              <a href="#" id="remove-calendar-nudge" class="remove-nudge button">Remove Nudge</a>
+            </div>
+          </div>
+        </div>
+        <div id="overlay"></div>
+      </div>
+      <div class="more">
+        <a href="#" data-jq-dropdown="#more-options-menu-1"><svg class="icon icon-more"><use xlink:href="images/svg/icons.svg#icon-more"></use></svg></a>
+        <div id="more-options-menu-1" class="center-dropdown jq-dropdown jq-dropdown-tip">
+          <ul class="jq-dropdown-menu">
+            <li><a href="#"><svg class="icon icon-duplicate"><use xlink:href="images/svg/icons.svg#icon-duplicate"></use></svg> Duplicate</a></li>
+            <li><a href="#"><svg class="icon icon-trash"><use xlink:href="images/svg/icons.svg#icon-trash"></use></svg> Delete</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="file">
+      <a href="thoughts.html" class="cancel"><span>Cancel</span></a>
+      <a href="#" id="saveThought" class="save"><span>Save Thought</span></a>
+    </div>
+  </div>   
+  <div class="thought-menu_mbl">
+    <a href="#" class="trigger-side-menu_mbl">
+      <svg class="icon icon-profile-outline"><use xlink:href="images/svg/icons.svg#icon-profile-outline"></use></svg>
+    </a>
+    <div class="file">
+      <a href="thoughts.html" class="cancel"><span>Cancel</span></a>
+      <a href="#" id="saveThought" class="save"><span>Save Thought</span></a>
+    </div>
+  </div>   
+</nav>

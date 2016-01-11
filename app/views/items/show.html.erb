@@ -1,36 +1,20 @@
+<%= render 'shared/items/item-main-menu' %>
 
-<div class="row">
-  <div class="col-xs-12">
-    <ol class="breadcrumb">
-      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
-      <li class="active">Thought</li>
-    </ol>
+<%= render 'shared/items/item-side-menu' %>
+
+<!-- Main Content -->
+<main class="main-content thought-content" role="main" aria-label="Main Content">
+  <div class="add-thought-wrap scene_element--fadeinup scene_element scene_delay">
+    <textarea id="default-editor" class="add-thought-area">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi mollitia eos, velit consectetur eaque ea, laboriosam cum quod alias. Quibusdam eveniet, molestias vel laboriosam reprehenderit error, vero iusto aliquam nam.</textarea>
+    <div class="assets-mgmt">
+      <!-- New Files previewed here: -->
+      <div id="previews" class="dropzone"></div>
+      <!-- Existing images previewed here: -->
+      <ul class="image-previews-list">
+        <li><img src="images/content/image-03.jpg" alt="" class="img-tipso" data-tipso="image-03.jpg"></li>
+        <li><img src="images/content/image-02.jpg" alt="" class="img-tipso" data-tipso="image-02.jpg"></li>
+      </ul>
+      
+    </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-12">
-
-    <% if notice %>
-      <div class="row">
-        <div class="col-xs-12">
-          <br/>
-          <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <%= notice %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    
-    <%= render 'detail' %>
-
-    <%= render 'buckets' %>
-
-    <%= render 'footer' %>
-
-  </div>
-</div>
-
-<br/>
-<br/>
+</main>
