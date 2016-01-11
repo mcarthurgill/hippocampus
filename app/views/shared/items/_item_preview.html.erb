@@ -1,19 +1,15 @@
 <li>
-  <a href=<%= item_path(item) %>>
     <% if item.next_reminder_date %>
       <%= render 'shared/items/item_reminder' %>
     <% end %>
     <% if item.outstanding? %>
       <%= render 'shared/items/item_outstanding' %>
     <% end %>
-    <%= item.message %>
+    <%= link_to item.message, item_path(item) %>
     <% if item.media_urls.count > 0 %>
       <%= render 'shared/items/item_media', :item => item %>
     <% end %>
     <% if item.visible_buckets_for_user(current_user).count > 0 %>
       <%= render 'shared/items/item_buckets_stickers', :item => item %>
     <% end %>
-  </a>
-
-
 </li>
