@@ -22,7 +22,7 @@ rapidInput.keydown(function(e){
         var userThought = rapidInput.val();
       
         $(".thoughts-list").append("<li>"+userThought+"</li>"); 
-        PostToServer('/items', {item: {'message': userThought, 'input_method': 'web'}, origin:'web'}, replaceItems); 
+        PostToServer('/items', {item: {'message': userThought, 'input_method': 'web'}}, replaceItems); 
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");

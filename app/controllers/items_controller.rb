@@ -53,7 +53,7 @@ class ItemsController < ApplicationController
     end
 
 
-    if params[:item].has_key?(:input_type) && params[:item][:input_type] && params[:item][:input_type] == "web"
+    if params[:item].has_key?(:input_method) && params[:item][:input_method] && params[:item][:input_method] == "web"
       @item.user_id = current_user.id if current_user
     end
 
