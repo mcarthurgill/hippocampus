@@ -21,7 +21,7 @@ rapidInput.keydown(function(e){
 
         var userThought = rapidInput.val();
       
-        $(".thoughts-list").append("<li>"+userThought+"</li>"); 
+        $(".thoughts-list").append("<li><div class='status-info'><span class='unassigned'></span></div>"+userThought+"</li>"); 
         PostToServer('/items', {item: {'message': userThought, 'input_method': 'web'}}, replaceItems); 
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
@@ -50,14 +50,15 @@ function PostToServer(url, parameters, successCallback) {
       data: JSON.stringify(parameters),
       contentType: 'application/json;',
       dataType: 'json',
-      success: successCallback,
+      success: successCallback(result),
       error: function(xhr, textStatus, errorThrown) {
           console.log('error');
       }
   });
 }
 
-function replaceItems() {
+function replaceItems(result) {
   console.log("****BOOOOOM*****");
+  console.log(result);
   
 }
