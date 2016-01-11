@@ -1,0 +1,9 @@
+<div class="attachments">
+  <ul class="image-previews">
+    <% item.media_urls.each do |url| %>
+      <li>
+        <a href="#go-somewhere"><%= image_tag url %></a>
+      </li>
+    <% end %>
+  </ul>
+</div>

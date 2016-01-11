@@ -170,7 +170,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: {:reminders => reminders, :nudge_list => list[:nudges_list]} }
+      format.json { render json: {:reminders => @reminders, :nudge_list => list[:nudges_list]} }
     end
   end
 end

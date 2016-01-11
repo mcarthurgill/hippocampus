@@ -1,8 +1,20 @@
-<li><a href="thought.html">
-<% if item.outstanding? %>
-  <%= render 'shared/items/item_outstanding' %>
-<% end %>
-<% if item.next_reminder_date %>
-  <%= render 'shared/items/item_reminder' %>
-<% end %>
-<%= item.message %></a></li>
+<li>
+  <a href="thought.html">
+    <% if item.next_reminder_date %>
+      <%= render 'shared/items/item_reminder' %>
+    <% end %>
+    <% if item.outstanding? %>
+      <%= render 'shared/items/item_outstanding' %>
+    <% end %>
+    <%= item.message %>
+    <% if item.media_urls.count > 0 %>
+      <%= render 'shared/items/item_media', :item => item %>
+    <% end %>
+    <div class="bucket-labels">
+      <a class="label" href="bucket.html">music <span class="remove"></span></a>
+      <a class="label neglected" href="bucket.html">Vinyl <span class="remove"></span></a>
+    </div>
+  </a>
+
+
+</li>
