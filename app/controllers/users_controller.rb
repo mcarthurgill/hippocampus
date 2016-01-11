@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :get_most_recent_buckets, [:buckets, :items]
 
   # GET /users/1
   # GET /users/1.json

@@ -1,5 +1,6 @@
 class BucketsController < ApplicationController
-
+  before_filter :get_most_recent_buckets, [:show, :info]
+  
   # GET /buckets/1
   # GET /buckets/1.json
   def show
@@ -134,7 +135,7 @@ class BucketsController < ApplicationController
     @bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
     @items = @bucket.items.not_deleted.by_date.limit(64).offset(64*page).reverse if @bucket
     @active = "buckets"
-    
+
     respond_to do |format|
       if @bucket && user && @bucket.belongs_to_user?(user)
         format.html

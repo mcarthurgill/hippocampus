@@ -50,6 +50,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_most_recent_buckets lim=10
+    @recent_buckets = current_user.buckets.order("updated_at DESC").limit(lim)
+  end
+
   def formatted_date date
     return date.strftime("%m/%d/%y")
   end

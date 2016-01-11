@@ -16,25 +16,18 @@
     <small>Last Active Tuesday, October 27, 2015</small>
     <small>(4:30pm CT)</small>
   </div>
-  <ul class="nav-list">
+<!--   <ul class="nav-list">
     <li><h5>Favorites</h5></li>
     <li><a href="#">Oak Cliff</a></li>
     <li><a href="#">Telegraph Clients</a></li>
     <li><a href="#">Birthdays</a></li>
     <li><a href="#">Small Brewpub</a></li>
     <li><a href="#">Davis Street Espresso</a></li>
-  </ul>
+  </ul> -->
   <ul class="nav-list">
     <li><h5>Most Recent</h5></li>
-    <li><a href="#">Nadaha Garcia</a></li>
-    <li><a href="#">Dr. B</a></li>
-    <li><a href="#">Davis Street Espresso</a></li>
-    <li><a href="#">Klyde Warren</a></li>
-    <li><a href="#">Jennie Schramm</a></li>
-    <li class="active"><a href="#">Cocktails</a></li>
-    <li><a href="#">Curiosities</a></li>
-    <li><a href="#">Cooking 101</a></li>
-    <li><a href="#">Thanksgiving</a></li>
-    <li><a href="#">Aaron Dylan</a></li>        
+    <% @recent_buckets.each do |b| %>
+      <li class="<%= (@bucket && @bucket == b) ? 'active' : '' %>"><a href="<%= bucket_path(b) %>"><%= b.first_name %></a></li>
+    <% end %>
   </ul>
 </nav>
