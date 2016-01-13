@@ -1,7 +1,7 @@
-<script src="//js.pusher.com/2.2/pusher.min.js"></script>
+<script src="https://js.pusher.com/3.0/pusher.min.js"></script>
 <script>
 $(document).ready(function() {
-
+  
   var pusher = new Pusher('<%= Pusher.key %>'); // uses your APP KEY
 
   pusher.unsubscribe('<%= current_user.push_channel %>');
@@ -17,6 +17,8 @@ $(document).ready(function() {
     }
     $("#item-template").each( function(index, element){
       console.log("here!!!");
+      console.log($(this).find('#item-message-template').text()); 
+      console.log(data["message"]);
         if ($(this).find('#item-message-template').text() == data["message"]) {
           $(this).remove();
         }
