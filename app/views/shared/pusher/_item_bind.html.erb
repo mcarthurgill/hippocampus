@@ -18,14 +18,13 @@ $(document).ready(function() {
     } else {
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
     }
+
     $("#item-template").each( function(index, element){
-      console.log("here!!!");
-      console.log($(this).find('#item-message-template').text()); 
-      console.log(data["message"]);
         if ($(this).find('#item-message-template').text() == data["message"]) {
           $(this).remove();
         }
     });
+    var scrollBtm = document.getElementById("sBtm");  
   }); 
 });
 
