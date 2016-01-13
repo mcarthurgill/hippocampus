@@ -19,7 +19,7 @@ function GetToServer(url, parameters, successCallback, errorCallback) {
     $.ajax({
         type: 'GET',
         url: url,
-        contentType: 'application/javascript;',
+        contentType: 'application/json;',
         dataType: 'json',
         success: function(response){
           successCallback(response); 
@@ -33,7 +33,7 @@ function GetToServer(url, parameters, successCallback, errorCallback) {
         type: 'GET',
         url: url,
         data: JSON.stringify(parameters),
-        contentType: 'application/javascript;',
+        contentType: 'application/json;',
         dataType: 'json',
         success: function(response){
           successCallback(response); 
