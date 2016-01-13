@@ -33,7 +33,7 @@ function GetToServer(url, parameters, successCallback, errorCallback) {
 function replaceAllItems(response) {
   console.log("****SUCCESS!!!****");
   url = '/users/' + response.user_id + '/items.js'
-  GetToServer(url, {}, doNothing, doNothing)
+  GetToServer(url, null, doNothing, doNothing)
 }
 
 function errorReplaceAllItems(response) {
