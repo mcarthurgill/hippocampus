@@ -8,7 +8,7 @@
 <%= render "shared/menus/mobile/all-mobile" %>
 
 <main class="main-content" role="main" aria-label="Main Content">
-  <div class="bucket-list-wrap">
+  <div class="bucket-list-wrap" id="item-list">
     <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay">
       <% @items.each do |item| %>
         <%= render 'shared/items/item_preview', :item => item, :bucket => @bucket %>

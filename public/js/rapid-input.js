@@ -22,7 +22,7 @@ rapidInput.keydown(function(e){
         var userThought = rapidInput.val();
       
         $(".thoughts-list").append("<li><div class='status-info'><span class='unassigned'></span></div>"+userThought+"</li>"); 
-        PostToServer('/items', {item: {'message': userThought, 'input_method': 'web'}}); 
+        PostToServer('/items', {item: {'message': userThought, 'input_method': 'web'}}, replaceAllItems, errorReplaceAllItems); 
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");
@@ -41,21 +41,3 @@ rapidInput.keydown(function(e){
 
     }
 });
-
-
-function PostToServer(url, parameters, successCallback) {
-  $.ajax({
-      type: 'POST',
-      url: url,
-      data: JSON.stringify(parameters),
-      contentType: 'application/json;',
-      dataType: 'json',
-      success: function(result){
-        console.log("****BOOOOOM*****");
-        console.log(result); 
-      },
-      error: function(xhr, textStatus, errorThrown) {
-          console.log('error');
-      }
-  });
-}
