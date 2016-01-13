@@ -1,9 +1,10 @@
 <script src="https://js.pusher.com/3.0/pusher.min.js"></script>
 <script>
 $(document).ready(function() {
-  
-  var pusher = new Pusher('<%= Pusher.key %>'); // uses your APP KEY
 
+  var pusher = new Pusher('<%= Pusher.key %>'); // uses your APP KEY
+  console.log("$$$$");
+  console.log('<%= Pusher.key %>');
   pusher.unsubscribe('<%= current_user.push_channel %>');
 
   var channel = pusher.subscribe('<%= current_user.push_channel %>');
