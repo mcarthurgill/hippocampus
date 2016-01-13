@@ -111,7 +111,7 @@ class Item < ActiveRecord::Base
   def users_array_for_push
     arr = []
     self.users_array.each do |u|
-      arr << "user-#{u.id}"
+      arr << u.push_channel
     end
     return arr
   end
