@@ -74,6 +74,10 @@ rapidInput.keydown(function(e){
     }
 });
 
+function submit() {
+  $("#new_item").submit();
+}
+
 function submitWithTemplate(template) {
   submit();
   appendMessageWithTemplate(template);
