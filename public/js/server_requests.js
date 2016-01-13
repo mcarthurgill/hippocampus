@@ -60,4 +60,5 @@ function errorReplaceAllItems(response) {
 function doNothing(response){
   console.log("do nothing");
   console.log(response);
+  $("#item-list").html(response);
 }
