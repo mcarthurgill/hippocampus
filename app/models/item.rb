@@ -131,6 +131,13 @@ class Item < ActiveRecord::Base
   end
 
   def render_anywhere(partial, assigns = {})
+    include AbstractController::Rendering
+    include AbstractController::Helpers
+    include AbstractController::Translation
+    include AbstractController::AssetPaths
+    include Rails.application.routes.url_helpers
+    helper ApplicationHelper
+    self.view_paths = "app/views"
     view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
     view.extend ApplicationHelper
     view.render(partial: partial, locals: assigns)
