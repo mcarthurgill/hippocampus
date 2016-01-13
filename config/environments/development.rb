@@ -37,7 +37,7 @@ Hippocampus::Application.configure do
 
   require 'pusher'
   #STAGING VALUES FROM MY ACCOUNT - McA
-  Pusher.app_id = '166190'
-  Pusher.key = '5a3dd29a4673cac7e911'
-  Pusher.secret = '567dfdeb6c72ae4d8441'
+  Pusher.app_id = '166191'
+      Pusher.key = '71418a0f86c82ac47347'
+      Pusher.secret = '3df9cfc2385bcf2737f3'
 end
