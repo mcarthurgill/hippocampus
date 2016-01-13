@@ -73,7 +73,7 @@ class ItemsController < ApplicationController
         @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0 && params[:item][:bucket_id].to_i > 0
         @item.add_to_bucket(Bucket.find_by_local_key(params[:item][:bucket_local_key])) if params[:item][:bucket_local_key] && params[:item][:bucket_local_key].length > 0
 
-        format.html { render json: {:user_id => @item.user.id} }
+        format.html { redirect_to item_path(@item) }
         format.json { render json: Item.find(@item.id), status: :created, location: @item } #rails was caching @item and not sending back the updated status if we were assigning to a bucket. 
       else
         format.html { redirect_to new_item_path, :notice => "Error creating note." }
