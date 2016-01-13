@@ -3,7 +3,7 @@ function PostToServer(url, parameters, successCallback, errorCallback) {
       type: 'POST',
       url: url,
       data: JSON.stringify(parameters),
-      contentType: 'application/json;',
+      contentType: 'application/javscript;',
       dataType: 'json',
       success: function(response){
         successCallback(response); 
