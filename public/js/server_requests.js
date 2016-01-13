@@ -19,7 +19,7 @@ function GetToServer(url, parameters, successCallback, errorCallback) {
       type: 'GET',
       url: url,
       data: JSON.stringify(parameters),
-      contentType: 'application/js;',
+      contentType: 'application/javascript;',
       dataType: 'json',
       success: function(response){
         successCallback(response); 
@@ -32,10 +32,16 @@ function GetToServer(url, parameters, successCallback, errorCallback) {
 
 function replaceAllItems(response) {
   console.log("****SUCCESS!!!****");
-  console.log(response.user_id);
+  url = '/users/' + response.user_id + '/items.js'
+  GetToServer(url, {}, doNothing, doNothing)
 }
 
 function errorReplaceAllItems(response) {
   console.log("****ERROR****");
+  console.log(response);
+}
+
+function doNothing(response){
+  console.log("do nothing");
   console.log(response);
 }
