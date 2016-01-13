@@ -14,3 +14,13 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+
+function appendItemWithTemplate(template) {
+  var $jQueryObject = $($.parseHTML(template));
+  console.log("***");
+  console.log($jQueryObject);
+  console.log($.parseHTML(template));
+  console.log($("#rapid-thought-input").val());
+  $jQueryObject.find('#item-message-template').html($("#rapid-thought-input").val())
+  $("#item-list").append($jQueryObject);
+}

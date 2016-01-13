@@ -16,6 +16,7 @@ $(document).ready(function() {
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
     }
     $("#item-template").each( function(index, element){
+      console.log("here!!!");
         if ($(this).find('#item-message-template').text() == data["message"]) {
           $(this).remove();
         }
