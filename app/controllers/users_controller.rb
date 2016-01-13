@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     @items = (@user.items.outstanding.by_date+@user.bucket_items.by_date.not_deleted.limit(200).uniq).reverse
 
     respond_to do |format|
+      format.js
       format.html
       format.json { render json: @items}
     end
