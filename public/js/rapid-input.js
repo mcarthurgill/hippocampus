@@ -22,7 +22,7 @@ rapidInput.keydown(function(e){
         var userThought = rapidInput.val();
       
         $(".thoughts-list").append("<li><div class='status-info'><span class='unassigned'></span></div>"+userThought+"</li>"); 
-        PostToServer('/items', {item: {'message': userThought, 'input_method': 'web'}}, replaceAllItems, errorReplaceAllItems); 
+        PostToServer('/items.js', {item: {'message': userThought, 'input_method': 'web'}}, replaceAllItems, errorReplaceAllItems); 
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");
