@@ -1,12 +1,4 @@
 class Item < ActiveRecord::Base
-  include AbstractController::Rendering
-  include AbstractController::Helpers
-  include AbstractController::Translation
-  include AbstractController::AssetPaths
-  include Rails.application.routes.url_helpers
-  helper ApplicationHelper
-  self.view_paths = "app/views"
-  
   attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :message_html_cache, :message_full_cache, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
 
   serialize :media_cache, JSON
