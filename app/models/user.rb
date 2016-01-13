@@ -112,8 +112,9 @@ class User < ActiveRecord::Base
     return return_buckets.flatten
   end
   
-
-
+  def push_channel
+    return "user-#{self.id}"
+  end
 
 
   # -- SETTERS

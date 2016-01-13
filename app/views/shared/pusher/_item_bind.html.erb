@@ -1,0 +1,26 @@
+<script src="//js.pusher.com/2.2/pusher.min.js"></script>
+<script>
+$(document).ready(function() {
+
+  var pusher = new Pusher('<%= Pusher.key %>'); // uses your APP KEY
+
+  pusher.unsubscribe('<%= current_user.push_channel %>');
+
+  var channel = pusher.subscribe('<%= current_user.push_channel %>');
+  channel.bind('item-creation', function(data) {
+    var doesnt_exist = $("#item"+data["id"]).length == 0;
+    var box = $("#item-list");
+    if (doesnt_exist) {
+      $("#item-list").append(data["html_as_string"]);
+    } else {
+      $("#item"+data["id"]).replaceWith(data["html_as_string"]);
+    }
+    $("#item-template").each( function(index, element){
+        if ($(this).find('#item-message-template').text() == data["message"]) {
+          $(this).remove();
+        }
+    });
+  }
+});
+
+</script>

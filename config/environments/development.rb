@@ -34,4 +34,10 @@ Hippocampus::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  require 'pusher'
+  #STAGING VALUES FROM MY ACCOUNT - McA
+  Pusher.app_id = '166190'
+  Pusher.key = '5a3dd29a4673cac7e911'
+  Pusher.secret = '567dfdeb6c72ae4d8441'
 end

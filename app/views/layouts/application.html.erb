@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= javascript_include_tag "/js/modernizr.js" %>
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,8|Roboto:400,300,300italic' rel='stylesheet' type='text/css'>
+  <%= render partial: "shared/pusher/item_bind" %>
 </head>
 <body>
 
@@ -31,6 +32,5 @@
   <%= javascript_include_tag "/js/libs.js" %>
   <%= javascript_include_tag "/js/app.js" %>
   <%= javascript_include_tag '/js/rapid-input.js' %>
-  <%= javascript_include_tag '/js/server_requests.js' %>
 </body>
 </html>

@@ -99,7 +99,8 @@ class Item < ActiveRecord::Base
 
   before_destroy :remove_from_engine
 
-  after_save :push
+  after_create :handle_notifications
+  after_update :push
   def push
     begin
       Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json()) if self.users_array_for_push.count > 0
@@ -115,8 +116,25 @@ class Item < ActiveRecord::Base
     return arr
   end
 
+  # ACTIONS
 
+  def handle_notifications
+    self.push_for_creation
+  end
 
+  def push_for_creation
+    Pusher.trigger(self.users_array_for_push, 'item-creation', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
+  end
+
+  def html_as_string
+    return self.render_anywhere('shared/items/item_preview', item: self)
+  end
+
+  def render_anywhere(partial, assigns = {})
+    view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
+    view.extend ApplicationHelper
+    view.render(partial: partial, locals: assigns)
+  end
 
   # -- SETTERS
 

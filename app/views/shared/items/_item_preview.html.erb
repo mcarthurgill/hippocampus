@@ -1,4 +1,4 @@
-<li>
+<li id="item<%= item.id %>">
   <% if item.next_reminder_date || item.outstanding? %>
     <div class="status-info">
       <% if item.next_reminder_date %>
