@@ -60,5 +60,6 @@ function errorReplaceAllItems(response) {
 function doNothing(response){
   console.log("do nothing");
   console.log(response);
-  $("#item-list").html(response.responseText);
+  var $jQueryObject = $($.parseHTML(response));
+  $('#item-list').html(jQueryObject);
 }
