@@ -18,13 +18,19 @@ $(document).ready(function() {
     } else {
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
     }
+    
+    var scrollBtm = document.getElementById("sBtm");  
+    //-------------------------------- Btm --------------------------------
+    scrollBtm.scrollIntoView();
+    scrollBtm.scrollIntoView(false);
+    scrollBtm.scrollIntoView({block: "end"});
+    scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
 
     $("#item-template").each( function(index, element){
         if ($(this).find('#item-message-template').text() == data["message"]) {
           $(this).remove();
         }
     });
-    var scrollBtm = document.getElementById("sBtm");  
   }); 
 });
 
