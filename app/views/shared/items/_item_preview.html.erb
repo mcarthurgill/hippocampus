@@ -9,7 +9,7 @@
       <% end %>
     </div>
   <% end %>
-  <%= link_to item.message, "#" %>
+  <%= link_to item.message, individual_item_path ? individual_item_path : item_path(item) %>
   <% if item.has_media? %>
     <%= render 'shared/items/item_media', :item => item %>
   <% end %>

@@ -126,9 +126,9 @@ class Item < ActiveRecord::Base
   end
 
   def html_as_string
-    return self.render_anywhere('shared/items/item_preview', item: self)
+    return self.render_anywhere('shared/items/item_preview', {item: self, current_user: self.user, individual_item_path: "/items/#{self.user.id}"})
   end
-
+  
   def render_anywhere(partial, assigns = {})
     view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
     view.extend ApplicationHelper
