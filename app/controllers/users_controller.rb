@@ -33,6 +33,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @active = 'thoughts'
     @items = (@user.items.outstanding.by_date+@user.bucket_items.by_date.not_deleted.limit(200).uniq).reverse
+    @item = Item.new
 
     respond_to do |format|
       format.js
@@ -51,7 +52,8 @@ class UsersController < ApplicationController
     @active = 'buckets'
     @sort = params[:s]
     @buckets = @user.buckets.by_first_name
-
+    @item = Item.new
+    
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json { render json: { 'Other' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").other_type.by_first_name,  'Person' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").person_type.by_first_name,  'Event' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").event_type.order('id DESC'),  'Place' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell } }
