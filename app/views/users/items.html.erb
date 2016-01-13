@@ -54,7 +54,7 @@ rapidInput.keydown(function(e){
       if (rapidInput.val()) {
 
         var userThought = rapidInput.val();
-        appendItemWithTemplate(itemTemplate)
+        submitWithTemplate(itemTemplate)
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");
@@ -74,13 +74,13 @@ rapidInput.keydown(function(e){
     }
 });
 
+function submitWithTemplate(template) {
+  submit();
+  appendMessageWithTemplate(template);
+}
 
 function appendItemWithTemplate(template) {
   var $jQueryObject = $($.parseHTML(template));
-  console.log("***");
-  console.log($jQueryObject);
-  console.log($.parseHTML(template));
-  console.log($("#rapid-thought-input").val());
   $jQueryObject.find('#item-message-template').html($("#rapid-thought-input").val())
   $("#item-list").append($jQueryObject);
 }
