@@ -7,6 +7,8 @@ var scrollBtm = document.getElementById("sBtm");
 // Init Autosize:
 autosize($('#rapid-thought-input'));
 
+var itemTemplate = "<%= escape_javascript(render partial: 'shared/items/item_template') %>";
+
 // ---------------------------------- Events ----------------------------------
 rapidInput.keydown(function(e){
     // ------------------------------ Enter Key -------------------------------
@@ -20,9 +22,7 @@ rapidInput.keydown(function(e){
       if (rapidInput.val()) {
 
         var userThought = rapidInput.val();
-      
-        $(".thoughts-list").append("<li><div class='status-info'><span class='unassigned'></span></div>"+userThought+"</li>"); 
-        PostToServer('/items.json', {item: {'message': userThought, 'input_method': 'web'}}, replaceAllItems, errorReplaceAllItems); 
+        appendItemWithTemplate(itemTemplate)
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");
@@ -41,3 +41,9 @@ rapidInput.keydown(function(e){
 
     }
 });
+
+function appendItemWithTemplate(template) {
+  var $jQueryObject = $($.parseHTML(template));
+  $jQueryObject.find('#item-message-template').html($("#rapid-thought-input").val())
+  $("#item-list").append($jQueryObject);
+}

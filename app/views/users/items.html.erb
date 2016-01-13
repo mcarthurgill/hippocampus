@@ -1,14 +1,30 @@
 <!-- Main Content -->
 <main class="main-content" role="main" aria-label="Main Content">
-  <div class="thoughts-list-wrap" id="item-list">
-    <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay">
+  <div class="thoughts-list-wrap">
+    <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay" id="item-list">
       <% @items.each do |item| %>
         <%= render 'shared/items/item_preview', :item => item %>
       <% end %>
     </ul>
     <div id="sBtm"></div>
     <div class="rapid-add">
-      <textarea id="rapid-thought-input" type="text" rows="1" placeholder="What's on your mind?" class="thought-field"></textarea>
+      <%= form_for(@item, remote: true) do |f| %>
+        <% if @item.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@item.errors.count, "error") %> prohibited this note from being saved:</h2>
+
+            <ul>
+            <% @item.errors.full_messages.each do |item| %>
+              <li><%= item %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <%= f.hidden_field :user_id, :value => current_user.id %>
+        <%= f.hidden_field :input_method, :value => 'web' %>
+
+        <%= f.text_area :id => 'rapid-thought-input', type: 'text', rows: 1, placeholder: "What's on your mind?", :class => 'thought-field' %>
+      <% end %>
     </div>
   </div>
-</main>
+</main>    
