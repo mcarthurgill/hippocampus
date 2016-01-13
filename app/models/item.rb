@@ -126,7 +126,7 @@ class Item < ActiveRecord::Base
   end
 
   def html_as_string
-    return self.render_anywhere('shared/items/item_preview', {item: self, current_user: self.user, individual_item_path: "/items/#{self.user.id}"})
+    return self.render_anywhere('shared/items/item_preview', {item: self, current_user: self.user})
   end
   
   def render_anywhere(partial, assigns = {})
