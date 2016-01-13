@@ -23,7 +23,7 @@
         <%= f.hidden_field :user_id, :value => current_user.id %>
         <%= f.hidden_field :input_method, :value => 'web' %>
 
-        <%= f.text_area :id => 'rapid-thought-input', type: 'text', rows: 1, placeholder: "What's on your mind?", :class => 'thought-field' %>
+        <%= f.text_area :message, :id => 'rapid-thought-input', type: 'text', rows: 1, placeholder: "What's on your mind?", :class => 'thought-field' %>
       <% end %>
     </div>
   </div>
