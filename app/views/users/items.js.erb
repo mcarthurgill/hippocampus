@@ -1,1 +1,2 @@
-$('.main-content').html("<%= escape_javascript(render partial: 'items') %>");
+$('#item-list').html("<%= j render('items', :items => @items %>");
+console.log("suppity sup");
