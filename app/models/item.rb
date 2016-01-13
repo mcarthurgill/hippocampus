@@ -123,6 +123,7 @@ class Item < ActiveRecord::Base
 
   def push_for_creation
     Pusher.trigger(self.users_array_for_push, 'item-creation', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
+    self.push
   end
 
   def html_as_string
