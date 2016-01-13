@@ -1,0 +1,14 @@
+<!-- Main Content -->
+<main class="main-content" role="main" aria-label="Main Content">
+  <div class="thoughts-list-wrap" id="item-list">
+    <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay">
+      <% @items.each do |item| %>
+        <%= render 'shared/items/item_preview', :item => item %>
+      <% end %>
+    </ul>
+    <div id="sBtm"></div>
+    <div class="rapid-add">
+      <textarea id="rapid-thought-input" type="text" rows="1" placeholder="What's on your mind?" class="thought-field"></textarea>
+    </div>
+  </div>
+</main>
