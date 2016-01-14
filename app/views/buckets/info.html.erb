@@ -6,8 +6,8 @@
       <% end %>
     </ul>
     <div id="sBtm"></div>
-    <div class="rapid-add">
-      <textarea id="rapid-thought-input" type="text" rows="1" placeholder="What's on your mind?" class="thought-field"></textarea>
-    </div>
+    <%= render 'shared/items/thought_entry_form' %>
   </div>
 </main>
+
+<%= render 'shared/items/thought_entry_form_js' %>

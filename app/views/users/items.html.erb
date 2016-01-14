@@ -7,85 +7,8 @@
       <% end %>
     </ul>
     <div id="sBtm"></div>
-    <div class="rapid-add">
-      <%= form_for(@item, remote: true) do |f| %>
-        <% if @item.errors.any? %>
-          <div id="error_explanation">
-            <h2><%= pluralize(@item.errors.count, "error") %> prohibited this note from being saved:</h2>
-
-            <ul>
-            <% @item.errors.full_messages.each do |item| %>
-              <li><%= item %></li>
-            <% end %>
-            </ul>
-          </div>
-        <% end %>
-        <%= f.hidden_field :user_id, :value => current_user.id %>
-        <%= f.hidden_field :input_method, :value => 'web' %>
-
-        <%= f.text_area :message, :id => 'rapid-thought-input', type: 'text', rows: 1, placeholder: "What's on your mind?", :class => 'thought-field' %>
-      <% end %>
-    </div>
+    <%= render 'shared/items/thought_entry_form' %>
   </div>
 </main>    
 
-<script>
-// -------------------------------- Settings --------------------------------
-// Rapid Input Field:
-var rapidInput = $('#rapid-thought-input');
-// Scroll to Bottom:
-var scrollBtm = document.getElementById("sBtm");  
-
-// Init Autosize:
-autosize($('#rapid-thought-input'));
-
-var itemTemplate = "<%= escape_javascript(render partial: 'shared/items/item_template') %>";
-
-// ---------------------------------- Events ----------------------------------
-rapidInput.keydown(function(e){
-    // ------------------------------ Enter Key -------------------------------
-    if (e.keyCode == 13 && !e.shiftKey)
-    { 
-
-      console.log('enter key');
-      e.preventDefault(); // Don't allow line break | test: console.log('enter key');
-
-      // ---------------------------- If content: -----------------------------
-      if (rapidInput.val()) {
-
-        var userThought = rapidInput.val();
-        submitWithTemplate(itemTemplate)
-        // -------------------------- Reset/Clear ---------------------------
-        rapidInput.val("");
-        rapidInput.css("height","50px");
-
-        //-------------------------------- Btm --------------------------------
-        scrollBtm.scrollIntoView();
-        scrollBtm.scrollIntoView(false);
-        scrollBtm.scrollIntoView({block: "end"});
-        scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
-      }   
-    }
-    // --------------------------- Shift Enter Key ----------------------------
-    if (e.keyCode == 13 && e.shiftKey)
-    {
-        console.log('shift enter key');
-
-    }
-});
-
-function submit() {
-  $("#new_item").submit();
-}
-
-function submitWithTemplate(template) {
-  submit();
-  appendItemWithTemplate(template);
-}
-
-function appendItemWithTemplate(template) {
-  var $jQueryObject = $($.parseHTML(template));
-  $jQueryObject.find('#item-message-template').html($("#rapid-thought-input").val())
-  $("#item-list").append($jQueryObject);
-}
-</script>
+<%= render 'shared/items/thought_entry_form_js' %>

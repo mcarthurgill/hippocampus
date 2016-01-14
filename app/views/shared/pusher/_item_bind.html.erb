@@ -3,21 +3,16 @@
 $(document).ready(function() {
 
   var pusher = new Pusher('<%= Pusher.key %>'); // uses your APP KEY
-  console.log("$$$$");
-  console.log('<%= Pusher.key %>');
   pusher.unsubscribe('<%= current_user.push_channel %>');
-  console.log('<%= current_user.push_channel %>');
 
   var channel = pusher.subscribe('<%= current_user.push_channel %>');
   channel.bind('item-save', function(data) {
-    console.log("bind");
     var doesnt_exist = $("#item"+data["id"]).length == 0;
     var box = $("#item-list");
     if (doesnt_exist) {
       $("#item-list").append(data["html_as_string"]);
       scrollToBottom(); 
     } else {
-      console.log("editing");
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
     }
 

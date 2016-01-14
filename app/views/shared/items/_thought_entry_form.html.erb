@@ -1,0 +1,20 @@
+<div class="rapid-add">
+  <%= form_for(@item, remote: true) do |f| %>
+    <% if @item.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@item.errors.count, "error") %> prohibited this note from being saved:</h2>
+
+        <ul>
+        <% @item.errors.full_messages.each do |item| %>
+          <li><%= item %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    <%= f.hidden_field :bucket_id, :value => @bucket ? @bucket.id : nil %>
+    <%= f.hidden_field :input_method, :value => 'web' %>
+
+    <%= f.text_area :message, :id => 'rapid-thought-input', type: 'text', rows: 1, placeholder: "What's on your mind?", :class => 'thought-field' %>
+  <% end %>
+</div>
