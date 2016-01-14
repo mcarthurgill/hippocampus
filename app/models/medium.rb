@@ -44,7 +44,7 @@ class Medium < ActiveRecord::Base
     medium.item_id = iid
     medium.item_local_key = Item.find(iid).local_key if iid && Item.find(iid)
     medium.upload_main_asset(file)
-    medium.transcribe(file)
+    # medium.transcribe(file)
     medium.save!
     puts medium.as_json().to_s
     return medium
@@ -56,7 +56,7 @@ class Medium < ActiveRecord::Base
     medium.item_local_key = ik
     medium.local_key = lk
     medium.upload_main_asset(file)
-    medium.transcribe(file)
+    # medium.transcribe(file)
     medium.save!
     puts medium.as_json().to_s
     return medium
@@ -66,7 +66,7 @@ class Medium < ActiveRecord::Base
     medium = Medium.new
     medium.user_id = uid
     medium.upload_main_asset(file)
-    medium.transcribe(file)
+    # medium.transcribe(file)
     medium.save!
     puts medium.as_json().to_s
     return medium
