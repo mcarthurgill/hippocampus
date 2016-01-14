@@ -99,7 +99,7 @@ class Item < ActiveRecord::Base
   before_destroy :remove_from_engine
 
   after_create :handle_notifications
-  after_update :push
+  after_save :push
   def push
     p "*"*50
     p self
