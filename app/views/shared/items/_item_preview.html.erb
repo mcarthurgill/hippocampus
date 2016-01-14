@@ -13,8 +13,8 @@
   <% if item.has_media? %>
     <%= render 'shared/items/item_media', :item => item %>
   <% end %>
-  <p><%= item.visible_buckets_for_user(current_user) %></p>
-  <% if item.visible_buckets_for_user(current_user).count > 1 %>
+  <p><%= item.visible_buckets_for_user(current_user).count %></p>
+  <% if (item.visible_buckets_for_user(current_user).count > 1 && @bucket) || (item.visible_buckets_for_user(current_user).count > 0 && !@bucket) %>
     <%= render 'shared/items/item_buckets_stickers', :item => item %>
   <% end %>
 </li>
