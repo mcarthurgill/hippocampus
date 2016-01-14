@@ -98,7 +98,6 @@ class Item < ActiveRecord::Base
 
   before_destroy :remove_from_engine
 
-  # after_create :handle_notifications
   after_save :push
   def push
     begin
@@ -114,22 +113,6 @@ class Item < ActiveRecord::Base
     end
     return arr
   end
-
-  # ACTIONS
-
-  # def handle_notifications
-  #   self.push_for_creation
-  # end
-
-  # def push_for_creation
-  #   p "*"*50
-  #   p self
-  #   p "*"*50
-  #   begin
-  #     Pusher.trigger(self.users_array_for_push, 'item-creation', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
-  #   rescue Pusher::Error => e
-  #   end
-  # end
 
   def html_as_string
     return self.render_anywhere('shared/items/item_preview', {item: self, current_user: self.user})
