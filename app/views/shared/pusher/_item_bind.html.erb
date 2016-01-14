@@ -32,6 +32,15 @@ $(document).ready(function() {
         }
     });
   }); 
+
+  channel.bind('item-save', function(data) {
+    console.log("item-save bind");
+    var exists = $("#item"+data["id"]).length > 0;
+    var box = $("#item-list");
+    if (exists) {
+      $("#item"+data["id"]).replaceWith(data["html_as_string"]);
+    }
+  }); 
 });
 
 </script>
