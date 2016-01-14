@@ -15,10 +15,12 @@
         </div>
       </a>
     </span>
-    <span class="collab-count">
-      <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
-      <span class="count">13</span>
-    </span>
+    <% if bucket.users.count > 0 %>
+      <span class="collab-count">
+        <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
+        <span class="count"><%= bucket.users.count %></span>
+      </span>
+    <% end %>
   </header>
   <%= link_to bucket_info_path(bucket) do %>
     <p><%= bucket.cached_item_message %></p>

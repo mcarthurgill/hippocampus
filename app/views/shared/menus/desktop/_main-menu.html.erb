@@ -29,10 +29,12 @@
               <li><a href="#"><svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg>Delete</a></li>
             </ul>
           </div>       
-          <a class="collab-count" href="#" data-reveal-id="genericModal">
-            <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
-            <span class="count"><%= @bucket.items_count %></span>
-          </a>
+          <% if @bucket.users.count > 0 %>
+            <a class="collab-count" href="#" data-reveal-id="genericModal">
+              <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
+              <span class="count"><%= @bucket.users.count %></span>
+            </a>
+          <% end %>
           <div id="genericModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
             <header class="modal-header">
               <h4 id="modalTitle">General Purpose Modal</h4>
