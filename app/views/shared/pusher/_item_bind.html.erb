@@ -21,24 +21,20 @@ $(document).ready(function() {
     if (bucket_presented != 0 && doesnt_exist) { //correct bucket showing and item doesnt exist
       $("#item-list").append(data["html_as_string"]);
       scrollToBottom(); 
+      removeTemplate(); 
     } else if (bucket_presented != 0) { //correct bucket showing and item exists
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
     } else if (bucket_presented == 0 && thoughts_list_presented) { //all thoughts list is showing
       if (doesnt_exist) {
         $("#item-list").append(data["html_as_string"]);
         scrollToBottom(); 
+        removeTemplate(); 
       } else {
         $("#item"+data["id"]).replaceWith(data["html_as_string"]);
       };
     } else { //incorrect bucket showing
       
     }
-    
-    $("#item-template").each( function(index, element){
-        if ($(this).find('#item-message-template').text() == data["message"]) {
-          $(this).remove();
-        }
-    });
   }); 
 
   function scrollToBottom(){
@@ -48,6 +44,14 @@ $(document).ready(function() {
     scrollBtm.scrollIntoView(false);
     scrollBtm.scrollIntoView({block: "end"});
     scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
+  }
+
+  function removeTemplate(){
+    $("#item-template").each( function(index, element){
+        if ($(this).find('#item-message-template').text() == data["message"]) {
+          $(this).remove();
+        }
+    });
   }
 });
 
