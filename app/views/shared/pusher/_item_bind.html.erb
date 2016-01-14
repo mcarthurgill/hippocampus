@@ -33,7 +33,12 @@ $(document).ready(function() {
     } else { //incorrect bucket showing
       
     }
-    removeTemplate(); 
+    
+    $("#item-template").each( function(index, element){
+        if ($(this).find('#item-message-template').text() == data["message"]) {
+          $(this).remove();
+        }
+    });
   }); 
 
   function scrollToBottom(){
@@ -43,14 +48,6 @@ $(document).ready(function() {
     scrollBtm.scrollIntoView(false);
     scrollBtm.scrollIntoView({block: "end"});
     scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
-  }
-
-  function removeTemplate(){
-    $("#item-template").each( function(index, element){
-        if ($(this).find('#item-message-template').text() == data["message"]) {
-          $(this).remove();
-        }
-    });
   }
 });
 
