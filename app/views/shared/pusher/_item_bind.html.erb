@@ -9,7 +9,7 @@ $(document).ready(function() {
   console.log('<%= current_user.push_channel %>');
 
   var channel = pusher.subscribe('<%= current_user.push_channel %>');
-  channel.bind('item-creation', function(data) {
+  channel.bind('item-save', function(data) {
     console.log("bind");
     var doesnt_exist = $("#item"+data["id"]).length == 0;
     var box = $("#item-list");
