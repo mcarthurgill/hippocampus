@@ -1,6 +1,6 @@
 <!-- Main Content -->
 <main class="main-content" role="main" aria-label="Main Content">
-  <div class="thoughts-list-wrap">
+  <div class="thoughts-list-wrap" id="thoughts-list-present">
     <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay" id="item-list">
       <% @items.each do |item| %>
         <%= render 'shared/items/item_preview', :item => item %>

@@ -8,12 +8,30 @@ $(document).ready(function() {
   var channel = pusher.subscribe('<%= current_user.push_channel %>');
   channel.bind('item-save', function(data) {
     var doesnt_exist = $("#item"+data["id"]).length == 0;
+    var bucket_presented = 0; 
+    var thoughts_list_presented = $("#thoughts-list-present").length > 0; 
+
+    for (var i = 0; i < data["bucket_ids"].length; i++) {
+      if ($("#bucket"+data["bucket_ids"][i]).length > 0) {
+        bucket_presented = data["bucket_ids"][i]; 
+      }
+    };
+
     var box = $("#item-list");
-    if (doesnt_exist) {
+    if (bucket_presented != 0 && doesnt_exist) { //correct bucket showing and item doesnt exist
       $("#item-list").append(data["html_as_string"]);
       scrollToBottom(); 
-    } else {
+    } else if (bucket_presented != 0) { //correct bucket showing and item exists
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
+    } else if (bucket_presented == 0 && thoughts_list_presented) { //all thoughts list is showing
+      if (doesnt_exist) {
+        $("#item-list").append(data["html_as_string"]);
+        scrollToBottom(); 
+      } else {
+        $("#item"+data["id"]).replaceWith(data["html_as_string"]);
+      };
+    } else { //incorrect bucket showing
+      
     }
 
     $("#item-template").each( function(index, element){

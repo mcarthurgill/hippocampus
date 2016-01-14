@@ -101,11 +101,8 @@ class Item < ActiveRecord::Base
   # after_create :handle_notifications
   after_save :push
   def push
-    p "*"*50
-    p self
-    p "*"*50
     begin
-      Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
+      Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json(methods: [:html_as_string, :bucket_ids])) if self.users_array_for_push.count > 0
     rescue Pusher::Error => e
     end
   end
@@ -135,9 +132,6 @@ class Item < ActiveRecord::Base
   # end
 
   def html_as_string
-    p "$"*56
-    p self.user
-    p "$"*56
     return self.render_anywhere('shared/items/item_preview', {item: self, current_user: self.user})
   end
   

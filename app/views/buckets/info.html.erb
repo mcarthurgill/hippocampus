@@ -1,5 +1,5 @@
 <main class="main-content" role="main" aria-label="Main Content">
-  <div class="bucket-list-wrap">
+  <div class="bucket-list-wrap" id="bucket<%= @bucket.id %>">
     <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay" id="item-list">
       <% @items.each do |item| %>
         <%= render 'shared/items/item_preview', :item => item, :bucket => @bucket %>
