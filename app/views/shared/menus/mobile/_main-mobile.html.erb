@@ -1,6 +1,6 @@
 <nav class="main-menu_mbl" role="navigation" aria-label="Mobile Main Menu">
   <a href="#" class="trigger-side-menu_mbl">
-    <svg class="icon icon-profile-outline"><use xlink:href="images/svg/icons.svg#icon-profile-outline"></use></svg>
+    <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
   </a>
   <ul class="nav-list">
     <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span>Thoughts</span><% end %></li>

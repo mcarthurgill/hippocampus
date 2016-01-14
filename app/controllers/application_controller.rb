@@ -58,6 +58,5 @@ class ApplicationController < ActionController::Base
     return date ? date.strftime("%m/%d/%y") : nil
   end
   helper_method :formatted_date
-
 end
 

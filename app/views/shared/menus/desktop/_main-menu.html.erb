@@ -1,15 +1,15 @@
 <nav class="main-menu" role="navigation" aria-label="Main Menu">
   <div class="primary-wrap">
     <ul class="nav-list">
-      <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="images/svg/icons`svg#icon-chat"></use></svg>Thoughts</span><% end %></li>
+      <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="#icon-chat"></use></svg>Thoughts</span><% end %></li>
 
-      <li class="<%= @active == 'buckets' ? 'buckets active' : 'buckets' %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-bucket"><use xlink:href="images/svg/icons.svg#icon-bucket"></use></svg>Buckets</span><% end %></li>
+      <li class="<%= @active == 'buckets' ? 'buckets active' : 'buckets' %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-bucket"><use xlink:href="#icon-bucket"></use></svg>Buckets</span><% end %></li>
 
-      <li class="<%= @active == 'nudges' ? 'nudges active' : 'nudges' %>"><%= link_to user_reminders_path(current_user) do %><span><svg class="icon icon-alarm"><use xlink:href="images/svg/icons.svg#icon-alarm"></use></svg>Nudges</span><% end %></li>
+      <li class="<%= @active == 'nudges' ? 'nudges active' : 'nudges' %>"><%= link_to user_reminders_path(current_user) do %><span><svg class="icon icon-alarm"><use xlink:href="#icon-alarm"></use></svg>Nudges</span><% end %></li>
     </ul>
     <div class="utilities">
       <div class="main-search">
-        <svg class="icon icon-find"><use xlink:href="images/svg/icons.svg#icon-find"></use></svg>
+        <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
         <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>
       </div>
       <%= link_to new_item_path, :class => "add-thought" do %>
@@ -25,12 +25,12 @@
           <a href="#" data-jq-dropdown="#bucket-menu-1"><h5><%= @bucket.first_name %></h5></a>
           <div id="bucket-menu-1" class="jq-dropdown jq-dropdown-tip">
             <ul class="jq-dropdown-menu">
-              <li><a href="#"><svg class="icon icon-settings"><use xlink:href="images/svg/icons.svg#icon-settings"></use></svg>Edit</a></li>
-              <li><a href="#"><svg class="icon icon-trash"><use xlink:href="images/svg/icons.svg#icon-trash"></use></svg>Delete</a></li>
+              <li><a href="#"><svg class="icon icon-settings"><use xlink:href="#icon-settings"></use></svg>Edit</a></li>
+              <li><a href="#"><svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg>Delete</a></li>
             </ul>
           </div>       
           <a class="collab-count" href="#" data-reveal-id="genericModal">
-            <svg class="icon icon-profile-outline"><use xlink:href="images/svg/icons.svg#icon-profile-outline"></use></svg>
+            <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
             <span class="count"><%= @bucket.items_count %></span>
           </a>
           <div id="genericModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
@@ -48,7 +48,7 @@
         </div>
         <div class="sort-and-search">
           <div class="search-bucket">
-            <svg class="icon icon-find"><use xlink:href="images/svg/icons.svg#icon-find"></use></svg>
+            <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
             <input id="bucket-search-input" class="" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Find a thought"/>
           </div>
         </div>

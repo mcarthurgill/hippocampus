@@ -3,7 +3,7 @@
     <header>
       <time><%= formatted_date(item.next_reminder_date) %></time>
       <% if item.recurring? %>
-        <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="images/svg/icons.svg#icon-repeat"></use></svg> <%= item.item_type %></span>
+        <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="#icon-repeat"></use></svg> <%= item.item_type %></span>
       <% end %>
     </header>
     <p><%= item.message %></p>
