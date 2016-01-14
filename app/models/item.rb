@@ -102,7 +102,7 @@ class Item < ActiveRecord::Base
   after_update :push
   def push
     begin
-      Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json()) if self.users_array_for_push.count > 0
+      Pusher.trigger(self.users_array_for_push, 'item-save', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
     rescue Pusher::Error => e
     end
   end
