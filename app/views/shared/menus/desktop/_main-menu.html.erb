@@ -1,7 +1,7 @@
 <nav class="main-menu" role="navigation" aria-label="Main Menu">
   <div class="primary-wrap">
     <ul class="nav-list">
-      <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="images/svg/icons.svg#icon-chat"></use></svg>Thoughts</span><% end %></li>
+      <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="images/svg/icons`svg#icon-chat"></use></svg>Thoughts</span><% end %></li>
 
       <li class="<%= @active == 'buckets' ? 'buckets active' : 'buckets' %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-bucket"><use xlink:href="images/svg/icons.svg#icon-bucket"></use></svg>Buckets</span><% end %></li>
 

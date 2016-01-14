@@ -3111,12 +3111,12 @@ th.hide-for-touch {
  * Don't forget to add vendor prefixes!
  */
 .scene_element {
-  animation-duration: 0.3s;
+  animation-duration: 0.25s;
   transition-timing-function: ease-in;
   animation-fill-mode: both; }
 
 .scene_delay {
-  animation-delay: 1s;
+  animation-delay: 0.25s;
   animation-duration: 0.25s; }
 
 .scene_element--fadein {

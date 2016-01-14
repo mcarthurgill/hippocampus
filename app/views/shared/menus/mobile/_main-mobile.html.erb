@@ -3,11 +3,11 @@
     <svg class="icon icon-profile-outline"><use xlink:href="images/svg/icons.svg#icon-profile-outline"></use></svg>
   </a>
   <ul class="nav-list">
-    <li class="thoughts"><a href="thoughts.html"><span>Thoughts</span></a></li>
+    <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span>Thoughts</span><% end %></li>
 
-    <li class="buckets active"><a href="buckets.html"><span>Buckets</span></a></li>
+    <li class="<%= @active == 'buckets' ? 'buckets active' : 'buckets' %>"><%= link_to user_buckets_path(current_user) do %><span>Buckets</span><% end %></li>
 
-    <li class="nudges"><a href="nudges.html"><span>Nudges</span></a></li>
+    <li class="<%= @active == 'nudges' ? 'nudges active' : 'nudges' %>"><%= link_to user_reminders_path(current_user) do %>><a href="nudges.html"><span>Nudges</span><% end %></li>
   </ul>
   <a href="thought_blank.html" class="add-thought">
     <span class="tipso add-thought-tooltip" data-tipso="New Thought"><span class="icon">+</span></span>
