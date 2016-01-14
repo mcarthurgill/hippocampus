@@ -101,8 +101,11 @@ class Item < ActiveRecord::Base
   after_create :handle_notifications
   after_update :push
   def push
+    p "*"*50
+    p self
+    p "*"*50
     begin
-      Pusher.trigger(self.users_array_for_push, 'item-save', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
+      Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
     rescue Pusher::Error => e
     end
   end
@@ -122,7 +125,13 @@ class Item < ActiveRecord::Base
   end
 
   def push_for_creation
-    Pusher.trigger(self.users_array_for_push, 'item-creation', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
+    p "*"*50
+    p self
+    p "*"*50
+    begin
+      Pusher.trigger(self.users_array_for_push, 'item-creation', self.to_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
+    rescue Pusher::Error => e
+    end
   end
 
   def html_as_string
