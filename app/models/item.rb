@@ -135,6 +135,9 @@ class Item < ActiveRecord::Base
   end
 
   def html_as_string
+    p "$"*56
+    p self.user
+    p "$"*56
     return self.render_anywhere('shared/items/item_preview', {item: self, current_user: self.user})
   end
   
