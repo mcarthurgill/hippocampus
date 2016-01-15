@@ -28,7 +28,7 @@
   <!-- Buckets -->
   <div class="buckets-list-wrap">
     <!-- List -->
-    <ul class="list buckets-list scene_element--fadeinup scene_element scene_delay">
+    <ul class="list buckets-list scene_element--fadeinup scene_element scene_delay" id="bucket-list">
       <li class="section"><h5>A</h5></li>
       <% @buckets.each do |bucket| %>
         <%= render 'shared/buckets/bucket_preview', :bucket => bucket %>
@@ -39,5 +39,6 @@
 
 <!-- SVGs -->
 <%= render "shared/buckets/hippo_star" %>
+<%= render 'shared/modals/new_bucket_modal' %>        
 
 </div>

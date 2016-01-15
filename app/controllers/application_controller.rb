@@ -58,5 +58,35 @@ class ApplicationController < ActionController::Base
     return date ? date.strftime("%m/%d/%y") : nil
   end
   helper_method :formatted_date
+
+  def buckets_active?
+    @active == "buckets"
+  end
+  helper_method :buckets_active?
+
+  def thoughts_active?
+    @active == "thoughts"
+  end
+  helper_method :thoughts_active?
+
+  def nudges_active?
+    @active == "nudges"
+  end
+  helper_method :nudges_active?
+
+  def active_thought_classes
+    thoughts_active? ? 'thoughts active' : 'thoughts'
+  end
+  helper_method :active_thought_classes
+
+  def active_bucket_classes
+    buckets_active? ? 'buckets active' : 'buckets'
+  end
+  helper_method :active_bucket_classes
+
+  def active_nudge_classes
+    nudges_active? ? 'nudges active' : 'nudges'
+  end
+  helper_method :active_nudge_classes
 end
 

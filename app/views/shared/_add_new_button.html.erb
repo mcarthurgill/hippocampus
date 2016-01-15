@@ -1,0 +1,9 @@
+<% if buckets_active? %>
+  <%= link_to "", :class => "add-thought", "data-reveal-id" => "newBucketModal" do %>
+    <span class="tipso add-thought-tooltip" data-tipso="New Person"><span class="icon">+</span></span>
+  <% end %>      
+<% else %>
+  <%= link_to new_item_path, :class => "add-thought" do %>
+    <span class="tipso add-thought-tooltip" data-tipso="New Note"><span class="icon">+</span></span>
+  <% end %>      
+<% end %>

@@ -1,0 +1,56 @@
+<div id="newBucketModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <header class="modal-header">
+    <h4 id="modalTitle">Create New Person</h4>
+  </header>
+  <%= form_for @new_bucket do |f| %>
+    <div class="content">
+      <%= f.text_field :first_name, :id => "new-bucket-input", :class => "search-field", autocomplete: "on", spellcheck: "false", autocorrect: "off", :placeholder => "Enter first and last name", :value => "" %>
+      <%= f.hidden_field :user_id, :value => current_user.id %>
+    </div>
+    <footer class="options">
+      <%= f.submit "Cancel", :class => "cancel button close-reveal-modal", :id => "cancel_bucket" %>
+      <%= f.submit "Save", :class => "save button close-reveal-modal", :id => "save_bucket" %>
+    </footer>
+  <% end %>
+</div>
+
+<script>
+// -------------------------------- Settings --------------------------------
+// Rapid Input Field:
+var rapidInput = $('#new-bucket-input');
+var saveBucket = $('#save_bucket');
+var cancelBucket = $('#cancel_bucket');
+
+var bucketTemplate = "<%= escape_javascript(render partial: 'shared/buckets/bucket_template') %>";
+
+// ---------------------------------- Events ----------------------------------
+saveBucket.click(function(e){
+  e.preventDefault();
+  if (rapidInput.val()) {
+
+    var bucketName = rapidInput.val();
+    submitBucketWithTemplate(bucketTemplate)
+    // -------------------------- Reset/Clear ---------------------------
+    rapidInput.val("");
+  }   
+});
+// ---------------------------------- Events ----------------------------------
+cancelBucket.click(function(e){
+  rapidInput.val("");
+});
+
+function submit() {
+  $("#new_bucket").submit();
+}
+
+function submitBucketWithTemplate(template) {
+  submit();
+  appendBucketWithTemplate(template);
+}
+
+function appendBucketWithTemplate(template) {
+  var $jQueryObject = $($.parseHTML(template));
+  $jQueryObject.find('#bucket-firstname').html($("#new-bucket-input").val())
+  $("#bucket-list").append($jQueryObject);
+}
+</script>

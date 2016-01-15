@@ -143,17 +143,27 @@ class Bucket < ActiveRecord::Base
   after_save :push
   def push
     begin
-      Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json()) if self.users_array_for_push.count > 0
+      Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
     rescue Pusher::Error => e
     end
   end
 
   def users_array_for_push
     arr = []
-    self.authorized_user_ids.each do |uid|
-      arr << "user-#{uid}"
+    self.users_array.each do |u|
+      arr << u.push_channel
     end
     return arr
+  end
+
+  def html_as_string
+    return self.render_anywhere('shared/buckets/bucket_preview', {bucket: self})
+  end
+  
+  def render_anywhere(partial, assigns = {})
+    view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
+    view.extend ApplicationHelper
+    view.render(partial: partial, locals: assigns)
   end
 
   after_save :index_delayed

@@ -53,10 +53,10 @@ class UsersController < ApplicationController
     @sort = params[:s]
     @buckets = @user.buckets.by_first_name
     @item = Item.new
+    @new_bucket = Bucket.new
     
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
-      format.json { render json: { 'Other' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").other_type.by_first_name,  'Person' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").person_type.by_first_name,  'Event' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").event_type.order('id DESC'),  'Place' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell } }
     end
   end
 

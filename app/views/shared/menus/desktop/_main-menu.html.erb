@@ -1,20 +1,18 @@
 <nav class="main-menu" role="navigation" aria-label="Main Menu">
   <div class="primary-wrap">
     <ul class="nav-list">
-      <li class="<%= @active == 'thoughts' ? 'thoughts active' : 'thoughts' %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="#icon-chat"></use></svg>Thoughts</span><% end %></li>
+      <li class="<%= active_thought_classes %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="#icon-chat"></use></svg>Thoughts</span><% end %></li>
 
-      <li class="<%= @active == 'buckets' ? 'buckets active' : 'buckets' %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-bucket"><use xlink:href="#icon-bucket"></use></svg>Buckets</span><% end %></li>
+      <li class="<%= active_bucket_classes %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-bucket"><use xlink:href="#icon-bucket"></use></svg>Buckets</span><% end %></li>
 
-      <li class="<%= @active == 'nudges' ? 'nudges active' : 'nudges' %>"><%= link_to user_reminders_path(current_user) do %><span><svg class="icon icon-alarm"><use xlink:href="#icon-alarm"></use></svg>Nudges</span><% end %></li>
+      <li class="<%= active_nudge_classes %>"><%= link_to user_reminders_path(current_user) do %><span><svg class="icon icon-alarm"><use xlink:href="#icon-alarm"></use></svg>Nudges</span><% end %></li>
     </ul>
     <div class="utilities">
       <div class="main-search">
         <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
         <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>
       </div>
-      <%= link_to new_item_path, :class => "add-thought" do %>
-        <span class="tipso add-thought-tooltip" data-tipso="New Bucket"><span class="icon">+</span></span>
-      <% end %>      
+      <%= render 'shared/add_new_button' %>
     </div>
   </div>
   <% if @bucket %>
@@ -35,24 +33,6 @@
               <span class="count"><%= @bucket.users.count %></span>
             </a>
           <% end %>
-          <div id="genericModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-            <header class="modal-header">
-              <h4 id="modalTitle">General Purpose Modal</h4>
-            </header>
-            <div class="content">
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae, maiores placeat laboriosam. Reiciendis praesentium soluta odio magnam repudiandae perspiciatis, qui molestiae eos mollitia fugiat laborum eligendi, blanditiis commodi quibusdam consequuntur.</p>
-            </div>
-            <footer class="options">
-              <a href="#" class="cancel button close-reveal-modal">Cancel</a>
-              <a href="#" class="save button close-reveal-modal">Save</a>
-            </footer>
-          </div>    
-        </div>
-        <div class="sort-and-search">
-          <div class="search-bucket">
-            <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
-            <input id="bucket-search-input" class="" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Find a thought"/>
-          </div>
         </div>
       </div>
     </div>
