@@ -8,8 +8,23 @@ var cancelBucket = $('#cancel_bucket');
 var bucketTemplate = "<%= escape_javascript(render partial: 'shared/buckets/bucket_template') %>";
 
 // ---------------------------------- Events ----------------------------------
-saveBucket.click(function(e){
+rapidInput.keydown(function(e){
+    // ------------------------------ Enter Key -------------------------------
+    if (e.keyCode == 13 && !e.shiftKey)
+    { 
+      saveAndResetBucket(e); 
+    }
+});
 
+saveBucket.click(function(e){
+  saveAndResetBucket(e); 
+});
+// ---------------------------------- Events ----------------------------------
+cancelBucket.click(function(e){
+  rapidInput.val("");
+});
+
+function saveAndResetBucket(e){
   e.preventDefault();
 
   if (rapidInput.val()) {
@@ -18,11 +33,7 @@ saveBucket.click(function(e){
     // -------------------------- Reset/Clear ---------------------------
     rapidInput.val("");
   }   
-});
-// ---------------------------------- Events ----------------------------------
-cancelBucket.click(function(e){
-  rapidInput.val("");
-});
+}
 
 function submit() {
   $("#new_bucket").submit();
