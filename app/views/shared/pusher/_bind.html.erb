@@ -54,18 +54,18 @@ $(document).ready(function() {
     scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
   }
 
-  channel.bind('bucket-save', function(data) {
-    var doesnt_exist = $("#bucket"+data["id"]).length == 0;
+  // channel.bind('bucket-save', function(data) {
+  //   var doesnt_exist = $("#bucket"+data["id"]).length == 0;
 
-    var box = $("#bucket-list");
-    if (doesnt_exist) {
-      $("#bucket-list").prepend(data["html_as_string"]);
-      removeBucketTemplate(data);
-    } else {
-      $("#bucket"+data["id"]).replaceWith(data["html_as_string"]);
-      removeTemplate(data);
-    }
-  }); 
+  //   var box = $("#bucket-list");
+  //   if (doesnt_exist) {
+  //     $("#bucket-list").prepend(data["html_as_string"]);
+  //     removeBucketTemplate(data);
+  //   } else {
+  //     $("#bucket"+data["id"]).replaceWith(data["html_as_string"]);
+  //     removeTemplate(data);
+  //   }
+  // }); 
 
   function removeBucketTemplate(data) {
     $("#bucket-template").each( function(index, element){
