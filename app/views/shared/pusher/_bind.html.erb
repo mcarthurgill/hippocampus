@@ -66,12 +66,14 @@ $(document).ready(function() {
     var doesnt_exist = $("#bucket"+data["id"]).length == 0;
 
     var box = $("#bucket-list");
-    if (box && doesnt_exist) {
-      box.prepend(data["html_as_string"]);
-      removeBucketTemplate(data);
-    } else if (box) {
-      $("#bucket"+data["id"]).replaceWith(data["html_as_string"]);
-      removeBucketTemplate(data);
+    if (box.length > 0) {
+      if (doesnt_exist) {
+        box.prepend(data["html_as_string"]);
+        removeBucketTemplate(data);
+      } else {
+        $("#bucket"+data["id"]).replaceWith(data["html_as_string"]);
+        removeBucketTemplate(data);
+      }
     }
   }); 
 
