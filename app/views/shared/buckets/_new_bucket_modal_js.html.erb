@@ -1,14 +1,14 @@
 <script>
 // -------------------------------- Settings --------------------------------
 // Rapid Input Field:
-var rapidInput = $('#new-bucket-input');
+var bucketInput = $('#new-bucket-input');
 var saveBucket = $('#save_bucket');
 var cancelBucket = $('#cancel_bucket');
 
 var bucketTemplate = "<%= escape_javascript(render partial: 'shared/buckets/bucket_template') %>";
 
 // ---------------------------------- Events ----------------------------------
-rapidInput.keydown(function(e){
+bucketInput.keydown(function(e){
     // ------------------------------ Enter Key -------------------------------
     if (e.keyCode == 13 && !e.shiftKey)
     { 
@@ -21,17 +21,17 @@ saveBucket.click(function(e){
 });
 // ---------------------------------- Events ----------------------------------
 cancelBucket.click(function(e){
-  rapidInput.val("");
+  bucketInput.val("");
 });
 
 function saveAndResetBucket(e){
   e.preventDefault();
 
-  if (rapidInput.val()) {
-    var bucketName = rapidInput.val();
+  if (bucketInput.val()) {
+    var bucketName = bucketInput.val();
     submitBucketWithTemplate(bucketTemplate)
     // -------------------------- Reset/Clear ---------------------------
-    rapidInput.val("");
+    bucketInput.val("");
     $("#cancel_bucket").click(); 
   }   
 }
