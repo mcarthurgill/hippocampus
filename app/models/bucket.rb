@@ -150,7 +150,7 @@ class Bucket < ActiveRecord::Base
 
   def users_array_for_push
     arr = []
-    self.users_array.each do |u|
+    self.users.each do |u|
       arr << u.push_channel
     end
     return arr
