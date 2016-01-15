@@ -23,7 +23,7 @@ rapidInput.keydown(function(e){
       if (rapidInput.val()) {
 
         var userThought = rapidInput.val();
-        submitWithTemplate(itemTemplate)
+        submitItemWithTemplate(itemTemplate)
         // -------------------------- Reset/Clear ---------------------------
         rapidInput.val("");
         rapidInput.css("height","50px");
@@ -43,12 +43,12 @@ rapidInput.keydown(function(e){
     }
 });
 
-function submit() {
+function submitItem() {
   $("#new_item").submit();
 }
 
-function submitWithTemplate(template) {
-  submit();
+function submitItemWithTemplate(template) {
+  submitItem();
   appendItemWithTemplate(template);
 }
 

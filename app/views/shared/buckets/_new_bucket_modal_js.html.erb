@@ -10,6 +10,7 @@ var bucketTemplate = "<%= escape_javascript(render partial: 'shared/buckets/buck
 // ---------------------------------- Events ----------------------------------
 bucketInput.keydown(function(e){
     // ------------------------------ Enter Key -------------------------------
+    console.log("detecting keydown in wrong place");
     if (e.keyCode == 13 && !e.shiftKey)
     { 
       saveAndResetBucket(e); 
@@ -36,12 +37,12 @@ function saveAndResetBucket(e){
   }   
 }
 
-function submit() {
+function submitBucket() {
   $("#new_bucket").submit();
 }
 
 function submitBucketWithTemplate(template) {
-  submit();
+  submitBucket();
   appendBucketWithTemplate(template);
 }
 
