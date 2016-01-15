@@ -32,7 +32,7 @@ class Bucket < ActiveRecord::Base
   # -- SCOPES
 
   scope :above, ->(time) { where('"buckets"."updated_at" > ?', Time.at(time.to_i).to_datetime).order('id ASC') }
-  scope :by_first_name, -> { order("first_name ASC") }
+  scope :by_first_name, -> { order("LOWER(first_name) ASC") }
   scope :recent_first, -> { order("id DESC") }
   scope :excluding_pairs_for_item_id, ->(iid) { where( (BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id).count > 0 ? '"buckets"."id" NOT IN (?)' : ''), BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id)) }
   scope :recent_for_user_id, ->(uid) { where('"buckets"."id" IN (?)', BucketItemPair.where('"bucket_item_pairs"."bucket_id" IN (?)', User.find(uid).buckets.pluck(:id)).order('updated_at DESC').limit(8).pluck(:bucket_id)) }
