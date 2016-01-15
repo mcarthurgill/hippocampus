@@ -61,7 +61,7 @@ $(document).ready(function() {
     if (doesnt_exist) {
       $("#bucket-list").prepend(data["html_as_string"]);
       removeBucketTemplate(data);
-    } else
+    } else {
       $("#bucket"+data["id"]).replaceWith(data["html_as_string"]);
       removeTemplate(data);
     }
