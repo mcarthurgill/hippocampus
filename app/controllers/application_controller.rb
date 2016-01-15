@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_most_recent_buckets lim=10
-    @recent_buckets = current_user.buckets.order("updated_at DESC").limit(lim)
+    @recent_buckets = current_user.buckets.order("updated_at DESC").limit(lim) if current_user
   end
 
   def formatted_date date
