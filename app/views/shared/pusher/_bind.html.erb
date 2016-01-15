@@ -54,10 +54,12 @@ $(document).ready(function() {
   function scrollToBottom(){
     var scrollBtm = document.getElementById("sBtm");  
     //-------------------------------- Btm --------------------------------
-    scrollBtm.scrollIntoView();
-    scrollBtm.scrollIntoView(false);
-    scrollBtm.scrollIntoView({block: "end"});
-    scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
+    if (scrollBtm) {
+      scrollBtm.scrollIntoView();
+      scrollBtm.scrollIntoView(false);
+      scrollBtm.scrollIntoView({block: "end"});
+      scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
+    };
   }
 
   channel.bind('bucket-save', function(data) {
