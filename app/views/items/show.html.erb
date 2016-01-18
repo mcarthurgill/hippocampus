@@ -1,20 +1,14 @@
-<!-- Main Content -->
-<main class="main-content thought-content" role="main" aria-label="Main Content">
-  <div class="add-thought-wrap scene_element--fadeinup scene_element scene_delay">
-    <textarea id="default-editor" class="add-thought-area"><%= @item.message %></textarea>
-    <div class="assets-mgmt">
-      <!-- New Files previewed here: -->
-      <div id="previews" class="dropzone"></div>
-      <!-- Existing images previewed here: -->
+<%= form_for @item do |f| %>
+  <!-- Main Menu -->
+  <%= render "shared/menus/desktop/item-main-menu", :item => @item, :f => f %>
 
-      <% if @item.has_media? %>
-        <ul class="image-previews-list">
-          <% @item.media_urls.each do |url| %>
-            <%= render 'media_full', :media_url => url %>
-          <% end %>
-        </ul>
-      <% end %>
-      
-    </div>
-  </div>
-</main>
+  <!-- Side Menu -->
+  <%= render "shared/menus/desktop/item-side-menu", :item => @item, :f => f %>
+
+  <!-- Menus_mbl -->
+  <%= render "shared/menus/mobile/all-mobile" %>
+
+  <!-- Main Content -->
+  <%= render 'shared/items/main_content', :item => @item, :f => f %>
+  
+<% end %>

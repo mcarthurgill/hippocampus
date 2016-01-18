@@ -19,18 +19,7 @@
 
   <div id="site-wrap" class="scene_element--fadein scene_element">
     <%= render "shared/icons" %>
-
-    <!-- Main Menu -->
-    <%= render "shared/menus/desktop/item-main-menu", :item => @item %>
-
-    <!-- Side Menu -->
-    <%= render "shared/menus/desktop/item-side-menu", :item => @item %>
-
-    <!-- Menus_mbl -->
-    <%= render "shared/menus/mobile/all-mobile" %>
-
     <%= yield %>
-
   </div>
 
   <%= javascript_include_tag '/js/libs/simplemde.min.js' %>

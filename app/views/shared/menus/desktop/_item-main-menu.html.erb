@@ -49,19 +49,21 @@
         </div>
         <div id="overlay"></div>
       </div>
-      <div class="more">
-        <a href="#" data-jq-dropdown="#more-options-menu-1"><svg class="icon icon-more"><use xlink:href="#icon-more"></use></svg></a>
-        <div id="more-options-menu-1" class="center-dropdown jq-dropdown jq-dropdown-tip">
-          <ul class="jq-dropdown-menu">
-            <li><a href="#"><svg class="icon icon-duplicate"><use xlink:href="#icon-duplicate"></use></svg> Duplicate</a></li>
-            <li><a href="#"><svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg> Delete</a></li>
-          </ul>
+      <% if !@item.new_record? %>
+        <div class="more">
+          <a href="#" data-jq-dropdown="#more-options-menu-1"><svg class="icon icon-more"><use xlink:href="#icon-more"></use></svg></a>
+          <div id="more-options-menu-1" class="center-dropdown jq-dropdown jq-dropdown-tip">
+            <ul class="jq-dropdown-menu">
+              <li><a href="#"><svg class="icon icon-duplicate"><use xlink:href="#icon-duplicate"></use></svg> Duplicate</a></li>
+              <li><a href="#"><svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg> Delete</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
     <div class="file">
       <%= link_to :back, :class => "cancel" do %><span>Cancel</span><% end %>
-      <%= link_to :back, :class => "save" do %><span>Save Thought</span><% end %>    
+      <%= link_to "#", :class => "save", :onclick => @item.new_record? ? "$('#new_item').submit()" : "$('#edit_item_#{@item.id}').submit()" do %><span>Save Thought</span><% end %>
     </div>
   </div>   
   <div class="thought-menu_mbl">

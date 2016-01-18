@@ -1,0 +1,14 @@
+<!-- Assets -->
+<div class="assets-mgmt">
+  <!-- New Files previewed here: -->
+  <div id="preview" class="dropzone"></div>
+  <!-- Existing images previewed here: -->
+  <ul class="image-previews-list">
+    <% if item.has_media? %>
+      <% item.media_urls.each do |url| %>
+        <%= render 'media_full', :media_url => url %>
+      <% end %>
+    <% end %>
+  </ul>
+  
+</div>

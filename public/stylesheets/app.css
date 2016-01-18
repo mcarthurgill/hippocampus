@@ -4849,15 +4849,22 @@ a.button {
   background: transparent;
   border: 1px solid #5ACC5A;
   color: #5ACC5A;
-  transition: all 0.15s linear; }
+  transition: all 0.15s linear;
+  text-decoration:none; 
+ }
   .button.cancel:hover, .button.save:hover {
     color: #FFFFFF;
-    background: #5ACC5A; }
+    background: #5ACC5A; 
+    text-decoration:none; 
+}
   .button.cancel.cancel, .button.save.cancel {
     background: #FAFAFA !important;
     color: #BABABA;
-    border: 1px solid #E0E0E0; }
+    border: 1px solid #E0E0E0; 
+    text-decoration:none; 
+}
     .button.cancel.cancel:hover, .button.save.cancel:hover {
+      text-decoration:none; 
       color: #47494A; }
 
 svg, .icon {
