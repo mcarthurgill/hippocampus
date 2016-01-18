@@ -1,0 +1,20 @@
+<div class="nudges">
+  <a href="#" data-jq-dropdown="#nudge-menu-1" id="toggle-calendar"><svg class="icon icon-alarm"><use xlink:href="#icon-alarm"></use></svg><time><span id="outputDate"><%= item.next_reminder_date ? formatted_date(item.next_reminder_date) : "Set Nudge" %></span><span id="outputFrequency"><%= item.item_type ? item.item_type : "" %></span></time></a>
+  <div id="nudge-menu-1" class="center-dropdown jq-dropdown jq-dropdown-tip">
+    <div class="jq-dropdown-panel">
+      <div id="calendar-menu">                        
+        <div class="frequency-settings">
+          <div class="select-wrap">
+            <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="#icon-repeat"></use></svg></span>
+            <%= f.hidden_field :reminder_date, :value => item.next_reminder_date, :id => "hidden-reminder-date-field" %>
+            <%= f.select :item_type, options_for_select([["Don't repeat", "once"], ["Yearly", "yearly"], ["Weekly", "weekly"], ["Monthly", "monthly"]], item.item_type), {}, :class => 'nice select-nice', :id => "calendar-frequency-option" %>
+          </div>
+        </div>
+        
+        <div id="calendar"></div> 
+        <a href="#" id="remove-calendar-nudge" class="remove-nudge button">Remove Nudge</a>
+      </div>
+    </div>
+  </div>
+  <div id="overlay"></div>
+</div>

@@ -107,8 +107,6 @@ $(document).ready(function() {
 	$(function($) {
 		var dateAsArray = $("#hidden-reminder-date-field").val().split("-"); 
 		var dateDefault = new Date(parseInt(dateAsArray[0]), parseInt(dateAsArray[1] - 1), parseInt(dateAsArray[2])); 
-		console.log(dateDefault);
-		console.log(dateAsArray);
 	  $("#calendar").datepicker({
     	showOtherMonths: true,
 		selectOtherMonths: true,
