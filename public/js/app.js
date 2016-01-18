@@ -67,7 +67,7 @@ $(document).ready(function() {
 	var bucketLabel =  '.label .remove'
 	$(mainContent).on('click', bucketLabel, function(e){
 		e.preventDefault();
-		$(this).parent().addClass('hide').delay(800).queue(function(next){
+		$(this).parent().addClass('hide').delay(500).queue(function(next){
 		    $(this).hide()
 		    next();
 		});
@@ -119,12 +119,18 @@ $(document).ready(function() {
 
 	  function display(msg) {
 	    $("#outputDate").html(msg);
+	    setReminderDate(msg);
 	  }
 	});
 	$('#overlay').click(function() {
 		dropdown.removeClass('prevent-hide');
 		$(this).removeClass('on');
 	});
+
+	function setReminderDate(dateString) {
+		var date = new Date(dateString);
+		$("#hidden-reminder-date-field").val(date);
+	}
 
 	// -------------------------- Calendar Settings ---------------------------
     var $nudgeFrequencyOption = $('select#calendar-frequency-option')
@@ -141,6 +147,10 @@ $(document).ready(function() {
       $('#calendar').datepicker('setDate', null);
       $nudgeFrequencyOutput.html(null);
       $nudgeDateOutput.html(null);
+      setReminderDate("01/01/1970");
+      $('#calendar-frequency-option option').each(function(){
+      	this.selected = (this.value == "once");
+      });
     });
 
 	// ---------------------------------- Star -----------------------------------
@@ -180,7 +190,7 @@ $(document).ready(function() {
 	var triggerHide =  '.triggerHide'
 	$(mainContent).on('click', triggerHide, function(e){
 		e.preventDefault();
-		$(this).parent().addClass('fade').delay(1000).queue(function(next){
+		$(this).parent().addClass('fade').delay(500).queue(function(next){
 		    $(this).hide()
 		    next();
 		});
