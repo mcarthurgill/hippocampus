@@ -41,6 +41,15 @@ $(document).ready(function() {
 		};
 	}
 
+	// --------------------------------- Submit Item -----------------------------
+	$("#saveButton").on("click", function(e){
+		if ($("#new_item").length) {
+			$("#new_item").submit(); 
+		} else if ($(".edit_item").length) {
+			$(".edit_item").submit(); 
+		}
+	});
+
 
 	// --------------------------------- Nice.js ---------------------------------
 	$('.nice').niceSelect();

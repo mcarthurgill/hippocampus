@@ -1,0 +1,16 @@
+<script type="text/javascript">
+  new Dropzone(document.body, { // Make the whole body a dropzone
+    url: "/upload/url", // Set the url
+    previewsContainer: "#previews", 
+    clickable: "#upload-assets", 
+    addRemoveLinks: true, 
+    clickable: true, 
+    success: function(file, response){
+          // add the dz-success class (the green tick sign)
+          
+        },
+    error: function(error, response){
+
+    }
+  });
+</script>
