@@ -8,7 +8,8 @@
     clickable: true, 
     success: function(file, response){
           // add the dz-success class (the green tick sign)
-          
+          console.log(file);
+          console.log(response);
         },
     error: function(error, response){
 
@@ -17,4 +18,13 @@
               formData.append('medium[item_local_key]', "<%= item.local_key %>");
               formData.append('medium[user_id]', "<%= current_user.id %>");
           });
+
+  $("#upload-assets").click(function(){
+    var display = $("#hidden-dz-message").css("display"); 
+    if (display == "none") {
+      $("#hidden-dz-message").css("display", "");
+    } else {
+      $("#hidden-dz-message").css("display", "none");
+    };
+  });
 </script>

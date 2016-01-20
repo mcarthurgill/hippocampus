@@ -86,7 +86,7 @@ class Item < ActiveRecord::Base
     self.user.delay.update_items_count
   end
 
-  before_create :check_for_and_set_date
+  before_create :check_for_and_set_date, :check_for_and_set_unassigned_media
 
   before_save :extract_links
   after_save :cache_links
@@ -122,6 +122,10 @@ class Item < ActiveRecord::Base
     view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
     view.extend ApplicationHelper
     view.render(partial: partial, locals: assigns)
+  end
+
+  def check_for_and_set_unassigned_media
+    meds = Medium.where("item_local_key = ? AND item_id = ?", self.local_key)
   end
 
   # -- SETTERS
