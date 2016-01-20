@@ -43,6 +43,7 @@ class MediaController < ApplicationController
   def create
     puts 'FILE PARAMETERS ----'
     puts params[:file]
+    puts params
     puts 'END PARAMS ---- '
     @medium = Medium.create_with_file_user_id_item_key_and_local_key(params[:file], params[:medium][:user_id], params[:medium][:item_local_key], params[:medium][:local_key])
 

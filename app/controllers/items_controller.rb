@@ -86,7 +86,7 @@ class ItemsController < ApplicationController
 
 
   def new
-    @item = Item.new
+    @item = Item.initialize_with_local_key
     # @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|

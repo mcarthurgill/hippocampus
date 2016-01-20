@@ -149,6 +149,12 @@ class Item < ActiveRecord::Base
     return i
   end
 
+  def initialize_with_local_key
+    i = Item.new
+    i.set_defaults
+    return i
+  end
+
   # NEEDS TO BE UPDATED TO NEW MEDIA TYPE
   def self.create_with_call(call)
     i = Item.new
