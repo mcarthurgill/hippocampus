@@ -114,7 +114,10 @@ $(document).ready(function() {
     // do things (e.g. allow user to click places)
     
 	$(function($) {
-		var dateAsArray = $("#hidden-reminder-date-field").val().split("-"); 
+		var dateAsArray = ""; 
+		if ($("#hidden-reminder-date-field").val()) {
+			dateAsArray = $("#hidden-reminder-date-field").val().split("-"); 
+		};
 		var dateDefault = new Date(parseInt(dateAsArray[0]), parseInt(dateAsArray[1] - 1), parseInt(dateAsArray[2])); 
 	  $("#calendar").datepicker({
     	showOtherMonths: true,
