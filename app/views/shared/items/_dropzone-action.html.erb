@@ -1,5 +1,6 @@
 <script type="text/javascript">
 var medium_local_key = ""; 
+var medium_id = 0; 
   new Dropzone(document.body, { // Make the whole body a dropzone
     url: "/media.json", // Set the url
     previewsContainer: "#previews", 
@@ -10,6 +11,7 @@ var medium_local_key = "";
     success: function(file, response){
         console.log(response);
         medium_local_key = response.local_key; 
+        medium_id = response.id;
         console.log(medium_local_key);
         },
     error: function(error, response){
@@ -21,7 +23,7 @@ var medium_local_key = "";
   }).on("removedfile", function(file) {
     $.ajax({
         type: 'DELETE',
-        url: '/media.json',
+        url: "/media/"+ medium_id + ".json",
         data: "local_key="+medium_local_key,
         dataType: 'json'
     });
