@@ -149,7 +149,7 @@ class Item < ActiveRecord::Base
     return i
   end
 
-  def initialize_with_local_key
+  def self.initialize_with_local_key
     i = Item.new
     i.set_defaults
     return i
