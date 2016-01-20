@@ -43,10 +43,14 @@ $(document).ready(function() {
 
 	// --------------------------------- Submit Item -----------------------------
 	$("#saveButton").on("click", function(e){
-		if ($("#new_item").length) {
-			$("#new_item").submit(); 
-		} else if ($(".edit_item").length) {
-			$(".edit_item").submit(); 
+		if ($("#default-editor").val().length < 1 && $("#previews").children().length < 1) {
+			alert("You must add a note or image!");
+		} else {
+			if ($("#new_item").length) {
+				$("#new_item").submit(); 
+			} else if ($(".edit_item").length) {
+				$(".edit_item").submit(); 
+			}
 		}
 	});
 
