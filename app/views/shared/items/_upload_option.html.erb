@@ -1,3 +1,4 @@
 <div class="upload">
-  <a href="#" id="upload-assets"><svg class="icon icon-camera"><use xlink:href="#icon-camera"></use></svg></a>
+  <input type="file" id="upload-file-hidden" name="upload" style="visibility: hidden; width: 1px; height: 1px" multiple />
+  <a href="#" id="upload-assets" onclick="document.getElementById('upload-file-hidden').click(); return false"><svg class="icon icon-camera"><use xlink:href="#icon-camera"></use></svg></a>
 </div>
