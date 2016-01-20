@@ -125,7 +125,10 @@ class Item < ActiveRecord::Base
   end
 
   def check_for_and_set_unassigned_media
-    meds = Medium.where("item_local_key = ? AND item_id = ?", self.local_key)
+    meds = Medium.where("item_local_key = ? AND item_id IS NULL", self.local_key)
+    meds.each do |m|
+      self.add_media_url(m.media_url)
+    end
   end
 
   # -- SETTERS
