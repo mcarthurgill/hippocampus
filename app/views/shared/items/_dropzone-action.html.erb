@@ -1,5 +1,5 @@
 <script type="text/javascript">
-var medium_id = 0; 
+var medium_local_key = ""; 
   new Dropzone(document.body, { // Make the whole body a dropzone
     url: "/media.json", // Set the url
     previewsContainer: "#previews", 
@@ -8,8 +8,9 @@ var medium_id = 0;
     paramName: "file", 
     clickable: true, 
     success: function(file, response){
-        console.log(file);
         console.log(response);
+        medium_local_key = response.local_key; 
+        console.log(medium_local_key);
         },
     error: function(error, response){
 
@@ -18,8 +19,12 @@ var medium_id = 0;
               formData.append('medium[item_local_key]', "<%= item.local_key %>");
               formData.append('medium[user_id]', "<%= current_user.id %>");
   }).on("removedfile", function(file) {
-    console.log("removed");
-    console.log(file);
+    $.ajax({
+        type: 'DELETE',
+        url: '/media.json',
+        data: "local_key="+medium_local_key,
+        dataType: 'json'
+    });
   });
 
   $("#upload-assets").click(function(){
