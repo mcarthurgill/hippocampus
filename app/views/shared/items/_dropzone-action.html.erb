@@ -1,4 +1,5 @@
 <script type="text/javascript">
+var medium_id = 0; 
   new Dropzone(document.body, { // Make the whole body a dropzone
     url: "/media.json", // Set the url
     previewsContainer: "#previews", 
@@ -7,9 +8,8 @@
     paramName: "file", 
     clickable: true, 
     success: function(file, response){
-          // add the dz-success class (the green tick sign)
-          console.log(file);
-          console.log(response);
+        console.log(file);
+        console.log(response);
         },
     error: function(error, response){
 
@@ -17,7 +17,10 @@
   }).on('sending', function(file, xhr, formData){
               formData.append('medium[item_local_key]', "<%= item.local_key %>");
               formData.append('medium[user_id]', "<%= current_user.id %>");
-          });
+  }).on("removedfile", function(file) {
+    console.log("removed");
+    console.log(file);
+  });
 
   $("#upload-assets").click(function(){
     var display = $("#hidden-dz-message").css("display"); 
