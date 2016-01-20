@@ -15,6 +15,6 @@
     }
   }).on('sending', function(file, xhr, formData){
               formData.append('medium[item_local_key]', "<%= @item.local_key %>");
-              formData.append('medium[user_id]', "<%= @current_user.id %>");
+              formData.append('medium[user_id]', "<%= current_user.id %>");
           });
 </script>
