@@ -86,10 +86,7 @@ class ItemsController < ApplicationController
 
 
   def new
-    @item = Item.initialize_with_local_key
-    p "*"*50
-    p @item
-    p "*"*50
+    @item = Item.initialize_with_local_key_and_user_id(current_user.id)
     # @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|

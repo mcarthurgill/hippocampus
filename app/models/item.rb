@@ -149,8 +149,9 @@ class Item < ActiveRecord::Base
     return i
   end
 
-  def self.initialize_with_local_key
+  def self.initialize_with_local_key_and_user_id uid
     i = Item.new
+    i.user_id = uid
     i.set_defaults
     return i
   end
