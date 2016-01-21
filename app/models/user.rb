@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
 
   before_save :update_last_activity
   def update_last_activity
-    self.assign_attributes(:last_activity, DateTime.now)
+    self.assign_attributes(:last_activity => DateTime.now)
   end
 
   def should_update_last_activity
