@@ -13,8 +13,8 @@
       </ul>
     </div>
 
-    <small>Last Active Tuesday, October 27, 2015</small>
-    <small>(4:30pm CT)</small>
+    <small>Last Active <%= long_formatted_date(current_user.last_activity) %></small>
+    <small>(<%= long_formatted_time(current_user.last_activity) %>)</small>
   </div>
 <!--   <ul class="nav-list">
     <li><h5>Favorites</h5></li>

@@ -59,6 +59,18 @@ class ApplicationController < ActionController::Base
   end
   helper_method :formatted_date
 
+  def long_formatted_date date
+    date = date.in_time_zone(current_user.time_zone) if date
+    return date ? date.strftime("%A %B %d, %Y") : nil
+  end
+  helper_method :long_formatted_date
+
+  def long_formatted_time date
+    date = date.in_time_zone(current_user.time_zone) if date
+    return date ? date.strftime("%I:%M%p %Z") : nil
+  end
+  helper_method :long_formatted_time
+
   def buckets_active?
     @active == "buckets"
   end

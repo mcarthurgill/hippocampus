@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :membership, :number_items, :number_buckets, :number_buckets_allowed, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :membership, :number_items, :number_buckets, :number_buckets_allowed, :name, :object_type, :phone, :salt, :setup_completion, :time_zone, :last_activity
   
   extend Formatting
   include Formatting
@@ -77,6 +77,12 @@ class User < ActiveRecord::Base
   def downcase_email
     self.email = self.email.downcase.strip if self.email
   end
+
+  before_save :update_last_activity
+  def update_last_activity
+    self.update_attribute(:last_activity, DateTime.now)
+  end
+
 
   after_save :set_defaults
   def set_defaults
@@ -347,8 +353,6 @@ class User < ActiveRecord::Base
   def update_buckets_count
     self.update_attribute(:number_buckets, self.buckets.count)
   end
-
-
 
 
   # --- PUSH NOTIFICATIONS

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160107164802) do
+ActiveRecord::Schema.define(:version => 20160121152322) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -467,8 +467,8 @@ ActiveRecord::Schema.define(:version => 20160107164802) do
 
   create_table "users", :force => true do |t|
     t.string   "phone"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
     t.string   "country_code"
     t.string   "email"
     t.integer  "number_items",           :default => 0
@@ -483,6 +483,7 @@ ActiveRecord::Schema.define(:version => 20160107164802) do
     t.integer  "medium_id"
     t.string   "membership",             :default => "none"
     t.integer  "number_buckets_allowed"
+    t.datetime "last_activity",          :default => '2016-01-21 15:25:05'
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
