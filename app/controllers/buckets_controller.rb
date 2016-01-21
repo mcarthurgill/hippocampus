@@ -214,7 +214,7 @@ class BucketsController < ApplicationController
     # below_created_at = params.has_key?(:below_created_at) && params[:below_created_at].to_i > 0 ? Time.at(params[:below_created_at].to_i+1).to_datetime : Time.now+1.second
 
     user = User.find_by_id(params[:auth][:uid])
-    user.delay.update_last_activity if user
+    user.delay.should_update_last_activity if user
 
     if params[:id].to_i == 0
       bucket = Bucket.all_items_bucket

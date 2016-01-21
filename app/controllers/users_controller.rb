@@ -52,7 +52,7 @@ class UsersController < ApplicationController
     @active = 'buckets'
     @sort = params[:s]
     @buckets = @user.buckets.by_first_name
-    @user.delay.update_last_activity
+    @user.delay.should_update_last_activity
     @item = Item.new
     @new_bucket = Bucket.new
     
