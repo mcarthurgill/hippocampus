@@ -50,14 +50,14 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'buckets'
-    @sort = params[:s]
-    @buckets = @user.buckets.by_first_name
+    @buckets = params[:sort] == "date" ? @user.buckets.recent_first : @user.buckets.by_first_name
     @user.delay.should_update_last_activity
     @item = Item.new
     @new_bucket = Bucket.new
     
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
+      format.js
     end
   end
 

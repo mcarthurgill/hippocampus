@@ -11,7 +11,6 @@
       <div class="sort-and-add">
         <div class="sort-buckets">
           <select class="nice" dir="rtl" id="sort-by-select">
-            <option data-selection="Favorites" value="_by_fav">Sort by favorite</option>
             <option data-selection="by date" value="_by_date">Sort by date</option>
             <option data-selection="A-Z" value="_by_alph">Sort A-Z</option>
           </select>
@@ -26,14 +25,9 @@
   </div>
 
   <!-- Buckets -->
-  <div class="buckets-list-wrap">
+  <div class="buckets-list-wrap" id="buckets-list">
     <!-- List -->
-    <ul class="list buckets-list scene_element--fadeinup scene_element scene_delay" id="bucket-list">
-      <li class="section"><h5>A</h5></li>
-      <% @buckets.each do |bucket| %>
-        <%= render 'shared/buckets/bucket_preview', :bucket => bucket %>
-      <% end %>
-    </ul>
+    <%= render 'shared/buckets/sorted_buckets', :buckets => @buckets %>
   </div>
 </main>
 
