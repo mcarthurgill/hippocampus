@@ -12,7 +12,6 @@
   <%= javascript_include_tag "/js/modernizr.js" %>
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,8|Roboto:400,300,300italic' rel='stylesheet' type='text/css'>
   <%= javascript_include_tag "/js/libs.js" %>
-  <%= javascript_include_tag "/js/app.js" %>
   <%= render partial: "shared/pusher/bind" %>
 </head>
 <body>
@@ -22,6 +21,7 @@
     <%= yield %>
   </div>
 
+  <%= render 'shared/app_js' %>
   <%= javascript_include_tag '/js/libs/simplemde.min.js' %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
   <%= render 'shared/items/dropzone-action', :item => @item %>

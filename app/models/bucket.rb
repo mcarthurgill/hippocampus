@@ -44,8 +44,6 @@ class Bucket < ActiveRecord::Base
   scope :place_type, -> { where('bucket_type = ?', 'Place') }
 
 
-
-
   # -- VALIDATIONS
 
   validates :local_key, :uniqueness => true
@@ -255,9 +253,6 @@ class Bucket < ActiveRecord::Base
   def group_for_user u
     return self.groups.where('"bucket_user_pairs"."phone_number" = ?', u.phone).first if u
   end
-
-
-
 
 
   # -- ACTIONS

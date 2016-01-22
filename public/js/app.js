@@ -60,11 +60,17 @@ $(document).ready(function() {
 
 	// -------------- Bucket Sort Select: Update #current-selection --------------
 	$('#sort-by-select').on('change', function() {
-		var currentSelected = $(this).find(':selected').data('selection')
+		var currentSelected = $(this).find(':selected').data('selection');
 
-        $('#current-selection').html(currentSelected)
-        // console.log(currentSelected);
+    $('#current-selection').html(currentSelected); 
+
+    $.ajax({
+        type: 'GET',
+        url: "/users/"+ medium_id + ".json",
+        data: "local_key="+medium_local_key,
+        dataType: 'json'
     });
+  });
 
 	// ------------------------------ Bucket Search ------------------------------
 	$('#bucket-search-input').bind('blur focus', function(){
