@@ -1,5 +1,6 @@
 <script>
   $(document).ready(function() {
+    require 'algoliasearch'
     var client = algoliasearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
     var itemIndex = client.initIndex('Item');
     var bucketIndex = client.initIndex('Bucket');
