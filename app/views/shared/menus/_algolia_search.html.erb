@@ -1,6 +1,8 @@
+<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="//cdn.jsdelivr.net/algoliasearch.helper/1/algoliasearch.helper.min.js"></script>
 <script>
   $(document).ready(function() {
-    var client = new AlgoliaSearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
+    var client = algoliasearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
     var itemIndex = client.initIndex('Item');
     var bucketIndex = client.initIndex('Bucket');
     var bucketList = $("body #bucket-list"); 
