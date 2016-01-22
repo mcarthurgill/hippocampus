@@ -1,0 +1,81 @@
+<script>
+  $(document).ready(function() {
+    var client = algoliasearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
+    var itemIndex = client.initIndex('Item');
+    var bucketIndex = client.initIndex('Bucket');
+    var bucketList = $("body #bucket-list"); 
+    var searchList = $("body .sorted-list"); 
+    var itemList = $("body #item-list");
+    var nudgeList = $("body .nudges-list");
+    var searchInput = $("body #search-thoughts-input"); 
+    var itemEntryForm = $("body .rapid-add"); 
+    var scrollToBottom = $("body #sBtm"); 
+    var searchResultsList = $("body .search-results-list");
+    var bucketTemplate = "<%= escape_javascript(render partial: 'shared/search/search_bucket_template') %>";
+    var itemTemplate = "<%= escape_javascript(render partial: 'shared/search/search_item_template') %>";
+
+    searchInput.keyup(function(){
+      var enteredText = $(this).val(); 
+      if (enteredText.length < 1) {
+        finishedSearching(); 
+      } else {
+        beganSearching(enteredText); 
+      };
+    });
+
+
+    function finishedSearching(){
+      searchResultsList.html(""); 
+      bucketList.show(); 
+      itemList.show(); 
+      nudgeList.show(); 
+      itemEntryForm.show(); 
+      scrollToBottom.show(); 
+    }
+
+    function beganSearching(enteredText){
+      algoliaSearch(enteredText); 
+      searchResultsList.html(""); 
+      bucketList.hide(); 
+      itemList.hide(); 
+      nudgeList.hide(); 
+      itemEntryForm.hide(); 
+      scrollToBottom.hide(); 
+    }
+
+    function algoliaSearch(enteredText) {
+      algoliaItemSearch(enteredText); 
+      algoliaBucketSearch(enteredText); 
+    }
+
+    function algoliaItemSearch(enteredText) {
+      itemIndex.search(enteredText, { hitsPerPage: 10, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
+        var hits = hitsHash.hits; 
+        for (var i = 0; i < hits.length; i++) {
+          appendItemWithTemplate(itemTemplate, hits[i]); 
+        };
+      });
+    }
+
+    function algoliaBucketSearch(enteredText) {
+      bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
+        var hits = hitsHash.hits; 
+        for (var i = 0; i < hits.length; i++) {
+          appendBucketWithTemplate(bucketTemplate, hits[i]); 
+        };
+      });
+    }
+
+    function appendItemWithTemplate(template, hit) {
+      var $jQueryObject = $($.parseHTML(template));
+      $jQueryObject.find('#search-list-template').html(hit.message);
+      searchResultsList.append($jQueryObject);
+    }
+
+    function appendBucketWithTemplate(template, hit) {
+      var $jQueryObject = $($.parseHTML(template));
+      $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
+      searchResultsList.append($jQueryObject);
+    }
+  });
+</script>

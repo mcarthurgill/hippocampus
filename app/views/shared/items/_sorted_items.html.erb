@@ -1,0 +1,9 @@
+<ul class="thoughts-list scene_element--fadeinup scene_element scene_delay" id="item-list">
+  <% items.each do |item| %>
+    <% if defined?(bucket) %>
+      <%= render 'shared/items/item_preview', :item => item, :bucket => bucket %>
+    <% else %>
+      <%= render 'shared/items/item_preview', :item => item %>
+    <% end %>
+  <% end %>
+</ul>

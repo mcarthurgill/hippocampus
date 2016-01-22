@@ -1,12 +1,8 @@
 <!-- Main Content -->
 <main class="main-content" role="main" aria-label="Main Content">
-  <div class="thoughts-list-wrap" id="thoughts-list-present">
-    <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay" id="item-list">
-      <% @items.each do |item| %>
-        <%= render 'shared/items/item_preview', :item => item %>
-      <% end %>
-    </ul>
-    <div id="sBtm"></div>
+  <div class="thoughts-list-wrap sorted-list" id="thoughts-list-present">
+    <div class="search-results-list"></div>
+    <%= render 'shared/items/sorted_items', :items => @items %>
     <%= render 'shared/items/thought_entry_form' %>
   </div>
 </main>    

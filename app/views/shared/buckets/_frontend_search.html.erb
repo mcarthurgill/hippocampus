@@ -10,29 +10,29 @@
 
   $(document).ready(function () {
 
-    var array = $(".bucket-container");
-    var count = array.size();
-    console.log(count);
+    // var array = $(".bucket-container");
+    // var count = array.size();
+    // console.log(count);
 
-    $('#bucket-search').keyup(function () { 
-       var text = $('#bucket-search').val();
-       console.log(text);
-       if (text && text.length > 0) {
-        $('.category-header').hide();
-       } else {
-        $('.category-header').show();
-       }
-       $.each( array, function( key, value ) {
-          console.log(value);
-          var string = $(value).text();
-          if (string.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
-            //FOUND
-            $(value).show();
-          } else {
-            $(value).hide();
-          }
-        });
-    });
+    // $('#bucket-search').keyup(function () { 
+    //    var text = $('#bucket-search').val();
+    //    console.log(text);
+    //    if (text && text.length > 0) {
+    //     $('.category-header').hide();
+    //    } else {
+    //     $('.category-header').show();
+    //    }
+    //    $.each( array, function( key, value ) {
+    //       console.log(value);
+    //       var string = $(value).text();
+    //       if (string.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
+    //         //FOUND
+    //         $(value).show();
+    //       } else {
+    //         $(value).hide();
+    //       }
+    //     });
+    // });
 
   });
 

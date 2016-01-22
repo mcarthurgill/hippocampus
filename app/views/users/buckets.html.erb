@@ -15,18 +15,14 @@
             <option data-selection="by date" value="date">Sort by date</option>
           </select>
         </div>
-        <!-- <a href="#" class="button">Add Bucket</a> -->
       </div>
-    </div>
-    <div class="search-input-wrap">
-      <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
-      <input id="search-buckets-input" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Find a bucket…"/>
     </div>
   </div>
 
   <!-- Buckets -->
-  <div class="buckets-list-wrap" id="buckets-list">
+  <div class="buckets-list-wrap sorted-list" id="buckets-list">
     <!-- List -->
+    <div class="search-results-list"></div>
     <%= render 'shared/buckets/sorted_buckets', :buckets => @buckets %>
   </div>
 </main>

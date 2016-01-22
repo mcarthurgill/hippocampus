@@ -1,11 +1,7 @@
 <main class="main-content" role="main" aria-label="Main Content">
-  <div class="bucket-list-wrap" id="bucket<%= @bucket.id %>">
-    <ul class="thoughts-list scene_element--fadeinup scene_element scene_delay" id="item-list">
-      <% @items.each do |item| %>
-        <%= render 'shared/items/item_preview', :item => item, :bucket => @bucket %>
-      <% end %>
-    </ul>
-    <div id="sBtm"></div>
+  <div class="bucket-list-wrap sorted-list" id="bucket<%= @bucket.id %>">
+    <div class="search-results-list"></div>
+    <%= render 'shared/items/sorted_items', :items => @items, :bucket => @bucket %>
     <%= render 'shared/items/thought_entry_form' %>
   </div>
 </main>
