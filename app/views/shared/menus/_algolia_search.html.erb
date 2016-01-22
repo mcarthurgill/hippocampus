@@ -52,18 +52,22 @@
 
     function algoliaItemSearch(enteredText) {
       itemIndex.search(enteredText, { hitsPerPage: 10, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
-        var hits = hitsHash.hits; 
-        for (var i = 0; i < hits.length; i++) {
-          appendItemWithTemplate(itemTemplate, hits[i]); 
+        if (hitsHash && hitsHash.hits) {
+          var hits = hitsHash.hits; 
+          for (var i = 0; i < hits.length; i++) {
+            appendItemWithTemplate(itemTemplate, hits[i]); 
+          };
         };
       });
     }
 
     function algoliaBucketSearch(enteredText) {
       bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
-        var hits = hitsHash.hits; 
-        for (var i = 0; i < hits.length; i++) {
-          appendBucketWithTemplate(bucketTemplate, hits[i]); 
+        if (hitsHash && hitsHash.hits) {
+          var hits = hitsHash.hits; 
+          for (var i = 0; i < hits.length; i++) {
+            appendBucketWithTemplate(bucketTemplate, hits[i]); 
+          };
         };
       });
     }
