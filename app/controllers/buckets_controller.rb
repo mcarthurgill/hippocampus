@@ -90,7 +90,7 @@ class BucketsController < ApplicationController
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
         @bucket.delay.update_items_with_new_bucket_name if bucket_name_changed
-        format.html { redirect_to @bucket, notice: 'Stack updated.' }
+        format.html { redirect_to user_buckets_path(current_user) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
