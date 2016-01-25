@@ -1,0 +1,99 @@
+// ================================== First ===================================
+.js .tab_content {display: none;}
+.js .tab_content.current {display: inherit;}
+// ================================ Animations ================================
+	// ---------------------------------- Ready ----------------------------------
+	.js body {
+		// ------------------------------ Site Header -------------------------------
+		#site_header {
+			h1 {
+				opacity: 0;
+				transform: translate3d(-40px,0,0);
+				transition: all .68s ease-in-out 1s;
+			}
+			.button {
+				opacity: 0;
+				transform: translate3d(0,40px,0);
+				transition: all .68s ease-in-out 1s;
+			}
+		}
+	}
+	.js body.ready {
+		// ------------------------------ Site Header -------------------------------
+		#site_header {
+			h1 {
+				opacity: 1;
+				transform: translate3d(0,0,0) ;
+			}
+			.button {
+				opacity: 1;
+				transform: translate3d(0,0,0) ;
+			}
+		}
+	}
+	// ----------------------------------Mobile-----------------------------------
+	.noSkrollr .step {
+		// ------------------------------ Testimonials ------------------------------
+		&#testimonials_hero {
+			.quote {
+				// transition: all $trans-1;
+				opacity: .4;
+				transform: translate3d(-40px,0,0) !important;
+				transition: all .68s ease-in-out;
+
+				&:last-child {
+					transform: translate3d(40px,0,0) !important;
+				}
+			}
+			&.transit {
+				.quote {
+					opacity: 1;
+					transform: translate3d(0,0,0) !important;
+
+					&:last-child {
+						transform: translate3d(0,0,0) !important;
+					}
+				}
+			}
+		}
+
+		// ------------------------------ IOS -------------------------------
+		&#view_ios {
+			.left_header {
+				transform: translate3d(-200px,0,0);
+				transition: opacity 1s ease-in-out,
+							transform .68s ease-in-out;
+				opacity: 0;
+			}
+
+			&.transit {
+				.left_header {
+					opacity: 1 !important;
+					transform: translate3d(0,0,0);
+				}
+			}
+		}
+		// --------------------------------- Centered Headers ---------------------------------
+
+		.center_header {
+			p {
+				transition: opacity 1s ease-in-out .5s,
+							transform .4s ease-in-out .5s;
+			}
+			h4,h3,p {
+				transform: translate3d(0,20px,0);
+				transition: opacity 1s ease-in-out,
+							transform .68s ease-in-out;
+				opacity: .2;
+			}
+		}
+		&.transit {
+			.center_header {
+				h4,h3,p {
+					transform: translate3d(0,0,0);
+					opacity: 1;
+				}
+			}	
+		}
+
+}

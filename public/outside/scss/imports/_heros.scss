@@ -1,0 +1,145 @@
+// ================================== Heros ===================================
+
+// -------------------------------- Video Hero --------------------------------
+.video_hero {
+	background: #6a4ca6;
+	background-size: 400% 400%;
+	padding:rem-calc(90 30 60);
+	position: relative;
+	background: linear-gradient(-16deg, #6a4ca6, #ed2fa1);
+	
+	// Border
+	&:before {
+		content: '';
+		position: absolute;
+		width:100%;
+		top: 0;
+		left: 0;
+		border-top:10px solid rgba($black, .1);
+		z-index: 10;
+	}
+
+	// Type
+	h4, p {
+		color: $white;
+	}
+	p {
+		color: $pop;
+	}
+	
+	// Mac 
+	.mac {
+		position: relative;
+		max-width: rem-calc(720);
+		margin: 0 auto;
+	}	
+}
+
+// -------------------------------- Image Hero --------------------------------
+.image_hero {
+	background-size: cover !important;
+	padding:rem-calc(80 24 72);
+	border-bottom: 10px solid #F1F1F1;
+	position: relative;
+	z-index: 10;z
+	
+
+	// Header 
+	.left_header {
+		h4, p {
+			color:$white;
+		}
+	}
+}
+
+// ----------------------------- Newsletter Hero ------------------------------
+.newsletter_hero {
+	background: $snow;
+	border-top: 10px solid rgba($black, .05);
+
+	// Inner
+	.inner {
+		padding: rem-calc(80 24 152)
+	}
+
+	// Type
+	.center_header {
+		p {
+			color: $smoke;
+		}
+	}
+	// Button
+	.sign_up .submit {
+		-webkit-animation: pulseBackgroundAnimation 2s ease infinite;
+		animation: pulseBackgroundAnimation 2s ease infinite;
+	}
+
+	
+}
+
+// -------------------------------- Using Hero --------------------------------
+#using_hippo {
+	padding: rem-calc(80 24 112);
+	border-top: 10px solid #EAEAEA;
+	// Content 
+	.content {
+		margin: 0 auto rem-calc(80);
+		max-width:rem-calc(920);
+		p {
+			margin: 0 auto rem-calc(80);
+			max-width:rem-calc(600);
+			color: $slate;
+		}
+	}
+	// Art
+	.how_to_art {
+		margin: 0 auto rem-calc(80);
+		max-width:rem-calc(400);
+	}
+}
+
+// ---------------------------- Testimonials Hero -----------------------------
+$quote-l-offset: 24;
+#testimonials_hero {
+	padding: rem-calc(80 0 124);
+	@include clearfix;
+	text-align: center;
+	// padding-left: rem-calc($quote-l-offset +10);
+
+	.quote {
+		text-align: left;
+		display: inline-block;
+		position: relative;
+		top:40px;
+		left: rem-calc($quote-l-offset);
+		transform: translate3d(0,0,0);
+		z-index: 10;
+		position: relative;
+
+		&:last-child {
+			top:0;
+			left: rem-calc(-$quote-l-offset);
+			
+		}
+	}
+
+	.quote:last-child {
+		background: rgba($white, .68);
+		z-index: 0;
+	}
+
+	// ----------------------------------- mq ------------------------------------
+	@media only screen and (max-width:52em) {
+		.quote {
+			transform: translate3d(0px, 0, 0px) !important;
+			margin-bottom: rem-calc(24);
+			left: 0 !important;
+			top: 0;
+		}
+	}
+	@media #{$small-only} {
+		padding: rem-calc(20 24);
+	}
+}
+
+

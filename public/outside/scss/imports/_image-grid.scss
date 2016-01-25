@@ -1,0 +1,43 @@
+// =============================== Images Grid ================================
+#images {
+	.item {
+	    position: relative;
+	    overflow: hidden;
+	    width:14.285%;
+		float: left;
+		-webkit-transition: all $trans-1;
+	    -moz-transition: all $trans-1;
+	    -ms-transition: all $trans-1;
+	    transition: all $trans-1;
+		// transition: all $trans-1;;
+	}
+
+	.item img{
+	    height: 100%;
+	    width: 100%;
+	    top: 0;
+	    left: 0;
+	    opacity: 0;	  
+	    -webkit-transition: all $trans-1;
+	    -moz-transition: all $trans-1;
+	    -ms-transition: all $trans-1;
+	    transition: all $trans-1;
+	}
+
+	.item.loaded img{
+	    opacity: 1;
+	}
+	
+	@media #{$xlarge-up} {
+		.item {width:12.5%; }
+	}
+	@media #{$xxlarge-up} {
+		.item {width:10%; }
+	}
+	@media #{$medium-only} {
+		.item {width:16.6666%; }
+	}
+	@media #{$small-only} {
+		.item {width:25%}
+	}
+}

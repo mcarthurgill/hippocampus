@@ -1,6 +1,9 @@
 Hippocampus::Application.routes.draw do
 
-  root :to => "outside#splash"
+
+  root :to => "outside#homepage"
+
+  get 'home', to: 'outside#homepage'
 
   get 'privacy', :to => 'outside#privacy'
   get 'gifts', :to => 'outside#gifts', :as => 'gifts'
@@ -88,5 +91,7 @@ Hippocampus::Application.routes.draw do
   post "api_endpoint", :to => "addons#api_endpoint", :as => "api_endpoint"
 
   resources :use_cases
+
+  resources :waitlists, only: [:create, :index]
 
 end

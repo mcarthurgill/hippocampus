@@ -1,0 +1,94 @@
+// ================================ Typography ================================
+// -----------------------------------Quote------------------------------------
+// Blocks
+.quote {
+	
+	
+	blockquote {
+		border:0;
+		padding:0;
+		margin:0;
+		width:100%;
+		max-width:rem-calc(410);
+		height:rem-calc(160);
+		
+		font-style: normal;
+		&:before {
+			position: absolute;
+			content:'';
+			width:100%;
+			height:100%;
+			max-width:rem-calc(410);
+			max-height:rem-calc(160);
+			background: url('../images/svg/quote-outline-gradient.svg') no-repeat;
+		}
+		.inner {
+			width:80%;
+			margin: 0 auto;
+			// padding: rem-calc(0 48);
+		}
+		p {
+			display: flex;
+		    justify-content: center;
+		    height: rem-calc(140);
+		    flex-direction: column;
+		    overflow: hidden;
+			font-size: rem-calc(16);
+			color:$oil;
+		}
+	}
+
+	// Cite
+	cite {
+		display: block;
+		padding:rem-calc(12 12 12 90);
+		font-style: normal;
+		font-size: rem-calc(13);
+		@include clearfix;
+
+		img, .detail {
+			float: left;
+		}
+		.detail {
+			padding:rem-calc(2);
+			padding-left: rem-calc(14);
+		}
+		.title {
+			font-weight:$weight-normal;
+		}
+		.title,
+		.meta {
+			display: block;
+		}
+		.meta {
+			color:$steel;	
+		}
+
+	}	
+	
+	// =================================== Mq ====================================
+	@media only screen and (max-width:52em) {
+		.quote {
+			display: block;
+			margin:0 auto;
+		}
+	}
+	// ------------------------------------  -------------------------------------
+	@media only screen and (max-width:25em) {
+		margin-bottom: rem-calc(30) !important;
+
+		blockquote {
+			height: inherit;
+			p {
+				height: rem-calc(120);
+				font-size: rem-calc(12);
+				height:rem-calc(100);
+			}
+		}
+		cite {
+			padding:rem-calc(0 12 12 40);
+		}
+	}
+}
+
+

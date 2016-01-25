@@ -1,0 +1,25 @@
+// =============================== Main Footer ================================
+.main_footer {
+	background: $snow;
+	text-align: center;
+	padding:rem-calc(42 24);
+
+	small {
+		display:  block;
+		font-size: rem-calc(14);
+		line-height: rem-calc(19);
+		color: $slate;
+		margin-bottom: rem-calc(6);
+	}
+
+	a {
+		padding-bottom: 1px;
+		border-bottom: 1px solid $slate;
+		transition: all $trans-1;
+		color:$slate;
+		&:hover {
+			border-color: $plum;
+			color: $plum;
+		}
+	}
+}

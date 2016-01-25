@@ -2,6 +2,10 @@ class OutsideController < ApplicationController
 
   def splash
   end
+
+  def homepage
+    render layout: 'outside_homepage'
+  end
   
   def privacy
   end

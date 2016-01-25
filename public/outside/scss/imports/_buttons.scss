@@ -1,0 +1,32 @@
+// ================================= Buttons ==================================
+.button,
+input[type="submit"] {
+	border-radius: $global-rounded;
+	
+	// ---------------------------------- Ocean ----------------------------------
+	&.ocean {
+		background: $ocean;
+		color:$ghost;
+		&:hover {
+			background: $seafoam-1;
+		}
+	}
+
+	// ---------------------------------- Seafoam ----------------------------------
+	&.seafoam {
+		background: $seafoam-1;
+		color:$ghost;
+		&:hover {
+			background:$ocean;
+		}
+	}
+
+	&.pink {
+		background: $pink;
+		color:$ghost;
+		&:hover {
+			background: $yellow;
+			color: $ocean;
+		}
+	}
+}
