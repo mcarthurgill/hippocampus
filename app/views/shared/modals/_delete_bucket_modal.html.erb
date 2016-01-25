@@ -1,0 +1,14 @@
+<div id="deleteBucketModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <header class="modal-header">
+    <h4 id="modalTitle">Are you sure you want to delete <%= @bucket.first_name %>?</h4>
+  </header>
+    <div class="content">
+      <p style="text-align:center;">This will delete all notes associated with <%= @bucket.first_name %></p>
+    </div>
+    <footer class="options">
+        <%= link_to "Delete", @bucket, :method => :delete, :class => "cancel button close-reveal-modal", :id => "delete_bucket" %>
+        <%= link_to "Cancel", "", :class => "save button close-reveal-modal", :id => "cancel_delete_bucket" %>
+    </footer>
+</div>
+
+<%= render 'shared/buckets/delete_bucket_modal_js' %>

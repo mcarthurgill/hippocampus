@@ -28,7 +28,11 @@
                   <svg class="icon icon-settings"><use xlink:href="#icon-settings"></use></svg>Edit
                 <% end %>
               </li>
-              <li><a href="#"><svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg>Delete</a></li>
+              <li>
+                <%= link_to "", "data-reveal-id" => "deleteBucketModal" do %>
+                  <svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg>Delete
+                <% end %>
+              </li>
             </ul>
           </div>       
           <% if @bucket.users.count > 0 %>

@@ -109,7 +109,7 @@ class BucketsController < ApplicationController
     @bucket.destroy
 
     respond_to do |format|
-      format.html { redirect_to current_user }
+      format.html { redirect_to user_buckets_path(current_user) }
       format.json { head :no_content }
     end
   end
