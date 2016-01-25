@@ -28,6 +28,7 @@ function saveAndResetBucket(e){
   if (bucketInput.val()) {
     var bucketName = bucketInput.val();
     $("#bucket-first-name").text(bucketName);
+    submitBucket(); 
     // -------------------------- Reset/Clear ---------------------------
     bucketInput.val("");
     $("#cancel_edit_bucket").click(); 
