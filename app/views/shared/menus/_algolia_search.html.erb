@@ -65,8 +65,13 @@
       itemIndex.search(enteredText, { hitsPerPage: 10, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
-          for (var i = 0; i < hits.length; i++) {
-            appendItemWithTemplate(itemTemplate, hits[i]); 
+          if (hits.length < 1) {
+            searchResultsItemList.hide(); 
+          } else {
+            searchResultsItemList.show(); 
+            for (var i = 0; i < hits.length; i++) {
+              appendItemWithTemplate(itemTemplate, hits[i]); 
+            };
           };
         };
       });
@@ -76,9 +81,13 @@
       bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
-          for (var i = 0; i < hits.length; i++) {
-            appendBucketWithTemplate(bucketTemplate, hits[i]); 
-            console.log("bucket = "+hits[i].first_name);
+          if (hits.length < 1) {
+            searchResultsBucketList.hide(); 
+          } else {
+            searchResultsBucketList.show(); 
+            for (var i = 0; i < hits.length; i++) {
+              appendBucketWithTemplate(bucketTemplate, hits[i]); 
+            };
           };
         };
       });
@@ -93,8 +102,8 @@
 
     function appendBucketWithTemplate(template, hit) {
       var $jQueryObject = $($.parseHTML(template));
-      $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
-      $jQueryObject.find('#bucket-header-link').attr("href", '/buckets/'+hit.id+'/info');
+      $jQueryObject.find('#search-bucket-firstname').html(hit.message);
+      $jQueryObject.find('a').attr("href", '/buckets/'+hit.id+'/info');
       searchResultsBucketList.append($jQueryObject);
     }
   });
