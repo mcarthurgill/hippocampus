@@ -1,7 +1,9 @@
 <!-- Main Content -->
 <main class="main-content" role="main" aria-label="Main Content">
+
+  <%= render 'shared/search_results_list' %>
+
   <div class="thoughts-list-wrap sorted-list" id="thoughts-list-present">
-    <div class="search-results-list"></div>
     <%= render 'shared/items/sorted_items', :items => @items %>
     <%= render 'shared/items/thought_entry_form' %>
   </div>

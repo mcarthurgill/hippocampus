@@ -7,14 +7,19 @@
     var bucketIndex = client.initIndex('Bucket');
     var bucketList = $("body #bucket-list"); 
     var searchList = $("body .sorted-list"); 
+    var bucketMenuHeader = $("body #bucket-menu-header");
     var itemList = $("body #item-list");
     var nudgeList = $("body .nudges-list");
     var searchInput = $("body #search-thoughts-input"); 
     var itemEntryForm = $("body .rapid-add"); 
     var scrollToBottom = $("body #sBtm"); 
     var searchResultsList = $("body .search-results-list");
+    var searchResultsItemList = $('body #search-results-item-list');
+    var searchResultsBucketList = $('body #search-results-bucket-list');
     var bucketTemplate = "<%= escape_javascript(render partial: 'shared/search/search_bucket_template') %>";
     var itemTemplate = "<%= escape_javascript(render partial: 'shared/search/search_item_template') %>";
+
+    searchResultsList.hide(); 
 
     searchInput.keyup(function(){
       var enteredText = $(this).val(); 
@@ -27,20 +32,26 @@
 
 
     function finishedSearching(){
-      searchResultsList.html(""); 
+      searchResultsItemList.html(""); 
+      searchResultsBucketList.html(""); 
+      bucketMenuHeader.show(); 
       bucketList.show(); 
       itemList.show(); 
       nudgeList.show(); 
+      searchResultsList.hide(); 
       itemEntryForm.show(); 
       scrollToBottom.show(); 
     }
 
     function beganSearching(enteredText){
       algoliaSearch(enteredText); 
-      searchResultsList.html(""); 
+      searchResultsItemList.html(""); 
+      searchResultsBucketList.html(""); 
+      bucketMenuHeader.hide(); 
       bucketList.hide(); 
       itemList.hide(); 
       nudgeList.hide(); 
+      searchResultsList.show(); 
       itemEntryForm.hide(); 
       scrollToBottom.hide(); 
     }
@@ -67,6 +78,7 @@
           var hits = hitsHash.hits; 
           for (var i = 0; i < hits.length; i++) {
             appendBucketWithTemplate(bucketTemplate, hits[i]); 
+            console.log("bucket = "+hits[i].first_name);
           };
         };
       });
@@ -75,13 +87,15 @@
     function appendItemWithTemplate(template, hit) {
       var $jQueryObject = $($.parseHTML(template));
       $jQueryObject.find('#search-list-template').html(hit.message);
-      searchResultsList.append($jQueryObject);
+      $jQueryObject.find('a').attr("href", '/items/'+hit.id);
+      searchResultsItemList.append($jQueryObject);
     }
 
     function appendBucketWithTemplate(template, hit) {
       var $jQueryObject = $($.parseHTML(template));
       $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
-      searchResultsList.append($jQueryObject);
+      $jQueryObject.find('#bucket-header-link').attr("href", '/buckets/'+hit.id+'/info');
+      searchResultsBucketList.append($jQueryObject);
     }
   });
 </script>

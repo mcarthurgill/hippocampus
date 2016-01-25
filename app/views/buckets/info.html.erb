@@ -1,6 +1,8 @@
 <main class="main-content" role="main" aria-label="Main Content">
+  
+  <%= render 'shared/search_results_list' %>
+
   <div class="bucket-list-wrap sorted-list" id="bucket<%= @bucket.id %>">
-    <div class="search-results-list"></div>
     <%= render 'shared/items/sorted_items', :items => @items, :bucket => @bucket %>
     <%= render 'shared/items/thought_entry_form' %>
   </div>
