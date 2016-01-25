@@ -161,7 +161,7 @@ class ItemsController < ApplicationController
     @item.buckets.each {|b| b.update_count }
 
     respond_to do |format|
-      format.html { redirect_to user_path(current_user), :notice => "Note deleted successfully." }
+      format.html { redirect_to user_items_path(current_user) }
       format.json { head :no_content }
     end
   end

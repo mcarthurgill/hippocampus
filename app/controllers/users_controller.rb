@@ -175,7 +175,9 @@ class UsersController < ApplicationController
     list = @reminders.shift(1).first if mobile
 
     respond_to do |format|
-      format.html
+      if current_user #this is a janky fix til we get the .json on the reminders call from iOS 
+        format.html
+      end
       format.json { render json: {:reminders => @reminders, :nudge_list => list[:nudges_list]} }
     end
   end
