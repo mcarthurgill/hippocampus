@@ -1,4 +1,5 @@
 class OutsideController < ApplicationController
+
   def splash
   end
   
@@ -9,4 +10,5 @@ class OutsideController < ApplicationController
     @u = User.find_by_salt(params[:code])
     @address = Address.new
   end
+
 end
