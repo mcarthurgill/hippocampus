@@ -2,22 +2,7 @@
 <main class="main-content" role="main" aria-label="Main Content">
 
   <!-- Buckets Search Tools -->
-  <div class="buckets-search-wrap" id="bucket-menu-header">
-    <div class="options-wrap">
-      <div class="currently" >
-        <h5>All Buckets</h5>
-        <span id="current-selection">A-Z</span>
-      </div>
-      <div class="sort-and-add">
-        <div class="sort-buckets">
-          <select class="nice" dir="rtl" id="sort-by-select">
-            <option data-selection="A-Z" value="alph">Sort A-Z</option>
-            <option data-selection="by date" value="date">Sort by date</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'shared/buckets/bucket_sort' %>
   
   <%= render 'shared/search_results_list' %>
   <!-- Buckets -->
