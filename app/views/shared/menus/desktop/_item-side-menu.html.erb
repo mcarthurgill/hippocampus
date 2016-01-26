@@ -5,7 +5,7 @@
       <svg class="icon-arrow-left"><use xlink:href="#icon-arrow-left"></use></svg>
     </a>
     <div class="title-wrap">
-      <span class="name">Courtney Bradford</span>
+      <span class="name"><%= current_user.name ? current_user.name : "Profile" %></span>
     </div>
   </header>
   <ul class="nav-list">

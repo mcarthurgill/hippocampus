@@ -43,10 +43,13 @@
     }
 
     // --------------------------------- Submit Item -----------------------------
-    $("#saveButton").on("click", function(e){
-      if ($("#default-editor").val().length < 1 && $("#previews").children().length < 1) {
+    $(".saveButton").on("click", function(e){
+      console.log("here");
+      
+      if (defaultEditor.value().length < 1 && $("#previews").children().length < 1) {
         alert("You must add a note or image!");
       } else {
+        console.log("now here");
         if ($("#new_item").length) {
           $("#new_item").submit(); 
         } else if ($(".edit_item").length) {
