@@ -9,7 +9,5 @@
 
     <li class="<%= active_nudge_classes %>"><%= link_to user_reminders_path(current_user) do %><span>Nudges</span><% end %></li>
   </ul>
-  <a href="thought_blank.html" class="add-thought">
-    <span class="tipso add-thought-tooltip" data-tipso="New Thought"><span class="icon">+</span></span>
-  </a>
+  <%= render 'shared/add_new_button' %>
 </nav>

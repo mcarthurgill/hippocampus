@@ -16,14 +16,6 @@
     <small>Last Active <%= long_formatted_date(current_user.last_activity) %></small>
     <small>(<%= long_formatted_time(current_user.last_activity) %>)</small>
   </div>
-<!--   <ul class="nav-list">
-    <li><h5>Favorites</h5></li>
-    <li><a href="#">Oak Cliff</a></li>
-    <li><a href="#">Telegraph Clients</a></li>
-    <li><a href="#">Birthdays</a></li>
-    <li><a href="#">Small Brewpub</a></li>
-    <li><a href="#">Davis Street Espresso</a></li>
-  </ul> -->
   <ul class="nav-list">
     <li><h5>Most Recent</h5></li>
     <% @recent_buckets.each do |b| %>
