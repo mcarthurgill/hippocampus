@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160121152322) do
+ActiveRecord::Schema.define(:version => 20160125200914) do
 
   create_table "addons", :force => true do |t|
     t.string   "addon_url"
@@ -456,14 +456,6 @@ ActiveRecord::Schema.define(:version => 20160121152322) do
 
   add_index "tokens", ["id"], :name => "index_tokens_on_id"
   add_index "tokens", ["user_id"], :name => "index_tokens_on_user_id"
-
-  create_table "twilio_messengers", :force => true do |t|
-    t.string   "body"
-    t.string   "to_number"
-    t.string   "from_number"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
 
   create_table "use_cases", :force => true do |t|
     t.text     "text"

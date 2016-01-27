@@ -99,6 +99,11 @@
     function appendItemWithTemplate(template, hit) {
       var $jQueryObject = $($.parseHTML(template));
       $jQueryObject.find('#search-list-template').html(hit.message);
+      if (hit.media_urls.length > 0) {
+        for (var i = 0; i < hit.media_urls.length; i++) {
+          $jQueryObject.find('ul').append("<li><a href=''><img src='"+ hit.media_urls[i] +"'></a></li>");
+        };
+      };
       $jQueryObject.find('a').attr("href", '/items/'+hit.id);
       searchResultsItemList.append($jQueryObject);
     }
