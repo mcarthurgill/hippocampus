@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'thoughts'
-    @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.includes(:buckets).limit(50)).uniq.reverse
+    @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.includes(:buckets).limit(125)).uniq.reverse
     @item = Item.new
 
     respond_to do |format|
@@ -48,7 +48,7 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'buckets'
-    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.limit(50) : @user.buckets.by_first_name.limit(50)
+    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.limit(125) : @user.buckets.by_first_name.limit(125)
     @user.delay.should_update_last_activity
     @item = Item.new
     @new_bucket = Bucket.new
