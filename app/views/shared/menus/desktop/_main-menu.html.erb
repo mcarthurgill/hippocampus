@@ -8,10 +8,12 @@
       <li class="<%= active_nudge_classes %>"><%= link_to user_reminders_path(current_user) do %><span><svg class="icon icon-alarm"><use xlink:href="#icon-alarm"></use></svg>Nudges</span><% end %></li>
     </ul>
     <div class="utilities">
-      <div class="main-search">
-        <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
-        <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>
-      </div>
+      <% unless @active == "profile" %>
+        <div class="main-search">
+          <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
+          <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>
+        </div>
+      <% end %>
       <%= render 'shared/add_new_button' %>
     </div>
   </div>

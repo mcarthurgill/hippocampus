@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
     # redirect_if_not_authorized(params[:id]) ? return : nil
     @user = User.find(params[:id])
-    @active = ''
+    @active = 'profile'
       
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
