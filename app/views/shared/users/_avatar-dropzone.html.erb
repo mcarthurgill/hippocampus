@@ -25,12 +25,7 @@ var medium_id = 0;
   }).on('sending', function(file, xhr, formData){
               formData.append('medium[user_id]', "<%= current_user.id %>");
   }).on("removedfile", function(file) {
-    $.ajax({
-        type: 'DELETE',
-        url: "/media/"+ medium_id + ".json",
-        data: "local_key="+medium_local_key,
-        dataType: 'json'
-    });
+    $('#previews').html("");
   });
 
   $("#upload-pic").click(function(e){
