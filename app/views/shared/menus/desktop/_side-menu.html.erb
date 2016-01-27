@@ -7,9 +7,8 @@
     <div id="profile-menu-1" class="jq-dropdown jq-dropdown-tip">
       <ul class="jq-dropdown-menu">
         <li><%= link_to user_path(current_user) do %>Settings<% end %></li>
-        <li><a href="#">Logout</a></li>
+        <li><%= link_to logout_path do %>Logout<% end %></li>
         <li class="jq-dropdown-divider"></li>
-        <li><a href="#5">Keyboard Shortcuts</a></li>
       </ul>
     </div>
 

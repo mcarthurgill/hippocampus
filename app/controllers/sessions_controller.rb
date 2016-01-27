@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
       cookies[:user_id] = { value: @user.id.to_s, expires: 10.years.from_now }
       respond_to do |format|
         format.html do 
-          redirect_to user_path(@user)
+          redirect_to user_buckets_path(@user)
           return
         end
         format.json { render json: { :success => 'success', :user => @user.as_json(only: [:phone, :email, :salt, :id, :created_at, :updated_at, :object_type, :membership, :number_buckets]) } }
