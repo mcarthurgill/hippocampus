@@ -81,11 +81,14 @@
       bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
+          console.log("in bucket search");
+          console.log(hits.length); 
           if (hits.length < 1) {
             searchResultsBucketList.hide(); 
           } else {
             searchResultsBucketList.show(); 
             for (var i = 0; i < hits.length; i++) {
+              console.log(hits[i].first_name)
               appendBucketWithTemplate(bucketTemplate, hits[i]); 
             };
           };
@@ -102,7 +105,7 @@
 
     function appendBucketWithTemplate(template, hit) {
       var $jQueryObject = $($.parseHTML(template));
-      $jQueryObject.find('#search-bucket-firstname').html(hit.message);
+      $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
       $jQueryObject.find('a').attr("href", '/buckets/'+hit.id+'/info');
       searchResultsBucketList.append($jQueryObject);
     }
