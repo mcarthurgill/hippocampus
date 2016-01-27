@@ -57,8 +57,8 @@
     }
 
     function algoliaSearch(enteredText) {
-      algoliaItemSearch(enteredText); 
       algoliaBucketSearch(enteredText); 
+      algoliaItemSearch(enteredText); 
     }
 
     function algoliaItemSearch(enteredText) {
@@ -112,6 +112,7 @@
       var $jQueryObject = $($.parseHTML(template));
       $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
       $jQueryObject.find('a').attr("href", '/buckets/'+hit.id+'/info');
+      $jQueryObject.find('#search-bucket-cached-message').html(hit.cached_item_message);
       searchResultsBucketList.append($jQueryObject);
     }
   });
