@@ -78,10 +78,11 @@ class UsersController < ApplicationController
   # end
 
   def update
-    user = User.find(params[:auth][:uid])
+    user = User.find(params[:auth][:uid]) if params[:auth]
+    user = current_user if current_user
 
     respond_to do |format|
-      if user.update_with_params(params[:user])
+      if user && user.update_with_params(params[:user])
         format.html { redirect_to user, notice: 'User updated.' }
         format.json do 
           if params.has_key?(:v) && params[:v].to_f >= 2.0
