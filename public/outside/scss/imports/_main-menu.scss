@@ -1,0 +1,73 @@
+// ================================ Main Menu =================================
+$nav-height-lrg: 100;
+$nav-height-sm: 80;
+#main_menu {
+	position: absolute;
+	z-index: 100;
+	top:0;
+	left:0;
+	width:100%;
+
+	// Brand
+	.brand {
+		float:left;
+		height:rem-calc($nav-height-lrg);
+		overflow: hidden;
+		padding:rem-calc(0 0 0 38);
+		&:hover {
+			.brand-icon {
+				transform: scale(1.024);
+				fill:$yellow;
+			}
+		}
+	}
+	.brand-icon {
+		transform: scale(.99);
+		fill:$ghost;
+		position: relative;
+		top: -24px;
+		transition: all .3s ease-in-out;
+		width:rem-calc(130);
+	}
+
+	// Utilities
+	.utilities {
+		padding:rem-calc(0 38 0 0);
+		float: right;
+		margin: 0;
+		li {
+			display: inline-block;
+			list-style: none;
+			a {
+				font-size: rem-calc(17);
+				padding:rem-calc(12);
+				line-height: rem-calc($nav-height-lrg);
+				color:$ghost;
+				font-weight: $weight-normal;
+
+				&:hover {
+					color:$yellow;
+				}
+			}
+			&:last-child a {
+				padding-right: 0;
+			}
+		}
+
+	}
+	// ----------------------------------- MQ ------------------------------------
+	@media #{$small-only} {
+		.brand {
+			padding:rem-calc(0 0 0 16);
+			height:rem-calc($nav-height-sm);
+		}
+		.brand-icon {width:rem-calc(100);top:-38px}
+		.utilities {
+			padding:rem-calc(0 24 0 0);
+			li a {
+				font-size: rem-calc(15);
+				line-height: rem-calc($nav-height-sm);
+			}
+		}
+	}
+}

@@ -1,5 +1,10 @@
 class OutsideController < ApplicationController
+
   def splash
+  end
+
+  def homepage
+    render layout: 'outside_homepage'
   end
   
   def privacy
@@ -9,4 +14,5 @@ class OutsideController < ApplicationController
     @u = User.find_by_salt(params[:code])
     @address = Address.new
   end
+
 end

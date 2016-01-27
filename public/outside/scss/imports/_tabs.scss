@@ -1,0 +1,72 @@
+// =================================== Tabs ===================================
+ul.tabs{
+	margin: rem-calc(0 0 40);
+	padding: 0px;
+	list-style: none;
+	display: flex;
+	border-bottom: 4px solid $hollow;
+}
+ul.tabs li{
+	flex-grow:1;
+	background: none;
+	color: $shadow;
+	display: inline-block;
+	cursor: pointer;
+	padding:rem-calc(0 24 24);
+	text-align: center;
+	transition: all $trans-1;
+	position: relative;
+
+	// Active Border
+	&:after {
+		transition: all $trans-1;
+		content:'';
+		z-index: 10;
+		position: absolute;
+		width:100%;
+		bottom:-4px;
+		left:0;
+		border-bottom: 4px solid transparent;
+		transform: translate3d(-20%, 0px, 0);
+		transform: scale(0%);
+	}
+}
+
+ul.tabs li.current{
+	color: $ocean;
+
+	// Current
+	&:after {
+		transform: translate3d(0, 0px, 0);
+		border-color: $ocean;
+		transform: scale(100%);
+	}
+	
+}
+
+// ------------------------------------ Mq ------------------------------------
+@media #{$medium-down} {
+	ul.tabs {
+		li {
+			padding:rem-calc(0 16 16);
+			font-size: rem-calc(14);
+		}
+	}
+}
+
+@media #{$small-only} {
+	ul.tabs {
+		display: block;
+		li {
+			flex-grow: inherit;
+			display: block;
+			margin-bottom: rem-calc(12);
+
+			&:last-child {margin-bottom: 0;}
+
+			&:after {
+				// bottom:4px;
+			}
+		}
+	}
+}

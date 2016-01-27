@@ -1,0 +1,50 @@
+// ================================== Forms ===================================
+// ------------------------------ Form Utilities ------------------------------
+.form_row {@include clearfix;}
+
+// -------------------------------- Split Form --------------------------------
+.split_form {
+	@include clearfix;
+	max-width: rem-calc(675);
+	margin: 0 auto;
+
+	.form_row {display: flex;}
+
+	.email, 
+	.submit {
+		float:left;
+	}
+
+	.email {
+		max-width:rem-calc(500);
+		width:70%;
+		height:rem-calc(48);
+		line-height:rem-calc(48);
+		margin-right: rem-calc(20);
+		border-radius: 3px;
+	}
+	.submit {
+		display: block;
+		width:30%;
+		max-width: rem-calc(155);
+		font-size: rem-calc(14);
+		padding: rem-calc(14 18);
+	}
+	// ----------------------------------- MQ ------------------------------------
+	@media #{$small-only} {
+		.form_row {display: inherit;}
+		.email {
+			margin:0 auto rem-calc(14);
+			max-width:rem-calc(300);
+			float: none; 
+			width:100%;
+		}
+		.submit {
+			float: none;
+			display: block;
+			margin: 0 auto;
+			max-width: inherit;
+			width: inherit;
+		}
+	}
+}

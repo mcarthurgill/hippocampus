@@ -1,0 +1,23 @@
+<h1>Listing waitlists</h1>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @waitlists.each do |waitlist| %>
+  <tr>
+    <td><%= waitlist.email %></td>
+    <td><%= link_to 'Show', waitlist %></td>
+    <td><%= link_to 'Edit', edit_waitlist_path(waitlist) %></td>
+    <td><%= link_to 'Destroy', waitlist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Waitlist', new_waitlist_path %>

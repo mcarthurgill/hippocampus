@@ -1,0 +1,18 @@
+// ================================== Rules ===================================
+body {
+	// overflow: auto !important;
+}
+// ----------------------------------- MAX ------------------------------------
+.max_bounds {
+	max-width: rem-calc(1280);
+	margin-right:auto;
+	margin-left:auto;
+	position: relative;
+}
+
+// ----------------------------------- MAX ------------------------------------
+.min_bounds {
+	max-width: rem-calc(1040);
+	margin-right:auto;
+	margin-left:auto;
+}

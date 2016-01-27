@@ -1,5 +1,10 @@
 Hippocampus::Application.routes.draw do
 
+
+  root :to => "outside#homepage"
+
+  get 'home', to: 'outside#homepage'
+
   get 'privacy', :to => 'outside#privacy'
   get 'gifts', :to => 'outside#gifts', :as => 'gifts'
 
@@ -10,12 +15,8 @@ Hippocampus::Application.routes.draw do
   get 'avatar/:id', :to => 'users#avatar'
   get 'avatar/:phone/phone', :to => 'users#phone_avatar'
 
-
   resources :calls
   post 'transcribe', :to => 'calls#transcribe'
-
-
-  root :to => "outside#splash"
 
   get "login", :to => "sessions#new", :as => "login"
   post 'session/:phone', :to => "sessions#create", :as => "create_session"
@@ -90,5 +91,7 @@ Hippocampus::Application.routes.draw do
   post "api_endpoint", :to => "addons#api_endpoint", :as => "api_endpoint"
 
   resources :use_cases
+
+  resources :waitlists, only: [:create, :index]
 
 end

@@ -1,0 +1,145 @@
+// ================================ Utilities =================================
+// ---------------------------------- Lists -----------------------------------
+ul li {
+	list-style: none;
+}
+
+// ----------------------------------- SVGs -----------------------------------
+svg {
+	transition: fill $trans-1;
+}
+
+// ----------------------------------- A's ------------------------------------
+a {
+	transition: all $trans-1;
+}
+// -----------------------------------Colors-----------------------------------
+.text-plum {
+	color: $plum !important;
+}
+.text-pink {
+	color: $pink !important;
+}
+
+
+// ----------------------------------Profile-----------------------------------
+.profile {
+	border-radius: $global-rounded;
+	width:rem-calc(40);
+	height:rem-calc(40);
+}
+
+
+// ---------------------------------- Icons -----------------------------------
+// Hippo
+.hippo-icon-animated {
+	height:52px;	
+	margin: rem-calc(12) auto rem-calc(40);
+}
+// Quote
+.quote-icon {
+	font-family: $source-sans;
+	font-weight:$weight-bold;
+	font-size: rem-calc(32);
+	text-align: center;
+	display: block;
+	color: $seafoam-1;
+	margin:rem-calc(24) auto;
+}
+// Play 
+$play-icon-size: 160;
+$sm-play-icon-size: 100;
+.play-icon {
+	position: relative;
+	fill: $pink;
+	height:rem-calc($play-icon-size);
+	width: rem-calc($play-icon-size);
+	top:50%;
+	position: absolute;
+	right:50%;
+	margin-right: rem-calc(-88);
+	margin-top: rem-calc(-($play-icon-size/2));	
+
+	&:hover {
+		fill:$pop;
+	}
+}
+// ------------------------------------ MQ ------------------------------------
+@media #{$small-only} {
+	.profile {
+		position: relative;
+		top:4px;
+		width:rem-calc(30);
+		height:rem-calc(30);
+	}
+	.play-icon {
+		height:rem-calc($sm-play-icon-size);
+		width: rem-calc($sm-play-icon-size);
+		margin-right: rem-calc(-55);
+		margin-top: rem-calc(-($sm-play-icon-size/2));	
+	}
+}
+
+// -------------------------------- Animations ---------------------------------
+// ---------------------------------- Pulse -----------------------------------
+@keyframes pulseFillAnimation {
+  0%   { fill: $white }
+  50%  { fill: $pink; }
+  100% { fill: $white; }
+}
+@-o-keyframes pulseFillAnimation{
+  0%   { fill: $white }
+  50%  { fill: $pink; }
+  100% { fill: $white; }
+}
+@-moz-keyframes pulseFillAnimation{
+  0%   { fill: $white }
+  50%  { fill: $pink; }
+  100% { fill: $white; }
+}
+@-webkit-keyframes pulseFillAnimation{
+  0%   { fill: $white }
+  50%  { fill: $pink; }
+  100% { fill: $white; }
+}
+.pulse {
+   -webkit-animation: pulseFillAnimation 5s infinite;
+   -moz-animation: pulseFillAnimation 5s infinite;
+   -o-animation: pulseFillAnimation 5s infinite;
+    animation: pulseFillAnimation 5s infinite;
+}
+
+// ----------------------------- Pulse Background -----------------------------
+@keyframes pulseBackgroundAnimation {
+  0%   { background: $seafoam-1 }
+  50%  { background: $ocean; }
+  100% { background: $seafoam-1; }
+}
+@-o-keyframes pulseBackgroundAnimation{
+  0%   { background: $seafoam-1 }
+  50%  { background: $ocean; }
+  100% { background: $seafoam-1; }
+}
+@-moz-keyframes pulseBackgroundAnimation{
+  0%   { background: $seafoam-1 }
+  50%  { background: $ocean; }
+  100% { background: $seafoam-1; }
+}
+@-webkit-keyframes pulseBackgroundAnimation{
+  0%   { background: $seafoam-1 }
+  50%  { background: $ocean; }
+  100% { background: $seafoam-1; }
+}
+
+// --------------------------- Gradient Background ----------------------------
+@-webkit-keyframes gradientAnimation {
+    0%{background-position:0% 81%}
+    50%{background-position:100% 20%}
+    100%{background-position:0% 81%}
+}
+@keyframes gradientAnimation { 
+    0%{background-position:0% 81%}
+    50%{background-position:100% 20%}
+    100%{background-position:0% 81%}
+}
+
