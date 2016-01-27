@@ -10,7 +10,7 @@
   <ul class="nav-list">
     <div class="list-section">
       <li><h5>Account</h5></li>
-      <li><%= link_to users_path(current_user) do %>Settings<% end %></li>
+      <li><%= link_to user_path(current_user) do %>Settings<% end %></li>
       <li class="highlight"><%= link_to logout_path do %>Logout<% end %></li>
   </ul>                    
 </nav>
