@@ -164,6 +164,9 @@ class User < ActiveRecord::Base
       if params[:time_zone] && params[:time_zone].length > 0
         self.assign_attributes(time_zone: params[:time_zone])
       end
+      if params[:email] && params[:email].length > 0
+        self.assign_attributes(email: params[:email].downcase.strip)
+      end
       if params.has_key?(:file) && params[:file]
         m = Medium.create_with_file_and_user_id(params[:file], self.id)
         self.assign_attributes(medium_id: m.id)

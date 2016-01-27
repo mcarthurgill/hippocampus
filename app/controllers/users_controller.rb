@@ -78,7 +78,7 @@ class UsersController < ApplicationController
   # end
 
   def update
-    user = User.find(params[:auth][:uid]) if params[:auth]
+    user = User.find(params[:auth][:uid]) if params.has_key?(:auth)
     user = current_user if current_user
 
     respond_to do |format|
