@@ -16,6 +16,8 @@
     var searchResultsList = $("body .search-results-list");
     var searchResultsItemList = $('body #search-results-item-list');
     var searchResultsBucketList = $('body #search-results-bucket-list');
+    var searchItemsContainer = $(".search-items-container"); 
+    var searchBucketsContainer = $(".search-buckets-container"); 
     var bucketTemplate = "<%= escape_javascript(render partial: 'shared/search/search_bucket_template') %>";
     var itemTemplate = "<%= escape_javascript(render partial: 'shared/search/search_item_template') %>";
 
@@ -66,9 +68,9 @@
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
           if (hits.length < 1) {
-            searchResultsItemList.hide(); 
+            searchItemsContainer.attr("style", "display:none;"); 
           } else {
-            searchResultsItemList.show(); 
+            searchItemsContainer.attr("style", ""); 
             for (var i = 0; i < hits.length; i++) {
               appendItemWithTemplate(itemTemplate, hits[i]); 
             };
@@ -84,9 +86,9 @@
           console.log("in bucket search");
           console.log(hits.length); 
           if (hits.length < 1) {
-            searchResultsBucketList.hide(); 
+            searchBucketsContainer.attr("style", "display:none;"); 
           } else {
-            searchResultsBucketList.show(); 
+            searchBucketsContainer.attr("style", ""); 
             for (var i = 0; i < hits.length; i++) {
               console.log(hits[i].first_name)
               appendBucketWithTemplate(bucketTemplate, hits[i]); 
