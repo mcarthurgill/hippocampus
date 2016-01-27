@@ -11,15 +11,8 @@
   <ul class="nav-list">
     <div class="list-section">
       <li><h5>Account</h5></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="#">Favorites</a></li>
-      <li><a href="#">Most Recent</a></li>
-    </div>
-
-    <div class="list-section">
-      <li><h5>Support</h5></li>
-      <li><a href="#">Keyboard Shortcuts</a></li>
-      <li class="highlight"><a href="#">Logout</a></li>
+      <li><%= link_to user_path(current_user) do %>Settings<% end %></li>
+      <li><%= link_to logout_path do %>Logout<% end %></li>
     </div>
   </ul>                    
 </nav>
