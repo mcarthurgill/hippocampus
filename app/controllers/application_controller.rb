@@ -13,10 +13,6 @@ class ApplicationController < ActionController::Base
   #     end
   #   end
   # end
-  
-  def mobile?
-    @mobile = request.user_agent =~ /Mobile/
-  end
 
   def logged_in?
     current_user

@@ -4,7 +4,7 @@
   <div class="dz-message upload-box" id='hidden-dz-message' data-dz-message style="display: none; font-family: 'Roboto', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;"><span>Drag and drop your images anywhere on this page! Or click here to search your device!</span></div>
   <!-- Existing images previewed here: -->
   <ul class="image-previews-list">
-    <% if item.has_media? %>
+    <% if defined?(item) && item.has_media? %>
       <% item.media_urls.each do |url| %>
         <%= render 'media_full', :media_url => url %>
       <% end %>

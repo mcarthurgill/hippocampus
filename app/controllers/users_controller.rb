@@ -7,10 +7,8 @@ class UsersController < ApplicationController
 
     # redirect_if_not_authorized(params[:id]) ? return : nil
     @user = User.find(params[:id])
-    @active = 'notes'
-    
-    @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
-  
+    @active = ''
+      
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json do 
