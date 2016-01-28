@@ -12,7 +12,7 @@
 
         }).always(function(response) {
           if (response.length > 28) { //length when no items return
-            $(document).scrollTop(topItemBeforeLoad.offset().top);
+            $(document).scrollTop(topItemBeforeLoad.offset().top + 40);
           };
           alreadyloading = false;
           nextpage++;
