@@ -1,7 +1,9 @@
 <div class="bucket-labels">
-  <% item.visible_buckets_for_user(current_user).each do |b| %>
-    <% if !@bucket || b != @bucket %>
-      <a class="label" href="<%= Rails.application.routes.url_helpers.bucket_info_path(b) %>"><%= b.first_name %> <span class="remove"></span></a>
+  <% if defined?(current_user) && defined?(item) %>
+    <% item.visible_buckets_for_user(current_user).each do |b| %>
+      <% if !defined?(@bucket) || b != @bucket %>
+        <a class="label" href="<%= Rails.application.routes.url_helpers.bucket_info_path(b) %>"><%= b.first_name %> <span class="remove"></span></a>
+      <% end %>
     <% end %>
   <% end %>
 </div>
