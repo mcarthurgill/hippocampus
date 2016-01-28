@@ -9,7 +9,7 @@
       <% end %>
     </div>
   <% end %>
-  <%= link_to item.message, Rails.application.routes.url_helpers.item_path(item) %>
+  <%= link_to item.message ? item.message : "", Rails.application.routes.url_helpers.item_path(item) %>
   <% if item.has_media? %>
     <%= render 'shared/items/item_media', :item => item %>
   <% end %>
