@@ -13,11 +13,14 @@
         <% if (formatted_date(i.next_reminder_date) == formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) && !alreadyDisplayedToday %>
           <% alreadyDisplayedToday = true %>
           <li class="section"><h5>today's nudges</h5></li>
-        <% elsif !alreadyDisplayedUpcoming %>
+        <% elsif (formatted_date(i.next_reminder_date) != formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) &&!alreadyDisplayedUpcoming %>
           <% alreadyDisplayedUpcoming = true %>
           <li class="section"><h5>upcoming nudges</h5></li>
         <% end %>
         <%= render 'reminder_preview', :item => i %>
+      <% end %>
+      <% if @reminders.count == 0 %>
+        <li class="section"><h5>No upcoming nudges!</h5></li>
       <% end %>
     </ul>
   </div>
