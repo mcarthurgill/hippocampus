@@ -80,7 +80,7 @@
     }
 
     function algoliaBucketSearch(enteredText) {
-      bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
+      bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"authorized_user_ids=<%= current_user.id %>" }, function(success, hitsHash) {
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
           console.log("in bucket search");
