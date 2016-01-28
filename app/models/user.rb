@@ -253,7 +253,7 @@ class User < ActiveRecord::Base
       end
       return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
     else
-      return items.sort_by{|i| i.next_reminder_date} #returns [item, item, item] sorted by next reminder date
+      return items.sort_by{|i| i.next_reminder_date}.first(limit) #returns [item, item, item] sorted by next reminder date
     end
   end
 

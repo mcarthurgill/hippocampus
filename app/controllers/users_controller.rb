@@ -170,7 +170,7 @@ class UsersController < ApplicationController
     mobile = params[:auth] && params[:auth][:uid]
     @active = "nudges"
 
-    @reminders = user.sorted_reminders(50, page, mobile)
+    @reminders = user.sorted_reminders(25, page, mobile)
     list = @reminders.shift(1).first if mobile
 
     respond_to do |format|
