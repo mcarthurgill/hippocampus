@@ -37,7 +37,8 @@ class Bucket < ActiveRecord::Base
   scope :excluding_pairs_for_item_id, ->(iid) { where( (BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id).count > 0 ? '"buckets"."id" NOT IN (?)' : ''), BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id)) }
   scope :recent_for_user_id, ->(uid) { where('"buckets"."id" IN (?)', BucketItemPair.where('"bucket_item_pairs"."bucket_id" IN (?)', User.find(uid).buckets.pluck(:id)).order('updated_at DESC').limit(8).pluck(:bucket_id)) }
   scope :for_user_and_creation_reason, ->(uid, r) { where("id IN (?) AND creation_reason = ?", User.find(uid).buckets.pluck(:id), r) }
-
+  scope :for_page_with_limit, ->(page, lim) { offset(page*lim).limit(lim) }
+  
   scope :other_type, -> { where('bucket_type = ?', 'Other') }
   scope :person_type, -> { where('bucket_type = ?', 'Person') }
   scope :event_type, -> { where('bucket_type = ?', 'Event') }

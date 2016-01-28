@@ -1,5 +1,3 @@
 <ul class="list buckets-list scene_element--fadeinup scene_element scene_delay" id="bucket-list">
-  <% buckets.each do |bucket| %>
-    <%= render 'shared/buckets/bucket_preview', :bucket => bucket %>
-  <% end %>
+  <%= render 'shared/buckets/bucket_list', :buckets => buckets %>
 </ul>

@@ -126,14 +126,14 @@ class BucketsController < ApplicationController
   end
 
   def info
-    page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
+    page = get_page(params[:page])
     user = current_user
     if params[:auth] && params[:auth][:uid] && !user
       user = User.find(params[:auth][:uid])
     end
 
     @bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
-    @items = @bucket.items.not_deleted.by_date.limit(64).offset(64*page).reverse if @bucket
+    @items = @bucket.items.not_deleted.by_date.for_page_with_limit(page, 5).reverse if @bucket
     @item = Item.new
     @new_bucket = Bucket.new
     @active = "buckets"
@@ -142,6 +142,7 @@ class BucketsController < ApplicationController
       if @bucket && user && @bucket.belongs_to_user?(user)
         format.html
         format.json { render json: {:items => @items, :page => page, :bucket => @bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => @bucket.group_for_user(user) } }
+        format.js
       else
         format.json { render json: @bucket.errors, status: :unprocessable_entity }
       end

@@ -36,6 +36,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_page page_param
+    page_param && !page_param.to_i.nil? ? page_param.to_i : 0
+  end
+  
   def redirect_if_not_authorized uid
     if !logged_in? || current_user.id.to_i != uid.to_i
       redirect_to root_path

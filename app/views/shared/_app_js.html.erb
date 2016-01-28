@@ -68,11 +68,12 @@
 
       $('#current-selection').html(currentSelected); 
       var currentSelectedValue = $(this).find(':selected').val(); 
+      var page = $(".sort-buckets").attr("page"); 
 
       $.ajax({
           type: 'GET',
           url: "/users/"+ "<%= current_user.id %>" + "/buckets.js",
-          data: "sort="+currentSelectedValue,
+          data: "sort="+currentSelectedValue+"&page="+page,
           dataType: 'script'
       });
     });

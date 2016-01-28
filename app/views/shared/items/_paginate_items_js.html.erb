@@ -1,0 +1,25 @@
+<script type="text/javascript">
+  var alreadyloading = false;
+  var nextpage = 1;
+
+  $(window).scroll(function() {
+    if ($(window).scrollTop() == 0) {
+      if (alreadyloading == false) {
+        var url; 
+        if ("<%= @bucket %>") {
+          url = "/buckets/"+"<%= @bucket.id %>"+"/info.js?page="+nextpage;
+        } else {
+          url = "/users/"+"<%= current_user.id %>"+"/items.js?page="+nextpage;
+        };
+        console.log(url); 
+        alreadyloading = true;
+        $.get(url, function(data) {
+
+        }).always(function(response) {
+          alreadyloading = false;
+          nextpage++;
+        });
+      }
+    }
+  });
+</script>

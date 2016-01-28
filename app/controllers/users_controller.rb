@@ -30,13 +30,19 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'thoughts'
-    @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.includes(:buckets).limit(50)).uniq.reverse
+    page = get_page(params[:page])
+    @items = []
+    if page > 0 
+      @items = @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 1).includes(:buckets).uniq.reverse
+    else 
+      @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 1).includes(:buckets)).uniq.reverse
+    end
     @item = Item.new
 
     respond_to do |format|
       format.js
       format.html
-      format.json { render json: @items}
+      format.json { render json: @items }
     end
   end
 
@@ -48,7 +54,9 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id])
     @active = 'buckets'
-    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.limit(50) : @user.buckets.by_first_name.limit(50)
+    @page = get_page(params[:page])
+    @append = params[:append] && params[:append] == "true" ? true : false
+    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.for_page_with_limit(@page, 5) : @user.buckets.by_first_name.for_page_with_limit(@page, 5)
     @user.delay.should_update_last_activity
     @item = Item.new
     @new_bucket = Bucket.new
@@ -59,7 +67,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1/grouped_buckets
+  # GET /users/1/grouped
   # GET /users/1/grouped_buckets.json
   def grouped_buckets
     # redirect_if_not_authorized(params[:id]) ? return : nil
@@ -166,7 +174,7 @@ class UsersController < ApplicationController
   def reminders
     user = User.find(params[:id])
 
-    page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
+    page = get_page(params[:page])
     mobile = params[:auth] && params[:auth][:uid]
     @active = "nudges"
 
