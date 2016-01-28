@@ -133,7 +133,7 @@ class BucketsController < ApplicationController
     end
 
     @bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
-    @items = @bucket.items.not_deleted.by_date.for_page_with_limit(page, 5).reverse if @bucket
+    @items = @bucket.items.not_deleted.by_date.for_page_with_limit(page, 25).reverse if @bucket
     @item = Item.new
     @new_bucket = Bucket.new
     @active = "buckets"

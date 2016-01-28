@@ -5,7 +5,7 @@
   $(window).scroll(function() {
     if ($(window).scrollTop() == 0) {
       if (alreadyloading == false) {
-        var url = "/users/"+"<%= current_user.id %>"+"/items.js?page="+nextpage;
+        var url = "/buckets/"+"<%= @bucket.id %>"+"/info.js?page="+nextpage;
         alreadyloading = true;
         $.get(url, function(data) {
 

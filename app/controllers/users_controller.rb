@@ -33,9 +33,9 @@ class UsersController < ApplicationController
     page = get_page(params[:page])
     @items = []
     if page > 0 
-      @items = @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 1).includes(:buckets).uniq.reverse
+      @items = @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 25).includes(:buckets).uniq.reverse
     else 
-      @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 1).includes(:buckets)).uniq.reverse
+      @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 25).includes(:buckets)).uniq.reverse
     end
     @item = Item.new
 
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     @active = 'buckets'
     @page = get_page(params[:page])
     @append = params[:append] && params[:append] == "true" ? true : false
-    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.for_page_with_limit(@page, 5) : @user.buckets.by_first_name.for_page_with_limit(@page, 5)
+    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.for_page_with_limit(@page, 25) : @user.buckets.by_first_name.for_page_with_limit(@page, 25)
     @user.delay.should_update_last_activity
     @item = Item.new
     @new_bucket = Bucket.new
