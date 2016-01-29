@@ -25,6 +25,7 @@
 
     searchInput.keyup(function(){
       var enteredText = $(this).val(); 
+      $(".search-term").text(enteredText); 
       if (enteredText.length < 1) {
         finishedSearching(); 
       } else {

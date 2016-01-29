@@ -1,0 +1,27 @@
+.search-buckets-container {
+  padding-bottom: 0px !important; 
+}
+
+.search-items-container {
+  padding-top: 50px !important; 
+}
+
+.search-results-list .search-buckets-container li.section h5, .search-results-list .search-items-container li.section h5 {
+  color: rgba(90, 204, 90, 0.6);
+  text-transform: lowercase;
+  font-size: 0.8125rem;
+  line-height: 1.0625rem;
+  letter-spacing: 0.4px;
+  font-weight: 600;
+  font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  background: #FFFFFF;
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  padding: 0 12px 0 0;
+}
+
+.search-results-list .search-buckets-container li.section, .search-results-list .search-items-container li.section {
+  list-style:none;
+}
+

@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
 
   def redirect_logged_in_user
     if logged_in?
-      redirect_to user_path(current_user)
+      redirect_to user_buckets_path(current_user)
       return
     end
   end
