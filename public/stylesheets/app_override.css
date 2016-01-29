@@ -4,9 +4,10 @@
 
 .search-items-container {
   padding-top: 50px !important; 
+  padding-bottom: 0px !important;
 }
 
-.search-results-list .search-buckets-container li.section h5, .search-results-list .search-items-container li.section h5 {
+.search-results-list li.section h5 {
   color: rgba(90, 204, 90, 0.6);
   text-transform: lowercase;
   font-size: 0.8125rem;
@@ -21,7 +22,12 @@
   padding: 0 12px 0 0;
 }
 
-.search-results-list .search-buckets-container li.section, .search-results-list .search-items-container li.section {
+.search-results-list .search-buckets-container li.section, .search-results-list .search-items-container li.section, .search-results-list li.section {
   list-style:none;
 }
 
+#end-of-list {
+  padding-top:50px !important;
+  padding-left: 2.5rem; 
+
+}
