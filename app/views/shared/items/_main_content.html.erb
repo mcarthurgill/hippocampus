@@ -6,9 +6,6 @@
     <%= f.hidden_field :local_key, :value => item.local_key %>
     <%= f.hidden_field :input_method, :value => "web" %>
     
-    <% if @item.new_record? %>
-      <%= render 'shared/items/keyboard_shortcuts' %>
-    <% end %>
     <%= render 'shared/items/preview_files', :item => @item %>
   </div>
 </main>
