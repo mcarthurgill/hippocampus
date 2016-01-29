@@ -1,0 +1,19 @@
+<li id="item<%= item.id %>" class="individual-item">
+  <% if item.next_reminder_date || item.outstanding? %>
+    <div class="status-info">
+      <% if item.next_reminder_date %>
+        <%= render 'shared/items/item_reminder' %>
+      <% end %>
+      <% if item.outstanding? %>
+        <%= render 'shared/items/item_outstanding' %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= link_to item.message ? item.message : "", Rails.application.routes.url_helpers.item_path(item) %>
+  <% if item.has_media? %>
+    <%= render 'shared/items/item_media', :item => item %>
+  <% end %>
+  <% if defined?(current_user) && ((item.visible_buckets_for_user(current_user).count > 1 && defined?(@bucket)) || (item.visible_buckets_for_user(current_user).count > 0 && !defined?(@bucket))) %>
+    <%= render 'shared/items/item_buckets_stickers', :item => item, :current_user => current_user %>
+  <% end %>
+</li>

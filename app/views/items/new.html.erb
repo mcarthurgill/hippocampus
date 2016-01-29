@@ -1,22 +1,11 @@
+<%= form_for @item, html: {:multipart => true} do |f| %>
+  <!-- Main Menu -->
+  <%= render "shared/menus/desktop/item-main-menu", :item => @item, :f => f %>
 
-<div class="row">
-  <div class="col-xs-12">
-    <ol class="breadcrumb">
-      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
-      <li class="active">+ New Thought</li>
-    </ol>
-  </div>
-</div>
+  <!-- Side Menu -->
+  <%= render "shared/menus/desktop/item-side-menu", :item => @item, :f => f %>
 
-<%= render 'form' %>
+  <!-- Main Content -->
+  <%= render 'shared/items/main_content', :item => @item, :f => f %>
 
-<div class="row">
-  <div class="col-xs-12">
-    <br/>
-    <%= link_to "All Thoughts", user_path(current_user), :class => "btn btn-default btn-md btn-block" %>
-  </div>
-</div>
-
-<br/>
-<br/>
-<br/>
+<% end %>

@@ -1,21 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <title>Hippo | Because people matter.</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag    "/stylesheets/app" %>
+  <%= stylesheet_link_tag    "/stylesheets/app_override" %>
+  <%= stylesheet_link_tag    "/stylesheets/project-index" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= javascript_include_tag "/js/modernizr.js" %>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,8|Roboto:400,300,300italic' rel='stylesheet' type='text/css'>
+  <%= javascript_include_tag "/js/libs.js" %>
+  <%= render partial: "shared/pusher/bind" %>
 </head>
-<body style="padding-top:60px;padding-bottom:16px">
+<body>
 
-<div class="container-fluid" style="padding-top:1%;overflow:hidden;">
+  <div id="site-wrap" class="scene_element--fadein scene_element">
+    <%= render "shared/icons" %>
 
-  <%= render 'shared/header' %>
+    <!-- Main Menu -->
+    <%= render "shared/menus/desktop/main-menu" %>
 
-  <%= yield %>
+    <!-- Side Menu -->
+    <%= render "shared/menus/desktop/side-menu" %>
 
-</div>
+    <!-- Menus_mbl -->
+    <%= render "shared/menus/mobile/all-mobile" %>
+
+    <%= yield %>
+    
+    <%= render 'shared/app_js' %>
+  </div>
+
+  <%= render 'shared/menus/algolia_search' %>
 
 </body>
 </html>

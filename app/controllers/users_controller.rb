@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :get_most_recent_buckets, [:buckets, :items]
 
   # GET /users/1
   # GET /users/1.json
@@ -6,10 +7,8 @@ class UsersController < ApplicationController
 
     # redirect_if_not_authorized(params[:id]) ? return : nil
     @user = User.find(params[:id])
-    @active = 'notes'
-    
-    @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
-  
+    @active = 'profile'
+      
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
       format.json do 
@@ -30,10 +29,20 @@ class UsersController < ApplicationController
     # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
-    @active = 'notes'
+    @active = 'thoughts'
+    page = get_page(params[:page])
+    @items = []
+    if page > 0 
+      @items = @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 25).includes(:buckets).uniq.reverse
+    else 
+      @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 25).includes(:buckets)).uniq.reverse
+    end
+    @item = Item.new
 
     respond_to do |format|
-      format.json { render json: @user.items.above(params[:above]) }
+      format.js
+      format.html
+      format.json { render json: @items }
     end
   end
 
@@ -44,16 +53,21 @@ class UsersController < ApplicationController
     # redirect_if_not_authorized(params[:id]) ? return : nil
 
     @user = User.find(params[:id])
-    @active = 'stacks'
-    @sort = params[:s]
-
+    @active = 'buckets'
+    @page = get_page(params[:page])
+    @append = params[:append] && params[:append] == "true" ? true : false
+    @buckets = params[:sort] == "date" ? @user.buckets.recent_first.for_page_with_limit(@page, 25) : @user.buckets.by_first_name.for_page_with_limit(@page, 25)
+    @user.delay.should_update_last_activity
+    @item = Item.new
+    @new_bucket = Bucket.new
+    
     respond_to do |format|
       format.html { redirect_if_not_authorized(params[:id]) ? return : nil }
-      format.json { render json: { 'Other' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").other_type.by_first_name,  'Person' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").person_type.by_first_name,  'Event' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").event_type.order('id DESC'),  'Place' => @user.buckets.select("buckets.*,bucket_user_pairs.last_viewed,bucket_user_pairs.unseen_items").place_type.by_first_name, 'Recent' => @user.recent_buckets_with_shell } }
+      format.js
     end
   end
 
-  # GET /users/1/grouped_buckets
+  # GET /users/1/grouped
   # GET /users/1/grouped_buckets.json
   def grouped_buckets
     # redirect_if_not_authorized(params[:id]) ? return : nil
@@ -72,10 +86,11 @@ class UsersController < ApplicationController
   # end
 
   def update
-    user = User.find(params[:auth][:uid])
+    user = User.find(params[:auth][:uid]) if params.has_key?(:auth)
+    user = current_user if current_user
 
     respond_to do |format|
-      if user.update_with_params(params[:user])
+      if user && user.update_with_params(params[:user])
         format.html { redirect_to user, notice: 'User updated.' }
         format.json do 
           if params.has_key?(:v) && params[:v].to_f >= 2.0
@@ -159,13 +174,18 @@ class UsersController < ApplicationController
   def reminders
     user = User.find(params[:id])
 
-    page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
+    page = get_page(params[:page])
+    mobile = params[:auth] && params[:auth][:uid]
+    @active = "nudges"
 
-    reminders = user.sorted_reminders(1000, page)
-    list = reminders.shift(1).first
+    @reminders = user.sorted_reminders(25, page, mobile)
+    list = @reminders.shift(1).first if mobile
 
     respond_to do |format|
-      format.json { render json: {:reminders => reminders, :nudge_list => list[:nudges_list]} }
+      if current_user #this is a janky fix til we get the .json on the reminders call from iOS 
+        format.html
+      end
+      format.json { render json: {:reminders => @reminders, :nudge_list => list[:nudges_list]} }
     end
   end
 end

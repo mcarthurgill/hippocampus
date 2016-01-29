@@ -1,0 +1,40 @@
+<script type="text/javascript">
+var medium_local_key = ""; 
+var medium_id = 0; 
+  new Dropzone(document.body, { // Make the whole body a dropzone
+    url: "/media.json", // Set the url
+    previewsContainer: "#previews", 
+    clickable: "#upload-assets", 
+    addRemoveLinks: true, 
+    paramName: "file", 
+    clickable: true, 
+    success: function(file, response){
+        console.log(response);
+        medium_local_key = response.local_key; 
+        medium_id = response.id;
+        console.log(medium_local_key);
+        },
+    error: function(error, response){
+
+    }
+  }).on('sending', function(file, xhr, formData){
+              formData.append('medium[item_local_key]', "<%= item.local_key %>");
+              formData.append('medium[user_id]', "<%= current_user.id %>");
+  }).on("removedfile", function(file) {
+    $.ajax({
+        type: 'DELETE',
+        url: "/media/"+ medium_id + ".json",
+        data: "local_key="+medium_local_key,
+        dataType: 'json'
+    });
+  });
+
+  $("#upload-assets").click(function(){
+    var display = $("#hidden-dz-message").css("display"); 
+    if (display == "none") {
+      $("#hidden-dz-message").css("display", "");
+    } else {
+      $("#hidden-dz-message").css("display", "none");
+    };
+  });
+</script>

@@ -1,0 +1,121 @@
+<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="//cdn.jsdelivr.net/algoliasearch.helper/1/algoliasearch.helper.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var client = algoliasearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
+    var itemIndex = client.initIndex('Item');
+    var bucketIndex = client.initIndex('Bucket');
+    var bucketList = $("body #bucket-list"); 
+    var searchList = $("body .sorted-list"); 
+    var bucketMenuHeader = $("body #bucket-menu-header");
+    var itemList = $("body #item-list");
+    var nudgeList = $("body .nudges-list");
+    var searchInput = $("body #search-thoughts-input"); 
+    var itemEntryForm = $("body .rapid-add"); 
+    var scrollToBottom = $("body #sBtm"); 
+    var searchResultsList = $("body .search-results-list");
+    var searchResultsItemList = $('body #search-results-item-list');
+    var searchResultsBucketList = $('body #search-results-bucket-list');
+    var searchItemsContainer = $(".search-items-container"); 
+    var searchBucketsContainer = $(".search-buckets-container"); 
+    var bucketTemplate = "<%= escape_javascript(render partial: 'shared/search/search_bucket_template') %>";
+    var itemTemplate = "<%= escape_javascript(render partial: 'shared/search/search_item_template') %>";
+
+    searchResultsList.hide(); 
+
+    searchInput.keyup(function(){
+      var enteredText = $(this).val(); 
+      if (enteredText.length < 1) {
+        finishedSearching(); 
+      } else {
+        beganSearching(enteredText); 
+      };
+    });
+
+
+    function finishedSearching(){
+      searchResultsItemList.html(""); 
+      searchResultsBucketList.html(""); 
+      bucketMenuHeader.show(); 
+      bucketList.show(); 
+      itemList.show(); 
+      nudgeList.show(); 
+      searchResultsList.hide(); 
+      itemEntryForm.show(); 
+      scrollToBottom.show(); 
+    }
+
+    function beganSearching(enteredText){
+      algoliaSearch(enteredText); 
+      searchResultsItemList.html(""); 
+      searchResultsBucketList.html(""); 
+      bucketMenuHeader.hide(); 
+      bucketList.hide(); 
+      itemList.hide(); 
+      nudgeList.hide(); 
+      searchResultsList.show(); 
+      itemEntryForm.hide(); 
+      scrollToBottom.hide(); 
+    }
+
+    function algoliaSearch(enteredText) {
+      algoliaBucketSearch(enteredText); 
+      algoliaItemSearch(enteredText); 
+    }
+
+    function algoliaItemSearch(enteredText) {
+      itemIndex.search(enteredText, { hitsPerPage: 10, page: 0, numericFilters:"user_ids_array=<%= current_user.id %>" }, function(success, hitsHash) {
+        if (hitsHash && hitsHash.hits) {
+          var hits = hitsHash.hits; 
+          if (hits.length < 1) {
+            searchItemsContainer.attr("style", "display:none;"); 
+          } else {
+            searchItemsContainer.attr("style", ""); 
+            for (var i = 0; i < hits.length; i++) {
+              appendItemWithTemplate(itemTemplate, hits[i]); 
+            };
+          };
+        };
+      });
+    }
+
+    function algoliaBucketSearch(enteredText) {
+      bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"authorized_user_ids=<%= current_user.id %>" }, function(success, hitsHash) {
+        if (hitsHash && hitsHash.hits) {
+          var hits = hitsHash.hits; 
+          console.log("in bucket search");
+          console.log(hits.length); 
+          if (hits.length < 1) {
+            searchBucketsContainer.attr("style", "display:none;"); 
+          } else {
+            searchBucketsContainer.attr("style", ""); 
+            for (var i = 0; i < hits.length; i++) {
+              console.log(hits[i].first_name)
+              appendBucketWithTemplate(bucketTemplate, hits[i]); 
+            };
+          };
+        };
+      });
+    }
+
+    function appendItemWithTemplate(template, hit) {
+      var $jQueryObject = $($.parseHTML(template));
+      $jQueryObject.find('#search-list-template').html(hit.message);
+      if (hit.media_urls.length > 0) {
+        for (var i = 0; i < hit.media_urls.length; i++) {
+          $jQueryObject.find('ul').append("<li><a href=''><img src='"+ hit.media_urls[i] +"'></a></li>");
+        };
+      };
+      $jQueryObject.find('a').attr("href", '/items/'+hit.id);
+      searchResultsItemList.append($jQueryObject);
+    }
+
+    function appendBucketWithTemplate(template, hit) {
+      var $jQueryObject = $($.parseHTML(template));
+      $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
+      $jQueryObject.find('a').attr("href", '/buckets/'+hit.id+'/info');
+      $jQueryObject.find('#search-bucket-cached-message').html(hit.cached_item_message);
+      searchResultsBucketList.append($jQueryObject);
+    }
+  });
+</script>

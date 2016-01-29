@@ -54,7 +54,7 @@ class Medium < ActiveRecord::Base
     medium = Medium.new
     medium.user_id = uid
     medium.item_local_key = ik
-    medium.local_key = lk
+    lk ? medium.local_key = lk : medium.set_defaults
     medium.upload_main_asset(file)
     # medium.transcribe(file)
     medium.save!

@@ -1,57 +1,25 @@
-<% if notice %>
-  <div class="row">
-    <div class="col-xs-12">
-      <br/>
-      <div class="alert alert-info alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <%= notice %>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-<div class="row">
-  <div class="col-xs-12">
-    <%= link_to "+ New Thought", new_item_path, :class => "btn btn-default btn-md btn-block" %>
-  </div>
-</div>
-<br/>
-
-<% if @user.items.outstanding.count > 0 %>
-
-  <div class="row">
-    <div class="col-xs-12">
-
-
-
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Pending Thoughts
-              </a>
-            </h4>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <% @user.items.by_date.outstanding.includes(:buckets).each do |i| %>
-              <%= render 'shared/items/listed_item', :i => i, :include_buckets => false %>
-            <% end %>
-          </div>
+<!-- Main Content -->
+<main class="main-content" role="main" aria-label="Main Content">
+  <div class="thoughts-list-wrap">
+    <%= form_for @user, :multiple => true do |f| %>
+      <div class="row" style="margin-top:40px;">
+        <div class="small-8 small-centered medium-6 medium-centered large-4 large-centered columns">
+            <div class="row column log-in-form" style="border: 1px solid #cacaca; padding: 1rem; border-radius: 3px;">
+              <h4 class="text-center">Settings</h4>
+              <%= f.text_field :name, :value => @user.name, :placeholder => "Add name" %>
+              <%= f.text_field :email, :value => @user.email, :placeholder => "Add email" %>
+              <%= f.submit "Save", :class => "btn btn-primary", :style => "width:100%;" %>
+              <br><br>
+              <%= link_to "Update picture", "", :id => "upload-pic", style: "color:7D7D7D; text-align:center; font-size:10pt;"%><br>
+              <%= mail_to "m@lxv.io", "Email the creators", cc: "w@lxv.io", subject: "Hey Hippo Creators", style: "color:7D7D7D; text-align:center; font-size:10pt;" %>
+            </div>
         </div>
       </div>
-    </div>
+      <div class="row" style="margin-top:10px;">
+        <%= render 'shared/items/preview_files' %>
+      </div>
+    <% end %>
   </div>
+</main>
 
-<% end %>
-
-<div class="row">
-  <div class="col-xs-12">
-    <div class="list-group" id="items-container">
-      <%= render 'items' %>
-    </div>
-    <div id="load-more">
-      <%= render 'load_more' %>
-    </div>
-  </div>
-</div>
+<%= render 'shared/users/avatar-dropzone' %>

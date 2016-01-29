@@ -1,0 +1,41 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
+<script type="text/javascript">
+var medium_local_key = ""; 
+var medium_url = ""; 
+var medium_id = 0; 
+
+  new Dropzone(document.body, { // Make the whole body a dropzone
+    url: "/media/avatar.json", // Set the url
+    previewsContainer: "#previews", 
+    clickable: "#upload-pic", 
+    addRemoveLinks: true, 
+    paramName: "file", 
+    clickable: true, 
+    success: function(file, response){
+        console.log(response);
+        medium_local_key = response.local_key; 
+        media_url = response.media_url
+        medium_id = response.id;
+        $("#avatar-image").attr("src", media_url);
+        console.log(medium_local_key);
+        },
+    error: function(error, response){
+
+    }
+  }).on('sending', function(file, xhr, formData){
+              formData.append('medium[user_id]', "<%= current_user.id %>");
+  }).on("removedfile", function(file) {
+    $('#previews').html("");
+  });
+
+  $("#upload-pic").click(function(e){
+    console.log("sup")
+    var display = $("#hidden-dz-message").css("display"); 
+    e.preventDefault(); 
+    if (display == "none") {
+      $("#hidden-dz-message").css("display", "");
+    } else {
+      $("#hidden-dz-message").css("display", "none");
+    };
+  });
+</script>

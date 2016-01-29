@@ -1,0 +1,89 @@
+<script src="https://js.pusher.com/3.0/pusher.min.js"></script>
+<script>
+$(document).ready(function() {
+
+  var pusher = new Pusher('<%= Pusher.key %>'); // uses your APP KEY
+  pusher.unsubscribe('<%= current_user.push_channel %>');
+
+  var channel = pusher.subscribe('<%= current_user.push_channel %>');
+  channel.bind('item-save', function(data) {
+    var doesnt_exist = $("#item"+data["id"]).length == 0;
+    var bucket_presented = 0; 
+    var thoughts_list_presented = $("#thoughts-list-present").length > 0; 
+
+    for (var i = 0; i < data["bucket_ids"].length; i++) {
+      if ($("#bucket"+data["bucket_ids"][i]).length > 0) {
+        bucket_presented = data["bucket_ids"][i]; 
+      }
+    };
+
+    var box = $("#item-list");
+    if (bucket_presented != 0 && doesnt_exist) { //correct bucket showing and item doesnt exist
+      $("#item-list").append(data["html_as_string"]);
+      console.log("correct bucket. item doesnt exist.");
+      scrollToBottom(); 
+      removeItemTemplate(data);
+    } else if (bucket_presented != 0) { //correct bucket showing and item exists
+      $("#item"+data["id"]).replaceWith(data["html_as_string"]);
+      console.log("correct bucket. item exists.");
+      removeItemTemplate(data);
+    } else if (bucket_presented == 0 && thoughts_list_presented) { //all thoughts list is showing
+      if (doesnt_exist) {
+        $("#item-list").append(data["html_as_string"]);        
+        console.log("all thoughts. item doens't exist");
+        scrollToBottom(); 
+        removeItemTemplate(data);
+      } else {
+        $("#item"+data["id"]).replaceWith(data["html_as_string"]);
+        console.log("all thoughts. item exists");
+        removeItemTemplate(data);
+      };
+    }
+  }); 
+
+  function removeItemTemplate(data) {
+    $("#item-template").each( function(index, element){
+      console.log("should remove");
+        if ($(this).find('#item-message-template').text() == data["message"]) {
+          console.log("REMOVING!!!");
+          $(this).remove();
+        }
+    });
+  }
+
+  function scrollToBottom(){
+    var scrollBtm = document.getElementById("sBtm");  
+    //-------------------------------- Btm --------------------------------
+    if (scrollBtm) {
+      scrollBtm.scrollIntoView();
+      scrollBtm.scrollIntoView(false);
+      scrollBtm.scrollIntoView({block: "end"});
+      scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
+    };
+  }
+
+  channel.bind('bucket-save', function(data) {
+    var doesnt_exist = $("#bucket"+data["id"]).length == 0;
+
+    var box = $("#bucket-list");
+    if (box.length > 0) {
+      if (doesnt_exist) {
+        box.prepend(data["html_as_string"]);
+        removeBucketTemplate(data);
+      } else {
+        $("#bucket"+data["id"]).replaceWith(data["html_as_string"]);
+        removeBucketTemplate(data);
+      }
+    }
+  }); 
+
+  function removeBucketTemplate(data) {
+    $("#bucket-template").each( function(index, element){
+        if ($(this).find('#bucket-firstname').text() == data["first_name"]) {
+          $(this).remove();
+        }
+    });
+  }
+});
+
+</script>

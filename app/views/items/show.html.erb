@@ -1,36 +1,11 @@
+<%= form_for @item, html: {:multipart => true} do |f| %>
+  <!-- Main Menu -->
+  <%= render "shared/menus/desktop/item-main-menu", :item => @item, :f => f %>
 
-<div class="row">
-  <div class="col-xs-12">
-    <ol class="breadcrumb">
-      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
-      <li class="active">Thought</li>
-    </ol>
-  </div>
-</div>
+  <!-- Side Menu -->
+  <%= render "shared/menus/desktop/item-side-menu", :item => @item, :f => f %>
 
-<div class="row">
-  <div class="col-xs-12">
-
-    <% if notice %>
-      <div class="row">
-        <div class="col-xs-12">
-          <br/>
-          <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <%= notice %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    
-    <%= render 'detail' %>
-
-    <%= render 'buckets' %>
-
-    <%= render 'footer' %>
-
-  </div>
-</div>
-
-<br/>
-<br/>
+  <!-- Main Content -->
+  <%= render 'shared/items/main_content', :item => @item, :f => f %>
+  
+<% end %>

@@ -1,0 +1,26 @@
+<li id="bucket-template" style="width:100%;">
+  <header>
+    <%= link_to "" do %>
+      <div class="meta">
+        <h4 class="title" id="search-bucket-firstname"></h4>
+      </div>
+    <% end %>
+    <span class="star-wrap">
+      <a href="#" class="star">
+        <div class="star-outer">
+          <svg class="star-icon">
+            <use xlink:href="#hippoStar" class="star-icon" />
+          </svg>
+        </div>
+      </a>
+    </span>
+    <span class="collab-count">
+      <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
+      <span class="count">1</span>
+    </span>
+  </header>
+  <%= link_to "" do %>
+    <p id="search-bucket-cached-message"></p>
+  <% end %>
+</li>
+

@@ -1,5 +1,6 @@
 class BucketsController < ApplicationController
-
+  before_filter :get_most_recent_buckets, [:show, :info]
+  
   # GET /buckets/1
   # GET /buckets/1.json
   def show
@@ -9,7 +10,7 @@ class BucketsController < ApplicationController
 
     # redirect_if_not_authorized(@bucket.user_id) ? return : nil
 
-    @active = 'stacks'
+    @active = 'buckets'
     @page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
 
     @bucket.delay.viewed_by_user_id(params[:auth][:uid]) if params.has_key?(:auth)
@@ -89,7 +90,7 @@ class BucketsController < ApplicationController
     respond_to do |format|
       if @bucket.update_attributes(params[:bucket])
         @bucket.delay.update_items_with_new_bucket_name if bucket_name_changed
-        format.html { redirect_to @bucket, notice: 'Stack updated.' }
+        format.html { redirect_to user_buckets_path(current_user) }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -108,7 +109,7 @@ class BucketsController < ApplicationController
     @bucket.destroy
 
     respond_to do |format|
-      format.html { redirect_to current_user }
+      format.html { redirect_to user_buckets_path(current_user) }
       format.json { head :no_content }
     end
   end
@@ -125,17 +126,25 @@ class BucketsController < ApplicationController
   end
 
   def info
-    page = params.has_key?(:page) && params[:page].to_i > 0 ? params[:page].to_i : 0
+    page = get_page(params[:page])
+    user = current_user
+    if params[:auth] && params[:auth][:uid] && !user
+      user = User.find(params[:auth][:uid])
+    end
 
-    bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
-    user = User.find_by_id(params[:auth][:uid])
-    items = bucket.items.not_deleted.by_date.limit(64).offset(64*page).reverse if bucket
+    @bucket = Bucket.where("id = ?", params[:id]).includes(:bucket_user_pairs).first
+    @items = @bucket.items.not_deleted.by_date.for_page_with_limit(page, 25).reverse if @bucket
+    @item = Item.new
+    @new_bucket = Bucket.new
+    @active = "buckets"
 
     respond_to do |format|
-      if bucket && user && bucket.belongs_to_user?(user)
-        format.json { render json: {:items => items, :page => page, :bucket => bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => bucket.group_for_user(user) } }
+      if @bucket && user && @bucket.belongs_to_user?(user)
+        format.html
+        format.json { render json: {:items => @items, :page => page, :bucket => @bucket.as_json(:methods => [:bucket_user_pairs, :media_urls, :creator, :contact_cards]), :group => @bucket.group_for_user(user) } }
+        format.js
       else
-        format.json { render json: bucket.errors, status: :unprocessable_entity }
+        format.json { render json: @bucket.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -206,6 +215,7 @@ class BucketsController < ApplicationController
     # below_created_at = params.has_key?(:below_created_at) && params[:below_created_at].to_i > 0 ? Time.at(params[:below_created_at].to_i+1).to_datetime : Time.now+1.second
 
     user = User.find_by_id(params[:auth][:uid])
+    user.delay.should_update_last_activity if user
 
     if params[:id].to_i == 0
       bucket = Bucket.all_items_bucket

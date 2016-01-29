@@ -1,0 +1,39 @@
+<!-- Main Menu -->
+<nav class="thought-menu" role="navigation" aria-label="Thought Menu">
+  <!-- Profile -->
+  <div class="profile-overview">
+    <a href="#" data-jq-dropdown="#profile-menu-1" data-vertical-offset="3" class="avatar dropdown">
+      <img class="avatar med" src="<%= current_user.avatar_path %>" alt="">
+    </a>
+    <div id="profile-menu-1" class="jq-dropdown jq-dropdown-tip">
+      <ul class="jq-dropdown-menu">
+        <li><%= link_to user_path(current_user) do %>Settings<% end %></li>
+        <li><%= link_to logout_path do %>Logout<% end %></li>
+      </ul>
+    </div>
+  </div>
+  <!-- Options -->
+  <div class="thought-options">
+    <div class="utilities">
+      <%= render 'shared/items/bucket_option', :item => item, :f => f %>
+      <%= render 'shared/items/upload_option', :item => item, :f => f %>
+      <%= render 'shared/items/nudges_option', :item => item, :f => f %>
+      <% if !item.new_record? %>
+        <%= render 'shared/items/more_option', :item => item, :f => f %>
+      <% end %>
+    </div>
+    <div class="file">
+      <%= link_to :back, :class => "cancel" do %><span>Cancel</span><% end %>
+      <%= link_to "#", :class => "save saveButton" do %><span>Save Thought</span><% end %>
+    </div>
+  </div>   
+  <div class="thought-menu_mbl">
+    <a href="#" class="trigger-side-menu_mbl">
+      <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
+    </a>
+    <div class="file">
+      <%= link_to :back, :class => "cancel" do %><span>Cancel</span><% end %>
+      <%= link_to "#", :class => "save saveButton" do %><span>Save Thought</span><% end %>
+    </div>
+  </div>   
+</nav>

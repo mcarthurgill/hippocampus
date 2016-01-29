@@ -1,0 +1,14 @@
+<main class="main-content thought-content" role="main" aria-label="Main Content">
+  <div class="add-thought-wrap scene_element--fadeinup scene_element scene_delay">
+    <%= f.text_area :message, :id => 'default-editor', :class => 'add-thought-area' %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    <%= f.hidden_field :device_timestamp, :value => item.device_timestamp %>
+    <%= f.hidden_field :local_key, :value => item.local_key %>
+    <%= f.hidden_field :input_method, :value => "web" %>
+    
+    <% if @item.new_record? %>
+      <%= render 'shared/items/keyboard_shortcuts' %>
+    <% end %>
+    <%= render 'shared/items/preview_files', :item => @item %>
+  </div>
+</main>

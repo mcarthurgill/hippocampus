@@ -1,0 +1,17 @@
+<li>
+  <%= link_to item_path(item) do %>
+    <header>
+      <time><%= formatted_date(item.next_reminder_date) %></time>
+      <% if item.recurring? %>
+        <span class="frequency annually"><svg class="icon icon-repeat"><use xlink:href="#icon-repeat"></use></svg> <%= item.item_type %></span>
+      <% end %>
+    </header>
+    <p><%= item.message %></p>
+  <% end %>
+  <% if item.has_media? %>
+    <%= render 'shared/items/item_media', :item => item %>
+  <% end %>
+  <% if item.visible_buckets_for_user(current_user).count > 1 %>
+    <%= render 'shared/items/item_buckets_stickers', :item => item %>
+  <% end %>
+</li>

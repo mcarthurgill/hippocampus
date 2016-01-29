@@ -13,10 +13,16 @@ class ApplicationController < ActionController::Base
   #     end
   #   end
   # end
-  
-  def mobile?
-    @mobile = request.user_agent =~ /Mobile/
-  end
+
+  # before_filter :set_cache_headers
+
+  # private
+
+  # def set_cache_headers
+  #   response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+  #   response.headers["Pragma"] = "no-cache"
+  #   response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  # end
 
   def logged_in?
     current_user
@@ -30,6 +36,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_page page_param
+    page_param && !page_param.to_i.nil? ? page_param.to_i : 0
+  end
+  
   def redirect_if_not_authorized uid
     if !logged_in? || current_user.id.to_i != uid.to_i
       redirect_to root_path
@@ -49,5 +59,56 @@ class ApplicationController < ActionController::Base
       return
     end
   end
+
+  def get_most_recent_buckets lim=10
+    @recent_buckets = current_user.buckets.order("updated_at DESC").limit(lim) if current_user
+  end
+
+  def formatted_date date
+    return date ? date.strftime("%m/%d/%y") : nil
+  end
+  helper_method :formatted_date
+
+  def long_formatted_date date
+    date = date.in_time_zone(current_user.time_zone) if date
+    return date ? date.strftime("%A %B %d, %Y") : nil
+  end
+  helper_method :long_formatted_date
+
+  def long_formatted_time date
+    date = date.in_time_zone(current_user.time_zone) if date
+    return date ? date.strftime("%I:%M%p %Z") : nil
+  end
+  helper_method :long_formatted_time
+
+  def buckets_active?
+    @active == "buckets"
+  end
+  helper_method :buckets_active?
+
+  def thoughts_active?
+    @active == "thoughts"
+  end
+  helper_method :thoughts_active?
+
+  def nudges_active?
+    @active == "nudges"
+  end
+  helper_method :nudges_active?
+
+  def active_thought_classes
+    thoughts_active? ? 'thoughts active' : 'thoughts'
+  end
+  helper_method :active_thought_classes
+
+  def active_bucket_classes
+    buckets_active? ? 'buckets active' : 'buckets'
+  end
+  helper_method :active_bucket_classes
+
+  def active_nudge_classes
+    nudges_active? ? 'nudges active' : 'nudges'
+  end
+  helper_method :active_nudge_classes
 end
 

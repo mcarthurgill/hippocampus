@@ -1,0 +1,7 @@
+<% items.each do |item| %>
+  <% if defined?(bucket) %>
+    <%= render 'shared/items/item_preview', :item => item, :bucket => bucket %>
+  <% else %>
+    <%= render 'shared/items/item_preview', :item => item %>
+  <% end %>
+<% end %>

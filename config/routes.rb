@@ -83,7 +83,7 @@ Hippocampus::Application.routes.draw do
   resources :tags
 
   resources :users, :except => [:index, :new, :create, :destroy]
-  get 'users/:id/items', to: 'users#items'
+  get 'users/:id/items', to: 'users#items', as: 'user_items'
   get 'users/:id/buckets', to: 'users#buckets', as: 'user_buckets'
   get 'users/:id/grouped_buckets', to: 'users#grouped_buckets', as: 'user_grouped_buckets'
   get 'users/:id/reminders', to: 'users#reminders', as: 'user_reminders'

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :membership, :number_items, :number_buckets, :number_buckets_allowed, :name, :object_type, :phone, :salt, :setup_completion, :time_zone
+  attr_accessible :email, :calling_code, :country_code, :local_key, :medium_id, :membership, :number_items, :number_buckets, :number_buckets_allowed, :name, :object_type, :phone, :salt, :setup_completion, :time_zone, :last_activity
   
   extend Formatting
   include Formatting
@@ -78,6 +78,17 @@ class User < ActiveRecord::Base
     self.email = self.email.downcase.strip if self.email
   end
 
+  before_save :update_last_activity
+  def update_last_activity
+    self.assign_attributes(:last_activity => DateTime.now)
+  end
+
+  def should_update_last_activity
+    self.update_last_activity
+    self.save
+  end
+
+
   after_save :set_defaults
   def set_defaults
     self.local_key ||= "user--#{self.id}"
@@ -112,8 +123,9 @@ class User < ActiveRecord::Base
     return return_buckets.flatten
   end
   
-
-
+  def push_channel
+    return "user-#{self.id}"
+  end
 
 
   # -- SETTERS
@@ -151,6 +163,9 @@ class User < ActiveRecord::Base
       end
       if params[:time_zone] && params[:time_zone].length > 0
         self.assign_attributes(time_zone: params[:time_zone])
+      end
+      if params[:email] && params[:email].length > 0
+        self.assign_attributes(email: params[:email].downcase.strip)
       end
       if params.has_key?(:file) && params[:file]
         m = Medium.create_with_file_and_user_id(params[:file], self.id)
@@ -224,18 +239,22 @@ class User < ActiveRecord::Base
     return buckets
   end
 
-  def sorted_reminders(limit=100000, page=0)
+  def sorted_reminders(limit=100000, page=0, return_local_keys=true)
     tz = self.time_zone ? self.time_zone : "America/Chicago"
     items = self.items.not_deleted.with_future_reminder(tz)
     ids_to_exclude = items.pluck(:id)
     items += self.bucket_items.not_deleted.with_future_reminder(tz).excluding(ids_to_exclude)
-    items_hash = items.group_by{|i| i.next_reminder_date(tz) }
     sorted_by_date = []
-    items_hash.each do |k, v| 
-      items_hash[k] = v.map(&:local_key)
-      sorted_by_date << Hash[k, items_hash[k]]
+    if return_local_keys
+      items_hash = items.group_by{|i| i.next_reminder_date(tz) }
+      items_hash.each do |k, v| 
+        items_hash[k] = v.map(&:local_key)
+        sorted_by_date << Hash[k, items_hash[k]]
+      end
+      return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
+    else
+      return items.sort_by{|i| i.next_reminder_date}.first(limit) #returns [item, item, item] sorted by next reminder date
     end
-    return sorted_by_date.sort_by{|h| h.keys.first}.unshift({:nudges_list => items.map(&:local_key)}) #returns [{date => [item_local_keys]}, {date => [item_local_keys]}] sorted by date
   end
 
   def no_name?
@@ -342,8 +361,6 @@ class User < ActiveRecord::Base
   def update_buckets_count
     self.update_attribute(:number_buckets, self.buckets.count)
   end
-
-
 
 
   # --- PUSH NOTIFICATIONS

@@ -1,0 +1,18 @@
+<!-- Side Drawer -->
+<nav class="side-menu_mbl" role="navigation" aria-label="Mobile Side Menu">
+  <header>
+    <a href="#" class="close-side-menu_mbl">
+      <svg class="icon-arrow-left"><use xlink:href="#icon-arrow-left"></use></svg>
+    </a>
+    <div class="title-wrap">
+      <span class="name"><%= current_user.name ? current_user.name : "Profile" %></span>
+    </div>
+  </header>
+  <ul class="nav-list">
+    <div class="list-section">
+      <li><h5>Account</h5></li>
+      <li><%= link_to user_path(current_user) do %>Settings<% end %></li>
+      <li><%= link_to logout_path do %>Logout<% end %></li>
+    </div>
+  </ul>                    
+</nav>

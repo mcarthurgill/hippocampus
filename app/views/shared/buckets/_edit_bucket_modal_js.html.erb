@@ -1,0 +1,42 @@
+<script>
+// -------------------------------- Settings --------------------------------
+// Rapid Input Field:
+var bucketInput = $('#edit-bucket-input');
+var saveBucket = $('#save_edit_bucket');
+var cancelBucket = $('#cancel_edit_bucket');
+
+// ---------------------------------- Events ----------------------------------
+bucketInput.keydown(function(e){
+    // ------------------------------ Enter Key -------------------------------
+    if (e.keyCode == 13 && !e.shiftKey)
+    { 
+      saveAndResetBucket(e); 
+    }
+});
+
+saveBucket.click(function(e){
+  saveAndResetBucket(e); 
+});
+// ---------------------------------- Events ----------------------------------
+cancelBucket.click(function(e){
+  bucketInput.val("");
+});
+
+function saveAndResetBucket(e){
+  e.preventDefault();
+
+  if (bucketInput.val()) {
+    var bucketName = bucketInput.val();
+    $("#bucket-first-name").text(bucketName);
+    submitBucket(); 
+    // -------------------------- Reset/Clear ---------------------------
+    bucketInput.val("");
+    $("#cancel_edit_bucket").click(); 
+  }   
+}
+
+function submitBucket() {
+  $("#edit_bucket_" + "<%= @bucket.id %>").submit();
+}
+
+</script>

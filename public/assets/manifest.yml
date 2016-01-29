@@ -1,10 +1,22 @@
 ---
+fonts/hippo.eot: fonts/hippo-65510c2aa87a61e08314472be1f78a89.eot
+fonts/hippo/index.eot: fonts/hippo-65510c2aa87a61e08314472be1f78a89.eot
+fonts/hippo.svg: fonts/hippo-3f348e12ae2230f70a6751ddf07c1a46.svg
+fonts/hippo/index.svg: fonts/hippo-3f348e12ae2230f70a6751ddf07c1a46.svg
+fonts/hippo.ttf: fonts/hippo-52a22f9230e96cd668fc242bb28c38c6.ttf
+fonts/hippo/index.ttf: fonts/hippo-52a22f9230e96cd668fc242bb28c38c6.ttf
+fonts/hippo.woff: fonts/hippo-f42e4e3d424e2a6f57f9a32769ba7b56.woff
+fonts/hippo/index.woff: fonts/hippo-f42e4e3d424e2a6f57f9a32769ba7b56.woff
+icons-reference.html: icons-reference-ea85e880b1de03927ec45e8340cc3779.html
+icons-reference/index.html: icons-reference-ea85e880b1de03927ec45e8340cc3779.html
 rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
-application.js: application-8b66a008cf7467aaa3782a89b69a3567.js
-application/index.js: application-8b66a008cf7467aaa3782a89b69a3567.js
-application.css: application-809efeeaf60ca1a71f3ca81151826ccc.css
-application/index.css: application-809efeeaf60ca1a71f3ca81151826ccc.css
+svg/icons.svg: svg/icons-63d04d2e4f25f05c0e2f2cdcc8a7f903.svg
+svg/icons/index.svg: svg/icons-63d04d2e4f25f05c0e2f2cdcc8a7f903.svg
+application.js: application-a5ca09d23f7ce8d3024f7f0f3ca13ecd.js
+application/index.js: application-a5ca09d23f7ce8d3024f7f0f3ca13ecd.js
+application.css: application-c9893fbbfdcfe41d90380bc35b358ba7.css
+application/index.css: application-c9893fbbfdcfe41d90380bc35b358ba7.css
 cloudinary_cors.html: cloudinary_cors-05f2af4874bd3914c79b03b8d9acd6d1.html
 cloudinary_cors/index.html: cloudinary_cors-05f2af4874bd3914c79b03b8d9acd6d1.html
 fontawesome-webfont.eot: fontawesome-webfont-b23cdf94244ac2d44b43bcd4cf54fbac.eot

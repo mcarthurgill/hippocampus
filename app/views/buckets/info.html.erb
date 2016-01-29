@@ -1,0 +1,15 @@
+<main class="main-content" role="main" aria-label="Main Content">
+  
+  <%= render 'shared/search_results_list' %>
+
+  <div class="bucket-list-wrap sorted-list" id="bucket<%= @bucket.id %>">
+    <%= render 'shared/items/sorted_items', :items => @items, :bucket => @bucket %>
+    <%= render 'shared/items/thought_entry_form' %>
+  </div>
+</main>
+
+<%= render 'shared/modals/new_bucket_modal' %>    
+<%= render 'shared/modals/edit_bucket_modal' %>
+<%= render 'shared/modals/delete_bucket_modal' %>    
+<%= render 'shared/items/thought_entry_form_js' %>
+<%= render 'shared/buckets/paginate_bucket_items_js' %>

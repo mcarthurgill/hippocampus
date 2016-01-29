@@ -1,0 +1,26 @@
+<script type="text/javascript">
+  var alreadyloading = false;
+  var sorting = $("#sort-by-select").find(':selected').val();
+  var page = 1; 
+
+  $(window).scroll(function() {
+    if($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+      if (alreadyloading == false) {
+        var url = "/users/"+"<%= current_user.id %>"+"/buckets.js?page="+page+"&sort="+sorting+"&append=true";
+        alreadyloading = true;
+        $.get(url, function(data) {
+
+        }).always(function(response) {
+          page++; 
+          alreadyloading = false;
+        });
+      }
+    }
+  });
+
+  $('#sort-by-select').on('change', function() {
+    console.log("yes"); 
+    sorting = $(this).find(':selected').val(); 
+    page = 1; 
+  });
+</script>

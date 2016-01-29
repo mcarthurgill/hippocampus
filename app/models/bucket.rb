@@ -32,18 +32,17 @@ class Bucket < ActiveRecord::Base
   # -- SCOPES
 
   scope :above, ->(time) { where('"buckets"."updated_at" > ?', Time.at(time.to_i).to_datetime).order('id ASC') }
-  scope :by_first_name, -> { order("first_name ASC") }
+  scope :by_first_name, -> { order("LOWER(first_name) ASC") }
   scope :recent_first, -> { order("id DESC") }
   scope :excluding_pairs_for_item_id, ->(iid) { where( (BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id).count > 0 ? '"buckets"."id" NOT IN (?)' : ''), BucketItemPair.where('item_id = ?', iid).pluck(:bucket_id)) }
   scope :recent_for_user_id, ->(uid) { where('"buckets"."id" IN (?)', BucketItemPair.where('"bucket_item_pairs"."bucket_id" IN (?)', User.find(uid).buckets.pluck(:id)).order('updated_at DESC').limit(8).pluck(:bucket_id)) }
   scope :for_user_and_creation_reason, ->(uid, r) { where("id IN (?) AND creation_reason = ?", User.find(uid).buckets.pluck(:id), r) }
-
+  scope :for_page_with_limit, ->(page, lim) { offset(page*lim).limit(lim) }
+  
   scope :other_type, -> { where('bucket_type = ?', 'Other') }
   scope :person_type, -> { where('bucket_type = ?', 'Person') }
   scope :event_type, -> { where('bucket_type = ?', 'Event') }
   scope :place_type, -> { where('bucket_type = ?', 'Place') }
-
-
 
 
   # -- VALIDATIONS
@@ -143,17 +142,27 @@ class Bucket < ActiveRecord::Base
   after_save :push
   def push
     begin
-      Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json()) if self.users_array_for_push.count > 0
+      Pusher.trigger(self.users_array_for_push, 'bucket-save', self.as_json(methods: [:html_as_string])) if self.users_array_for_push.count > 0
     rescue Pusher::Error => e
     end
   end
 
   def users_array_for_push
     arr = []
-    self.authorized_user_ids.each do |uid|
-      arr << "user-#{uid}"
+    self.users.each do |u|
+      arr << u.push_channel
     end
     return arr
+  end
+
+  def html_as_string
+    return self.render_anywhere('shared/buckets/bucket_preview', {bucket: self})
+  end
+  
+  def render_anywhere(partial, assigns = {})
+    view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
+    view.extend ApplicationHelper
+    view.render(partial: partial, locals: assigns)
   end
 
   after_save :index_delayed
@@ -245,9 +254,6 @@ class Bucket < ActiveRecord::Base
   def group_for_user u
     return self.groups.where('"bucket_user_pairs"."phone_number" = ?', u.phone).first if u
   end
-
-
-
 
 
   # -- ACTIONS

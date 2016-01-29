@@ -1,0 +1,54 @@
+<script>
+// -------------------------------- Settings --------------------------------
+// Rapid Input Field:
+var bucketInput = $('#new-bucket-input');
+var saveBucket = $('#save_bucket');
+var cancelBucket = $('#cancel_bucket');
+
+var bucketTemplate = "<%= escape_javascript(render partial: 'shared/buckets/bucket_template') %>";
+
+// ---------------------------------- Events ----------------------------------
+bucketInput.keydown(function(e){
+    // ------------------------------ Enter Key -------------------------------
+    console.log("detecting keydown in wrong place");
+    if (e.keyCode == 13 && !e.shiftKey)
+    { 
+      saveAndResetBucket(e); 
+    }
+});
+
+saveBucket.click(function(e){
+  saveAndResetBucket(e); 
+});
+// ---------------------------------- Events ----------------------------------
+cancelBucket.click(function(e){
+  bucketInput.val("");
+});
+
+function saveAndResetBucket(e){
+  e.preventDefault();
+
+  if (bucketInput.val()) {
+    var bucketName = bucketInput.val();
+    submitBucketWithTemplate(bucketTemplate)
+    // -------------------------- Reset/Clear ---------------------------
+    bucketInput.val("");
+    $("#cancel_bucket").click(); 
+  }   
+}
+
+function submitBucket() {
+  $("#new_bucket").submit();
+}
+
+function submitBucketWithTemplate(template) {
+  submitBucket();
+  appendBucketWithTemplate(template);
+}
+
+function appendBucketWithTemplate(template) {
+  var $jQueryObject = $($.parseHTML(template));
+  $jQueryObject.find('#bucket-firstname').html($("#new-bucket-input").val())
+  $("#bucket-list").prepend($jQueryObject);
+}
+</script>

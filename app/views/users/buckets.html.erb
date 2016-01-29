@@ -1,26 +1,20 @@
+<!-- Main Content -->
+<main class="main-content" role="main" aria-label="Main Content">
 
-<div class="row">
-  <div class="col-xs-12">
-    <ol class="breadcrumb">
-      <li><a href="<%= user_path(current_user) %>">Thoughts</a></li>
-      <li class="active">Collections</li>
-    </ol>
+  <!-- Buckets Search Tools -->
+  <%= render 'shared/buckets/bucket_sort' %>
+  
+  <%= render 'shared/search_results_list' %>
+  <!-- Buckets -->
+  <div class="buckets-list-wrap sorted-list" id="buckets-list">
+    <!-- List -->
+    <%= render 'shared/buckets/sorted_buckets', :buckets => @buckets %>
   </div>
+</main>
+
+<!-- SVGs -->
+<%= render "shared/buckets/hippo_star" %>
+<%= render 'shared/modals/new_bucket_modal' %>        
+<%= render 'shared/buckets/paginate_buckets_js' %>
+
 </div>
-
-
-<% if notice %>
-  <div class="row">
-    <div class="col-xs-12">
-      <br/>
-      <div class="alert alert-info alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <%= notice %>
-      </div>
-    </div>
-  </div>
-<% end %>
-
-<%= render 'shared/buckets/frontend_search' %>
-
-<%= render 'shared/buckets/sorted_type' %>

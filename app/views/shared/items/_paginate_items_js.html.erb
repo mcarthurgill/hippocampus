@@ -1,0 +1,25 @@
+<script type="text/javascript">
+  var alreadyloading = false;
+  var nextpage = 1;
+
+  $(window).scroll(function() {
+    console.log($(window).scrollTop()); 
+    if ($(window).scrollTop() <= 100) {
+      if (alreadyloading == false) {
+        var topItemBeforeLoad = $('.individual-item:first');
+
+        var url = "/users/"+"<%= current_user.id %>"+"/items.js?page="+nextpage;
+        alreadyloading = true;
+        $.get(url, function(data) {
+
+        }).always(function(response) {
+          if (response.length > 28) { //length when no items return
+            $(document).scrollTop(topItemBeforeLoad.offset().top - 50);
+          }; 
+          alreadyloading = false;
+          nextpage++;
+        });
+      }
+    }
+  });
+</script>

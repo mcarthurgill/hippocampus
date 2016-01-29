@@ -1,5 +1,4 @@
 class Item < ActiveRecord::Base
-
   attr_accessible :audio_url, :buckets_array, :buckets_string, :device_request_timestamp, :device_timestamp, :local_key, :latitude, :longitude, :links, :media_urls, :media_content_types, :message, :message_html_cache, :message_full_cache, :bucket_id, :user_id, :item_type, :reminder_date, :status, :input_method, :object_type, :media_cache
 
   serialize :media_cache, JSON
@@ -49,6 +48,7 @@ class Item < ActiveRecord::Base
   scope :since_time_ago, ->(time_ago) { where('"items"."created_at" > ?', time_ago) }
   scope :with_long_lat_and_radius, ->(long, lat, rad) { where("((longitude - ?)^2 + (latitude - ?)^2) <= ?", long, lat, rad) }
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
+  scope :for_page_with_limit, ->(page, lim) { offset(page*lim).limit(lim) }
   
   # scope :with_monthly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('extract(day from reminder_date) >= ? '+(today.day <= (today+timeframe).day && (timeframe < 2.days || today.day != (today+timeframe).day) ? 'AND' : 'OR')+' extract(day from reminder_date) <= ?', today.day, (today+timeframe).day).monthly.not_deleted }
   # scope :with_yearly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('((extract(month from reminder_date) >= ? AND extract(day from reminder_date) >= ?) OR extract(month from reminder_date) > ?) '+(today.month <= (today+timeframe).month && (timeframe < 2.months || today.month != (today+timeframe).month) ? 'AND' : 'OR')+' ((extract(month from reminder_date) <= ? AND extract(day from reminder_date)) <= ? OR extract(month from reminder_date) < ?)', today.month, today.day, today.month, (today+timeframe).month, (today+timeframe).day, (today+timeframe).month).yearly.not_deleted }
@@ -87,7 +87,7 @@ class Item < ActiveRecord::Base
     self.user.delay.update_items_count
   end
 
-  before_create :check_for_and_set_date
+  before_create :check_for_and_set_date, :check_for_and_set_unassigned_media
 
   before_save :extract_links
   after_save :cache_links
@@ -102,7 +102,7 @@ class Item < ActiveRecord::Base
   after_save :push
   def push
     begin
-      Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json()) if self.users_array_for_push.count > 0
+      Pusher.trigger(self.users_array_for_push, 'item-save', self.as_json(methods: [:html_as_string, :bucket_ids])) if self.users_array_for_push.count > 0
     rescue Pusher::Error => e
     end
   end
@@ -110,13 +110,27 @@ class Item < ActiveRecord::Base
   def users_array_for_push
     arr = []
     self.users_array.each do |u|
-      arr << "user-#{u.id}"
+      arr << u.push_channel
     end
     return arr
   end
 
+  def html_as_string
+    return self.render_anywhere('shared/items/item_preview', {item: self})
+  end
+  
+  def render_anywhere(partial, assigns = {})
+    view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
+    view.extend ApplicationHelper
+    view.render(partial: partial, locals: assigns)
+  end
 
-
+  def check_for_and_set_unassigned_media
+    meds = Medium.where("item_local_key = ? AND item_id IS NULL", self.local_key)
+    meds.each do |m|
+      self.add_media_url(m.media_url)
+    end
+  end
 
   # -- SETTERS
 
@@ -140,6 +154,13 @@ class Item < ActiveRecord::Base
       Medium.create_with_file_user_id_and_item_id(url, i.user_id, i.id)
     end
 
+    return i
+  end
+
+  def self.initialize_with_local_key_and_user_id uid
+    i = Item.new
+    i.user_id = uid
+    i.set_defaults
     return i
   end
 
@@ -470,6 +491,10 @@ class Item < ActiveRecord::Base
 
   def self.item_types
     return ['once', 'yearly', 'monthly', 'weekly', 'daily']
+  end
+
+  def recurring?
+    return !self.once?
   end
 
   def once?

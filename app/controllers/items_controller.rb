@@ -52,6 +52,11 @@ class ItemsController < ApplicationController
 
     end
 
+
+    if params[:item].has_key?(:input_method) && params[:item][:input_method] && params[:item][:input_method] == "web"
+      @item.user_id = current_user.id if current_user
+    end
+
     respond_to do |format|
       if @item.save
 
@@ -68,7 +73,8 @@ class ItemsController < ApplicationController
         @item.add_to_bucket(Bucket.find(params[:item][:bucket_id])) if params[:item][:bucket_id] && params[:item][:bucket_id].length > 0 && params[:item][:bucket_id].to_i > 0
         @item.add_to_bucket(Bucket.find_by_local_key(params[:item][:bucket_local_key])) if params[:item][:bucket_local_key] && params[:item][:bucket_local_key].length > 0
 
-        format.html { redirect_to item_path(@item) }
+        format.html { redirect_to user_items_path(current_user), :notice => "Success!" }
+        format.js
         format.json { render json: Item.find(@item.id), status: :created, location: @item } #rails was caching @item and not sending back the updated status if we were assigning to a bucket. 
       else
         format.html { redirect_to new_item_path, :notice => "Error creating note." }
@@ -80,9 +86,8 @@ class ItemsController < ApplicationController
 
 
   def new
-    @item = Item.new
-    @active = 'notes'
-    @options_for_buckets = current_user.formatted_buckets_options
+    @item = Item.initialize_with_local_key_and_user_id(current_user.id)
+    # @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
       format.html 
@@ -98,7 +103,7 @@ class ItemsController < ApplicationController
 
     @active = 'notes'
 
-    @options_for_buckets = current_user.formatted_buckets_options
+    # @options_for_buckets = current_user.formatted_buckets_options
 
     respond_to do |format|
       format.html { redirect_if_not_authorized(@item.user_id) ? return : nil }
@@ -136,7 +141,7 @@ class ItemsController < ApplicationController
       if @item.is_most_recent_request?(params[:item][:device_request_timestamp]) && @item.update_attributes(params[:item])
         @item.update_outstanding
         @item.remove_nudge_if_needed
-        format.html { redirect_to item_path(@item), :notice => "Note updated." }
+        format.html { redirect_to user_items_path(current_user), :notice => "Note updated." }
         format.json { head :no_content }
       else
         format.html { redirect_to edit_item_path(@item), :notice => "Sorry that didn't work" }
@@ -156,7 +161,7 @@ class ItemsController < ApplicationController
     @item.buckets.each {|b| b.update_count }
 
     respond_to do |format|
-      format.html { redirect_to user_path(current_user), :notice => "Note deleted successfully." }
+      format.html { redirect_to user_items_path(current_user) }
       format.json { head :no_content }
     end
   end

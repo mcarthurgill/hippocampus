@@ -1,26 +1,27 @@
-<% if notice %>
-  <div class="row">
-    <div class="col-xs-12">
-      <br/>
-      <div class="alert alert-info alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <%= notice %>
-      </div>
-    </div>
-  </div>
-<% end %>
+<!-- Main Content -->
+<main class="main-content" role="main" aria-label="Main Content">
 
+  <%= render 'shared/search_results_list' %>
 
-<div class="row">
-  <div class="col-xs-12">
-    <div class="list-group">
-      <li class="list-group-item list-group-item-info category-header">Upcoming Reminders</li>
-      <div id="reminders-container">
-        <%= render "users/reminders/upcoming_reminders" %>
-      </div>
-    </div>
-    <div id="load-more">
-      <%= render "users/reminders/load_more_reminders" %>
-    </div>
+  <!-- Nudges -->
+  <div class="nudges-list-wrap sorted-list">
+    <!-- List -->
+    <ul class="list nudges-list scene_element--fadeinup scene_element scene_delay">
+      <% alreadyDisplayedToday = false %>
+      <% alreadyDisplayedUpcoming = false %>
+      <% @reminders.each do |i| %>
+        <% if (formatted_date(i.next_reminder_date) == formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) && !alreadyDisplayedToday %>
+          <% alreadyDisplayedToday = true %>
+          <li class="section"><h5>today's nudges</h5></li>
+        <% elsif (formatted_date(i.next_reminder_date) != formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) &&!alreadyDisplayedUpcoming %>
+          <% alreadyDisplayedUpcoming = true %>
+          <li class="section"><h5>upcoming nudges</h5></li>
+        <% end %>
+        <%= render 'reminder_preview', :item => i %>
+      <% end %>
+      <% if @reminders.count == 0 %>
+        <li class="section"><h5>No upcoming nudges!</h5></li>
+      <% end %>
+    </ul>
   </div>
-</div>
+</main>

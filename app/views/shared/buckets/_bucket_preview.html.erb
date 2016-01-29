@@ -1,0 +1,29 @@
+<li id="bucket<%= bucket.id %>">
+  <header>
+    <%= link_to Rails.application.routes.url_helpers.bucket_info_path(bucket) do %>
+      <div class="meta">
+        <h4 class="title"><%= bucket.first_name %></h4>
+        <span><%= bucket.items_count %></span>
+      </div>
+    <% end %>
+    <span class="star-wrap">
+      <a href="#" class="star">
+        <div class="star-outer">
+          <svg class="star-icon">
+            <use xlink:href="#hippoStar" class="star-icon" />
+          </svg>
+        </div>
+      </a>
+    </span>
+    <% if bucket.users.count > 0 %>
+      <span class="collab-count">
+        <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
+        <span class="count"><%= bucket.users.count %></span>
+      </span>
+    <% end %>
+  </header>
+  <%= link_to Rails.application.routes.url_helpers.bucket_info_path(bucket) do %>
+    <p><%= bucket.cached_item_message %></p>
+  <% end %>
+</li>
+

@@ -1,0 +1,6 @@
+<% if @append %>
+  $('#bucket-list').append("<%= j render 'shared/buckets/bucket_list', :buckets => @buckets %>");
+<% else %>
+  $('#buckets-list').html("<%= j render 'shared/buckets/sorted_buckets', :buckets => @buckets %>")
+<% end %>
+
