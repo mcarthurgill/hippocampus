@@ -13,8 +13,8 @@ rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 svg/icons.svg: svg/icons-63d04d2e4f25f05c0e2f2cdcc8a7f903.svg
 svg/icons/index.svg: svg/icons-63d04d2e4f25f05c0e2f2cdcc8a7f903.svg
-application.js: application-a5ca09d23f7ce8d3024f7f0f3ca13ecd.js
-application/index.js: application-a5ca09d23f7ce8d3024f7f0f3ca13ecd.js
+application.js: application-e610b1dc5e062225111cbb2c2c906701.js
+application/index.js: application-e610b1dc5e062225111cbb2c2c906701.js
 application.css: application-c9893fbbfdcfe41d90380bc35b358ba7.css
 application/index.css: application-c9893fbbfdcfe41d90380bc35b358ba7.css
 cloudinary_cors.html: cloudinary_cors-05f2af4874bd3914c79b03b8d9acd6d1.html
