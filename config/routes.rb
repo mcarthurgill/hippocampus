@@ -4,6 +4,8 @@ Hippocampus::Application.routes.draw do
   root :to => "outside#homepage"
 
   get 'home', to: 'outside#homepage'
+  get 'splash', to: 'outside#splash'
+
 
   get 'privacy', :to => 'outside#privacy'
   get 'gifts', :to => 'outside#gifts', :as => 'gifts'
