@@ -59,12 +59,19 @@
 
 .profile-left {
   margin-top:5%; 
-  margin-left:25%;
+  margin-left:30%;
   float:left;
+  width:150px;
+}
+
+.profile-pic-big {
+  width: 100%;
 }
 
 .profile-pic-big img {
   border-radius: 1000px;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 @media (min-width: 600px) {
