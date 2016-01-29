@@ -31,3 +31,53 @@
   padding-left: 2.5rem; 
 
 }
+
+.profile-title h5 {
+  color: rgba(90, 204, 90, 0.6);
+  text-transform: lowercase;
+  font-size: 1.2rem;
+  line-height: 1.0625rem;
+  letter-spacing: 0.4px;
+  font-weight: 600;
+  font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  background: #FFFFFF;
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  padding: 0;
+}
+.profile-title {
+  margin: 0;
+  list-style:none;
+}
+.profile-right {
+  margin-top:5%; 
+  margin-left:15%;
+  width:100%;
+  float:left;
+}
+
+.profile-left {
+  margin-top:5%; 
+  margin-left:25%;
+  float:left;
+}
+
+.profile-pic-big img {
+  border-radius: 1000px;
+}
+
+@media (min-width: 600px) {
+  .profile-right {
+    margin-top:10%; 
+    margin-left:10%;
+    width:40%;
+    float:left;
+  }
+
+  .profile-left {
+    margin-top:10%; 
+    margin-left:15%;
+    float:left;
+  }
+}

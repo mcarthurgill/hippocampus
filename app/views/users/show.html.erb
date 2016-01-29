@@ -1,18 +1,23 @@
 <!-- Main Content -->
 <main class="main-content" role="main" aria-label="Main Content">
   <div class="thoughts-list-wrap">
+    <li class="profile-title"><h5>Profile + Settings</h5></li>
     <%= form_for @user, :multiple => true do |f| %>
-      <div class="row" style="margin-top:40px;">
-        <div class="small-8 small-centered medium-6 medium-centered large-4 large-centered columns">
-            <div class="row column log-in-form" style="border: 1px solid #cacaca; padding: 1rem; border-radius: 3px;">
-              <h4 class="text-center">Settings</h4>
-              <%= f.text_field :name, :value => @user.name, :placeholder => "Add name" %>
-              <%= f.text_field :email, :value => @user.email, :placeholder => "Add email" %>
-              <%= f.submit "Save", :class => "btn btn-primary", :style => "width:100%;" %>
-              <br><br>
-              <%= link_to "Update picture", "", :id => "upload-pic", style: "color:7D7D7D; text-align:center; font-size:10pt;"%><br>
-              <%= mail_to "m@lxv.io", "Email the creators", cc: "w@lxv.io", subject: "Hey Hippo Creators", style: "color:7D7D7D; text-align:center; font-size:10pt;" %>
-            </div>
+      <div class="row">
+        <div class="profile-left">
+          <div class="column profile-pic-big">
+            <%= image_tag current_user.avatar_path, :width => 150, :height => :auto, :class => "avatar-image" %>
+          </div>
+        </div>
+        <div class="profile-right">
+          <div class="row column">
+            <%= f.text_field :name, :value => @user.name, :placeholder => "Add name" %>
+            <%= f.text_field :email, :value => @user.email, :placeholder => "Add email" %>
+            <%= f.submit "Save", :class => "btn btn-primary", :style => "width:100%;" %>
+            <br><br>
+            <%= link_to "Update picture", "", :id => "upload-pic", style: "color:7D7D7D; text-align:center; font-size:10pt;"%><br>
+            <%= mail_to "m@lxv.io", "Email the creators", cc: "w@lxv.io", subject: "Hey Hippo Creators", style: "color:7D7D7D; text-align:center; font-size:10pt;" %>
+          </div>
         </div>
       </div>
       <div class="row" style="margin-top:10px;">

@@ -16,11 +16,11 @@ var medium_id = 0;
         medium_local_key = response.local_key; 
         media_url = response.media_url
         medium_id = response.id;
-        $("#avatar-image").attr("src", media_url);
+        $(".avatar-image").attr("src", media_url);
         console.log(medium_local_key);
         },
     error: function(error, response){
-
+      alert("Sorry something went wrong. Try again!"); 
     }
   }).on('sending', function(file, xhr, formData){
               formData.append('medium[user_id]', "<%= current_user.id %>");
@@ -29,7 +29,6 @@ var medium_id = 0;
   });
 
   $("#upload-pic").click(function(e){
-    console.log("sup")
     var display = $("#hidden-dz-message").css("display"); 
     e.preventDefault(); 
     if (display == "none") {
