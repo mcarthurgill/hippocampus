@@ -1,6 +1,6 @@
-<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-<script src="//cdn.jsdelivr.net/algoliasearch.helper/1/algoliasearch.helper.min.js"></script>
-<script>
+<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js" data-no-instant></script>
+<script src="//cdn.jsdelivr.net/algoliasearch.helper/1/algoliasearch.helper.min.js" data-no-instant></script>
+<script data-no-instant>
   $(document).ready(function() {
     var client = algoliasearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
     var itemIndex = client.initIndex('Item');

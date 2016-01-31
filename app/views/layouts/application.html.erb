@@ -34,6 +34,7 @@
   </div>
 
   <%= render 'shared/menus/algolia_search' %>
-
+  <%= javascript_include_tag "/js/instantclick.min.js"%>
+  <script data-no-instant>InstantClick.init();</script>
 </body>
 </html>
