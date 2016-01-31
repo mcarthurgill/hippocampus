@@ -6,9 +6,10 @@
   $(window).scroll(function() {
     if (mainContainer == "info" && $(window).scrollTop() <= 100) {
       if (alreadyloading == false) {
+        alreadyloading = true;
+        console.log("loading + <%= @bucket.first_name %> + " + nextpage); 
         var topItemBeforeLoad = $('.individual-item:first');
         var url = "/buckets/"+"<%= @bucket.id %>"+"/info.js?page="+nextpage;
-        alreadyloading = true;
         $.get(url, function(data) {
 
         }).always(function(response) {
