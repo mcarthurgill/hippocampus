@@ -1,9 +1,10 @@
-<script type="text/javascript">
+<script type="text/javascript" data-no-instant>
   var alreadyloading = false;
   var nextpage = 1;
 
+  var mainContainer = $(".main-content").attr("page-present");
   $(window).scroll(function() {
-    if ($(window).scrollTop() <= 100) {
+    if (mainContainer == "info" && $(window).scrollTop() <= 100) {
       if (alreadyloading == false) {
         var topItemBeforeLoad = $('.individual-item:first');
         var url = "/buckets/"+"<%= @bucket.id %>"+"/info.js?page="+nextpage;
