@@ -1,15 +1,15 @@
 <script type="text/javascript">
   var alreadyloading = false;
   var nextpage = 1;
+  var bucketID = <%= bucket.id %>; 
 
   var mainContainer = $(".main-content").attr("page-present");
   $(window).scroll(function() {
     if (mainContainer == "info" && $(window).scrollTop() <= 100) {
       if (alreadyloading == false) {
         alreadyloading = true;
-        console.log("loading + <%= @bucket.first_name %> + " + nextpage); 
         var topItemBeforeLoad = $('.individual-item:first');
-        var url = "/buckets/"+"<%= @bucket.id %>"+"/info.js?page="+nextpage;
+        var url = "/buckets/"+ bucketID +"/info.js?page="+nextpage;
         $.get(url, function(data) {
 
         }).always(function(response) {
