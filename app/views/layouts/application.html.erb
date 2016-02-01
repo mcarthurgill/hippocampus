@@ -34,6 +34,20 @@
   <%= render partial: "shared/pusher/bind" %>
   <%= javascript_include_tag "/js/libs.js" %>
   <%= javascript_include_tag "/js/instantclick.min.js"%>
-  <script data-no-instant>InstantClick.init();</script>
+  <script data-no-instant>
+  InstantClick.on("receive", function(){
+    console.log("receiving"); 
+  });
+  InstantClick.on("fetch", function(){
+    console.log("fetching"); 
+  });
+  InstantClick.on("change", function(){
+    console.log("change"); 
+  });
+    InstantClick.on("wait", function(){
+      console.log("waiting"); 
+    });
+    InstantClick.init();
+  </script>
 </body>
 </html>
