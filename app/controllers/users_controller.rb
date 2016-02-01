@@ -31,11 +31,10 @@ class UsersController < ApplicationController
     @user = User.where("id = ?", params[:id]).first
     @active = 'thoughts'
     page = get_page(params[:page])
-    @items = []
-    if page > 0 
-      @items = @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 10).includes(:buckets).uniq.reverse
-    else 
-      @items = (@user.items.outstanding.by_date.includes(:buckets)+@user.bucket_items.by_date.not_deleted.for_page_with_limit(page, 10).includes(:buckets)).uniq.reverse
+    arbitrary_limit = 15
+    @items = @user.items.outstanding.by_date.for_page_with_limit(page, arbitrary_limit).includes(:buckets)
+    if @items.count < arbitrary_limit
+      (@items + @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, arbitrary_limit).includes(:buckets)).uniq.reverse
     end
     @item = Item.new
 
