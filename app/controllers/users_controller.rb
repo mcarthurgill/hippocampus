@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     # redirect_if_not_authorized(params[:id]) ? return : nil
 
-    @user = User.find(params[:id])
+    @user = User.where("id = ?", params[:id]).includes(:bucket_items).includes(:items).first
     @active = 'thoughts'
     page = get_page(params[:page])
     @items = []

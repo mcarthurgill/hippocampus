@@ -4,6 +4,10 @@
 var rapidInput = $('#rapid-thought-input');
 // Scroll to Bottom:
 var scrollBtm = document.getElementById("sBtm");  
+scrollBtm.scrollIntoView();
+scrollBtm.scrollIntoView(false);
+scrollBtm.scrollIntoView({block: "end"});
+scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
 
 // Init Autosize:
 autosize($('#rapid-thought-input'));

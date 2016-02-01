@@ -1,10 +1,11 @@
 <li id="item<%= item.id %>" class="individual-item">
   <% if item.next_reminder_date || item.outstanding? %>
     <div class="status-info">
-      <% if item.next_reminder_date %>
+      <% if item.outstanding? && item.next_reminder_date %>
+        <%= render 'shared/items/unassigned_and_nudged' %>
+      <% elsif item.next_reminder_date %>
         <%= render 'shared/items/item_reminder' %>
-      <% end %>
-      <% if item.outstanding? %>
+      <% elsif item.outstanding? %>
         <%= render 'shared/items/item_outstanding' %>
       <% end %>
     </div>
