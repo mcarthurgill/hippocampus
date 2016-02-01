@@ -51,7 +51,7 @@ class Item < ActiveRecord::Base
   scope :for_page_with_limit, ->(page, lim) { offset(page*lim).limit(lim) }
   
   scope :outstanding_first, -> {
-      joins("LEFT OUTER JOIN ( SELECT id, created_at, status
+      joins("LEFT OUTER JOIN ( SELECT *
                                FROM items
                                WHERE items.status = 'outstanding'
                              ) AS temp ON temp.id = items.id AND temp.status = items.status"
