@@ -55,7 +55,7 @@ class Item < ActiveRecord::Base
                                FROM items
                                WHERE items.status = 'outstanding'
                              ) AS temp ON temp.id = items.id AND temp.status = items.status"
-           ).order('temp.created_at NULLS LAST, items.status, items.created_at')
+           ).order('temp.created_at DESC NULLS LAST, items.status, items.created_at DESC')
       }
 
   # scope :with_monthly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('extract(day from reminder_date) >= ? '+(today.day <= (today+timeframe).day && (timeframe < 2.days || today.day != (today+timeframe).day) ? 'AND' : 'OR')+' extract(day from reminder_date) <= ?', today.day, (today+timeframe).day).monthly.not_deleted }
