@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= javascript_include_tag "/js/modernizr.js" %>
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,8|Roboto:400,300,300italic' rel='stylesheet' type='text/css'>
+  <%= javascript_include_tag "/js/libs.js" %>
 </head>
 <body>
 
@@ -32,8 +33,5 @@
 
   <%= render 'shared/menus/algolia_search' %>
   <%= render partial: "shared/pusher/bind" %>
-  <%= javascript_include_tag "/js/libs.js" %>
-  <%= javascript_include_tag "/js/instantclick.min.js"%>
-  <script data-no-instant>InstantClick.init();</script>
 </body>
 </html>

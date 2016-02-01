@@ -4,7 +4,7 @@
   var mainContainer = $(".main-content").attr("page-present");
 
   $(window).scroll(function() {
-    if (mainContainer == "items" && $(window).scrollTop() <= 100) {
+    if (mainContainer == "items" && searchHidden() && $(window).scrollTop() <= 100) {
       if (alreadyloading == false) {
         var topItemBeforeLoad = $('.individual-item:first');
 
@@ -22,4 +22,9 @@
       }
     }
   });
+
+  function searchHidden() {
+    return !$("body .search-results-list").is(":visible"); 
+  }
+
 </script>

@@ -22,24 +22,29 @@ $(document).ready(function() {
       $("#item-list").append(data["html_as_string"]);
       console.log("correct bucket. item doesnt exist.");
       scrollToBottom(); 
-      removeItemTemplate(data);
+      shouldRemoveItemTemplate(data);
     } else if (bucket_presented != 0) { //correct bucket showing and item exists
       $("#item"+data["id"]).replaceWith(data["html_as_string"]);
       console.log("correct bucket. item exists.");
-      removeItemTemplate(data);
+      shouldRemoveItemTemplate(data);
     } else if (bucket_presented == 0 && thoughts_list_presented) { //all thoughts list is showing
       if (doesnt_exist) {
         $("#item-list").append(data["html_as_string"]);        
         console.log("all thoughts. item doens't exist");
         scrollToBottom(); 
-        removeItemTemplate(data);
+        shouldRemoveItemTemplate(data);
       } else {
         $("#item"+data["id"]).replaceWith(data["html_as_string"]);
         console.log("all thoughts. item exists");
-        removeItemTemplate(data);
+        shouldRemoveItemTemplate(data);
       };
     }
   }); 
+
+  function shouldRemoveItemTemplate(data) {
+    removeItemTemplate(data); 
+    setTimeout(removeItemTemplate(data), 2000);
+  }
 
   function removeItemTemplate(data) {
     $("#item-template").each( function(index, element){

@@ -5,7 +5,7 @@
 
   var mainContainer = $(".main-content").attr("page-present");
   $(window).scroll(function() {
-    if (mainContainer == "info" && $(window).scrollTop() <= 100) {
+    if (mainContainer == "info" && $(window).scrollTop() <= 100 && searchHidden) {
       if (alreadyloading == false) {
         alreadyloading = true;
         var topItemBeforeLoad = $('.individual-item:first');
@@ -22,4 +22,8 @@
       }
     }
   });
+
+  function searchHidden() {
+    return !$("body .search-results-list").hidden(); 
+  }
 </script>

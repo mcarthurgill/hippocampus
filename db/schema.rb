@@ -483,7 +483,7 @@ ActiveRecord::Schema.define(:version => 20160125200914) do
     t.integer  "medium_id"
     t.string   "membership",             :default => "none"
     t.integer  "number_buckets_allowed"
-    t.datetime "last_activity",          :default => '2016-01-21 15:25:05'
+    t.datetime "last_activity",          :default => '2016-02-01 16:10:36'
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

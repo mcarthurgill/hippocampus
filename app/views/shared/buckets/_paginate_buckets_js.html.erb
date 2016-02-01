@@ -5,7 +5,7 @@
   var page = 1; 
 
   $(window).scroll(function() {
-    if(mainContainer == "buckets" && $(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+    if(mainContainer == "buckets" && searchHidden && $(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
       if (alreadyloading == false) {
         var url = "/users/"+"<%= current_user.id %>"+"/buckets.js?page="+page+"&sort="+sorting+"&append=true";
         alreadyloading = true;
@@ -23,4 +23,8 @@
     sorting = $(this).find(':selected').val(); 
     page = 1; 
   });
+
+  function searchHidden() {
+    return !$("body .search-results-list").hidden(); 
+  }
 </script>

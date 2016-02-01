@@ -1,6 +1,6 @@
-<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js" data-no-instant></script>
-<script src="//cdn.jsdelivr.net/algoliasearch.helper/1/algoliasearch.helper.min.js" data-no-instant></script>
-<script data-no-instant>
+<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="//cdn.jsdelivr.net/algoliasearch.helper/1/algoliasearch.helper.min.js"></script>
+<script>
   $(document).ready(function() {
     var client = algoliasearch("<%= ENV['ALGOLIASEARCH_APPLICATION_ID'] %>", "<%= ENV['ALGOLIASEARCH_API_KEY'] %>");
     var itemIndex = client.initIndex('Item');
@@ -18,6 +18,7 @@
     var searchResultsBucketList = $('body #search-results-bucket-list');
     var searchItemsContainer = $(".search-items-container"); 
     var searchBucketsContainer = $(".search-buckets-container"); 
+    var endOfList = $("#end-of-list"); 
     var bucketTemplate = "<%= escape_javascript(render partial: 'shared/search/search_bucket_template') %>";
     var itemTemplate = "<%= escape_javascript(render partial: 'shared/search/search_item_template') %>";
 
@@ -44,12 +45,13 @@
       searchResultsList.hide(); 
       itemEntryForm.show(); 
       scrollToBottom.show(); 
+      setScroll(); 
     }
 
     function beganSearching(enteredText){
-      algoliaSearch(enteredText); 
       searchResultsItemList.html(""); 
-      searchResultsBucketList.html(""); 
+      searchResultsBucketList.html("");
+      algoliaSearch(enteredText);  
       bucketMenuHeader.hide(); 
       bucketList.hide(); 
       itemList.hide(); 
@@ -69,7 +71,7 @@
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
           if (hits.length < 1) {
-            searchItemsContainer.attr("style", "display:none;"); 
+            searchItemsContainer.attr("style", "display:none;");
           } else {
             searchItemsContainer.attr("style", ""); 
             for (var i = 0; i < hits.length; i++) {
@@ -82,17 +84,15 @@
 
     function algoliaBucketSearch(enteredText) {
       bucketIndex.search(enteredText, { hitsPerPage: 2, page: 0, numericFilters:"authorized_user_ids=<%= current_user.id %>" }, function(success, hitsHash) {
+        var timestamp = Date.now; 
         if (hitsHash && hitsHash.hits) {
           var hits = hitsHash.hits; 
-          console.log("in bucket search");
-          console.log(hits.length); 
           if (hits.length < 1) {
             searchBucketsContainer.attr("style", "display:none;"); 
           } else {
             searchBucketsContainer.attr("style", ""); 
             for (var i = 0; i < hits.length; i++) {
-              console.log(hits[i].first_name)
-              appendBucketWithTemplate(bucketTemplate, hits[i]); 
+              appendBucketWithTemplate(bucketTemplate, hits[i], timestamp); 
             };
           };
         };
@@ -111,12 +111,44 @@
       searchResultsItemList.append($jQueryObject);
     }
 
-    function appendBucketWithTemplate(template, hit) {
+    function appendBucketWithTemplate(template, hit, timestamp) {
       var $jQueryObject = $($.parseHTML(template));
       $jQueryObject.find('#search-bucket-firstname').html(hit.first_name);
       $jQueryObject.find('a').attr("href", '/buckets/'+hit.id+'/info');
       $jQueryObject.find('#search-bucket-cached-message').html(hit.cached_item_message);
+      $jQueryObject.attr("class", timestamp); 
       searchResultsBucketList.append($jQueryObject);
+      removeOldBucket(timestamp); 
+    }
+
+    function removeOldBucket(new_timestamp) {
+      var template = $("#bucket-template"); 
+      var oldTime = template.attr("class").toString(); 
+      var newTime = new_timestamp.toString(); 
+      console.log(oldTime); 
+      console.log(newTime); 
+      if (oldTime != newTime) {
+        template.fadeOut("fast");
+        template.remove(); 
+      };
+    }
+
+
+    function setScroll() {
+      if (itemList.is(":visible")) {
+        scrollDown(); 
+      }
+    }
+
+    function scrollDown(){
+      var scrollBtm = document.getElementById("sBtm");  
+      //-------------------------------- Btm --------------------------------
+      if (scrollBtm) {
+        scrollBtm.scrollIntoView();
+        scrollBtm.scrollIntoView(false);
+        scrollBtm.scrollIntoView({block: "end"});
+        scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
+      };
     }
   });
 </script>

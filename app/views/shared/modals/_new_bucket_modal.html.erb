@@ -2,7 +2,7 @@
   <header class="modal-header">
     <h4 id="modalTitle">Create New Person</h4>
   </header>
-  <%= form_for @new_bucket, :remote => true do |f| %>
+  <%= form_for @new_bucket, :remote => true  do |f| %>
     <div class="content">
       <%= f.text_field :first_name, :id => "new-bucket-input", :class => "search-field", autocomplete: "on", spellcheck: "false", autocorrect: "off", :placeholder => "Enter first and last name", :value => "" %>
       <%= f.hidden_field :user_id, :value => current_user.id %>

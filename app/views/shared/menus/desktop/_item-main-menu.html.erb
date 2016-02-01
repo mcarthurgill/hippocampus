@@ -3,7 +3,7 @@
   <!-- Profile -->
   <div class="profile-overview">
     <a href="#" data-jq-dropdown="#profile-menu-1" data-vertical-offset="3" class="avatar dropdown">
-      <img class="avatar med" src="<%= current_user.avatar_path %>" alt="">
+      <img class="avatar med" src="<%= current_user.avatar_path.html_safe %>" alt="">
     </a>
     <div id="profile-menu-1" class="jq-dropdown jq-dropdown-tip">
       <ul class="jq-dropdown-menu">

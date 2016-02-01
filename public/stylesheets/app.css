@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Set default font family to sans-serif.
@@ -17,7 +18,12 @@ html {
  * Remove default margin.
  */
 body {
-  margin: 0; }
+  margin: 0; 
+}
+
+a {
+  text-decoration: none !important;
+}
 
 /* HTML5 display definitions
    ========================================================================== */
@@ -6894,8 +6900,6 @@ span.CodeMirror-selectedtext {
 
 
 
-
-
   .search-buckets-container {
     padding-bottom: 0px !important; 
   }
@@ -7041,3 +7045,5 @@ span.CodeMirror-selectedtext {
         text-align:center;
         color:lightgray;
       }
+
+
