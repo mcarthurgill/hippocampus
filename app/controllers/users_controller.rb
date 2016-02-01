@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     @active = 'thoughts'
     page = get_page(params[:page])
     arbitrary_limit = 15
-    @items = @user.items.outstanding_first.for_page_with_limit(page, arbitrary_limit).includes(:buckets)
+    @items = @user.items.outstanding_first.for_page_with_limit(page, arbitrary_limit).includes(:buckets).reverse
     @item = Item.new
 
     respond_to do |format|
