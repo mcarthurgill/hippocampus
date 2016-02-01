@@ -32,10 +32,7 @@ class UsersController < ApplicationController
     @active = 'thoughts'
     page = get_page(params[:page])
     arbitrary_limit = 15
-    @items = @user.items.outstanding.by_date.for_page_with_limit(page, arbitrary_limit).includes(:buckets)
-    if @items.count < arbitrary_limit
-      (@items + @user.bucket_items.by_date.not_deleted.for_page_with_limit(page, arbitrary_limit).includes(:buckets)).uniq.reverse
-    end
+    @items = @user.items.oustanding_first.for_page_with_limit(page, arbitrary_limit).includes(:buckets)
     @item = Item.new
 
     respond_to do |format|

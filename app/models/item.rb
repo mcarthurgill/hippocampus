@@ -50,6 +50,13 @@ class Item < ActiveRecord::Base
   scope :within_bounds, ->(max_long, min_long, max_lat, min_lat) { where("longitude <= ? AND longitude >= ? AND latitude <= ? AND latitude >= ?", max_long, min_long, max_lat, min_lat) }
   scope :for_page_with_limit, ->(page, lim) { offset(page*lim).limit(lim) }
   
+  scope :outstanding_first, ->{
+      joins("LEFT OUTER JOIN ( SELECT id, created_at, status
+                               FROM items
+                               WHERE items.status = 'outstanding'
+                             ) AS temp ON temp.id = items.id AND temp.status = items.status"
+           ).order('temp.created_at NULLS LAST, items.status, items.created_at')
+      }
   # scope :with_monthly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('extract(day from reminder_date) >= ? '+(today.day <= (today+timeframe).day && (timeframe < 2.days || today.day != (today+timeframe).day) ? 'AND' : 'OR')+' extract(day from reminder_date) <= ?', today.day, (today+timeframe).day).monthly.not_deleted }
   # scope :with_yearly_nudge_within_timeframe, ->(timeframe, today=(Time.zone.now-6.hours).to_date) { where('((extract(month from reminder_date) >= ? AND extract(day from reminder_date) >= ?) OR extract(month from reminder_date) > ?) '+(today.month <= (today+timeframe).month && (timeframe < 2.months || today.month != (today+timeframe).month) ? 'AND' : 'OR')+' ((extract(month from reminder_date) <= ? AND extract(day from reminder_date)) <= ? OR extract(month from reminder_date) < ?)', today.month, today.day, today.month, (today+timeframe).month, (today+timeframe).day, (today+timeframe).month).yearly.not_deleted }
 
