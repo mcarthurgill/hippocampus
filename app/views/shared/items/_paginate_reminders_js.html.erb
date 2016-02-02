@@ -4,7 +4,7 @@
   var page = 1; 
 
   $(window).scroll(function() {
-    if(mainContainer == "reminders" && searchHidden() && $(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
+    if(mainContainer == "reminders" && searchHidden() && $(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
       if (alreadyloading == false) {
         var url = "/users/"+"<%= current_user.id %>"+"/reminders.js?page="+page;
         alreadyloading = true;
