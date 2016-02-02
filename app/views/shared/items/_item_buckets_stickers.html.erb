@@ -3,7 +3,7 @@
     <% item.visible_buckets_for_user(current_user).each do |b| %>
       <% if !defined?(@bucket) || b != @bucket %>
         <a class="label" href="/buckets/<%= b.id %>/info"><%= b.first_name %></a>
-      <% end %>
+      <% end %> 
     <% end %>
   <% end %>
 </div>
