@@ -48,12 +48,7 @@ $(document).ready(function() {
 
   function removeItemTemplate(data) {
     $("#item-template").each( function(index, element){
-      console.log("should remove");
-      console.log($(this).find('#item-message-template').text());
-      console.log(data["message"]); 
-      console.log($(this).find('#item-message-template').text() == data["message"]); 
-      console.log($(this).find('#item-message-template').text().trim() == data["message"].trim()); 
-        if ($(this).find('#item-message-template').text() == data["message"]) {
+        if ($(this).find('#item-message-template').text().trim() == data["message"].trim()) {
           console.log("REMOVING!!!");
           $(this).remove();
         }
