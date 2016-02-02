@@ -1,17 +1,20 @@
+
 <div id="editBucketModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-  <header class="modal-header">
-    <h4 id="modalTitle">Edit <%= @bucket.first_name %></h4>
-  </header>
-  <%= form_for @bucket, :remote => true do |f| %>
-    <div class="content">
-      <%= f.text_field :first_name, :id => "edit-bucket-input", :class => "search-field", autocomplete: "on", spellcheck: "false", autocorrect: "off", :placeholder => "Enter first and last name", :value => @bucket.first_name %>
-      <%= f.hidden_field :user_id, :value => current_user.id %>
-    </div>
-    <footer class="options">
-      <%= f.submit "Cancel", :class => "cancel button close-reveal-modal", :id => "cancel_edit_bucket" %>
-      <%= f.submit "Save", :class => "save button close-reveal-modal", :id => "save_edit_bucket" %>
-    </footer>
-  <% end %>
+  
+    <header class="modal-header">
+      <h4 id="modalTitle">Edit <%= @bucket.first_name %></h4>
+    </header>
+    <%= form_for @bucket, :remote => true do |f| %>
+      <div class="content">
+        <%= f.text_field :first_name, :id => "edit-bucket-input", :class => "search-field", autocomplete: "on", spellcheck: "false", autocorrect: "off", :placeholder => "Enter first and last name", :value => @bucket.first_name %>
+        <%= f.hidden_field :user_id, :value => current_user.id %>
+      </div>
+      <footer class="options">
+        <%= f.submit "Cancel", :class => "cancel button close-reveal-modal", :id => "cancel_edit_bucket" %>
+        <%= f.submit "Save", :class => "save button close-reveal-modal", :id => "save_edit_bucket" %>
+      </footer>
+    <% end %>
+  
 </div>
 
 <%= render 'shared/buckets/edit_bucket_modal_js' %>

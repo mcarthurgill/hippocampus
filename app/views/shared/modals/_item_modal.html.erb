@@ -1,0 +1,17 @@
+
+<div id="itemModal" class="reveal-modal wide-reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <div class="inner">
+    <header class="modal-header">
+      <h4 id="itemModalTitle"></h4>
+    </header>
+    
+    <div id="itemModalContent" class="content">
+    </div>
+
+    <footer class="options">
+      <%= link_to 'Close', '#', class: 'cancel button close-reveal-modal', id: 'close-item-modal' %>
+    </footer>
+  </div>
+</div>
+
+<%= render 'shared/buckets/item_modal_js' %>

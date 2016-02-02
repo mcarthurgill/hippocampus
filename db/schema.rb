@@ -457,6 +457,14 @@ ActiveRecord::Schema.define(:version => 20160125200914) do
   add_index "tokens", ["id"], :name => "index_tokens_on_id"
   add_index "tokens", ["user_id"], :name => "index_tokens_on_user_id"
 
+  create_table "twilio_messengers", :force => true do |t|
+    t.string   "body"
+    t.string   "to_number"
+    t.string   "from_number"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "use_cases", :force => true do |t|
     t.text     "text"
     t.string   "image_url"
@@ -483,7 +491,7 @@ ActiveRecord::Schema.define(:version => 20160125200914) do
     t.integer  "medium_id"
     t.string   "membership",             :default => "none"
     t.integer  "number_buckets_allowed"
-    t.datetime "last_activity",          :default => '2016-02-01 16:10:36'
+    t.datetime "last_activity",          :default => '2016-02-02 17:05:59'
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

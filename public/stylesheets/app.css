@@ -4644,6 +4644,9 @@ div.bucket-list-wrap {
     top: inherit;
     right: inherit; }
 
+.wide-reveal-modal {
+  max-width: 50rem; }
+
 .add-thought-wrap {
   max-width: 39.375rem;
   margin: 10.625rem 0 2.5rem;

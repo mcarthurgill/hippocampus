@@ -10,7 +10,10 @@
       <% end %>
     </div>
   <% end %>
-  <a href="/items/<%= item.id %>"><%= item.message ? item.message : "" %></a>
+  <!--<a href="/items/<%= item.id %>"><%= item.message ? item.message : "" %></a>-->
+  <%= link_to '#', :class => "", "data-reveal-id" => "itemModal", :id => "", :onclick => 'replaceItemModal("'+item.local_key+'","'+item.message.gsub('"','\"')+'","'+item.created_at.strftime('%A, %B %e, %Y')+'")' do %>
+    <%= item.message ? item.message : "" %>
+  <% end %>
   <% if item.has_media? %>
     <%= render 'shared/items/item_media', :item => item %>
   <% end %>

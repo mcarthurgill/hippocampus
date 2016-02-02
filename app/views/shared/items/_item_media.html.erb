@@ -2,7 +2,9 @@
   <ul class="image-previews">
     <% item.media_urls.each do |url| %>
       <li>
-        <%= link_to "/items/#{item.id}" do %><%= image_tag url %><% end %>
+        <%= link_to '#', :class => "", "data-reveal-id" => "itemModal", :id => "", :onclick => 'replaceItemModal("'+item.local_key+'","'+item.message.gsub('"','\"')+'","'+item.created_at.strftime('%A, %B %e, %Y')+'")' do %>
+          <%= image_tag url %>
+        <% end %>
       </li>
     <% end %>
   </ul>
