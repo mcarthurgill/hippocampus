@@ -7070,10 +7070,10 @@ a {
 }
 
 .search-bar-across {
-  width: 39.375rem;
+  width: 100%;
   float: left;
   position: relative;
-  top: 0px;
+  top: 3px;
   margin-right: 0px; 
   position: relative;
   transition: width .3s ease-in-out;

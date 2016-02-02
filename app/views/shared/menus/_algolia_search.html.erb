@@ -52,7 +52,6 @@
       searchResultsItemList.html(""); 
       searchResultsBucketList.html("");
       algoliaSearch(enteredText);  
-      setScroll(); 
       bucketMenuHeader.hide(); 
       bucketList.hide(); 
       itemList.hide(); 
@@ -124,8 +123,10 @@
 
     function setScroll() {
       if (itemList.is(":visible")) {
+        console.log("visible!");
         scrollDown(); 
       } else {
+        console.log("NOPE!");
         scrollUp(); 
       }
     }
