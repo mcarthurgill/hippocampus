@@ -1,0 +1,13 @@
+<% alreadyDisplayedToday = false %>
+<% alreadyDisplayedUpcoming = false %>
+
+<% reminders.each do |i| %>
+  <% if (formatted_date(i.next_reminder_date) == formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) && !alreadyDisplayedToday && page == 0 %>
+    <% alreadyDisplayedToday = true %>
+    <li class="section"><h5>today's nudges</h5></li>
+  <% elsif (formatted_date(i.next_reminder_date) != formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) &&!alreadyDisplayedUpcoming && page == 0 %>
+    <% alreadyDisplayedUpcoming = true %>
+    <li class="section"><h5>upcoming nudges</h5></li>
+  <% end %>
+  <%= render 'reminder_preview', :item => i %>
+<% end %>

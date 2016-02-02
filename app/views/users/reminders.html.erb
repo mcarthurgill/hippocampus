@@ -6,22 +6,14 @@
   <!-- Nudges -->
   <div class="nudges-list-wrap sorted-list">
     <!-- List -->
-    <ul class="list nudges-list scene_element--fadeinup scene_element scene_delay">
-      <% alreadyDisplayedToday = false %>
-      <% alreadyDisplayedUpcoming = false %>
-      <% @reminders.each do |i| %>
-        <% if (formatted_date(i.next_reminder_date) == formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) && !alreadyDisplayedToday %>
-          <% alreadyDisplayedToday = true %>
-          <li class="section"><h5>today's nudges</h5></li>
-        <% elsif (formatted_date(i.next_reminder_date) != formatted_date(DateTime.now.in_time_zone(current_user.time_zone))) &&!alreadyDisplayedUpcoming %>
-          <% alreadyDisplayedUpcoming = true %>
-          <li class="section"><h5>upcoming nudges</h5></li>
-        <% end %>
-        <%= render 'reminder_preview', :item => i %>
-      <% end %>
+    <ul class="list nudges-list scene_element--fadeinup scene_element scene_delay" id="nudges-list">
       <% if @reminders.count == 0 %>
         <li class="section"><h5>No upcoming nudges!</h5></li>
+      <% else %>
+        <%= render 'shared/items/reminder_list', :reminders => @reminders, :page => @page %>
       <% end %>
     </ul>
   </div>
 </main>
+
+<%= render 'shared/items/paginate_reminders_js' %>
