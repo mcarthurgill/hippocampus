@@ -2,7 +2,7 @@
   <ul class="image-previews">
     <% item.media_urls.each do |url| %>
       <li>
-        <%= link_to Rails.application.routes.url_helpers.item_path(item) do %><%= image_tag url %><% end %>
+        <%= link_to "/items/<%= item.id %>" do %><%= image_tag url %><% end %>
       </li>
     <% end %>
   </ul>

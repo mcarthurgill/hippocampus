@@ -10,7 +10,7 @@
       <% end %>
     </div>
   <% end %>
-  <a href="<%= Rails.application.routes.url_helpers.item_path(item) %>"><%= item.message ? item.message : "" %></a>
+  <a href="/items/<%= item.id %>"><%= item.message ? item.message : "" %></a>
   <% if item.has_media? %>
     <%= render 'shared/items/item_media', :item => item %>
   <% end %>
