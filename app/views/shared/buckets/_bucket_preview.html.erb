@@ -1,6 +1,6 @@
 <li id="bucket<%= bucket.id %>" class="individual-item">
   <header>
-    <%= link_to Rails.application.routes.url_helpers.bucket_info_path(bucket) do %>
+    <%= link_to "/buckets/#{bucket.id}/info" do %>
       <div class="meta">
         <h4 class="title"><%= bucket.first_name %></h4>
         <span><%= bucket.items_count %></span>
@@ -22,7 +22,7 @@
       </span>
     <% end %>
   </header>
-  <%= link_to Rails.application.routes.url_helpers.bucket_info_path(bucket) do %>
+  <%= link_to "/buckets/#{bucket.id}/info" do %>
     <p><%= bucket.cached_item_message %></p>
   <% end %>
 </li>
