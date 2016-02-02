@@ -11,8 +11,8 @@
       </ul>
     </div>
 
-    <small>Last Active <%= long_formatted_date(current_user.last_activity) %></small>
-    <small>(<%= long_formatted_time(current_user.last_activity) %>)</small>
+    <small>Last active <%= time_ago_in_words(current_user.last_activity) %> ago</small>
+    <!--<small>(<%= long_formatted_time(current_user.last_activity) %>)</small>-->
   </div>
   <ul class="nav-list">
     <li><h5>Most Recent</h5></li>

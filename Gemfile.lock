@@ -249,6 +249,3 @@ DEPENDENCIES
   twiml_template (~> 1.0)
   twitter-bootstrap-rails!
   uglifier (>= 1.0.3)
-
-BUNDLED WITH
-   1.11.2
