@@ -118,19 +118,6 @@
       $jQueryObject.find('#search-bucket-cached-message').html(hit.cached_item_message);
       $jQueryObject.attr("class", timestamp); 
       searchResultsBucketList.append($jQueryObject);
-      removeOldBucket(timestamp); 
-    }
-
-    function removeOldBucket(new_timestamp) {
-      var template = $("#bucket-template"); 
-      var oldTime = template.attr("class").toString(); 
-      var newTime = new_timestamp.toString(); 
-      console.log(oldTime); 
-      console.log(newTime); 
-      if (oldTime != newTime) {
-        template.fadeOut("fast");
-        template.remove(); 
-      };
     }
 
 
