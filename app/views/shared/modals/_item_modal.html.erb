@@ -1,14 +1,16 @@
 <div id="itemModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  
   <header class="modal-header">
-    <h4 id="modalTitle">Item!</h4>
+    <h4 id="itemModalTitle">Item!</h4>
   </header>
   
-    <div class="content">
-      Item content!
-    </div>
-    <footer class="options">
-      <%= link_to 'Close', '#', class: 'save button close-reveal-modal', id: 'close-item-modal' %>
-    </footer>
+  <div id="itemModalContent" class="content">
+    Item content!
+  </div>
+
+  <footer class="options">
+    <%= link_to 'Close', '#', class: 'cancel button close-reveal-modal', id: 'close-item-modal' %>
+  </footer>
   
 </div>
 

@@ -11,7 +11,7 @@
     </div>
   <% end %>
   <!--<a href="/items/<%= item.id %>"><%= item.message ? item.message : "" %></a>-->
-  <%= link_to '#', :class => "", "data-reveal-id" => "itemModal", :id => "" do %>
+  <%= link_to '#', :class => "", "data-reveal-id" => "itemModal", :id => "", :onclick => 'replaceItemModal("'+item.local_key+'","'+item.message+'","'+item.created_at+'","'+item.media_urls+'")' do %>
     <%= item.message ? item.message : "" %>
   <% end %>
   <% if item.has_media? %>
