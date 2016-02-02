@@ -87,6 +87,10 @@
         $(this).parent().toggleClass('expanded');
     });
 
+    $('.search-bar-across .search-field').bind('blur focus', function(){
+        $(this).parent().toggleClass('expanded');
+    });
+
     // ----------------------------- Delete Buckets ------------------------------
     var mainContent =  '.main-content'
     var bucketLabel =  '.label .remove'

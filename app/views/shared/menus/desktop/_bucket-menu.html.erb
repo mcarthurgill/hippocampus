@@ -1,0 +1,30 @@
+<% if @bucket %>
+  <!-- Buckets Search Tools -->
+  <div class="bucket-search-wrap" id="bucket-menu-header">
+    <div class="options-wrap">
+      <div class="currently">
+        <a href="#" data-jq-dropdown="#bucket-menu-1"><h5 id="bucket-first-name"><%= @bucket.first_name %></h5></a>
+        <div id="bucket-menu-1" class="jq-dropdown jq-dropdown-tip">
+          <ul class="jq-dropdown-menu">
+            <li>
+              <%= link_to "", "data-reveal-id" => "editBucketModal" do %>
+                <svg class="icon icon-settings"><use xlink:href="#icon-settings"></use></svg>Edit
+              <% end %>
+            </li>
+            <li>
+              <%= link_to "", "data-reveal-id" => "deleteBucketModal" do %>
+                <svg class="icon icon-trash"><use xlink:href="#icon-trash"></use></svg>Delete
+              <% end %>
+            </li>
+          </ul>
+        </div>       
+        <% if @bucket.users.count > 0 %>
+          <a class="collab-count">
+            <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
+            <span class="count"><%= @bucket.users.count %></span>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

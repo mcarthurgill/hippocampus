@@ -1,5 +1,6 @@
 <% unless @active == "profile" %>
   <nav class="secondary-menu_mbl" role="navigation" aria-label="Mobile Secondary Menu">
+    <%= render 'shared/menus/mobile/bucket-menu-mobile' %>
     <div class="main-search">
       <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
       <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>

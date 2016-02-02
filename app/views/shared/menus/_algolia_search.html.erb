@@ -52,6 +52,7 @@
       searchResultsItemList.html(""); 
       searchResultsBucketList.html("");
       algoliaSearch(enteredText);  
+      setScroll(); 
       bucketMenuHeader.hide(); 
       bucketList.hide(); 
       itemList.hide(); 
@@ -124,6 +125,8 @@
     function setScroll() {
       if (itemList.is(":visible")) {
         scrollDown(); 
+      } else {
+        scrollUp(); 
       }
     }
 
@@ -136,6 +139,10 @@
         scrollBtm.scrollIntoView({block: "end"});
         scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
       };
+    }
+
+    function scrollUp(){
+      $("html, body").animate({ scrollTop: 0 }, "fast");
     }
   });
 </script>
