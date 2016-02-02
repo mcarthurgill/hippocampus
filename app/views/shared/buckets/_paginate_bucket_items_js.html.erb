@@ -5,16 +5,19 @@
 
   var mainContainer = $(".main-content").attr("page-present");
   $(window).scroll(function() {
-    if (mainContainer == "info" && $(window).scrollTop() <= 100 && searchHidden) {
+    var docHeight = $(document).height(); 
+    var windowScroll = $(window).scrollTop(); 
+
+    if (mainContainer == "info" && windowScroll <= 150 && searchHidden()) {
       if (alreadyloading == false) {
         alreadyloading = true;
-        var topItemBeforeLoad = $('.individual-item:first');
         var url = "/buckets/"+ bucketID +"/info.js?page="+nextpage;
         $.get(url, function(data) {
 
         }).always(function(response) {
           if (response.length > 28) { //length when no items return
-            $(document).scrollTop(topItemBeforeLoad.offset().top - 50);
+            var newScrollHeight = $(window).scrollTop(); 
+            $(document).scrollTop($(document).height() - docHeight + windowScroll - (windowScroll-newScrollHeight));
           };
           alreadyloading = false;
           nextpage++;
@@ -24,6 +27,6 @@
   });
 
   function searchHidden() {
-    return !$("body .search-results-list").hidden(); 
+    return !$("body .search-results-list").is(":visible"); 
   }
 </script>

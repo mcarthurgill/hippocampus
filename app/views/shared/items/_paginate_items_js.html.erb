@@ -4,17 +4,20 @@
   var mainContainer = $(".main-content").attr("page-present");
 
   $(window).scroll(function() {
-    if (mainContainer == "items" && searchHidden() && $(window).scrollTop() <= 100) {
-      if (alreadyloading == false) {
-        var topItemBeforeLoad = $('.individual-item:first');
+    var docHeight = $(document).height(); 
+    var windowScroll = $(window).scrollTop(); 
 
+    if (mainContainer == "items" && searchHidden() && windowScroll <= 150) {
+      if (alreadyloading == false) {
         var url = "/users/"+"<%= current_user.id %>"+"/items.js?page="+nextpage;
         alreadyloading = true;
+        
         $.get(url, function(data) {
 
         }).always(function(response) {
           if (response.length > 28) { //length when no items return
-            $(document).scrollTop(topItemBeforeLoad.offset().top - 50);
+            var newScrollHeight = $(window).scrollTop(); 
+            $(document).scrollTop($(document).height() - docHeight + windowScroll - (windowScroll-newScrollHeight));
           }; 
           alreadyloading = false;
           nextpage++;

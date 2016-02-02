@@ -179,8 +179,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if current_user #this is a janky fix til we get the .json on the reminders call from iOS 
-        format.html
         format.js
+        format.html
       end
       format.json { render json: {:reminders => @reminders, :nudge_list => list[:nudges_list]} }
     end
