@@ -8,7 +8,7 @@
     var docHeight = $(document).height(); 
     var windowScroll = $(window).scrollTop(); 
 
-    if (mainContainer == "info" && windowScroll <= 150 && searchHidden()) {
+    if (mainContainer == "info" && windowScroll <= 200 && searchHidden()) {
       if (alreadyloading == false) {
         alreadyloading = true;
         var url = "/buckets/"+ bucketID +"/info.js?page="+nextpage;

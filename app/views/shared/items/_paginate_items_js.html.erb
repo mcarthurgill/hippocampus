@@ -7,7 +7,7 @@
     var docHeight = $(document).height(); 
     var windowScroll = $(window).scrollTop(); 
 
-    if (mainContainer == "items" && searchHidden() && windowScroll <= 150) {
+    if (mainContainer == "items" && searchHidden() && windowScroll <= 200) {
       if (alreadyloading == false) {
         var url = "/users/"+"<%= current_user.id %>"+"/items.js?page="+nextpage;
         alreadyloading = true;
