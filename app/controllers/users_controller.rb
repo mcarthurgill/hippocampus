@@ -170,16 +170,17 @@ class UsersController < ApplicationController
   def reminders
     user = User.find(params[:id])
 
-    page = get_page(params[:page])
+    @page = get_page(params[:page])
     mobile = params[:auth] && params[:auth][:uid]
     @active = "nudges"
 
-    @reminders = user.sorted_reminders(25, page, mobile)
+    @reminders = user.sorted_reminders(10, @page, mobile)
     list = @reminders.shift(1).first if mobile
 
     respond_to do |format|
       if current_user #this is a janky fix til we get the .json on the reminders call from iOS 
         format.html
+        format.js
       end
       format.json { render json: {:reminders => @reminders, :nudge_list => list[:nudges_list]} }
     end

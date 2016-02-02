@@ -1,0 +1,25 @@
+<script type="text/javascript">
+  var alreadyloading = false;
+  var mainContainer = $(".main-content").attr("page-present");
+  var page = 1; 
+
+  $(window).scroll(function() {
+    if(mainContainer == "reminders" && searchHidden && $(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+      if (alreadyloading == false) {
+        var url = "/users/"+"<%= current_user.id %>"+"/reminders.js?page="+page;
+        alreadyloading = true;
+        $.get(url, function(data) {
+
+        }).always(function(response) {
+          page++; 
+          alreadyloading = false;
+        });
+      }
+    }
+  });
+
+  function searchHidden() {
+    console.log($("body .search-results-list").hidden());
+    return !$("body .search-results-list").hidden(); 
+  }
+</script>
