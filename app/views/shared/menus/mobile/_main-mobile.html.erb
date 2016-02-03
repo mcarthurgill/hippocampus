@@ -3,9 +3,9 @@
     <svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>
   </a>
   <ul class="nav-list">
-    <li class="<%= active_thought_classes %>"><%= link_to user_items_path(current_user) do %><span>Thoughts</span><% end %></li>
+    <li class="<%= active_bucket_classes %>"><%= link_to user_buckets_path(current_user) do %><span>People</span><% end %></li>
 
-    <li class="<%= active_bucket_classes %>"><%= link_to user_buckets_path(current_user) do %><span>Buckets</span><% end %></li>
+    <li class="<%= active_thought_classes %>"><%= link_to user_items_path(current_user) do %><span>Notes</span><% end %></li>
 
     <li class="<%= active_nudge_classes %>"><%= link_to user_reminders_path(current_user) do %><span>Nudges</span><% end %></li>
   </ul>

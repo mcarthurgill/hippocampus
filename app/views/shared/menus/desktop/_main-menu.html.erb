@@ -1,9 +1,10 @@
 <nav class="main-menu" role="navigation" aria-label="Main Menu">
   <div class="primary-wrap">
     <ul class="nav-list">
-      <li class="<%= active_thought_classes %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="#icon-chat"></use></svg>Thoughts</span><% end %></li>
 
-      <li class="<%= active_bucket_classes %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-bucket"><use xlink:href="#icon-bucket"></use></svg>Buckets</span><% end %></li>
+      <li class="<%= active_bucket_classes %>"><%= link_to user_buckets_path(current_user) do %><span><svg class="icon icon-profile-outline"><use xlink:href="#icon-profile-outline"></use></svg>People</span><% end %></li>
+
+      <li class="<%= active_thought_classes %>"><%= link_to user_items_path(current_user) do %><span><svg class="icon icon-chat"><use xlink:href="#icon-chat"></use></svg>Notes</span><% end %></li>
 
       <li class="<%= active_nudge_classes %>"><%= link_to user_reminders_path(current_user) do %><span><svg class="icon icon-alarm"><use xlink:href="#icon-alarm"></use></svg>Nudges</span><% end %></li>
     </ul>

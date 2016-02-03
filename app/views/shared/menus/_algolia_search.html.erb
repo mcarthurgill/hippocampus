@@ -49,6 +49,7 @@
     }
 
     function beganSearching(enteredText){
+      setScroll(); 
       searchResultsItemList.html(""); 
       searchResultsBucketList.html("");
       algoliaSearch(enteredText);  

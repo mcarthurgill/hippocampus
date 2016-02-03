@@ -4385,7 +4385,9 @@ form input[type="text"] {
       padding: 0.9375rem 0 1rem;
       border-bottom: 1px solid #F0F2F2;
       position: relative;
-      font-weight: 300; }
+      font-weight: 300; 
+      font-size:0.9375rem;
+      }
       .thoughts-list-wrap .thoughts-list > li > a, .thoughts-list-wrap .bucket-list > li > a, .bucket-list-wrap .thoughts-list > li > a, .bucket-list-wrap .bucket-list > li > a {
         font-weight: 300;
         font-size: 0.9375rem; }
@@ -4508,6 +4510,7 @@ div.bucket-list-wrap {
       border-radius: 3px;
       padding: 0.9375rem;
       margin: 0 0 0.75rem;
+      z-index:0;
       display: block; }
       .nudges-list-wrap .nudges-list > li header time {
         display: inline-block;
@@ -7112,5 +7115,10 @@ a {
 
 #item-list {
   padding-top:1.5rem;
+}
+
+li.section h5 {
+  z-index: 0;
+  position:relative;
 }
 
