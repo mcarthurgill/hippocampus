@@ -48,8 +48,11 @@ $(document).ready(function() {
 
   function removeItemTemplate(data) {
     $("#item-template").each( function(index, element){
-      console.log("should remove");
-        if ($(this).find('#item-message-template').text() == data["message"]) {
+      var tempText = $(this).find('#item-message-template').text().trim(); 
+      var dataText = data["message"].trim(); 
+      var tempTextSliced = tempText.slice(0,20).replace(/ /g,'');
+      var dataTextSliced = dataText.slice(0,20).replace(/ /g,'');
+        if (tempTextSliced == dataTextSliced) {
           console.log("REMOVING!!!");
           $(this).remove();
         }

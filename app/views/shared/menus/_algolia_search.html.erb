@@ -123,7 +123,11 @@
 
     function setScroll() {
       if (itemList.is(":visible")) {
+        console.log("visible!");
         scrollDown(); 
+      } else {
+        console.log("NOPE!");
+        scrollUp(); 
       }
     }
 
@@ -136,6 +140,10 @@
         scrollBtm.scrollIntoView({block: "end"});
         scrollBtm.scrollIntoView({block: "end", behavior: "smooth"});
       };
+    }
+
+    function scrollUp(){
+      $("html, body").animate({ scrollTop: 0 }, "fast");
     }
   });
 </script>

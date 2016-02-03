@@ -19,7 +19,7 @@ saveBucket.click(function(e){
 });
 // ---------------------------------- Events ----------------------------------
 cancelBucket.click(function(e){
-  bucketInput.val("");
+  bucketInput.val("<%= @bucket.first_name %>");
 });
 
 function saveAndResetBucket(e){
