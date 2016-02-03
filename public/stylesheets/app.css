@@ -3243,12 +3243,12 @@ ul {
       clear: both; }
     .main-menu .nav-list li {
       display: inline-block;
-      padding: 0 2rem 0 0; }
+      padding: 0.7rem 2rem 0 0; }
       .main-menu .nav-list li a {
         display: block;
         float: left;
         color: #999999;
-        line-height: 3.25rem;
+        line-height: 2.0rem;
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.86px;
@@ -7110,4 +7110,7 @@ a {
   width: 100%; 
 }
 
+#item-list {
+  padding-top:1.5rem;
+}
 

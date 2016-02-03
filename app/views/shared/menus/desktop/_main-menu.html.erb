@@ -12,11 +12,11 @@
     </div>
   </div>
   <% unless @active == "profile" %>
-    <%= render 'shared/menus/desktop/bucket-menu' %>
     <div class="search-bar-across">
       <svg class="icon icon-find"><use xlink:href="#icon-find"></use></svg>
       <input id="search-thoughts-input" class="search-field" type="text" autocomplete="on" spellcheck="false" autocorrect="off" placeholder="Search your brain…"/>
     </div>
+    <%= render 'shared/menus/desktop/bucket-menu' %>
   <% end %>
   
 </nav>
