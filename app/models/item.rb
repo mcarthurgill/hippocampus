@@ -567,6 +567,10 @@ class Item < ActiveRecord::Base
     return self.created_at.to_f
   end
 
+  def escaped_message
+    return self.message ? message.gsub('"','\"') : ""
+  end
+
 
 
 
