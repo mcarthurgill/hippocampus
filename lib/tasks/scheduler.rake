@@ -123,7 +123,7 @@ task :text_users_about_gift => :environment do
 
   send_to_users.each do |user|
     if user && user.phone && user.salt
-      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, "We really appreciate you trying out Hippo and so we want to give you something that will make you better at remembering people. It's free. No gimmicks. We just need to know where to send it. If you're interested, go here: http://hppcmps.com/gifts?code=#{user.salt}\n\nWill + McArthur", "address")
+      OutgoingMessage.send_text_to_number_with_message_and_reason(user.phone, "We really appreciate you trying out Hippo and so we want to give you something that will make you better at remembering people. It's free. No gimmicks. We just need to know where to send it. If you're interested, go here: https://usehippo.com/gifts?code=#{user.salt}\n\nWill + McArthur", "address")
     end
   end
   p "done"

@@ -83,7 +83,7 @@ class Email < ActiveRecord::Base
     users.each do |u|
       arr << self.to_hash_for_user(u) if u
     end
-    message = { 'subject' => subject, 'from_email' => 'note@hppcmps.com', 'from_name' => 'Hippo', 'html' => html, 'to' => arr }
+    message = { 'subject' => subject, 'from_email' => 'note@usehippo.com', 'from_name' => 'Hippo', 'html' => html, 'to' => arr }
     result = m.messages.send message, true, 'Main Pool'
   end
 
